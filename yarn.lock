@@ -5481,10 +5481,10 @@ react-native-fast-image@^8.1.5:
   resolved "https://registry.npmmirror.com/react-native-fast-image/download/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
   integrity sha1-49yWnQ5OjfAmZGvxgZRGWqVcvCs=
 
-react-native-image-crop-tools@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.npmmirror.com/react-native-image-crop-tools/download/react-native-image-crop-tools-1.5.0.tgz#134012276fbcf439b61c9d058291856b64dbe4bf"
-  integrity sha1-E0ASJ2+89Dm2HJ0FgpGFa2Tb5L8=
+react-native-image-crop-picker@^0.37.2:
+  version "0.37.2"
+  resolved "https://registry.npmmirror.com/react-native-image-crop-picker/download/react-native-image-crop-picker-0.37.2.tgz#3aadc4ae4812c9975c49a294d9a17ffae057dbb4"
+  integrity sha512-YwZXW21Km8+3tSt0smTaLVgY4398c0/OJcpcH6EP0JDOt1BNNxl/R8m6qdvnwdXdIoa0CCnMVW6TL9IN5ia9OA==
 
 react-native-image-picker@^4.6.0:
   version "4.6.0"

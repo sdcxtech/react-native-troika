@@ -12,6 +12,10 @@ const data: Array<Item> = [
     title: '嵌套滚动',
     routeName: 'NestedScroll',
   },
+  {
+    title: 'Avatar Crop',
+    routeName: 'AvatarCrop',
+  },
 ]
 
 function App() {

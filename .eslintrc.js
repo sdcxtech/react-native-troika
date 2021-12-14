@@ -14,4 +14,7 @@ module.exports = {
     'no-bitwise': 0,
     'react-native/no-inline-styles': 0,
   },
+  globals: {
+    JSX: 'readonly',
+  },
 }

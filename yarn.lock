@@ -1179,6 +1179,11 @@
   resolved "https://registry.npm.taobao.org/@react-native-community/eslint-plugin/download/@react-native-community/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha1-5Csb7xLSQVQRUZ/VKOZLWTsTY9w=
 
+"@react-native-community/masked-view@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.npmmirror.com/@react-native-community/masked-view/download/@react-native-community/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
+  integrity sha1-L0xuEL7geGq/9GBOOaN97W85gM4=
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.nlark.com/@react-native/assets/download/@react-native/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -5476,6 +5481,31 @@ react-native-fast-image@^8.1.5:
   resolved "https://registry.npmmirror.com/react-native-fast-image/download/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
   integrity sha1-49yWnQ5OjfAmZGvxgZRGWqVcvCs=
 
+react-native-image-crop-tools@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmmirror.com/react-native-image-crop-tools/download/react-native-image-crop-tools-1.5.0.tgz#134012276fbcf439b61c9d058291856b64dbe4bf"
+  integrity sha1-E0ASJ2+89Dm2HJ0FgpGFa2Tb5L8=
+
+react-native-image-picker@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.npmmirror.com/react-native-image-picker/download/react-native-image-picker-4.6.0.tgz#9df927baa20835fd7adba76185359241e6204e00"
+  integrity sha512-Kb0GbPlHm0zAjJpI0vJ/41WSS0mHfbn851cwvn61myse+eMJCku1nixqPlCp4SbpM0lMZIGJgXqZBkqalZnWjg==
+
+react-native-iphone-x-helper@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
+  integrity sha1-IMYD6aDnZf1vlzlmOL3rDlpgsBA=
+
+react-native-linear-gradient@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.npm.taobao.org/react-native-linear-gradient/download/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
+  integrity sha1-liFcvF7HoBJHogiQiIqnW4NNRKA=
+
+react-native-permissions@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npmmirror.com/react-native-permissions/download/react-native-permissions-3.2.0.tgz#2199a49e96bac633016955d36142032d747d0d3e"
+  integrity sha512-UPXxf2twjYL9vPI4HP2kT15AOTY489MhsNuyAgp+wJM2IRkkSVW6rO3k4WuSRL9ZmPhwkWb9bYjf8EEwRzZcXg==
+
 react-native-testing-library@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmmirror.com/react-native-testing-library/download/react-native-testing-library-6.0.0.tgz#b6e1c2213008dc62bdf28bb1474dfaca9cece058"
@@ -6444,10 +6474,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.3.5:
-  version "4.5.2"
-  resolved "https://registry.npmmirror.com/typescript/download/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
-  integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
+typescript@4.3.5:
+  version "4.3.5"
+  resolved "https://registry.npmmirror.com/typescript/download/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
+  integrity sha1-TRw3zBbok5c8RaBohrcRMjTxGfQ=
 
 uglify-es@^3.1.9:
   version "3.3.9"

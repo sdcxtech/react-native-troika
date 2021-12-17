@@ -13,6 +13,10 @@ const data: Array<Item> = [
     routeName: 'NestedScroll',
   },
   {
+    title: '原生嵌套滑动',
+    routeName: 'NativeNestedScroll',
+  },
+  {
     title: 'Avatar Crop',
     routeName: 'AvatarCrop',
   },

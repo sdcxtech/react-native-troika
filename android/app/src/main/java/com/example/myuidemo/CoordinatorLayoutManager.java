@@ -1,8 +1,6 @@
 package com.example.myuidemo;
-
 import android.view.View;
 import android.widget.ScrollView;
-
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -14,7 +12,7 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayoutView> {
 
-    private final static String REACT_CLASS = "CoordinatorLayoutAndroid";
+    private final static String REACT_CLASS = "CoordinatorLayout";
 
     @NonNull
     @Override
@@ -38,9 +36,9 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         }
     }
 
-//    @Override
-//    public boolean needsCustomLayoutForChildren() {
-//        return true;
-//    }
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 
 }

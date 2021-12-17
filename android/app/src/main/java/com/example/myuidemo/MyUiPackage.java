@@ -21,6 +21,6 @@ public class MyUiPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList(new CoordinatorLayoutManager());
+        return Arrays.asList(new CoordinatorLayoutManager(), new AppBarLayoutManager());
     }
 }

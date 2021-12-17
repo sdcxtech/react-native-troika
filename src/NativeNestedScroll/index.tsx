@@ -2,6 +2,7 @@ import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
 import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
+import AppBarLayout from '../AppBarLayout'
 
 function NativeNestedScroll() {
   const renderListItem: ListRenderItem<string> = ({ item }) => {
@@ -15,9 +16,11 @@ function NativeNestedScroll() {
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
-        <View style={styles.content}>
-          <Text style={styles.text}>我是大魔王</Text>
-        </View>
+        <AppBarLayout style={styles.appbar}>
+          <View style={styles.content}>
+            <Text style={styles.text}>我是大魔王</Text>
+          </View>
+        </AppBarLayout>
         <FlatList nestedScrollEnabled data={data} keyExtractor={item => item} renderItem={renderListItem} />
       </CoordinatorLayout>
     </View>
@@ -47,8 +50,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#00FF00',
   },
+  appbar: {
+    height: 100,
+  },
   content: {
-    flex: 1,
+    height: 100,
     backgroundColor: '#0000FF',
     justifyContent: 'center',
     alignItems: 'center',

@@ -1,8 +1,10 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
-import { FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ListRenderItem, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
+import PagerView from 'react-native-pager-view'
+import WebView from 'react-native-webview'
 
 function NativeNestedScroll() {
   const renderListItem: ListRenderItem<string> = ({ item }) => {
@@ -21,7 +23,28 @@ function NativeNestedScroll() {
             <Text style={styles.text}>我是大魔王</Text>
           </View>
         </AppBarLayout>
-        <FlatList nestedScrollEnabled data={data} keyExtractor={item => item} renderItem={renderListItem} />
+        <PagerView style={styles.pager}>
+          <FlatList
+            nestedScrollEnabled
+            data={data}
+            style={styles.list}
+            keyExtractor={item => item}
+            renderItem={renderListItem}
+          />
+          <ScrollView nestedScrollEnabled style={{ flex: 1 }}>
+            <View key={'1'} style={{ height: 200, backgroundColor: 'red' }} />
+            <View key={'2'} style={{ height: 300, backgroundColor: 'greed' }} />
+            <View key={'3'} style={{ height: 400, backgroundColor: 'gray' }} />
+          </ScrollView>
+          <WebView
+            nestedScrollEnabled={true}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ flex: 1 }}
+            originWhitelist={['*']}
+            source={{ uri: 'www.baidu.com' }}
+            cacheEnabled={false}
+          />
+        </PagerView>
       </CoordinatorLayout>
     </View>
   )
@@ -62,6 +85,16 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: '#FFFFFF',
+  },
+  pager: {
+    flex: 1,
+  },
+  list: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  web: {
+    flex: 1,
   },
   item: {
     height: 60,

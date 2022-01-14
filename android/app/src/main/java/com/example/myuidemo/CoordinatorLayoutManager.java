@@ -29,7 +29,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     @Override
     public void addView(CoordinatorLayoutView parent, View child, int index) {
         super.addView(parent, child, index);
-        if (child instanceof ScrollView || child instanceof ViewPager || child instanceof ViewPager2) {
+        if (!(child instanceof AppBarLayoutView)) {
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             AppBarLayout.ScrollingViewBehavior behavior = new AppBarLayout.ScrollingViewBehavior();
             params.setBehavior(behavior);

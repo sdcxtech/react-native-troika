@@ -37,11 +37,10 @@ function NativeNestedScroll() {
             <View key={'3'} style={{ height: 400, backgroundColor: 'gray' }} />
           </ScrollView>
           <WebView
-            nestedScrollEnabled={true}
             contentContainerStyle={{ flexGrow: 1 }}
             style={{ flex: 1 }}
             originWhitelist={['*']}
-            source={{ uri: 'www.baidu.com' }}
+            source={{ uri: 'https://www.npmjs.com/package/react' }}
             cacheEnabled={false}
           />
         </PagerView>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   pager: {
-    flex: 1,
+    height: '100%',
   },
   list: {
     flex: 1,

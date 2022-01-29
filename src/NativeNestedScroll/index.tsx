@@ -18,7 +18,7 @@ function NativeNestedScroll() {
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
-        <AppBarLayout style={styles.appbar}>
+        <AppBarLayout>
           <View style={styles.content}>
             <Text style={styles.text}>我是大魔王</Text>
           </View>
@@ -71,9 +71,6 @@ const styles = StyleSheet.create({
   coordinator: {
     flex: 1,
     backgroundColor: '#00FF00',
-  },
-  appbar: {
-    height: 100,
   },
   content: {
     height: 100,

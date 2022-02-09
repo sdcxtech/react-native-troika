@@ -55,18 +55,6 @@ public class AppBarLayoutView extends AppBarLayout {
         return new Size(layoutWidth, layoutHeight);
     }
 
-
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(() -> {
-            measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        });
-    }
-
-
     @Override
     public void addView(View child) {
         super.addView(child);

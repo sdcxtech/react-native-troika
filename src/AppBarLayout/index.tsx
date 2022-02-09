@@ -1,16 +1,14 @@
 import React, { PropsWithChildren } from 'react'
-import { ViewStyle } from 'react-native'
-import { StyleProp } from 'react-native'
-import { requireNativeComponent } from 'react-native'
+import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native'
 
 const AppBarLayoutAndroid = requireNativeComponent<any>('AppBarLayout')
 
-interface CoordinatorLayoutProps {
+interface AppBarLayoutProps {
   style?: StyleProp<ViewStyle>
 }
 
-function CoordinatorLayout({ style, children }: PropsWithChildren<CoordinatorLayoutProps>) {
+function AppBarLayout({ style, children }: PropsWithChildren<AppBarLayoutProps>) {
   return <AppBarLayoutAndroid style={style}>{children}</AppBarLayoutAndroid>
 }
 
-export default CoordinatorLayout
+export default AppBarLayout

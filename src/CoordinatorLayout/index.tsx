@@ -1,7 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import { ViewStyle } from 'react-native'
-import { StyleProp } from 'react-native'
-import { requireNativeComponent } from 'react-native'
+import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native'
 
 const CoordinatorLayoutAndroid = requireNativeComponent<any>('CoordinatorLayout')
 

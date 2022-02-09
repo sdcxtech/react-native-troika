@@ -73,12 +73,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#00FF00',
   },
   content: {
-    height: 100,
     backgroundColor: '#0000FF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
+    paddingVertical: 10,
     fontSize: 18,
     color: '#FFFFFF',
   },

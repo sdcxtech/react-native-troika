@@ -25,26 +25,17 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
         drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
     }
 
-    private final Runnable measureAndLayout = new Runnable() {
-        @Override
-        public void run() {
-            measure(
-                    MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
-        }
+    private final Runnable measureAndLayout = () -> {
+        measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
     };
 
     @Override
     public void requestLayout() {
         super.requestLayout();
         post(measureAndLayout);
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        requestLayout();
     }
 
     @Override

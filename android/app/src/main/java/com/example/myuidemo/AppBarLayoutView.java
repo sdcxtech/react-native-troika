@@ -22,13 +22,15 @@ public class AppBarLayoutView extends AppBarLayout {
         this.setLayoutParams(params);
     }
 
-    Map<View, Size> childViewSizeMap = new HashMap<>();
+    private Map<View, Size> mChildViewSizeMap = new HashMap<>();
+    private Size mSize;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
-
+        refreshChildrenSize();
         boolean shouldManuallySetDimension = false;
+
+        ViewGroup.LayoutParams layoutParams = this.getLayoutParams();
         if (layoutParams == null || (layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT || layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT)) {
             shouldManuallySetDimension = isLayoutHasReactViewGroupChild();
         }
@@ -37,6 +39,10 @@ public class AppBarLayoutView extends AppBarLayout {
             Size size = getLayoutSizeManually();
             setMeasuredDimension(size.getWidth(), size.getHeight());
             layout(getLeft(), getTop(), getRight(), getBottom());
+            if (!size.equals(mSize)) {
+                mSize = size;
+                requestLayout();
+            }
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
@@ -45,7 +51,8 @@ public class AppBarLayoutView extends AppBarLayout {
     private Size getLayoutSizeManually() {
         int layoutWidth = 0;
         int layoutHeight = 0;
-        for (Map.Entry<View, Size> entry : childViewSizeMap.entrySet()) {
+
+        for (Map.Entry<View, Size> entry : mChildViewSizeMap.entrySet()) {
             Size size = entry.getValue();
             if (size.getWidth() > layoutWidth) {
                 layoutWidth = size.getWidth();
@@ -55,70 +62,18 @@ public class AppBarLayoutView extends AppBarLayout {
         return new Size(layoutWidth, layoutHeight);
     }
 
-    @Override
-    public void addView(View child) {
-        super.addView(child);
-        addChildViewOnDrawObserver(child);
-    }
-
-    @Override
-    public void addView(View child, int index) {
-        super.addView(child, index);
-        addChildViewOnDrawObserver(child);
-    }
-
-    @Override
-    public void addView(View child, int width, int height) {
-        super.addView(child, width, height);
-        addChildViewOnDrawObserver(child);
-
-    }
-
-    @Override
-    public void addView(View child, ViewGroup.LayoutParams params) {
-        super.addView(child, params);
-        addChildViewOnDrawObserver(child);
-    }
-
-    @Override
-    public void onViewRemoved(View child) {
-        super.onViewRemoved(child);
-        refreshViewGroup();
-        requestLayout();
-    }
-
-    @Override
-    public void onViewAdded(View child) {
-        super.onViewAdded(child);
-        refreshViewGroup();
-        requestLayout();
-    }
-
-    private void addChildViewOnDrawObserver(View child) {
-        childViewSizeMap.put(child, new Size(0, 0));
-        child.getViewTreeObserver().addOnDrawListener(() -> {
-            int width = child.getMeasuredWidth();
-            int height = child.getMeasuredHeight();
-            Size previousChildSize = childViewSizeMap.get(child);
-            if (previousChildSize != null && (previousChildSize.getWidth() != width || previousChildSize.getHeight() != height)) {
-                childViewSizeMap.put(child, new Size(width, height));
-                requestLayout();
-            }
-        });
-    }
-
-    private void refreshViewGroup() {
+    private void refreshChildrenSize() {
         int childCount = this.getChildCount();
-        Map<View, Size> refreshViewSizeMap = new HashMap<>();
+        Map<View, Size> childrenSizeMap = new HashMap<>();
         for (int i = 0; i < childCount; i++) {
             View view = getChildAt(i);
-            refreshViewSizeMap.put(view, new Size(view.getMeasuredWidth(), view.getMeasuredHeight()));
+            childrenSizeMap.put(view, new Size(view.getMeasuredWidth(), view.getMeasuredHeight()));
         }
-        childViewSizeMap = refreshViewSizeMap;
+        mChildViewSizeMap = childrenSizeMap;
     }
 
     private boolean isLayoutHasReactViewGroupChild() {
-        for (Map.Entry<View, Size> entry : childViewSizeMap.entrySet()) {
+        for (Map.Entry<View, Size> entry : mChildViewSizeMap.entrySet()) {
             if (entry.getKey() instanceof ReactViewGroup) {
                 return true;
             }

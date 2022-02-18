@@ -3,6 +3,7 @@ package com.reactnativecommunity.webview;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.widget.OverScroller;
@@ -13,7 +14,7 @@ import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.ViewCompat;
 
-import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.ThemedReactContext; 
 
 public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements NestedScrollingChild3 {
     public NestedRNCWebView(ThemedReactContext reactContext) {
@@ -130,14 +131,14 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
                 int initialVelocity = (int) velocityTracker.getYVelocity(mActivePointerId);
                 if (Math.abs(initialVelocity) > mMinimumVelocity) {
                     flingWithNestedDispatch(-initialVelocity);
-                } else if (springBack(getScrollX(), getScrollY(), 0, 0, 0, getScrollRange())) {
+                } else if (springBack(getScrollY())) {
                     ViewCompat.postInvalidateOnAnimation(this);
                 }
                 mActivePointerId = INVALID_POINTER;
                 endDrag();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                if (mIsBeingDragged && springBack(getScrollX(), getScrollY(), 0, 0, 0, getScrollRange())) {
+                if (mIsBeingDragged && springBack(getScrollY())) {
                     ViewCompat.postInvalidateOnAnimation(this);
                 }
                 mActivePointerId = INVALID_POINTER;
@@ -176,14 +177,14 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
             clampedY = true;
         }
         if (clampedY && !hasNestedScrollingParent(ViewCompat.TYPE_NON_TOUCH)) {
-            springBack(0, newScrollY, 0, 0, 0, scrollRangeY);
+            springBack(newScrollY);
         }
         onOverScrolled(0, newScrollY, false, clampedY);
         return clampedY;
     }
 
-    boolean springBack(int startX, int startY, int minX, int maxX, int minY, int maxY) {
-        return mScroller.springBack(startX, startY, minX, maxX, minY, maxY);
+    boolean springBack(int startY) {
+        return mScroller.springBack(0, startY, 0, 0, 0, getScrollRange());
     }
 
     int getScrollRange() {
@@ -234,7 +235,7 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
     private void flingWithNestedDispatch(int velocityY) {
         if (!dispatchNestedPreFling(0, velocityY)) {
             dispatchNestedFling(0, velocityY, true);
-            mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, Integer.MIN_VALUE, getScrollRange());
+            mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, getScrollRange());
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }

@@ -92,13 +92,6 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
 
                 final int y = (int) ev.getY(activePointerIndex);
                 int deltaY = mLastMotionY - y;
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
-                if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
-                    deltaY -= mScrollConsumed[1];
-                    mNestedYOffset += mScrollOffset[1];
-                    consumedScrollEvent = true;
-                }
-
                 if (!mIsBeingDragged && Math.abs(deltaY) > mTouchSlop) {
                     final ViewParent parent = getParent();
                     if (parent != null) {
@@ -107,7 +100,15 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
                     mIsBeingDragged = true;
                     deltaY = deltaY > 0 ? deltaY - mTouchSlop : deltaY + mTouchSlop;
                 }
+
                 if (mIsBeingDragged) {
+                    startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
+                    mScrollConsumed[1] = 0;
+                    if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
+                        deltaY -= mScrollConsumed[1];
+                        mNestedYOffset += mScrollOffset[1];
+                    }
+
                     mLastMotionY = y - mScrollOffset[1];
                     final int oldScrollY = getScrollY();
                     final int range = getScrollRange();

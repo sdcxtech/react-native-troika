@@ -5,10 +5,21 @@ const AppBarLayoutAndroid = requireNativeComponent<any>('AppBarLayout')
 
 interface AppBarLayoutProps {
   style?: StyleProp<ViewStyle>
+  anchorViewId?: number
+  fixedRange?: number
 }
 
-function AppBarLayout({ style, children }: PropsWithChildren<AppBarLayoutProps>) {
-  return <AppBarLayoutAndroid style={style}>{children}</AppBarLayoutAndroid>
+export const INVALID_VIEW_ID = -1
+
+function AppBarLayout({ style, children, anchorViewId, fixedRange }: PropsWithChildren<AppBarLayoutProps>) {
+  return (
+    <AppBarLayoutAndroid
+      style={style}
+      anchorViewId={typeof fixedRange === 'number' && fixedRange > 0 ? INVALID_VIEW_ID : anchorViewId}
+      fixedRange={fixedRange}>
+      {children}
+    </AppBarLayoutAndroid>
+  )
 }
 
 export default AppBarLayout

@@ -1,16 +1,37 @@
 import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { FlatList, Image, ListRenderItem, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  Dimensions,
+  findNodeHandle,
+  FlatList,
+  Image,
+  ListRenderItem,
+  PixelRatio,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
-import AppBarLayout from '../AppBarLayout'
+import AppBarLayout, { INVALID_VIEW_ID } from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import WebView from 'react-native-webview'
 
+const MaxHeight = PixelRatio.getPixelSizeForLayoutSize(Dimensions.get('window').height) / 4
 function NativeNestedScroll() {
+  const ref = useRef(null)
+  const [anchorViewId, setAnchorViewId] = useState(INVALID_VIEW_ID)
+  const [anchorViewHeight, setAnchorViewHeight] = useState(Math.random() * MaxHeight)
+
+  useEffect(() => {
+    const viewId = findNodeHandle(ref.current) || INVALID_VIEW_ID
+    setAnchorViewId(viewId)
+  }, [anchorViewHeight])
+
   const renderListItem: ListRenderItem<string> = ({ item }) => {
     return <ListItem title={item} />
   }
-
   const data = Array(100)
     .fill('')
     .map((_, index) => index + '')
@@ -18,9 +39,21 @@ function NativeNestedScroll() {
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
-        <AppBarLayout>
-          <View style={styles.content}>
-            <Text style={styles.text}>我是大魔王</Text>
+        <AppBarLayout anchorViewId={anchorViewId}>
+          <TouchableOpacity onPress={() => setAnchorViewHeight(Math.random() * MaxHeight)} style={[styles.content]}>
+            <Text style={styles.text}>demo</Text>
+          </TouchableOpacity>
+          <View>
+            <Text>anchor-parent-sibling</Text>
+            <View>
+              <Text>anchor-sibling</Text>
+              <Text
+                style={[styles.text, { height: anchorViewHeight, backgroundColor: 'green', paddingVertical: 0 }]}
+                ref={ref}>
+                anchor
+              </Text>
+            </View>
+            <Text>anchor-parent-sibling</Text>
           </View>
         </AppBarLayout>
         <PagerView style={styles.pager}>
@@ -40,7 +73,7 @@ function NativeNestedScroll() {
             contentContainerStyle={{ flexGrow: 1 }}
             style={{ flex: 1 }}
             originWhitelist={['*']}
-            source={{ uri: 'https://www.npmjs.com/package/react' }}
+            source={{ uri: 'https://wangdoc.com/javascript/stdlib/array.html' }}
             cacheEnabled={false}
           />
         </PagerView>
@@ -78,7 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    paddingVertical: 10,
+    paddingVertical: 100,
     fontSize: 18,
     color: '#FFFFFF',
   },

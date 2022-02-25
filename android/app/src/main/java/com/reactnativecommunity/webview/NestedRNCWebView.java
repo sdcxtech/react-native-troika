@@ -3,7 +3,6 @@ package com.reactnativecommunity.webview;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.widget.OverScroller;
@@ -278,6 +277,11 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
             ViewCompat.postInvalidateOnAnimation(this);
         } else {
             stopNestedScroll(ViewCompat.TYPE_NON_TOUCH);
+            if (getScrollY() == 0) {
+                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
+                dispatchNestedFling(0, mScroller.getCurrVelocity(), false);
+                stopNestedScroll();
+            }
         }
     }
 

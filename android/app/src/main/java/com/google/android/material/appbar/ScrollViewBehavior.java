@@ -29,6 +29,15 @@ public class ScrollViewBehavior extends AppBarLayout.ScrollingViewBehavior {
         }
     }
 
+    @Override
+    public void onNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
+        final AppBarLayout header = findFirstDependency(coordinatorLayout.getDependencies(child));
+        int consumedScroll = consumeScroll(child, dyConsumed, getAppbarLayoutLimitedTop(header));
+        if (consumedScroll != 0) {
+            consumed[1] += consumedScroll;
+        }
+    }
+
     int getAppbarLayoutLimitedTop(AppBarLayout appBarLayout) {
         int limitedTop = 0;
         if (appBarLayout != null) {

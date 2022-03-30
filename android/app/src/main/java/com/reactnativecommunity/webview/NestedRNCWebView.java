@@ -13,7 +13,7 @@ import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.ViewCompat;
 
-import com.facebook.react.uimanager.ThemedReactContext; 
+import com.facebook.react.uimanager.ThemedReactContext;
 
 public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements NestedScrollingChild3 {
     public NestedRNCWebView(ThemedReactContext reactContext) {
@@ -234,7 +234,8 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
     private void flingWithNestedDispatch(int velocityY) {
         if (!dispatchNestedPreFling(0, velocityY)) {
             dispatchNestedFling(0, velocityY, true);
-            mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, getScrollRange());
+            startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
+            mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }
@@ -250,40 +251,34 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
             return;
         }
 
-        mScroller.computeScrollOffset();
-        int unconsumed = mScroller.getCurrY() - getScrollY();
-        if (unconsumed != 0) {
-            if (hasNestedScrollingParent(ViewCompat.TYPE_TOUCH)) {
-                stopNestedScroll(ViewCompat.TYPE_TOUCH);
+        if (mScroller.computeScrollOffset()) {
+            int unconsumed = mScroller.getCurrY() - getScrollY();
+            if (unconsumed != 0) {
+                mScrollConsumed[1] = 0;
+                dispatchNestedPreScroll(0, unconsumed, mScrollConsumed, mScrollOffset, ViewCompat.TYPE_NON_TOUCH);
+                unconsumed -= mScrollConsumed[1];
+                final int oldScrollY = getScrollY();
+                final int range = getScrollRange();
+                overScrollByCompat(unconsumed, oldScrollY, range);
+
+                final int consumedByScroll = getScrollY() - oldScrollY;
+                unconsumed -= consumedByScroll;
+
+                mScrollConsumed[1] = 0;
+                dispatchNestedScroll(0, 0, 0, unconsumed, mScrollOffset, ViewCompat.TYPE_NON_TOUCH, mScrollConsumed);
+                mNestedYOffset += mScrollOffset[1];
+                unconsumed -= mScrollConsumed[1];
             }
-            startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
-
-            mScrollConsumed[1] = 0;
-            dispatchNestedPreScroll(0, unconsumed, mScrollConsumed, mScrollOffset, ViewCompat.TYPE_NON_TOUCH);
-            unconsumed -= mScrollConsumed[1];
-
-            final int oldScrollY = getScrollY();
-            final int range = getScrollRange();
-            overScrollByCompat(unconsumed, oldScrollY, range);
-
-            final int consumedByScroll = getScrollY() - oldScrollY;
-            unconsumed -= consumedByScroll;
-            mScrollConsumed[1] = 0;
-            dispatchNestedScroll(0, consumedByScroll, 0, unconsumed, mScrollOffset, ViewCompat.TYPE_NON_TOUCH, mScrollConsumed);
-            mNestedYOffset += mScrollOffset[1];
-        }
-
-        if (!mScroller.isFinished()) {
-            ViewCompat.postInvalidateOnAnimation(this);
-        } else {
-            stopNestedScroll(ViewCompat.TYPE_NON_TOUCH);
-            if (getScrollY() == 0) {
-                startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
-                dispatchNestedFling(0, mScroller.getCurrVelocity(), false);
-                stopNestedScroll();
+            boolean isScrollFinish = mScroller.isFinished() || unconsumed != 0;
+            if (!isScrollFinish) {
+                ViewCompat.postInvalidateOnAnimation(this);
+            } else {
+                mScroller.forceFinished(true);
+                stopNestedScroll(ViewCompat.TYPE_NON_TOUCH);
             }
         }
     }
+
 
     @Override
     public boolean isNestedScrollingEnabled() {

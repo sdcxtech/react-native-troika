@@ -1,98 +1,66 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  Dimensions,
-  findNodeHandle,
-  FlatList,
-  Image,
-  ListRenderItem,
-  PixelRatio,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { findNodeHandle, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout, { INVALID_VIEW_ID } from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
-import WebView from 'react-native-webview'
+import { DemoFlatList } from '../PullRefresh/Components/DemoFlatList'
+import { DemoScrollView } from '../PullRefresh/Components/DemoScrollView'
+import { DemoWebView } from '../PullRefresh/Components/DemoWebView'
+import PullRefreshLayout from '../PullRefreshLayout'
 
-const MaxHeight = PixelRatio.getPixelSizeForLayoutSize(Dimensions.get('window').height) / 4
-function NativeNestedScroll() {
+export function NativeNestedScroll() {
   const ref = useRef(null)
   const [anchorViewId, setAnchorViewId] = useState(INVALID_VIEW_ID)
-  const [anchorViewHeight, setAnchorViewHeight] = useState(Math.random() * MaxHeight)
+  const [anchorViewHeight, setAnchorViewHeight] = useState(100)
 
   useEffect(() => {
     const viewId = findNodeHandle(ref.current) || INVALID_VIEW_ID
     setAnchorViewId(viewId)
   }, [anchorViewHeight])
 
-  const renderListItem: ListRenderItem<string> = ({ item }) => {
-    return <ListItem title={item} />
+  const [refreshing, setRefreshing] = useState(false)
+  const beginRefresh = () => {
+    setRefreshing(true)
   }
-  const data = Array(100)
-    .fill('')
-    .map((_, index) => index + '')
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (refreshing) {
+        setRefreshing(false)
+      }
+    }, 1500)
+  }, [refreshing])
 
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
         <AppBarLayout anchorViewId={anchorViewId}>
-          <TouchableOpacity onPress={() => setAnchorViewHeight(Math.random() * MaxHeight)} style={[styles.content]}>
-            <Text style={styles.text}>demo</Text>
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            onPress={() => setAnchorViewHeight(h => (h > 300 ? 100 : h + 100))}>
+            <Text style={styles.text}>change appbar height</Text>
           </TouchableOpacity>
-          <View>
+          <View
+            style={[styles.text, { height: anchorViewHeight, backgroundColor: 'green', paddingVertical: 0 }]}
+            ref={ref}>
             <Text>anchor-parent-sibling</Text>
             <View>
               <Text>anchor-sibling</Text>
-              <Text
-                style={[styles.text, { height: anchorViewHeight, backgroundColor: 'green', paddingVertical: 0 }]}
-                ref={ref}>
-                anchor
-              </Text>
+              <Text>anchor</Text>
             </View>
             <Text>anchor-parent-sibling</Text>
           </View>
         </AppBarLayout>
         <PagerView style={styles.pager}>
-          <FlatList
-            nestedScrollEnabled
-            data={data}
-            style={styles.list}
-            keyExtractor={item => item}
-            renderItem={renderListItem}
-          />
-          <ScrollView nestedScrollEnabled style={{ flex: 1 }}>
-            <View key={'1'} style={{ height: 200, backgroundColor: 'red' }} />
-            <View key={'2'} style={{ height: 300, backgroundColor: 'greed' }} />
-            <View key={'3'} style={{ height: 400, backgroundColor: 'gray' }} />
-          </ScrollView>
-          <WebView
-            contentContainerStyle={{ flexGrow: 1 }}
-            style={{ flex: 1 }}
-            originWhitelist={['*']}
-            source={{ uri: 'https://wangdoc.com/javascript/stdlib/array.html' }}
-            cacheEnabled={false}
-          />
+          <DemoFlatList />
+          <DemoScrollView />
+          <PullRefreshLayout refreshing={refreshing} onRefresh={beginRefresh} refreshViewOverPullLocation="bottom">
+            <DemoWebView url="https://wangdoc.com/javascript/stdlib/array.html" />
+          </PullRefreshLayout>
         </PagerView>
       </CoordinatorLayout>
     </View>
-  )
-}
-
-interface ListItemProps {
-  title: string
-  onPress?: () => void
-}
-
-function ListItem({ title, onPress }: ListItemProps) {
-  return (
-    <TouchableOpacity style={styles.item} onPress={onPress}>
-      <Text style={styles.itemText}>{title}</Text>
-      <Image source={require('../assets/indicator.png')} />
-    </TouchableOpacity>
   )
 }
 
@@ -103,7 +71,7 @@ const styles = StyleSheet.create({
   },
   coordinator: {
     flex: 1,
-    backgroundColor: '#00FF00',
+    backgroundColor: '#fff',
   },
   content: {
     backgroundColor: '#0000FF',
@@ -111,38 +79,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    paddingVertical: 100,
+    paddingVertical: 20,
     fontSize: 18,
     color: '#FFFFFF',
   },
   pager: {
+    position: 'relative',
     height: '100%',
-  },
-  list: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  web: {
-    flex: 1,
-  },
-  item: {
-    height: 60,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  itemText: {
-    color: '#222222',
-    fontSize: 17,
+    overflow: 'hidden',
   },
 })
+
+const NativeNestedScrollPage = () => <NativeNestedScroll />
 
 export default withNavigationItem({
   titleItem: {
     title: '原生嵌套滑动',
   },
-})(NativeNestedScroll)
+})(NativeNestedScrollPage)

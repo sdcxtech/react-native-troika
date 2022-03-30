@@ -20,6 +20,10 @@ const data: Array<Item> = [
     title: 'Avatar Crop',
     routeName: 'AvatarCrop',
   },
+  {
+    title: 'Pull Refresh',
+    routeName: 'RefreshControl',
+  },
 ]
 
 function App() {

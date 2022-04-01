@@ -1,8 +1,8 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useEffect, useRef, useState } from 'react'
-import { findNodeHandle, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
-import AppBarLayout, { INVALID_VIEW_ID } from '../AppBarLayout'
+import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import { DemoFlatList } from '../PullRefresh/Components/DemoFlatList'
 import { DemoScrollView } from '../PullRefresh/Components/DemoScrollView'
@@ -11,13 +11,7 @@ import PullRefreshLayout from '../PullRefreshLayout'
 
 export function NativeNestedScroll() {
   const ref = useRef(null)
-  const [anchorViewId, setAnchorViewId] = useState(INVALID_VIEW_ID)
-  const [anchorViewHeight, setAnchorViewHeight] = useState(100)
-
-  useEffect(() => {
-    const viewId = findNodeHandle(ref.current) || INVALID_VIEW_ID
-    setAnchorViewId(viewId)
-  }, [anchorViewHeight])
+  const [anchorViewHeight, setAnchorViewHeight] = useState(-1)
 
   const [refreshing, setRefreshing] = useState(false)
   const beginRefresh = () => {
@@ -32,31 +26,28 @@ export function NativeNestedScroll() {
     }, 1500)
   }, [refreshing])
 
+  const [stickyHeaderBeginIndex, setStickyHeaderBeginIndex] = useState(1)
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
-        <AppBarLayout anchorViewId={anchorViewId}>
+        <AppBarLayout stickyHeaderBeginIndex={stickyHeaderBeginIndex}>
           <TouchableOpacity
             style={{ backgroundColor: 'red' }}
-            onPress={() => setAnchorViewHeight(h => (h > 300 ? 100 : h + 100))}>
+            onPress={() => {
+              setStickyHeaderBeginIndex(stickyHeaderBeginIndex > 0 ? 0 : 1)
+              setAnchorViewHeight(h => (h > 90 ? 30 : h + 30))
+            }}>
             <Text style={styles.text}>change appbar height</Text>
           </TouchableOpacity>
-          <View
-            style={[styles.text, { height: anchorViewHeight, backgroundColor: 'green', paddingVertical: 0 }]}
-            ref={ref}>
-            <Text>anchor-parent-sibling</Text>
-            <View>
-              <Text>anchor-sibling</Text>
-              <Text>anchor</Text>
-            </View>
-            <Text>anchor-parent-sibling</Text>
+          <View style={[styles.text, { height: anchorViewHeight > 0 ? anchorViewHeight : undefined }]} ref={ref}>
+            <Text>anchor</Text>
           </View>
         </AppBarLayout>
         <PagerView style={styles.pager}>
           <DemoFlatList />
           <DemoScrollView />
           <PullRefreshLayout refreshing={refreshing} onRefresh={beginRefresh} refreshViewOverPullLocation="bottom">
-            <DemoWebView url="https://wangdoc.com/javascript/stdlib/array.html" />
+            <DemoWebView url="https://wangdoc.com" />
           </PullRefreshLayout>
         </PagerView>
       </CoordinatorLayout>

@@ -1,10 +1,7 @@
 package com.example.myuidemo;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -12,7 +9,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.AppbarLayoutHeaderBehavior;
 
 public class AppBarLayoutManager extends ViewGroupManager<AppBarLayoutView> {
@@ -58,50 +54,9 @@ public class AppBarLayoutManager extends ViewGroupManager<AppBarLayoutView> {
         }
     }
 
-    void refreshAppbarLayoutFixedRangeByAnchorView(AppBarLayoutView appBarLayoutView, View anchorView) {
-        refreshAppbarLayoutFixedRange(appBarLayoutView, appBarLayoutView.getHeight() - calculateAnchorViewTop(anchorView));
-    }
-
     @ReactProp(name = "fixedRange")
     public void setFixedRange(AppBarLayoutView view, int top) {
         refreshAppbarLayoutFixedRange(view, top);
-    }
-
-    @ReactProp(name = "anchorViewId")
-    public void setAnchorViewId(AppBarLayoutView view, int id) {
-        View anchorView = view.findViewById(id);
-        if (anchorView != null) {
-            refreshAppbarLayoutFixedRangeByAnchorView(view, anchorView);
-            ViewTreeObserver.OnDrawListener onDrawListener = () -> refreshAppbarLayoutFixedRangeByAnchorView(view, anchorView);
-            if (anchorView.getViewTreeObserver().isAlive()) {
-                anchorView.getViewTreeObserver().addOnDrawListener(onDrawListener);
-            }
-            anchorView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-                @Override
-                public void onViewAttachedToWindow(View anchorView) {
-                }
-
-                @Override
-                public void onViewDetachedFromWindow(View anchorView) {
-                    if (anchorView.getViewTreeObserver().isAlive()) {
-                        anchorView.getViewTreeObserver().removeOnDrawListener(onDrawListener);
-                        refreshAppbarLayoutFixedRange(view, 0);
-                    }
-                }
-            });
-        }
-    }
-
-    int calculateAnchorViewTop(View anchorView) {
-        int top = anchorView.getTop();
-        ViewParent viewParent = anchorView.getParent();
-        while (viewParent != null && !(viewParent instanceof AppBarLayout)) {
-            if (viewParent instanceof View) {
-                top += ((View) viewParent).getTop();
-            }
-            viewParent = viewParent.getParent();
-        }
-        return top;
     }
 
     @Override

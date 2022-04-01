@@ -1,23 +1,48 @@
-import React, { PropsWithChildren } from 'react'
-import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native'
+import React, { PropsWithChildren, useRef, useState } from 'react'
+import { LayoutChangeEvent, PixelRatio, requireNativeComponent, View, ViewProps } from 'react-native'
 
-const AppBarLayoutAndroid = requireNativeComponent<any>('AppBarLayout')
+const AppBarLayoutAndroid = requireNativeComponent<AppBarLayoutProps>('AppBarLayout')
 
-interface AppBarLayoutProps {
-  style?: StyleProp<ViewStyle>
-  anchorViewId?: number
+interface AppBarLayoutProps extends ViewProps {
   fixedRange?: number
+  stickyHeaderBeginIndex?: number
 }
 
-export const INVALID_VIEW_ID = -1
+function AppBarLayout({ style, children, fixedRange, stickyHeaderBeginIndex }: PropsWithChildren<AppBarLayoutProps>) {
+  const [layoutHeight, setLayoutHeight] = useState(0)
+  const childMap = useRef<Map<number, number>>(new Map())
 
-function AppBarLayout({ style, children, anchorViewId, fixedRange }: PropsWithChildren<AppBarLayoutProps>) {
+  const handleChildLayoutChange = (index: number, layoutEvent: LayoutChangeEvent) => {
+    const { y } = layoutEvent.nativeEvent.layout
+    childMap.current.set(index, y)
+  }
+
+  const handleLayoutChange = (layoutEvent: LayoutChangeEvent) => {
+    const { height } = layoutEvent.nativeEvent.layout
+    setLayoutHeight(height)
+  }
+
+  const getFixedRange = () => {
+    if (fixedRange) return fixedRange
+    if (stickyHeaderBeginIndex) {
+      const stickyHeaderBeginY = childMap.current.get(stickyHeaderBeginIndex)
+      if (stickyHeaderBeginY !== undefined) {
+        return PixelRatio.getPixelSizeForLayoutSize(layoutHeight - stickyHeaderBeginY)
+      }
+    }
+    return 0
+  }
+
+  const _children = React.Children.map(children, (child, index) => {
+    if (React.isValidElement(child)) {
+      return <View onLayout={event => handleChildLayoutChange(index, event)}>{child}</View>
+    }
+    return child
+  })
+
   return (
-    <AppBarLayoutAndroid
-      style={style}
-      anchorViewId={typeof fixedRange === 'number' && fixedRange > 0 ? INVALID_VIEW_ID : anchorViewId}
-      fixedRange={fixedRange}>
-      {children}
+    <AppBarLayoutAndroid style={style} fixedRange={getFixedRange()} onLayout={handleLayoutChange}>
+      {_children}
     </AppBarLayoutAndroid>
   )
 }

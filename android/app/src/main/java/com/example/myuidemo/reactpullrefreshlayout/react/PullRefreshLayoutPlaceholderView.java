@@ -8,12 +8,25 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.example.myuidemo.Helper.LinearLayoutReactViewGroupMeasureHelper;
+enum ViewType{
+    REFRESH,LOAD_MORE,NONE
+}
 
-public class RefreshViewWrapper extends LinearLayout {
+public class PullRefreshLayoutPlaceholderView extends LinearLayout {
     private static final String TAG = "RefreshViewWrapper";
     private final LinearLayoutReactViewGroupMeasureHelper linearLayoutReactViewGroupMeasureHelper;
 
-    public RefreshViewWrapper(@NonNull Context context) {
+    private ViewType viewType = ViewType.NONE;
+
+    public ViewType getViewType() {
+        return viewType;
+    }
+
+    public void setViewType(ViewType viewType) {
+        this.viewType = viewType;
+    }
+
+    public PullRefreshLayoutPlaceholderView(@NonNull Context context) {
         super(context);
         int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -29,7 +42,7 @@ public class RefreshViewWrapper extends LinearLayout {
         setMeasuredDimension(size.getWidth(), size.getHeight());
         if (isSizeChange) {
             layout(getLeft(), getTop(), getRight(), getBottom());
-            postDelayed(() -> requestLayout(),0);
+            postDelayed(this::requestLayout,0);
         }
     }
 }

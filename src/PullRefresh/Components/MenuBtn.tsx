@@ -1,18 +1,15 @@
 import React from 'react'
-import { Pressable, Text } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 
-export type PressType = 'show' | 'hide' | 'webview' | 'scrollview' | 'flatlist' | 'refresh'
+export type PressType = 'show' | 'hide' | 'webview' | 'scrollview' | 'flatlist' | 'refresh' | 'loadMore'
 export function MenuBtn({ onPress, isActive }: { onPress: (type: PressType) => void; isActive: boolean }) {
   if (isActive) {
     return (
-      <Pressable
-        onPress={() => {
-          onPress('hide')
-        }}>
-        {['hide', 'nested', 'webview', 'scrollview', 'flatlist', 'refresh'].map((item, index) => {
+      <View>
+        {['hide', 'loadMore', 'refresh', 'nested', 'webview', 'scrollview', 'flatlist'].map((item, index) => {
           return <FloatingBtn key={item} title={item} onPress={() => onPress(item as PressType)} offset={80 * index} />
         })}
-      </Pressable>
+      </View>
     )
   }
 

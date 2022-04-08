@@ -3,7 +3,7 @@ package com.example.myuidemo;
 import androidx.annotation.NonNull;
 
 import com.example.myuidemo.reactpullrefreshlayout.react.PullRefreshLayoutManager;
-import com.example.myuidemo.reactpullrefreshlayout.react.RefreshViewWrapperManager;
+import com.example.myuidemo.reactpullrefreshlayout.react.PullRefreshLayoutPlaceholderViewManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -24,6 +24,6 @@ public class MyUiPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList( new CoordinatorLayoutManager(), new AppBarLayoutManager(),new NestedRNCWebViewManager(),new PullRefreshLayoutManager(),new RefreshViewWrapperManager() );
+        return Arrays.asList( new CoordinatorLayoutManager(), new AppBarLayoutManager(),new NestedRNCWebViewManager(),new PullRefreshLayoutManager(),new PullRefreshLayoutPlaceholderViewManager() );
     }
 }

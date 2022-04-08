@@ -7,19 +7,18 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 
-public class SpinnerRefreshView extends AppCompatImageView implements IRefreshView {
-    private static final String TAG = "SpinnerRefreshView";
+public class SpinnerLoadMoreView extends AppCompatImageView implements OnLoadMorePullListener {
+    private static final String TAG = "SpinnerLoadMoreView";
 
     private static final int MAX_ALPHA = 255;
     private static final float TRIM_RATE = 0.85f;
     private static final float TRIM_OFFSET = 0.4f;
-    static final int CIRCLE_DIAMETER = 40;
+    static final int CIRCLE_DIAMETER = 70;
 
     private CircularProgressDrawable mProgress;
     private int mCircleDiameter;
 
-
-    public SpinnerRefreshView(Context context) {
+    public SpinnerLoadMoreView(Context context) {
         super(context);
         mProgress = new CircularProgressDrawable(context);
         mProgress.setStyle(CircularProgressDrawable.LARGE);
@@ -37,7 +36,7 @@ public class SpinnerRefreshView extends AppCompatImageView implements IRefreshVi
     }
 
     @Override
-    public void onRefresh() {
+    public void onLoadMore() {
         if (getVisibility() != VISIBLE) {
             setVisibility(VISIBLE);
         }
@@ -51,18 +50,18 @@ public class SpinnerRefreshView extends AppCompatImageView implements IRefreshVi
     }
 
     @Override
-    public void onPull(int currentRefreshViewOffset, int currentTargetViewOffset, int totalRefreshViewOffset, int totalTargetViewOffset) {
+    public void onPull(int offset, int total) {
         if (mProgress.isRunning()) {
             return;
         }
-        setVisibility(currentRefreshViewOffset > 0 ? VISIBLE : GONE);
-        float end = Math.min(TRIM_RATE * currentRefreshViewOffset / totalRefreshViewOffset, TRIM_RATE);
-        float rotate = TRIM_OFFSET * currentRefreshViewOffset / totalRefreshViewOffset;
-        int overPull = currentTargetViewOffset - totalTargetViewOffset;
-        if (overPull > 0) {
-            rotate += TRIM_OFFSET * overPull / totalRefreshViewOffset;
-        }
+        setVisibility(offset != 0 ? VISIBLE : GONE);
+        float end = Math.min(TRIM_RATE, TRIM_RATE * offset / total);
+        float rotate = TRIM_OFFSET * offset / total;
 
+        int overPull = Math.abs(offset) - Math.abs(total);
+        if (overPull > 0) {
+            rotate += TRIM_OFFSET * overPull / total;
+        }
         mProgress.setArrowEnabled(true);
         mProgress.setStartEndTrim(0, end);
         mProgress.setProgressRotation(rotate);
@@ -70,7 +69,7 @@ public class SpinnerRefreshView extends AppCompatImageView implements IRefreshVi
 
     @Override
     public void onStop() {
-        mProgress.stop();
         setVisibility(GONE);
+        mProgress.stop();
     }
 }

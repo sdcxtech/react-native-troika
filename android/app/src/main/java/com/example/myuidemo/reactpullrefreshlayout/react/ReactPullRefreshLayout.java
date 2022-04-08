@@ -8,6 +8,7 @@ import android.widget.ScrollView;
 import com.example.myuidemo.CoordinatorLayoutView;
 import com.example.myuidemo.Helper.ViewHelper;
 import com.example.myuidemo.reactpullrefreshlayout.PullRefreshLayout;
+import com.reactnativecommunity.webview.NestedRNCWebView;
 
 public class ReactPullRefreshLayout extends PullRefreshLayout {
     public ReactPullRefreshLayout(Context context) {
@@ -17,11 +18,31 @@ public class ReactPullRefreshLayout extends PullRefreshLayout {
 
     @Override
     public void addView(View child, int index, LayoutParams params) {
-        if (child instanceof RefreshViewWrapper) {
-            addRefreshView(child, index, params);
-        } else {
-            super.addView(child, index, params);
+        if (child instanceof PullRefreshLayoutPlaceholderView) {
+            ViewType viewType = ((PullRefreshLayoutPlaceholderView) child).getViewType();
+            if (viewType == ViewType.REFRESH) {
+                addRefreshView(child, index, params);
+                return;
+            }
+            if (viewType == ViewType.LOAD_MORE) {
+                addLoadMoreView(child, index, params);
+                return;
+            }
         }
+        super.addView(child, index, params);
+    }
+
+    @Override
+    public void onViewRemoved(View child) {
+        if (child instanceof PullRefreshLayoutPlaceholderView) {
+            ViewType viewType = ((PullRefreshLayoutPlaceholderView) child).getViewType();
+            if (viewType == ViewType.REFRESH) {
+                addDefaultRefreshView();
+            } else if (viewType == ViewType.LOAD_MORE) {
+                addDefaultLoadMoreView();
+            }
+        }
+        super.onViewRemoved(child);
     }
 
     @Override
@@ -31,6 +52,20 @@ public class ReactPullRefreshLayout extends PullRefreshLayout {
             specificScrollView.postDelayed(() -> specificScrollView.scrollTo(0, 0), 0);
         } else {
             super.setTargetViewToTop(targetView);
+        }
+    }
+
+    @Override
+    protected void setTargetViewToBottom(View targetView) {
+        View specificScrollView = findSpecificScrollableView(targetView);
+        if (specificScrollView instanceof NestedRNCWebView) {
+            NestedRNCWebView webView = (NestedRNCWebView) specificScrollView;
+            postDelayed(webView::scrollToBottom, 0);
+        } else if (specificScrollView instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) specificScrollView;
+            postDelayed(() -> scrollView.fullScroll(View.FOCUS_DOWN), 0);
+        } else {
+            super.setTargetViewToBottom(targetView);
         }
     }
 

@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
-import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, RefreshControl } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
@@ -10,21 +10,14 @@ import { DemoWebView } from '../PullRefresh/Components/DemoWebView'
 import PullRefreshLayout from '../PullRefreshLayout'
 
 export function NativeNestedScroll() {
-  const ref = useRef(null)
-  const [anchorViewHeight, setAnchorViewHeight] = useState(-1)
-
   const [refreshing, setRefreshing] = useState(false)
   const beginRefresh = () => {
+    console.log('begin')
     setRefreshing(true)
-  }
-
-  useEffect(() => {
     setTimeout(() => {
-      if (refreshing) {
-        setRefreshing(false)
-      }
+      setRefreshing(false)
     }, 1500)
-  }, [refreshing])
+  }
 
   const [stickyHeaderBeginIndex, setStickyHeaderBeginIndex] = useState(1)
   return (
@@ -35,20 +28,31 @@ export function NativeNestedScroll() {
             style={{ backgroundColor: 'red' }}
             onPress={() => {
               setStickyHeaderBeginIndex(stickyHeaderBeginIndex > 0 ? 0 : 1)
-              setAnchorViewHeight(h => (h > 90 ? 30 : h + 30))
             }}>
             <Text style={styles.text}>change appbar height</Text>
           </TouchableOpacity>
-          <View style={[styles.text, { height: anchorViewHeight > 0 ? anchorViewHeight : undefined }]} ref={ref}>
+          <View style={[styles.text]}>
             <Text>anchor</Text>
           </View>
         </AppBarLayout>
         <PagerView style={styles.pager}>
           <DemoFlatList />
           <DemoScrollView />
-          <PullRefreshLayout refreshing={refreshing} onRefresh={beginRefresh} refreshViewOverPullLocation="bottom">
+
+          <PullRefreshLayout
+            refreshing={refreshing}
+            onRefresh={beginRefresh}
+            onRefreshStop={() => {
+              setRefreshing(false)
+            }}
+            enableLoadMoreAction={true}
+            refreshViewOverPullLocation="bottom"
+            LoadMoreView={<Text style={{ backgroundColor: 'pink', height: 250 }}>load</Text>}>
             <DemoWebView url="https://wangdoc.com" />
           </PullRefreshLayout>
+          <RefreshControl refreshing={refreshing} onRefresh={beginRefresh}>
+            <DemoWebView url="https://wangdoc.com" />
+          </RefreshControl>
         </PagerView>
       </CoordinatorLayout>
     </View>

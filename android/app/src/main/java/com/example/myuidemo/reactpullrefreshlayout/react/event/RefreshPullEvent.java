@@ -1,4 +1,4 @@
-package com.example.myuidemo.reactpullrefreshlayout.event;
+package com.example.myuidemo.reactpullrefreshlayout.react.event;
 
 import androidx.annotation.Nullable;
 
@@ -6,10 +6,13 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.Event;
 
-public class PullEvent extends Event<PullEvent> {
+public class RefreshPullEvent extends Event<RefreshPullEvent> {
+    public static final String Name = "refreshPullEvent";
+    public static final String JSEventName = "onRefreshPull";
+
     private WritableMap writableMap;
 
-    public PullEvent(int surfaceId, int viewTag, WritableMap params) {
+    public RefreshPullEvent(int surfaceId, int viewTag, WritableMap params) {
         super(surfaceId, viewTag);
         this.writableMap = params;
     }
@@ -17,7 +20,7 @@ public class PullEvent extends Event<PullEvent> {
 
     @Override
     public String getEventName() {
-        return "pullEvent";
+        return Name;
     }
 
     @Nullable

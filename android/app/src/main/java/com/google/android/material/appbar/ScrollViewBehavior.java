@@ -23,11 +23,10 @@ public class ScrollViewBehavior extends AppBarLayout.ScrollingViewBehavior {
     public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         final AppbarLayoutHeaderBehavior headerBehavior = findFirstAppbarLayoutHeaderBehavior(coordinatorLayout, child);
         int limitedTop = headerBehavior != null ? headerBehavior.getFixedRange() : 0;
-        int consumedScroll = consumeScroll(child, dy, limitedTop);
+        int consumedScroll = consumeScroll(child, dy - consumed[1], limitedTop);
         if (consumedScroll != 0) {
             consumed[1] += consumedScroll;
         }
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
     }
 
     @Override
@@ -38,7 +37,6 @@ public class ScrollViewBehavior extends AppBarLayout.ScrollingViewBehavior {
         if (consumedScroll != 0) {
             consumed[1] += consumedScroll;
         }
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
     }
 
     private AppbarLayoutHeaderBehavior findFirstAppbarLayoutHeaderBehavior(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child) {

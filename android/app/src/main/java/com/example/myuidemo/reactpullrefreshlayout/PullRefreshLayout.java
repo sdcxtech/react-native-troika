@@ -15,54 +15,63 @@ import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.Scroller;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
-import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParent3;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myuidemo.Helper.LoadingMoreHelper;
+import com.example.myuidemo.Helper.LoadingMoreState;
+import com.example.myuidemo.Helper.RefreshHelper;
+import com.example.myuidemo.Helper.RefreshState;
 import com.example.myuidemo.Helper.ViewHelper;
-import com.example.myuidemo.reactpullrefreshlayout.offsetCalculator.LocateTopRefreshOffsetCalculator;
 import com.example.myuidemo.reactpullrefreshlayout.offsetCalculator.RefreshOffsetCalculator;
-import com.example.myuidemo.reactpullrefreshlayout.react.ReactPullRefreshLayout;
 import com.example.myuidemo.reactpullrefreshlayout.refreshView.IRefreshView;
+import com.example.myuidemo.reactpullrefreshlayout.refreshView.OnLoadMorePullListener;
+import com.example.myuidemo.reactpullrefreshlayout.refreshView.OnPullListener;
+import com.example.myuidemo.reactpullrefreshlayout.refreshView.SpinnerLoadMoreView;
 import com.example.myuidemo.reactpullrefreshlayout.refreshView.SpinnerRefreshView;
 import com.example.myuidemo.reactpullrefreshlayout.util.DisplayHelper;
+import com.facebook.react.common.MapBuilder;
 
-public class PullRefreshLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
+import java.util.ArrayList;
+import java.util.Map;
+
+public class PullRefreshLayout extends ViewGroup implements NestedScrollingParent3
+        , NestedScrollingChild {
     private static final String TAG = "PullRefreshLayout";
     private static final int INVALID_POINTER = -1;
     private static final int FLAG_NEED_SCROLL_TO_INIT_POSITION = 1;
     private static final int FLAG_NEED_SCROLL_TO_REFRESH_POSITION = 1 << 1;
     private static final int FLAG_NEED_DO_REFRESH = 1 << 2;
-    private static final int FLAG_NEED_DELIVER_VELOCITY = 1 << 3;
+    private static final int FLAG_NEED_SCROLL_TO_LOAD_MORE = 1 << 3;
+    private static final int FLAG_NEED_LOAD_MORE = 1 << 4;
 
-    boolean mIsRefreshing = false;
-
-    //刷新时展示的View
-    private View mRefreshView;
-    private int mRefreshInitOffset = Integer.MIN_VALUE;
-    private int mRefreshEndOffset = 0;
-    private int mRefreshCurrentOffset = mRefreshInitOffset;
-
-    //主体View，如ScrollView、List
     private View mTargetView;
-    private int mTargetInitOffset = 0;
-    private int mTargetEndOffset;
-    private int mTargetCurrentOffset = mTargetInitOffset;
 
-    private RefreshOffsetCalculator mRefreshOffsetCalculator;
+    private View mRefreshView;
+    private final RefreshHelper mRefreshHelper;
+    private boolean mNotifyRefresh = false;
+    private boolean mNestScrollDurationRefreshing = false;
+    ArrayList<Runnable> refreshViewPendingActionList = new ArrayList<>();
+
+    private View mLoadMoreView;
+    private final LoadingMoreHelper mLoadingMoreHelper;
+    private boolean mNotifyLoadMore = false;
+    ArrayList<Runnable> loadMoreViewPendingActionList = new ArrayList<>();
+
     private OnPullListener mListener;
-    private boolean mEnableOverPull = true;
     private int mScrollFlag = 0;
 
-    //滑动事件相关
     private final NestedScrollingParentHelper mNestedScrollingParentHelper;
     private final int mSystemTouchSlop;
     private final int mTouchSlop;
     private boolean mNestedScrollInProgress;
+    private boolean mNonTouchNestedScrollInProgress = false;
 
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
@@ -75,8 +84,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     private final float mMaxVelocity;
     private final float mMiniVelocity;
     private final Scroller mScroller;
-    private boolean mNestScrollDurationRefreshing = false;
-    private Runnable mPendingRefreshDirectlyAction = null;
 
     public PullRefreshLayout(Context context) {
         this(context, null);
@@ -85,7 +92,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public PullRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
-
         final ViewConfiguration vc = ViewConfiguration.get(context);
         mMaxVelocity = vc.getScaledMaximumFlingVelocity();
         mMiniVelocity = vc.getScaledMinimumFlingVelocity();
@@ -97,25 +103,325 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
         mNestedChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
-        this.setChildrenDrawingOrderEnabled(true);
+        setChildrenDrawingOrderEnabled(true);
         setTranslationZ(-1);
+        mRefreshHelper = new RefreshHelper();
+        mLoadingMoreHelper = new LoadingMoreHelper();
     }
 
     public void setOnPullListener(OnPullListener listener) {
         mListener = listener;
     }
 
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        if (!enabled) {
-            reset();
+    private void ensureTargetView() {
+        if (mTargetView == null) {
+            for (int i = 0; i < getChildCount(); i++) {
+                View view = getChildAt(i);
+                if (!view.equals(mRefreshView)) {
+                    mTargetView = view;
+                    break;
+                }
+            }
+        }
+    }
+
+    void ensureRefreshViewHelper(View view) {
+        mRefreshHelper.setRefreshView(view);
+        while (!refreshViewPendingActionList.isEmpty()) {
+            Runnable runnable = refreshViewPendingActionList.remove(0);
+            runnable.run();
+        }
+    }
+
+    public void addRefreshView(View view, int index, LayoutParams params) {
+        if (mRefreshView != null) {
+            removeView(mRefreshView);
+        }
+        mRefreshView = view;
+        super.addView(mRefreshView, index, params);
+        ensureRefreshViewHelper(mRefreshView);
+    }
+    
+    /**
+     * 覆盖该方法以实现自定义的默认RefreshView。
+     *
+     * @return 自定义的 RefreshView, 注意该 View 必须实现 {@link IRefreshView} 接口
+     */
+    protected View createRefreshView() {
+        return new SpinnerRefreshView(getContext());
+    }
+
+    public void addDefaultRefreshView() {
+        mRefreshView = createRefreshView();
+        if (!(mRefreshView instanceof IRefreshView)) {
+            throw new RuntimeException("refreshView must be a instance of IRefreshView");
+        }
+        if (mRefreshView.getLayoutParams() == null) {
+            mRefreshView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+        addView(mRefreshView);
+        ensureRefreshViewHelper(mRefreshView);
+    }
+
+    public void enableRefreshAction(boolean enable) {
+        Runnable runnable = () -> {
+            if (mRefreshHelper.isEnable() == enable) return;
+            if (mRefreshHelper.getOffsetState() != RefreshState.INIT) {
+                finishRefresh();
+            }
+            mRefreshHelper.setEnable(enable);
+            mRefreshHelper.calculateOffsetConfig(true);
+            requestLayout();
+        };
+        executeRefreshAction(runnable);
+    }
+
+    public boolean isRefreshActionEnable() {
+        return mTargetView != null && mRefreshHelper.isEnable();
+    }
+
+    public void setRefreshOffsetCalculator(RefreshOffsetCalculator refreshOffsetCalculator) {
+        Runnable runnable = () -> mRefreshHelper.setRefreshOffsetCalculator(refreshOffsetCalculator);
+        executeRefreshAction(runnable);
+    }
+
+    public void enableRefreshOverPull(boolean enableOverPull) {
+        Runnable runnable = () -> mRefreshHelper.setEnableOverPull(enableOverPull);
+        executeRefreshAction(runnable);
+    }
+
+    void executeRefreshAction(Runnable runnable) {
+        if (mTargetView != null && refreshViewPendingActionList.isEmpty()) {
+            runnable.run();
+        } else {
+            refreshViewPendingActionList.add(runnable);
+        }
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        Runnable runnable = () -> {
+            mRefreshHelper.setRefreshing(refreshing);
+            if (refreshing) {
+                startRefresh(false);
+                refresh(false);
+            } else {
+                finishRefresh();
+            }
+        };
+        executeRefreshAction(runnable);
+    }
+
+    public void startRefresh(boolean notify) {
+        if (mTargetView != null) {
+            mScroller.forceFinished(true);
+            setTargetViewToTop(mTargetView);
+            mScrollFlag = FLAG_NEED_SCROLL_TO_REFRESH_POSITION;
+            if (!mRefreshHelper.isRefreshing()) {
+                mScrollFlag |= FLAG_NEED_DO_REFRESH;
+                mNotifyRefresh = notify;
+            }
             invalidate();
         }
     }
 
-    public void setEnableOverPull(boolean enableOverPull) {
-        mEnableOverPull = enableOverPull;
+    private void refresh() {
+        refresh(true);
+    }
+
+    private void refresh(boolean notify) {
+        if (mListener != null && mNotifyRefresh && notify) {
+            mListener.onRefresh();
+        }
+        if (mRefreshView instanceof IRefreshView) {
+            ((IRefreshView) mRefreshView).onRefresh();
+        }
+    }
+
+    public void finishRefresh() {
+        if (mTargetView != null) {
+            if (mListener != null) {
+                mListener.onRefreshStop();
+            }
+            if (mRefreshView instanceof IRefreshView) {
+                ((IRefreshView) mRefreshView).onStop();
+            }
+            if (mLoadingMoreHelper.isLoadingMore()) {
+                startLoadingMore(false);
+            } else {
+                mScroller.forceFinished(true);
+                mScrollFlag = FLAG_NEED_SCROLL_TO_INIT_POSITION;
+                mNotifyRefresh = false;
+                invalidate();
+            }
+        }
+    }
+
+    private int offsetRefreshStateView(float dy) {
+        int target = (int) (mRefreshHelper.getTargetViewCurrentOffset() + dy);
+        return offsetRefreshStateViewToPosition(target);
+    }
+
+    private int offsetRefreshStateViewToPosition(int target) {
+        int delta = mRefreshHelper.moveTargetViewTo(target, false);
+        ViewCompat.offsetTopAndBottom(mTargetView, delta);
+        int refreshViewOffset = mRefreshHelper.moveRefreshViewToNewLocation();
+        ViewCompat.offsetTopAndBottom(mRefreshView, refreshViewOffset);
+        onRefreshPull(
+                mRefreshHelper.dyOfRefreshViewWithInitPosition(),
+                mRefreshHelper.dyOfTargetViewWithInitPosition(),
+                mRefreshHelper.totalOffsetOfRefresh(),
+                mRefreshHelper.totalOffsetOfTarget()
+        );
+        return -delta;
+    }
+
+    void onRefreshPull(int refreshOffset, int targetOffset, int totalRefreshOffset, int totalTargetOffset) {
+        if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT && mRefreshHelper.getOffsetState() == RefreshState.INIT) {
+            return;
+        }
+        if (mListener != null) {
+            mListener.onPull(refreshOffset, targetOffset, totalRefreshOffset, totalTargetOffset);
+        }
+        if (mRefreshView instanceof IRefreshView) {
+            ((IRefreshView) mRefreshView).onPull(refreshOffset, targetOffset, totalRefreshOffset, totalTargetOffset);
+        }
+    }
+
+    public void addLoadMoreView(View view, int index, LayoutParams params) {
+        if (mLoadMoreView != null) {
+            removeView(mLoadMoreView);
+        }
+        mLoadMoreView = view;
+        super.addView(mLoadMoreView, index, params);
+        ensureLoadingMoreHelper(mLoadMoreView);
+    }
+
+    public void addDefaultLoadMoreView() {
+        mLoadMoreView = new SpinnerLoadMoreView(getContext());
+        if (mLoadMoreView.getLayoutParams() == null) {
+            mLoadMoreView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+        addView(mLoadMoreView);
+        ensureLoadingMoreHelper(mLoadMoreView);
+    }
+
+    void ensureLoadingMoreHelper(View view) {
+        mLoadingMoreHelper.setLoadMoreView(view);
+        while (!loadMoreViewPendingActionList.isEmpty()) {
+            Runnable runnable = loadMoreViewPendingActionList.remove(0);
+            runnable.run();
+        }
+    }
+
+    void executeLoadMoreAction(Runnable runnable) {
+        if (mTargetView != null && loadMoreViewPendingActionList.isEmpty()) {
+            runnable.run();
+        } else {
+            loadMoreViewPendingActionList.add(runnable);
+        }
+    }
+
+    public void setLoadingMore(boolean loadingMore) {
+        Runnable runnable = () -> {
+            mLoadingMoreHelper.setLoadingMore(loadingMore);
+            if (loadingMore) {
+                startLoadingMore(false);
+                loadMore(false);
+            } else {
+                finishLoadingMore();
+            }
+        };
+        executeLoadMoreAction(runnable);
+    }
+
+    public void enableLoadMoreAction(boolean enable) {
+        Runnable runnable = () -> {
+            if (mLoadingMoreHelper.getEnable() == enable) return;
+            if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT) {
+                finishLoadingMore();
+            }
+            mLoadingMoreHelper.setEnable(enable);
+            mLoadingMoreHelper.calculateLoadMoreOffsetConfig(true);
+            requestLayout();
+        };
+        executeLoadMoreAction(runnable);
+    }
+
+    public void startLoadingMore(boolean notify) {
+        if (mTargetView != null) {
+            mScroller.forceFinished(true);
+            mScrollFlag = FLAG_NEED_SCROLL_TO_LOAD_MORE;
+            setTargetViewToBottom(mTargetView);
+            if (!mLoadingMoreHelper.isLoadingMore()) {
+                mNotifyLoadMore = notify;
+                mScrollFlag |= FLAG_NEED_LOAD_MORE;
+            }
+            invalidate();
+        }
+    }
+
+    void loadMore() {
+        loadMore(true);
+    }
+
+    void loadMore(boolean notify) {
+        if (mListener != null && mNotifyLoadMore && notify) {
+            mListener.onLoadMore();
+        }
+        if (mLoadMoreView instanceof OnLoadMorePullListener) {
+            ((OnLoadMorePullListener) mLoadMoreView).onLoadMore();
+        }
+    }
+
+    public void finishLoadingMore() {
+        if (mTargetView != null) {
+            if (mListener != null) {
+                mListener.onLoadMoreStop();
+            }
+            if (mLoadMoreView instanceof OnLoadMorePullListener) {
+                ((OnLoadMorePullListener) mLoadMoreView).onStop();
+            }
+            if (mRefreshHelper.isRefreshing()) {
+                startRefresh(false);
+            } else {
+                mScroller.forceFinished(true);
+                mScrollFlag = FLAG_NEED_SCROLL_TO_INIT_POSITION;
+                mNotifyLoadMore = false;
+                invalidate();
+            }
+        }
+
+    }
+
+    int offsetLoadingMoreStateView(int offset, boolean enableOverPull) {
+        return offsetLoadingMoreStateViewToPosition(mLoadingMoreHelper.getLoadMoreCurrentOffset() + offset, enableOverPull);
+    }
+
+    int offsetLoadingMoreStateViewToPosition(int position, boolean enableOverPull) {
+        int delta = mLoadingMoreHelper.moveViewToPosition(position, enableOverPull);
+        ViewCompat.offsetTopAndBottom(mTargetView, delta);
+        ViewCompat.offsetTopAndBottom(mLoadMoreView, delta);
+        onLoadMorePull(Math.abs(mLoadingMoreHelper.dyWithInit()), Math.abs(mLoadingMoreHelper.totalOffset()));
+        return -delta;
+    }
+
+    void onLoadMorePull(int offset, int total) {
+        if (mRefreshHelper.getOffsetState() != RefreshState.INIT
+                && mLoadingMoreHelper.getOffsetState() == LoadingMoreState.INIT) {
+            return;
+        }
+
+        if (mListener != null) {
+            mListener.onLoadMorePull(offset, total);
+        }
+        if (mLoadMoreView instanceof OnLoadMorePullListener) {
+            ((OnLoadMorePullListener) mLoadMoreView).onPull(offset, total);
+        }
+    }
+
+    public void reset() {
+        finishRefresh();
+        finishLoadingMore();
     }
 
     public boolean canChildScrollUp() {
@@ -129,94 +435,27 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return view.canScrollVertically(-1);
     }
 
-    public void addRefreshView(View view, int index, LayoutParams params) {
-        mRefreshView = view;
-        super.addView(mRefreshView, index, params);
-    }
-
-    /**
-     * 覆盖该方法以实现自定义的默认RefreshView。
-     *
-     * @return 自定义的 RefreshView, 注意该 View 必须实现 {@link IRefreshView} 接口
-     */
-    protected View createRefreshView() {
-        return new SpinnerRefreshView(getContext());
-    }
-
-    private void addDefaultRefreshView() {
-        if (mRefreshView == null) {
-            mRefreshView = createRefreshView();
-        }
-        if (!(mRefreshView instanceof IRefreshView)) {
-            throw new RuntimeException("refreshView must be a instance of IRefreshView");
-        }
-        if (mRefreshView.getLayoutParams() == null) {
-            mRefreshView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        }
-        addView(mRefreshView);
-    }
-
-    /**
-     * 设置在下拉过程中计算 RefreshView 偏移量的方法
-     */
-    public void setRefreshOffsetCalculator(RefreshOffsetCalculator refreshOffsetCalculator) {
-        mRefreshOffsetCalculator = refreshOffsetCalculator;
-    }
-
-    protected void refresh(boolean notify) {
-        if (mIsRefreshing) {
-            return;
-        }
-        mIsRefreshing = true;
-        if (mRefreshView instanceof IRefreshView) {
-            ((IRefreshView) mRefreshView).onRefresh();
-        }
-        if (mListener != null && notify) {
-            mListener.onRefresh();
-        }
-    }
-
-    public void reset() {
-        if (mRefreshView instanceof IRefreshView) {
-            ((IRefreshView) mRefreshView).onStop();
-        }
-        mIsRefreshing = false;
-        mScroller.forceFinished(true);
-        mScrollFlag = 0;
-        moveTargetViewTo(mTargetInitOffset);
-    }
-
-    private void ensureTargetView() {
-        if (mTargetView == null) {
-            for (int i = 0; i < getChildCount(); i++) {
-                View view = getChildAt(i);
-                if (!view.equals(mRefreshView)) {
-                    mTargetView = view;
-                    break;
-                }
-            }
-        }
-        if (mTargetView != null && mPendingRefreshDirectlyAction != null) {
-            Runnable runnable = mPendingRefreshDirectlyAction;
-            mPendingRefreshDirectlyAction = null;
-            runnable.run();
-        }
-    }
-
-    public View getTargetView() {
-        return this.mTargetView;
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        ensureTargetView();
         if (mRefreshView == null) {
             addDefaultRefreshView();
         }
+        if (mLoadMoreView == null) {
+            addDefaultLoadMoreView();
+        }
+
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
         measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
-        calculateOffset();
+        mRefreshHelper.calculateOffsetConfig();
+
         measureTargetView(widthSize, heightSize);
+
+        measureChild(mLoadMoreView, widthMeasureSpec, heightMeasureSpec);
+        mLoadingMoreHelper.calculateLoadMoreOffsetConfig(false);
+
         setMeasuredDimension(widthSize, heightSize);
     }
 
@@ -224,27 +463,11 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         ensureTargetView();
         if (mTargetView == null) {
             Log.d(TAG, "onMeasure: mTargetView == null");
-            setMeasuredDimension(widthSize, heightSize);
             return;
         }
         int targetMeasureWidthSpec = MeasureSpec.makeMeasureSpec(widthSize - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY);
         int targetMeasureHeightSpec = MeasureSpec.makeMeasureSpec(heightSize - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY);
         mTargetView.measure(targetMeasureWidthSpec, targetMeasureHeightSpec);
-    }
-
-    private int previousRefreshViewHeight = -1;
-
-    void calculateOffset() {
-        int refreshViewHeight = mRefreshView.getMeasuredHeight();
-        if (previousRefreshViewHeight == -1 || previousRefreshViewHeight != refreshViewHeight) {
-            previousRefreshViewHeight = refreshViewHeight;
-            if (mRefreshInitOffset != -refreshViewHeight) {
-                mRefreshInitOffset = -refreshViewHeight;
-            }
-            mTargetEndOffset = refreshViewHeight;
-            mRefreshCurrentOffset = mIsRefreshing ? mRefreshEndOffset : mRefreshInitOffset;
-            mTargetCurrentOffset = mIsRefreshing ? mTargetEndOffset : mTargetInitOffset;
-        }
     }
 
     @Override
@@ -254,9 +477,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (getChildCount() == 0) {
             return;
         }
+
         ensureTargetView();
         if (mTargetView == null) {
-            Log.d(TAG, "onLayout: mTargetView == null");
             return;
         }
         layoutTargetView(width, height);
@@ -265,38 +488,45 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
 
     void layoutTargetView(int parentWidth, int parentHeight) {
         final int childLeft = getPaddingLeft();
-        final int childTop = getPaddingTop();
+        final int childTop = getPaddingTop() + mRefreshHelper.getTargetViewCurrentOffset() + mLoadingMoreHelper.getLoadMoreCurrentOffset();
         final int childWidth = parentWidth - getPaddingLeft() - getPaddingRight();
         final int childHeight = parentHeight - getPaddingTop() - getPaddingBottom();
         mTargetView.layout(
                 childLeft,
-                childTop + mTargetCurrentOffset,
+                childTop,
                 childLeft + childWidth,
-                childTop + childHeight + mTargetCurrentOffset);
+                childTop + childHeight);
+
+        int loadMoreViewWidth = mLoadMoreView.getMeasuredWidth();
+        int loadMoreViewHeight = mLoadMoreView.getMeasuredHeight();
+        mLoadMoreView.layout((parentWidth / 2 - loadMoreViewWidth / 2),
+                childTop + childHeight,
+                (parentWidth / 2 + loadMoreViewWidth / 2),
+                childTop + childHeight + loadMoreViewHeight
+        );
     }
 
     void layoutRefreshView(int parentWidth) {
         int refreshViewWidth = mRefreshView.getMeasuredWidth();
         int refreshViewHeight = mRefreshView.getMeasuredHeight();
+        int refreshViewOffset = mRefreshHelper.getRefreshViewCurrentOffset();
         mRefreshView.layout(
                 (parentWidth / 2 - refreshViewWidth / 2),
-                mRefreshCurrentOffset,
+                refreshViewOffset,
                 (parentWidth / 2 + refreshViewWidth / 2),
-                mRefreshCurrentOffset + refreshViewHeight);
+                refreshViewOffset + refreshViewHeight);
     }
 
     boolean isPullRefreshLayoutWithinMotionEventBounds(MotionEvent ev) {
-        View view = ViewHelper.findSpecificView(getTargetView(), new Class[]{ReactPullRefreshLayout.class});
-        return view instanceof ReactPullRefreshLayout && ViewHelper.isViewWithinMotionEventBounds(view, ev);
+        View view = ViewHelper.findSpecificView(mTargetView, new Class[]{PullRefreshLayout.class});
+        return view instanceof PullRefreshLayout
+                && ((PullRefreshLayout) view).isRefreshActionEnable()
+                && ViewHelper.isViewWithinMotionEventBounds(view, ev);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ensureTargetView();
-
-        if (mIsRefreshing) {
-            return true;
-        }
 
         if (!isEnabled()
                 || canChildScrollUp()
@@ -304,7 +534,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 || isPullRefreshLayoutWithinMotionEventBounds(ev)) {
             return false;
         }
-
 
         final int action = ev.getAction();
         int pointerIndex;
@@ -351,10 +580,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         final int action = ev.getAction();
         int pointerIndex;
 
-        if (mIsRefreshing) {
-            return true;
-        }
-
         if (!isEnabled() || canChildScrollUp() || mNestedScrollInProgress) {
             return false;
         }
@@ -384,9 +609,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
                 if (mIsDragging) {
                     float dy = (y - mLastMotionY) * mDragRate;
                     if (dy >= 0) {
-                        moveTargetView(dy);
+                        offsetRefreshStateView(dy);
                     } else {
-                        int move = moveTargetView(dy);
+                        int move = offsetRefreshStateView(dy);
                         float delta = Math.abs(dy) - Math.abs(move);
                         if (delta > 0) {
                             final ViewParent parent = getParent();
@@ -454,142 +679,30 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return true;
     }
 
-    void flingDownWhenCurrentOffsetHitThreshold(int velocity) {
-        mScrollFlag = FLAG_NEED_SCROLL_TO_REFRESH_POSITION | FLAG_NEED_DO_REFRESH;
-        mScroller.fling(0, mTargetCurrentOffset, 0, velocity,
-                0, 0, mTargetInitOffset, Integer.MAX_VALUE);
-        invalidate();
-    }
-
-    void flingUpWhenCurrentOffsetHitThreshold(int velocity) {
-        mScroller.fling(0, mTargetCurrentOffset, 0, velocity,
-                0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        if (mScroller.getFinalY() < mTargetInitOffset) {
-            mScrollFlag = FLAG_NEED_DELIVER_VELOCITY;
-        } else if (mScroller.getFinalY() < mTargetEndOffset) {
-            int dy = mTargetInitOffset - mTargetCurrentOffset;
-            mScroller.startScroll(0, mTargetCurrentOffset, 0, dy);
-        } else if (mScroller.getFinalY() == mTargetEndOffset) {
-            mScrollFlag = FLAG_NEED_DO_REFRESH;
-        } else {
-            mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetEndOffset - mTargetCurrentOffset);
-            mScrollFlag = FLAG_NEED_DO_REFRESH;
-        }
-        invalidate();
-    }
-
-    void onMoveFinishWhenCurrentOffsetHitThreshold() {
-        if (mTargetCurrentOffset > mTargetEndOffset) {
-            mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetEndOffset - mTargetCurrentOffset);
-        }
-        mScrollFlag = FLAG_NEED_DO_REFRESH;
-        invalidate();
-    }
-
-    void flingDown(int velocity) {
-        mScroller.fling(0, mTargetCurrentOffset, 0, velocity, 0, 0, mTargetInitOffset, Integer.MAX_VALUE);
-        if (mScroller.getFinalY() > mTargetEndOffset) {
-            mScrollFlag = FLAG_NEED_SCROLL_TO_REFRESH_POSITION | FLAG_NEED_DO_REFRESH;
-        } else {
-            mScrollFlag = FLAG_NEED_SCROLL_TO_INIT_POSITION;
-        }
-        invalidate();
-    }
-
-    void flingUp(int velocity) {
-        mScrollFlag = 0;
-        mScroller.fling(0, mTargetCurrentOffset, 0, velocity, 0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        if (mScroller.getFinalY() < mTargetInitOffset) {
-            mScrollFlag = FLAG_NEED_DELIVER_VELOCITY;
-        } else {
-            mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetInitOffset - mTargetCurrentOffset);
-            mScrollFlag = 0;
-        }
-        invalidate();
-    }
-
-    void onMoveFinish() {
-        if (mTargetCurrentOffset == mTargetInitOffset) {
-            return;
-        }
-        mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetInitOffset - mTargetCurrentOffset);
-        mScrollFlag = 0;
-        invalidate();
-    }
-
     private void finishPull(int vy) {
         int miniVy = vy / 1000;
-        if (mTargetCurrentOffset >= mTargetEndOffset) {
-            if (miniVy > 0) {
-                flingDownWhenCurrentOffsetHitThreshold(miniVy);
-            } else if (miniVy < 0) {
-                flingUpWhenCurrentOffsetHitThreshold(miniVy);
-            } else {
-                onMoveFinishWhenCurrentOffsetHitThreshold();
-            }
-        } else {
-            if (miniVy > 0) {
-                flingDown(miniVy);
-            } else if (miniVy < 0) {
-                flingUp(miniVy);
-            } else {
-                onMoveFinish();
-            }
-        }
-    }
-
-    void triggerPullEvent() {
-        if (!mIsRefreshing && allowNotifyListener) {
-            if (mListener != null) {
-                mListener.onPull(mRefreshCurrentOffset - mRefreshInitOffset,
-                        mTargetCurrentOffset - mTargetInitOffset,
-                        mRefreshEndOffset - mRefreshInitOffset,
-                        mTargetEndOffset - mTargetInitOffset);
-            }
-            if (mRefreshView instanceof IRefreshView) {
-                ((IRefreshView) mRefreshView).onPull(mRefreshCurrentOffset - mRefreshInitOffset,
-                        mTargetCurrentOffset - mTargetInitOffset,
-                        mRefreshEndOffset - mRefreshInitOffset,
-                        mTargetEndOffset - mTargetInitOffset);
-            }
-        }
-    }
-
-
-    private boolean allowNotifyListener = true;
-
-    public void setToRefreshDirectly(final long delay) {
-        if (mTargetView != null) {
-            Runnable runnable = () -> {
-                allowNotifyListener = false;
-                setTargetViewToTop(mTargetView);
-                mScrollFlag = FLAG_NEED_DO_REFRESH;
-                invalidate();
-            };
-            if (delay == 0) {
-                runnable.run();
-            } else {
-                postDelayed(runnable, delay);
-            }
-        } else {
-            mPendingRefreshDirectlyAction = () -> setToRefreshDirectly(delay);
-        }
-    }
-
-    public void finishRefresh() {
-        if (mTargetView != null) {
-            mIsRefreshing = false;
-            allowNotifyListener = true;
-            if (mListener != null) {
-                mListener.onStop();
-            }
-            if (mRefreshView instanceof IRefreshView) {
-                ((IRefreshView) mRefreshView).onStop();
-            }
-            mScrollFlag = FLAG_NEED_SCROLL_TO_INIT_POSITION;
+        if ((mRefreshHelper.getOffsetState() != RefreshState.INIT && !mLoadingMoreHelper.isLoadingMore())
+                || mRefreshHelper.isRefreshing()) {
             mScroller.forceFinished(true);
-            invalidate();
+            mScroller.fling(0, mRefreshHelper.getTargetViewCurrentOffset() + mLoadingMoreHelper.getLoadMoreCurrentOffset(), 0, miniVy,
+                    0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            if (mRefreshHelper.isFinalYInRefreshPosition(mScroller.getFinalY())) {
+                startRefresh(true);
+            } else {
+                finishRefresh();
+            }
+        } else if ((mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT && !mRefreshHelper.isRefreshing())
+                || mLoadingMoreHelper.isLoadingMore()) {
+            mScroller.forceFinished(true);
+            mScroller.fling(0, mLoadingMoreHelper.getLoadMoreCurrentOffset() + mRefreshHelper.getTargetViewCurrentOffset(), 0, miniVy,
+                    0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            if (mLoadingMoreHelper.isFinalYInLoadMorePosition(mScroller.getFinalY())) {
+                startLoadingMore(true);
+            } else {
+                finishLoadingMore();
+            }
         }
+
     }
 
     protected void setTargetViewToTop(View targetView) {
@@ -597,8 +710,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             ((RecyclerView) targetView).scrollToPosition(0);
         } else if (targetView instanceof AbsListView) {
             ((AbsListView) targetView).setSelectionFromTop(0, 0);
-        } else {
+        } else if (targetView != null) {
             targetView.scrollTo(0, 0);
+        }
+    }
+
+    protected void setTargetViewToBottom(View targetView) {
+        if (targetView instanceof RecyclerView) {
+            RecyclerView recyclerView = (RecyclerView) targetView;
+            if (recyclerView.getAdapter() != null) {
+                recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            }
+        } else if (targetView instanceof AbsListView) {
+            ((AbsListView) targetView).setSelection(((AbsListView) targetView).getAdapter().getCount() - 1);
         }
     }
 
@@ -618,7 +742,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         final float dx = x - mInitialDownX;
         final float dy = y - mInitialDownY;
         boolean isYDrag = isYDrag(dx, dy);
-        if (isYDrag && (dy > mTouchSlop || (dy < -mTouchSlop && mTargetCurrentOffset > mTargetInitOffset)) && !mIsDragging) {
+        if (isYDrag && (dy > mTouchSlop || (dy < -mTouchSlop) && mRefreshHelper.getOffsetState() != RefreshState.INIT) && !mIsDragging) {
             mInitialMotionY = mInitialDownY + mTouchSlop;
             mLastMotionY = mInitialMotionY;
             mIsDragging = true;
@@ -633,148 +757,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         reset();
-    }
-
-    @Override
-    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return isEnabled() && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
-    }
-
-    @Override
-    public void onNestedScrollAccepted(View child, View target, int axes) {
-        mScroller.abortAnimation();
-        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
-        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
-        mNestedScrollInProgress = true;
-    }
-
-    @Override
-    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        int parentCanConsume = mTargetCurrentOffset - mTargetInitOffset;
-        if (dy > 0 && parentCanConsume > 0) {
-            if (dy >= parentCanConsume) {
-                consumed[1] = parentCanConsume;
-                moveTargetViewTo(mTargetInitOffset);
-            } else {
-                consumed[1] = dy;
-                moveTargetView(-dy);
-            }
-        }
-        dy = dy - consumed[1];
-        final int[] parentConsumed = new int[2];
-        if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
-            consumed[0] += parentConsumed[0];
-            consumed[1] += parentConsumed[1];
-        }
-
-    }
-
-    @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        if (dyUnconsumed < 0 && !canChildScrollUp() && mScroller.isFinished() && mScrollFlag == 0) {
-            int[] con = new int[2];
-            dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, con);
-            dyUnconsumed = dyUnconsumed + con[1];
-            moveTargetView(-dyUnconsumed);
-        }
-    }
-
-    @Override
-    public int getNestedScrollAxes() {
-        return mNestedScrollingParentHelper.getNestedScrollAxes();
-    }
-
-    @Override
-    public void onStopNestedScroll(View child) {
-        mNestedScrollingParentHelper.onStopNestedScroll(child);
-        mNestedChildHelper.stopNestedScroll();
-        if (mNestedScrollInProgress) {
-            mNestedScrollInProgress = false;
-            mIsDragging = false;
-            if (!mNestScrollDurationRefreshing) {
-                finishPull(0);
-            }
-        }
-    }
-
-    @Override
-    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
-        if (mTargetCurrentOffset > mTargetInitOffset) {
-            mNestedScrollInProgress = false;
-            mIsDragging = false;
-            if (!mNestScrollDurationRefreshing) {
-                finishPull((int) -velocityY);
-            }
-            return true;
-        }
-        return dispatchNestedPreFling(velocityX, velocityY);
-    }
-
-    @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
-        try {
-            return mNestedChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
-        } catch (Throwable e) {
-            // android 24及以上ViewGroup会继续往上派发， 23以及以下直接返回false
-            // 低于5.0的机器和RecyclerView配合工作时，部分机型会调用这个方法，但是ViewGroup并没有实现这个方法，会报错，这里catch一下
-        }
-        return false;
-    }
-
-    private int moveTargetView(float dy) {
-        int target = (int) (mTargetCurrentOffset + dy);
-        return moveTargetViewTo(target);
-    }
-
-    private int moveTargetViewTo(int target) {
-        return moveTargetViewTo(target, false);
-    }
-
-    private int moveTargetViewTo(int target, boolean calculateAnyWay) {
-        target = calculateTargetOffset(target, mTargetInitOffset, mTargetEndOffset, mEnableOverPull);
-        int offset = 0;
-        if (target != mTargetCurrentOffset || calculateAnyWay) {
-            offset = target - mTargetCurrentOffset;
-            ViewCompat.offsetTopAndBottom(mTargetView, offset);
-            mTargetCurrentOffset = target;
-            moveRefreshViewToNewLocation();
-            triggerPullEvent();
-        }
-        return offset;
-    }
-
-    void moveRefreshViewToNewLocation() {
-        if (mRefreshOffsetCalculator == null) {
-            mRefreshOffsetCalculator = new LocateTopRefreshOffsetCalculator();
-        }
-        int newRefreshOffset = mRefreshOffsetCalculator.calculateRefreshOffset(
-                mRefreshInitOffset,
-                mRefreshEndOffset,
-                mRefreshView.getMeasuredHeight(),
-                mTargetCurrentOffset,
-                mTargetInitOffset,
-                mTargetEndOffset);
-        if (newRefreshOffset != mRefreshCurrentOffset) {
-            ViewCompat.offsetTopAndBottom(mRefreshView, newRefreshOffset - mRefreshCurrentOffset);
-            mRefreshCurrentOffset = newRefreshOffset;
-        }
-    }
-
-    /**
-     * @param target              目标位置
-     * @param targetInitOffset    初始位置
-     * @param targetRefreshOffset 进行刷新时TargetView偏移位置
-     * @param enableOverPull      是否允许TargetView偏移至刷新时偏移位置之下
-     * @return enableOverPull
-     * enableOverPull为false，区间为[targetInitOffset,targetRefreshOffset]
-     * enableOverPull为true，区间为[targetInitOffset,Integer.Max]
-     */
-    protected int calculateTargetOffset(int target, int targetInitOffset, int targetRefreshOffset, boolean enableOverPull) {
-        target = Math.max(target, targetInitOffset);
-        if (!enableOverPull) {
-            target = Math.min(target, targetRefreshOffset);
-        }
-        return target;
     }
 
     private void acquireVelocityTracker(final MotionEvent event) {
@@ -793,7 +775,19 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private boolean hasFlag(int flag) {
-        return (mScrollFlag & flag) == flag;
+        boolean hasFlag = (mScrollFlag & flag) == flag;
+        if (hasFlag) {
+            Map<Integer, String> map = MapBuilder.of(
+                    FLAG_NEED_DO_REFRESH, "FLAG_NEED_DO_REFRESH",
+                    FLAG_NEED_SCROLL_TO_REFRESH_POSITION, "FLAG_NEED_SCROLL_TO_REFRESH_POSITION",
+                    FLAG_NEED_LOAD_MORE, "FLAG_NEED_LOAD_MORE",
+                    FLAG_NEED_SCROLL_TO_LOAD_MORE, "FLAG_NEED_SCROLL_TO_LOAD_MORE",
+                    FLAG_NEED_SCROLL_TO_INIT_POSITION, "FLAG_NEED_SCROLL_TO_INIT_POSITION"
+            );
+            String flagName = map.get(flag);
+            Log.d(TAG, "hasFlag: " + (flagName != null ? flagName : flag));
+        }
+        return hasFlag;
     }
 
     private void removeFlag(int flag) {
@@ -804,49 +798,40 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             int offsetY = mScroller.getCurrY();
-            moveTargetViewTo(offsetY);
-            if (offsetY <= 0 && hasFlag(FLAG_NEED_DELIVER_VELOCITY)) {
-                deliverVelocity();
-                mScroller.forceFinished(true);
+            if (offsetY < 0) {
+                offsetLoadingMoreStateViewToPosition(offsetY, true);
+            } else {
+                offsetRefreshStateViewToPosition(offsetY);
             }
             invalidate();
         } else if (hasFlag(FLAG_NEED_SCROLL_TO_INIT_POSITION)) {
             removeFlag(FLAG_NEED_SCROLL_TO_INIT_POSITION);
-            if (mTargetCurrentOffset != mTargetInitOffset) {
-                mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetInitOffset - mTargetCurrentOffset);
-            }
-            Log.d(TAG, "FLAG:  FLAG_NEED_SCROLL_TO_INIT_POSITION");
+            int startY = mLoadingMoreHelper.getLoadMoreCurrentOffset() + mRefreshHelper.getTargetViewCurrentOffset();
+            int dy = -mLoadingMoreHelper.dyWithInit() - mRefreshHelper.dyOfTargetViewWithInitPosition();
+            mScroller.startScroll(0, startY, 0, dy);
             invalidate();
         } else if (hasFlag(FLAG_NEED_SCROLL_TO_REFRESH_POSITION)) {
+            offsetLoadingMoreStateViewToPosition(0, false);
+
             removeFlag(FLAG_NEED_SCROLL_TO_REFRESH_POSITION);
-            if (mTargetCurrentOffset != mTargetEndOffset) {
-                mScroller.startScroll(0, mTargetCurrentOffset, 0, mTargetEndOffset - mTargetCurrentOffset);
-            } else {
-                moveTargetViewTo(mTargetEndOffset, true);
-            }
-            Log.d(TAG, "FLAG:  FLAG_NEED_SCROLL_TO_REFRESH_POSITION");
+            int startY = mRefreshHelper.getTargetViewCurrentOffset() + mLoadingMoreHelper.getLoadMoreCurrentOffset();
+            int dy = -mRefreshHelper.dyOfTargetViewWithRefreshPosition() - mLoadingMoreHelper.dyWithInit();
+            mScroller.startScroll(0, startY, 0, dy);
+            invalidate();
+        } else if (hasFlag(FLAG_NEED_SCROLL_TO_LOAD_MORE)) {
+            offsetRefreshStateViewToPosition(0);
+
+            removeFlag(FLAG_NEED_SCROLL_TO_LOAD_MORE);
+            int startY = mLoadingMoreHelper.getLoadMoreCurrentOffset() + mRefreshHelper.getTargetViewCurrentOffset();
+            int dy = -mLoadingMoreHelper.dyWithLoadMore() - mRefreshHelper.dyOfTargetViewWithInitPosition();
+            mScroller.startScroll(0, startY, 0, dy);
             invalidate();
         } else if (hasFlag(FLAG_NEED_DO_REFRESH)) {
             removeFlag(FLAG_NEED_DO_REFRESH);
-            moveTargetViewTo(mTargetEndOffset, true);
-            refresh(allowNotifyListener);
-            Log.d(TAG, "FLAG:  FLAG_NEED_DO_REFRESH");
-        } else {
-            deliverVelocity();
-        }
-    }
-
-    private void deliverVelocity() {
-        if (hasFlag(FLAG_NEED_DELIVER_VELOCITY)) {
-            removeFlag(FLAG_NEED_DELIVER_VELOCITY);
-            if (mScroller.getCurrVelocity() > mMiniVelocity) {
-                // if there is a velocity, pass it on
-                if (mTargetView instanceof RecyclerView) {
-                    ((RecyclerView) mTargetView).fling(0, (int) mScroller.getCurrVelocity());
-                } else if (mTargetView instanceof AbsListView && android.os.Build.VERSION.SDK_INT >= 21) {
-                    ((AbsListView) mTargetView).fling((int) mScroller.getCurrVelocity());
-                }
-            }
+            refresh();
+        } else if (hasFlag(FLAG_NEED_LOAD_MORE)) {
+            removeFlag(FLAG_NEED_LOAD_MORE);
+            loadMore();
         }
     }
 
@@ -854,10 +839,10 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     public boolean dispatchTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         if (action == MotionEvent.ACTION_DOWN) {
-            mNestScrollDurationRefreshing = mIsRefreshing || (mScrollFlag & FLAG_NEED_DO_REFRESH) != 0;
+            mNestScrollDurationRefreshing = mRefreshHelper.isRefreshing() || (mScrollFlag & FLAG_NEED_DO_REFRESH) != 0;
         } else if (mNestScrollDurationRefreshing) {
             if (action == MotionEvent.ACTION_MOVE) {
-                if (!mIsRefreshing && mScroller.isFinished() && mScrollFlag == 0) {
+                if (!mRefreshHelper.isRefreshing() && mScroller.isFinished() && mScrollFlag == 0) {
                     // 这里必须要 dispatch 一次 down 事件，否则不能触发 NestScroll，具体可参考 RecyclerView
                     // down 过程中会触发 onStopNestedScroll，mNestScrollDurationRefreshing 必须在之后
                     // 置为false，否则会触发 finishPull
@@ -877,16 +862,8 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         return super.dispatchTouchEvent(ev);
     }
 
-    public interface OnPullListener {
 
-        void onRefresh();
-
-        void onPull(int currentRefreshViewOffset, int currentTargetViewOffset, int totalRefreshViewOffset, int totalTargetViewOffset);
-
-        void onStop();
-    }
-
-    private NestedScrollingChildHelper mNestedChildHelper;
+    private final NestedScrollingChildHelper mNestedChildHelper;
 
     @Override
     public void setNestedScrollingEnabled(boolean enabled) {
@@ -926,5 +903,160 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public boolean dispatchNestedPreFling(float velocityX, float velocityY) {
         return mNestedChildHelper.dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+        return onStartNestedScroll(child, target, nestedScrollAxes, ViewCompat.TYPE_TOUCH);
+    }
+
+    @Override
+    public void onNestedScrollAccepted(View child, View target, int axes) {
+        onNestedScrollAccepted(child, target, axes, ViewCompat.TYPE_TOUCH);
+    }
+
+    @Override
+    public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
+        onNestedPreScroll(target, dx, dy, consumed, ViewCompat.TYPE_TOUCH);
+    }
+
+    @Override
+    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, ViewCompat.TYPE_TOUCH);
+    }
+
+    @Override
+    public int getNestedScrollAxes() {
+        return mNestedScrollingParentHelper.getNestedScrollAxes();
+    }
+
+    @Override
+    public void onStopNestedScroll(View child) {
+        onStopNestedScroll(child, ViewCompat.TYPE_TOUCH);
+    }
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+        if (mRefreshHelper.getOffsetState() != RefreshState.INIT) {
+            mNestedScrollInProgress = false;
+            mIsDragging = false;
+            if (!mNestScrollDurationRefreshing) {
+                finishPull((int) -velocityY);
+            }
+            return true;
+        }
+
+        if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT) {
+            finishPull((int) -velocityY);
+            return true;
+        }
+
+        return dispatchNestedPreFling(velocityX, velocityY);
+    }
+
+    @Override
+    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
+        try {
+            return mNestedChildHelper.dispatchNestedFling(velocityX, velocityY, consumed);
+        } catch (Throwable e) {
+            // android 24及以上ViewGroup会继续往上派发， 23以及以下直接返回false
+            // 低于5.0的机器和RecyclerView配合工作时，部分机型会调用这个方法，但是ViewGroup并没有实现这个方法，会报错，这里catch一下
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int axes, int type) {
+        return isEnabled() && (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    }
+
+
+    @Override
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int axes, int type) {
+        mScroller.abortAnimation();
+        mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes, type);
+        startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
+        mNestedScrollInProgress = mNestedScrollInProgress || type == ViewCompat.TYPE_TOUCH;
+        mNonTouchNestedScrollInProgress = mNonTouchNestedScrollInProgress || type == ViewCompat.TYPE_NON_TOUCH;
+    }
+
+    @Override
+    public void onStopNestedScroll(@NonNull View target, int type) {
+        mNestedScrollingParentHelper.onStopNestedScroll(target, type);
+        mNestedChildHelper.stopNestedScroll(type);
+        if (type == ViewCompat.TYPE_NON_TOUCH) {
+            mNonTouchNestedScrollInProgress = false;
+        } else if (type == ViewCompat.TYPE_TOUCH) {
+            if (mNestedScrollInProgress) {
+                mNestedScrollInProgress = false;
+                mIsDragging = false;
+            }
+        }
+        if (!mNestScrollDurationRefreshing && mScrollFlag == 0 & !mNonTouchNestedScrollInProgress) {
+            finishPull(0);
+        }
+    }
+
+    @Override
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+        if (type == ViewCompat.TYPE_TOUCH) {
+            if (dy > 0) {
+                if (mRefreshHelper.getOffsetState() != RefreshState.INIT) {
+                    if (dy >= mRefreshHelper.dyOfTargetViewWithInitPosition()) {
+                        offsetRefreshStateViewToPosition(mRefreshHelper.dyOfTargetViewWithInitPosition());
+                        consumed[1] = mRefreshHelper.dyOfTargetViewWithInitPosition();
+                    } else {
+                        consumed[1] = dy;
+                        offsetRefreshStateView(-dy);
+                    }
+                }
+            } else if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT) {
+                consumed[1] = offsetLoadingMoreStateView(-dy, true);
+            }
+
+            final int[] parentConsumed = new int[2];
+            if (dispatchNestedPreScroll(dx - consumed[0], dy - consumed[1], parentConsumed, null)) {
+                consumed[0] += parentConsumed[0];
+                consumed[1] += parentConsumed[1];
+            }
+        }
+    }
+
+
+    @Override
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type) {
+        int[] consumed = new int[2];
+        onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed);
+    }
+
+    @Override
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, @NonNull int[] consumed) {
+        if (type == ViewCompat.TYPE_TOUCH) {
+            if (dyUnconsumed < 0) {
+                if (!canChildScrollUp() && mScroller.isFinished() && mScrollFlag == 0) {
+                    int originConsumedY = consumed[1];
+                    dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, consumed);
+                    if (originConsumedY != consumed[1]) {
+                        int delta = consumed[1] - originConsumedY;
+                        dyUnconsumed = dyUnconsumed + delta;
+                    }
+                    int consumedByRefresh = offsetRefreshStateView(-dyUnconsumed);
+                    consumed[1] += consumedByRefresh;
+                } else if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT) {
+                    int consumedByLoadMore = offsetLoadingMoreStateView(-dyUnconsumed, true);
+                    consumed[1] += consumedByLoadMore;
+                    dispatchNestedScroll(dxConsumed, dyConsumed + consumedByLoadMore, dxUnconsumed, dyUnconsumed, consumed);
+                }
+            } else {
+                int consumedByLoadMore = offsetLoadingMoreStateView(-dyUnconsumed, true);
+                consumed[1] += consumedByLoadMore;
+                if (dyUnconsumed - consumedByLoadMore != 0) {
+                    dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, consumed);
+                }
+            }
+        } else if (dyUnconsumed > 0) {
+            int consumedByLoadMore = offsetLoadingMoreStateView(-dyUnconsumed, false);
+            consumed[1] += consumedByLoadMore;
+        }
     }
 }

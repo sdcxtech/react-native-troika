@@ -1,18 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
-const DATA = Array(40)
-  .fill(Math.random())
+const FLATLIST_DATA = Array(40)
+  .fill(Math.random() + '')
   .map((item, index) => ({
     id: item + index,
     title: `index: ${index} `,
   }))
-export function DemoFlatList() {
+
+const generateFlatlistItem = (index: number, extra: string) => ({
+  id: Math.random() + '' + index,
+  title: `${extra} index ${index}`,
+})
+
+export function useDemoFlatlistData() {
+  const [flatlistData, setFlatlistData] = useState(FLATLIST_DATA)
+  return {
+    flatlistData,
+    addFlatlistRefreshItem: () => setFlatlistData(data => [generateFlatlistItem(data.length, 'refresh'), ...data]),
+    addFlatlistLoadMoreItem: () =>
+      setFlatlistData([...flatlistData, generateFlatlistItem(flatlistData.length, 'load more')]),
+  }
+}
+
+export function DemoFlatList({ data = FLATLIST_DATA }: { data?: { id: string; title: string }[] }) {
   const renderItem = ({ item }: { item: { title: string } }) => <Item title={item.title} />
   return (
     <FlatList
       style={{ flex: 1 }}
-      data={DATA}
+      data={data}
       renderItem={renderItem}
       keyExtractor={item => item.id}
       nestedScrollEnabled

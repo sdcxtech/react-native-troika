@@ -190,6 +190,10 @@ public class NestedRNCWebView extends RNCWebViewManager.RNCWebView implements Ne
         return computeVerticalScrollRange();
     }
 
+    public void scrollToBottom() {
+        onOverScrolled(getScrollX(), getScrollRange(), false, false);
+    }
+
     private void endDrag() {
         mIsBeingDragged = false;
         recycleVelocityTracker();

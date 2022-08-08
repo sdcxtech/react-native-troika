@@ -4,6 +4,7 @@ import { Platform } from 'react-native'
 import NestedScroll from './src/NestedScroll'
 import AvatarCrop from './src/AvatarCrop'
 import NativeNestedScroll from './src/NativeNestedScroll'
+import PullRefresh from './src/PullRefresh'
 
 // 配置全局样式
 Garden.setStyle({
@@ -19,6 +20,7 @@ ReactRegistry.registerComponent('App', () => App)
 ReactRegistry.registerComponent('NestedScroll', () => NestedScroll)
 ReactRegistry.registerComponent('NativeNestedScroll', () => NativeNestedScroll)
 ReactRegistry.registerComponent('AvatarCrop', () => AvatarCrop)
+ReactRegistry.registerComponent('RefreshControl', () => PullRefresh)
 
 // 重要必须
 ReactRegistry.endRegisterComponent()

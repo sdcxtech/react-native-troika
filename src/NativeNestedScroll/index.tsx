@@ -1,65 +1,61 @@
 import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { FlatList, Image, ListRenderItem, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, RefreshControl } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
-import WebView from 'react-native-webview'
+import { DemoFlatList } from '../PullRefresh/Components/DemoFlatList'
+import { DemoScrollView } from '../PullRefresh/Components/DemoScrollView'
+import { DemoWebView } from '../PullRefresh/Components/DemoWebView'
+import PullRefreshLayout from '../PullRefreshLayout'
 
-function NativeNestedScroll() {
-  const renderListItem: ListRenderItem<string> = ({ item }) => {
-    return <ListItem title={item} />
+export function NativeNestedScroll() {
+  const [refreshing, setRefreshing] = useState(false)
+  const beginRefresh = () => {
+    console.log('begin')
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 1500)
   }
 
-  const data = Array(100)
-    .fill('')
-    .map((_, index) => index + '')
-
+  const [stickyHeaderBeginIndex, setStickyHeaderBeginIndex] = useState(1)
   return (
     <View style={styles.container}>
       <CoordinatorLayout style={styles.coordinator}>
-        <AppBarLayout>
-          <View style={styles.content}>
-            <Text style={styles.text}>我是大魔王</Text>
+        <AppBarLayout stickyHeaderBeginIndex={stickyHeaderBeginIndex}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            onPress={() => {
+              setStickyHeaderBeginIndex(stickyHeaderBeginIndex > 0 ? 0 : 1)
+            }}>
+            <Text style={styles.text}>change appbar height</Text>
+          </TouchableOpacity>
+          <View style={[styles.text]}>
+            <Text>anchor</Text>
           </View>
         </AppBarLayout>
         <PagerView style={styles.pager}>
-          <FlatList
-            nestedScrollEnabled
-            data={data}
-            style={styles.list}
-            keyExtractor={item => item}
-            renderItem={renderListItem}
-          />
-          <ScrollView nestedScrollEnabled style={{ flex: 1 }}>
-            <View key={'1'} style={{ height: 200, backgroundColor: 'red' }} />
-            <View key={'2'} style={{ height: 300, backgroundColor: 'greed' }} />
-            <View key={'3'} style={{ height: 400, backgroundColor: 'gray' }} />
-          </ScrollView>
-          <WebView
-            contentContainerStyle={{ flexGrow: 1 }}
-            style={{ flex: 1 }}
-            originWhitelist={['*']}
-            source={{ uri: 'https://www.npmjs.com/package/react' }}
-            cacheEnabled={false}
-          />
+          <DemoFlatList />
+          <DemoScrollView />
+
+          <PullRefreshLayout
+            refreshing={refreshing}
+            onRefresh={beginRefresh}
+            onRefreshStop={() => {
+              setRefreshing(false)
+            }}
+            enableLoadMoreAction={true}
+            refreshViewOverPullLocation="bottom"
+            LoadMoreView={<Text style={{ backgroundColor: 'pink', height: 250 }}>load</Text>}>
+            <DemoWebView url="https://wangdoc.com" />
+          </PullRefreshLayout>
+          <RefreshControl refreshing={refreshing} onRefresh={beginRefresh}>
+            <DemoWebView url="https://wangdoc.com" />
+          </RefreshControl>
         </PagerView>
       </CoordinatorLayout>
     </View>
-  )
-}
-
-interface ListItemProps {
-  title: string
-  onPress?: () => void
-}
-
-function ListItem({ title, onPress }: ListItemProps) {
-  return (
-    <TouchableOpacity style={styles.item} onPress={onPress}>
-      <Text style={styles.itemText}>{title}</Text>
-      <Image source={require('../assets/indicator.png')} />
-    </TouchableOpacity>
   )
 }
 
@@ -70,7 +66,7 @@ const styles = StyleSheet.create({
   },
   coordinator: {
     flex: 1,
-    backgroundColor: '#00FF00',
+    backgroundColor: '#fff',
   },
   content: {
     backgroundColor: '#0000FF',
@@ -78,38 +74,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     fontSize: 18,
     color: '#FFFFFF',
   },
   pager: {
+    position: 'relative',
     height: '100%',
-  },
-  list: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  web: {
-    flex: 1,
-  },
-  item: {
-    height: 60,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-    paddingLeft: 16,
-    paddingRight: 16,
-  },
-  itemText: {
-    color: '#222222',
-    fontSize: 17,
+    overflow: 'hidden',
   },
 })
+
+const NativeNestedScrollPage = () => <NativeNestedScroll />
 
 export default withNavigationItem({
   titleItem: {
     title: '原生嵌套滑动',
   },
-})(NativeNestedScroll)
+})(NativeNestedScrollPage)

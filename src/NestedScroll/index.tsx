@@ -45,8 +45,8 @@ export function NativeNestedScroll() {
             onRefreshStop={() => {
               setRefreshing(false)
             }}
-            enableLoadMoreAction={true}
             refreshViewOverPullLocation="bottom"
+            enableLoadMoreAction={true}
             LoadMoreView={<Text style={{ backgroundColor: 'pink', height: 250 }}>load</Text>}>
             <DemoWebView url="https://wangdoc.com" />
           </PullRefreshLayout>

@@ -1184,10 +1184,10 @@
   resolved "https://registry.nlark.com/@react-native/assets/download/@react-native/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
   integrity sha1-xvm/Y9J0uvyOlwYo3iSYazClXI4=
 
-"@react-native/normalize-color@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.nlark.com/@react-native/normalize-color/download/@react-native/normalize-color-1.0.0.tgz?cache=0&sync_timestamp=1630450336172&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40react-native%2Fnormalize-color%2Fdownload%2F%40react-native%2Fnormalize-color-1.0.0.tgz#c52a99d4fe01049102d47dc45d40cbde4f720ab6"
-  integrity sha1-xSqZ1P4BBJEC1H3EXUDL3k9yCrY=
+"@react-native/normalize-color@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/@react-native/normalize-color/-/normalize-color-2.0.0.tgz#da955909432474a9a0fe1cbffc66576a0447f567"
+  integrity sha512-Wip/xsc5lw8vsBlmY2MO/gFLp3MvuZ2baBZjDeTjjndMgM0h5sxz7AZR62RDPGgstp8Np7JzjvVqVT7tpFZqsw==
 
 "@react-native/polyfills@2.0.0":
   version "2.0.0"
@@ -2022,9 +2022,9 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   integrity sha512-tVI4q5jjFV5CavAU8DXfza/TJcZutVKo/5Foskmsqcm0MsL91moHvwiGNnqaa2o6PF/7yT5ikDRcVcl8Rj6LCA==
 
 caniuse-lite@^1.0.30001280:
-  version "1.0.30001285"
-  resolved "https://registry.npmmirror.com/caniuse-lite/download/caniuse-lite-1.0.30001285.tgz#fe1e52229187e11d6670590790d669b9e03315b7"
-  integrity sha512-KAOkuUtcQ901MtmvxfKD+ODHH9YVDYnBt+TGYSz2KIfnq22CiArbUxXPN9067gNbgMlnNYRSwho8OPXZPALB9Q==
+  version "1.0.30001382"
+  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001382.tgz"
+  integrity sha512-2rtJwDmSZ716Pxm1wCtbPvHtbDWAreTPxXbkc5RkKglow3Ig/4GNGazDI9/BVnXbG/wnv6r3B5FEbkfg9OcTGg==
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -3332,10 +3332,10 @@ human-signals@^2.1.0:
   resolved "https://registry.nlark.com/human-signals/download/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha1-3JH8ukLk0G5Kuu0zs+ejwC9RTqA=
 
-hybrid-navigation@^2.5.1:
-  version "2.6.0"
-  resolved "https://registry.npmmirror.com/hybrid-navigation/download/hybrid-navigation-2.6.0.tgz#eb30b40cc027435e1b2208fd68fe37d019d14ddf"
-  integrity sha512-ukdO6ZmpLnNgPsIyeVWJccggR+tvsQ5ESSSPA/u23VLrCUmhU0Dk2MT0zZS1f1VPM3ZIuBh3vol279jzasFU1g==
+hybrid-navigation@^2.13.17:
+  version "2.13.17"
+  resolved "https://registry.npmmirror.com/hybrid-navigation/-/hybrid-navigation-2.13.17.tgz#c263f897d587d40b98fc7a31f0551242f48d9a97"
+  integrity sha512-ppYQ08hDBykDOgVSfI5tlICM+E1h+6gZ2f5bb6+FkoYNn99vOiEiMq/k7724Xgus+ucubrq7FH97UnCYeHQvzg==
   dependencies:
     path-to-regexp "^6.1.0"
 
@@ -5444,10 +5444,10 @@ range-parser@~1.2.1:
   resolved "https://registry.npm.taobao.org/range-parser/download/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
   integrity sha1-PPNwI9GZ4cJNGlW4SADC8+ZGgDE=
 
-react-devtools-core@^4.13.0:
-  version "4.21.0"
-  resolved "https://registry.npmmirror.com/react-devtools-core/download/react-devtools-core-4.21.0.tgz#a54c9a0fd7261491e616d6c87d1869e011d8521d"
-  integrity sha1-pUyaD9cmFJHmFtbIfRhp4BHYUh0=
+react-devtools-core@4.19.1:
+  version "4.19.1"
+  resolved "https://registry.npmmirror.com/react-devtools-core/-/react-devtools-core-4.19.1.tgz#bc37c2ef2f48f28c6af4c7292be9dca1b63deace"
+  integrity sha512-2wJiGffPWK0KggBjVwnTaAk+Z3MSxKInHmdzPTrBh1mAarexsa93Kw+WMX88+XjN+TtYgAiLe9xeTqcO5FfJTw==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
@@ -5462,10 +5462,10 @@ react-is@^16.8.1:
   resolved "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-native-codegen@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.npmmirror.com/react-native-codegen/download/react-native-codegen-0.0.7.tgz?cache=0&sync_timestamp=1635984654056&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Freact-native-codegen%2Fdownload%2Freact-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"
-  integrity sha1-hmUcXF/sZ6gHfvf0429+1FkEPhQ=
+react-native-codegen@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npmmirror.com/react-native-codegen/-/react-native-codegen-0.0.8.tgz#b7796a54074139d956fff2862cf1285db43c891b"
+  integrity sha512-k/944+0XD+8l7zDaiKfYabyEKmAmyZgS1mj+4LcSRPyHnrjgCHKrh/Y6jM6kucQ6xU1+1uyMmF/dSkikxK8i+Q==
   dependencies:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
@@ -5496,17 +5496,17 @@ react-native-webview@^11.16.0:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@^0.66.3:
-  version "0.66.3"
-  resolved "https://registry.npmmirror.com/react-native/download/react-native-0.66.3.tgz#25c7c4c7d81867326b3eb7a36f0fe6a61fa4104e"
-  integrity sha512-B/dQpuvta9YvF5MihDWefoGlTvxzUHK5X5RjdrXHAu/ihTehJXxEA+m6z/tufp1ZUMDjU+tMZK6gnehzCuYfzw==
+react-native@^0.67.5:
+  version "0.67.5"
+  resolved "https://registry.npmmirror.com/react-native/-/react-native-0.67.5.tgz#9f2aeabf0766fb4bd5385685f4f4f2406bcdf819"
+  integrity sha512-/xEksthqImZGDfcqzEmbOw0KRkp9/x+cC8T8uTHhSKLLa8pOFLGdF190UOjnLammGmAmFy0+ZcJf0Ujm53IGeA==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^6.0.0"
     "@react-native-community/cli-platform-android" "^6.0.0"
     "@react-native-community/cli-platform-ios" "^6.0.0"
     "@react-native/assets" "1.0.0"
-    "@react-native/normalize-color" "1.0.0"
+    "@react-native/normalize-color" "2.0.0"
     "@react-native/polyfills" "2.0.0"
     abort-controller "^3.0.0"
     anser "^1.4.9"
@@ -5515,7 +5515,6 @@ react-native@^0.66.3:
     hermes-engine "~0.9.0"
     invariant "^2.2.4"
     jsc-android "^250230.2.1"
-    metro-babel-register "0.66.2"
     metro-react-native-babel-transformer "0.66.2"
     metro-runtime "0.66.2"
     metro-source-map "0.66.2"
@@ -5523,8 +5522,8 @@ react-native@^0.66.3:
     pretty-format "^26.5.2"
     promise "^8.0.3"
     prop-types "^15.7.2"
-    react-devtools-core "^4.13.0"
-    react-native-codegen "^0.0.7"
+    react-devtools-core "4.19.1"
+    react-native-codegen "^0.0.8"
     react-refresh "^0.4.0"
     regenerator-runtime "^0.13.2"
     scheduler "^0.20.2"

@@ -16,6 +16,34 @@ const data: Array<Item> = [
     title: 'Pull Refresh',
     routeName: 'RefreshControl',
   },
+  {
+    title: 'NestedScroll + FlastList',
+    routeName: 'NestedScrollFlatList',
+  },
+  {
+    title: 'NestedScroll + PagerView',
+    routeName: 'NestedScrollPagerView',
+  },
+  {
+    title: 'NestedScroll + PagerView + StickyHeader',
+    routeName: 'NestedScrollPagerViewStickyHeader',
+  },
+  {
+    title: 'PullRefresh + FlastList',
+    routeName: 'PullRefreshFlatList',
+  },
+  {
+    title: 'PullRefresh + FlatList + NestedScroll',
+    routeName: 'PullRefreshFlatListNestedScroll',
+  },
+  {
+    title: 'PullRefresh + PagerView',
+    routeName: 'PullRefreshPagerView',
+  },
+  {
+    title: 'PullRefresh + PagerView + NestedScroll',
+    routeName: 'PullRefreshPagerViewNestedScroll',
+  },
 ]
 
 function App() {

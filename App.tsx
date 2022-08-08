@@ -9,16 +9,8 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: '嵌套滚动',
+    title: '嵌套滑动',
     routeName: 'NestedScroll',
-  },
-  {
-    title: '原生嵌套滑动',
-    routeName: 'NativeNestedScroll',
-  },
-  {
-    title: 'Avatar Crop',
-    routeName: 'AvatarCrop',
   },
   {
     title: 'Pull Refresh',

@@ -9,14 +9,6 @@ target 'MyUiDemo' do
         :path => config[:reactNativePath],
         :hermes_enabled => false
     )
-    
-    permissions_path = '../node_modules/react-native-permissions/ios'
-    pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-    pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-    pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
-    pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-    pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-    pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
 end
 
 post_install do |installer|

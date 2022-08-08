@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { View, Text } from 'react-native'
-import { NativeNestedScroll } from '../NativeNestedScroll'
+import { NativeNestedScroll } from '../NestedScroll'
 import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
 import { DemoFlatList, useDemoFlatlistData } from './Components/DemoFlatList'
 import { DemoScrollView } from './Components/DemoScrollView'

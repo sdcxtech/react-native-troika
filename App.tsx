@@ -9,20 +9,40 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: '嵌套滚动',
+    title: '嵌套滑动',
     routeName: 'NestedScroll',
-  },
-  {
-    title: '原生嵌套滑动',
-    routeName: 'NativeNestedScroll',
-  },
-  {
-    title: 'Avatar Crop',
-    routeName: 'AvatarCrop',
   },
   {
     title: 'Pull Refresh',
     routeName: 'RefreshControl',
+  },
+  {
+    title: 'NestedScroll + FlastList',
+    routeName: 'NestedScrollFlatList',
+  },
+  {
+    title: 'NestedScroll + PagerView',
+    routeName: 'NestedScrollPagerView',
+  },
+  {
+    title: 'NestedScroll + PagerView + StickyHeader',
+    routeName: 'NestedScrollPagerViewStickyHeader',
+  },
+  {
+    title: 'PullRefresh + FlastList',
+    routeName: 'PullRefreshFlatList',
+  },
+  {
+    title: 'PullRefresh + FlatList + NestedScroll',
+    routeName: 'PullRefreshFlatListNestedScroll',
+  },
+  {
+    title: 'PullRefresh + PagerView',
+    routeName: 'PullRefreshPagerView',
+  },
+  {
+    title: 'PullRefresh + PagerView + NestedScroll',
+    routeName: 'PullRefreshPagerViewNestedScroll',
   },
 ]
 

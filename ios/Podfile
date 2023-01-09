@@ -9,16 +9,14 @@ target 'MyUiDemo' do
         :path => config[:reactNativePath],
         :hermes_enabled => false
     )
-    
-    permissions_path = '../node_modules/react-native-permissions/ios'
-    pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-    pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-    pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
-    pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
-    pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-    pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
 end
 
 post_install do |installer|
     react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+        end
+    end
 end

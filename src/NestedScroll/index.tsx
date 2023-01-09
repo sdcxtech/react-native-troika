@@ -1,152 +1,94 @@
 import { withNavigationItem } from 'hybrid-navigation'
-import React, { useCallback, useState } from 'react'
-import {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, RefreshControl } from 'react-native'
+import CoordinatorLayout from '../CoordinatorLayout'
+import AppBarLayout from '../AppBarLayout'
+import PagerView from 'react-native-pager-view'
+import { DemoFlatList } from '../PullRefresh/Components/DemoFlatList'
+import { DemoScrollView } from '../PullRefresh/Components/DemoScrollView'
+import { DemoWebView } from '../PullRefresh/Components/DemoWebView'
+import PullRefreshLayout from '../PullRefreshLayout'
 
-function NestedScroll() {
-  const items = Array<string>(50).fill('')
+export function NativeNestedScroll() {
+  const [refreshing, setRefreshing] = useState(false)
+  const beginRefresh = () => {
+    console.log('begin')
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 1500)
+  }
 
-  const [outerEnabled, setOuterEnabled] = useState(true)
-  const [innerenabled, setInnerenabled] = useState(false)
-
-  const onInnerLayout = useCallback(
-    ({
-      nativeEvent: {
-        layout: { width, height },
-      },
-    }: LayoutChangeEvent) => {
-      console.log(width, height)
-    },
-    [],
-  )
-
-  const onInnerScroll = useCallback(
-    ({
-      nativeEvent: { contentOffset, contentSize, layoutMeasurement, velocity },
-    }: NativeSyntheticEvent<NativeScrollEvent>) => {
-      console.log('inner:', contentOffset, contentSize, layoutMeasurement, velocity)
-      console.log(Math.round(contentOffset.y + layoutMeasurement.height), Math.round(contentSize.height))
-
-      if (contentOffset.y === 0 && velocity && velocity.y < 0) {
-        setInnerenabled(false)
-        setOuterEnabled(true)
-        return
-      }
-
-      setInnerenabled(true)
-    },
-    [],
-  )
-
-  const [layout, setLayout] = useState({ width: 0, height: 0 })
-
-  const onOuterLayout = useCallback(
-    ({
-      nativeEvent: {
-        layout: { width, height },
-      },
-    }: LayoutChangeEvent) => {
-      console.log(width, height)
-      setLayout({ width, height })
-    },
-    [],
-  )
-
-  const onOuterScroll = useCallback(
-    ({
-      nativeEvent: { contentOffset, contentSize, layoutMeasurement, velocity },
-    }: NativeSyntheticEvent<NativeScrollEvent>) => {
-      console.log('outer:', contentOffset, contentSize, layoutMeasurement, velocity)
-      console.log(Math.trunc(contentOffset.y + layoutMeasurement.height), Math.trunc(contentSize.height))
-
-      const isReachEnd = Math.trunc(contentSize.height) <= Math.trunc(contentOffset.y + layoutMeasurement.height)
-
-      if (isReachEnd && velocity && velocity.y > 0) {
-        setInnerenabled(true)
-        setOuterEnabled(false)
-        return
-      }
-
-      setOuterEnabled(true)
-    },
-    [],
-  )
-
+  const [stickyHeaderBeginIndex, setStickyHeaderBeginIndex] = useState(1)
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      scrollEnabled={outerEnabled}
-      onLayout={onOuterLayout}
-      onScroll={onOuterScroll}>
-      <View style={styles.header}>
-        <Text style={styles.text}>Header</Text>
-      </View>
-      <View style={styles.tabbar}>
-        <Text style={styles.text}>tabbar</Text>
-      </View>
-      <ScrollView
-        style={[styles.nested, { ...layout }]}
-        nestedScrollEnabled
-        scrollEnabled={innerenabled && !outerEnabled}
-        onLayout={onInnerLayout}
-        onScroll={onInnerScroll}>
-        {items.map((v, i) => (
-          <View style={styles.item} key={i}>
-            <Text style={styles.itemText}>{i}</Text>
+    <View style={styles.container}>
+      <CoordinatorLayout style={styles.coordinator}>
+        <AppBarLayout stickyHeaderBeginIndex={stickyHeaderBeginIndex}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            onPress={() => {
+              setStickyHeaderBeginIndex(stickyHeaderBeginIndex > 0 ? 0 : 1)
+            }}>
+            <Text style={styles.text}>change appbar height</Text>
+          </TouchableOpacity>
+          <View style={[styles.text]}>
+            <Text>anchor</Text>
           </View>
-        ))}
-      </ScrollView>
-    </ScrollView>
+        </AppBarLayout>
+        <PagerView style={styles.pager}>
+          <DemoFlatList />
+          <DemoScrollView />
+
+          <PullRefreshLayout
+            refreshing={refreshing}
+            onRefresh={beginRefresh}
+            onRefreshStop={() => {
+              setRefreshing(false)
+            }}
+            refreshViewOverPullLocation="bottom"
+            enableLoadMoreAction={true}
+            LoadMoreView={<Text style={{ backgroundColor: 'pink', height: 250 }}>load</Text>}>
+            <DemoWebView url="https://wangdoc.com" />
+          </PullRefreshLayout>
+          <RefreshControl refreshing={refreshing} onRefresh={beginRefresh}>
+            <DemoWebView url="https://wangdoc.com" />
+          </RefreshControl>
+        </PagerView>
+      </CoordinatorLayout>
+    </View>
   )
 }
-
-export default withNavigationItem({
-  titleItem: {
-    title: '嵌套滚动',
-  },
-})(NestedScroll)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  header: {
-    paddingVertical: 200,
-    alignItems: 'center',
     backgroundColor: '#FF0000',
   },
-  text: {
-    fontSize: 30,
-  },
-  tabbar: {
-    height: 60,
-    backgroundColor: '#00FF00',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nested: {
+  coordinator: {
     flex: 1,
+    backgroundColor: '#fff',
   },
-  item: {
-    height: 60,
-    borderBottomColor: '#DDDDDD',
-    borderBottomWidth: 1,
+  content: {
+    backgroundColor: '#0000FF',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  itemText: {
-    fontSize: 16,
+  text: {
+    paddingVertical: 20,
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+  pager: {
+    position: 'relative',
+    height: '100%',
+    overflow: 'hidden',
   },
 })
+
+const NativeNestedScrollPage = () => <NativeNestedScroll />
+
+export default withNavigationItem({
+  titleItem: {
+    title: '原生嵌套滑动',
+  },
+})(NativeNestedScrollPage)

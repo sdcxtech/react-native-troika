@@ -1002,13 +1002,9 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (type == ViewCompat.TYPE_TOUCH) {
             if (dy > 0) {
                 if (mRefreshHelper.getOffsetState() != RefreshState.INIT) {
-                    if (dy >= mRefreshHelper.dyOfTargetViewWithInitPosition()) {
-                        offsetRefreshStateViewToPosition(mRefreshHelper.dyOfTargetViewWithInitPosition());
-                        consumed[1] = mRefreshHelper.dyOfTargetViewWithInitPosition();
-                    } else {
-                        consumed[1] = dy;
-                        offsetRefreshStateView(-dy);
-                    }
+                    int consumedY = Math.min(dy, mRefreshHelper.dyOfTargetViewWithInitPosition());
+                    offsetRefreshStateView(-consumedY);
+                    consumed[1] = consumedY;
                 }
             } else if (mLoadingMoreHelper.getOffsetState() != LoadingMoreState.INIT) {
                 consumed[1] = offsetLoadingMoreStateView(-dy, true);

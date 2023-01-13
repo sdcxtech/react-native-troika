@@ -104,7 +104,7 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         mNestedChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
         setChildrenDrawingOrderEnabled(true);
-        setTranslationZ(-1);
+        setElevation(-1);
         mRefreshHelper = new RefreshHelper();
         mLoadingMoreHelper = new LoadingMoreHelper();
     }

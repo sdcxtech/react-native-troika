@@ -1,12 +1,25 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react'
-import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, StyleProp, View, ViewStyle } from 'react-native'
+import {
+  findNodeHandle,
+  NativeSyntheticEvent,
+  requireNativeComponent,
+  StyleProp,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { setNativeLoadingMoreManually, setNativeRefreshingManually } from './commands'
 
 const PullRefreshLayoutAndroid =
-  requireNativeComponent<Omit<PullRefreshLayoutProps, 'RefreshView'>>('PullRefreshLayout')
+  requireNativeComponent<Omit<PullRefreshLayoutProps, 'RefreshView' | 'LoadMoreView'>>(
+    'PullRefreshLayout',
+  )
 
-const PullRefreshLayoutPlaceholderViewAndroid = requireNativeComponent<Omit<RefreshViewWrapperProps, 'ContentView'>>(
-  'PullRefreshLayoutPlaceholderView',
+const LoadMorePlaceholderViewAndroid = requireNativeComponent(
+  'PullRefreshLayoutLoadMorePlaceholderViewManager',
+)
+
+const RefreshPlaceholderViewAndroid = requireNativeComponent(
+  'PullRefreshLayoutRefreshPlaceholderViewManager',
 )
 
 interface RefreshViewWrapperProps {
@@ -47,14 +60,27 @@ interface PullRefreshLayoutProps {
   LoadMoreView?: React.ComponentType<any> | React.ReactElement | null | undefined
 }
 
-export function PullRefreshLayoutPlaceholderView({ ContentView, viewType }: RefreshViewWrapperProps) {
-  const _children = ContentView ? React.isValidElement(ContentView) ? ContentView : <ContentView /> : null
-  return React.isValidElement(_children) ? (
-    <PullRefreshLayoutPlaceholderViewAndroid viewType={viewType}>{_children}</PullRefreshLayoutPlaceholderViewAndroid>
+function PullRefreshLayoutPlaceholderView({ ContentView, viewType }: RefreshViewWrapperProps) {
+  const _children = ContentView ? (
+    React.isValidElement(ContentView) ? (
+      ContentView
+    ) : (
+      <ContentView />
+    )
   ) : null
+  if (React.isValidElement(_children)) {
+    if (viewType === 'REFRESH') {
+      return <RefreshPlaceholderViewAndroid>{_children}</RefreshPlaceholderViewAndroid>
+    }
+    if (viewType === 'LOAD_MORE') {
+      return <LoadMorePlaceholderViewAndroid>{_children}</LoadMorePlaceholderViewAndroid>
+    }
+  }
+
+  return null
 }
 
-function PullRefreshLayout({
+export default function PullRefreshLayout({
   style,
   children,
   refreshing,
@@ -73,10 +99,9 @@ function PullRefreshLayout({
   onLoadMoreStop,
   LoadMoreView,
 }: PropsWithChildren<PullRefreshLayoutProps>) {
-  const _children = React.Children.only(children)
   const ref = useRef(null)
   const [nativeRefreshing, setNativeRefreshing] = useState(refreshing)
-  const [nativeLoadingMore, setNativeLoadingMore] = useState(refreshing)
+  const [nativeLoadingMore, setNativeLoadingMore] = useState(loadingMore)
 
   useEffect(() => {
     if (nativeRefreshing !== refreshing && ref.current) {
@@ -108,6 +133,15 @@ function PullRefreshLayout({
     onLoadMoreStop && onLoadMoreStop()
   }
 
+  const _children =
+    React.Children.only(children) && React.isValidElement(children) ? (
+      <View style={{ height: '100%' }} removeClippedSubviews={false}>
+        {children}
+      </View>
+    ) : (
+      children
+    )
+
   return (
     <PullRefreshLayoutAndroid
       ref={ref}
@@ -125,14 +159,8 @@ function PullRefreshLayout({
       onLoadMorePull={onLoadMorePull}
       onLoadMoreStop={_onLoadMoreStop}>
       <PullRefreshLayoutPlaceholderView ContentView={RefreshView} viewType="REFRESH" />
-      {React.isValidElement(_children)
-        ? React.cloneElement(<View style={{ height: '100%' }}>{_children}</View>, {
-            removeClippedSubviews: false,
-          })
-        : _children}
+      {_children}
       <PullRefreshLayoutPlaceholderView ContentView={LoadMoreView} viewType="LOAD_MORE" />
     </PullRefreshLayoutAndroid>
   )
 }
-
-export default PullRefreshLayout

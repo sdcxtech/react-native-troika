@@ -1,6 +1,6 @@
 package com.example.myuidemo.reactpullrefreshlayout.refreshView;
 
-public interface OnLoadMorePullListener {
+public interface ILoadMoreView {
 
     void onLoadMore();
 

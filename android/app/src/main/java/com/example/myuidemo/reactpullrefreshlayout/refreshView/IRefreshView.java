@@ -4,7 +4,7 @@
 
 package com.example.myuidemo.reactpullrefreshlayout.refreshView;
 
-public interface IRefreshView   {
+public interface IRefreshView {
 
     void onRefresh();
 
@@ -12,4 +12,3 @@ public interface IRefreshView   {
 
     void onStop();
 }
-

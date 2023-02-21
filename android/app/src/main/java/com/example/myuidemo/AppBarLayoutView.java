@@ -17,7 +17,7 @@ public class AppBarLayoutView extends AppBarLayout {
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         AppBarLayout.LayoutParams params = new AppBarLayout.LayoutParams(width, height);
-        this.setLayoutParams(params);
+        setLayoutParams(params);
         linearLayoutReactViewGroupMeasureHelper = new LinearLayoutReactViewGroupMeasureHelper(this);
     }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 
 const FLATLIST_DATA = Array(40)
   .fill(Math.random() + '')
@@ -17,7 +17,8 @@ export function useDemoFlatlistData() {
   const [flatlistData, setFlatlistData] = useState(FLATLIST_DATA)
   return {
     flatlistData,
-    addFlatlistRefreshItem: () => setFlatlistData(data => [generateFlatlistItem(data.length, 'refresh'), ...data]),
+    addFlatlistRefreshItem: () =>
+      setFlatlistData(data => [generateFlatlistItem(data.length, 'refresh'), ...data]),
     addFlatlistLoadMoreItem: () =>
       setFlatlistData([...flatlistData, generateFlatlistItem(flatlistData.length, 'load more')]),
   }
@@ -36,11 +37,18 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
     />
   )
 }
-const Item = ({ title }: { title: string }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-)
+const Item = ({ title }: { title: string }) => {
+  const [clickCount, setClickCount] = useState(0)
+  return (
+    <TouchableHighlight underlayColor={'#e3e'} onPress={() => setClickCount(v => v + 1)}>
+      <View style={styles.item}>
+        <Text style={styles.title}>
+          {title} {clickCount}
+        </Text>
+      </View>
+    </TouchableHighlight>
+  )
+}
 
 const styles = StyleSheet.create({
   item: {

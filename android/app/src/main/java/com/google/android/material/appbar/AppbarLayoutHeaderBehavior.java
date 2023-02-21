@@ -17,6 +17,11 @@ public class AppbarLayoutHeaderBehavior extends AppBarLayout.Behavior {
     }
 
     @Override
+    boolean canDragView(AppBarLayout view) {
+        return true;
+    }
+    
+    @Override
     public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, @NonNull AppBarLayout child, View target, int dx, int dy, int[] consumed, int type) {
         if (dy != 0) {
             int min;

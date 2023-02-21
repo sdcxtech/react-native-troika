@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 
-public class SpinnerLoadMoreView extends AppCompatImageView implements OnLoadMorePullListener {
+public class SpinnerLoadMoreView extends AppCompatImageView implements ILoadMoreView {
     private static final String TAG = "SpinnerLoadMoreView";
 
     private static final int MAX_ALPHA = 255;
@@ -15,8 +15,8 @@ public class SpinnerLoadMoreView extends AppCompatImageView implements OnLoadMor
     private static final float TRIM_OFFSET = 0.4f;
     static final int CIRCLE_DIAMETER = 70;
 
-    private CircularProgressDrawable mProgress;
-    private int mCircleDiameter;
+    private final CircularProgressDrawable mProgress;
+    private final int mCircleDiameter;
 
     public SpinnerLoadMoreView(Context context) {
         super(context);

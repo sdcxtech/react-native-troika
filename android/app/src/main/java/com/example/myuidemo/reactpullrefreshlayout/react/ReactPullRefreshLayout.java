@@ -8,6 +8,9 @@ import android.widget.ScrollView;
 import com.example.myuidemo.CoordinatorLayoutView;
 import com.example.myuidemo.Helper.ViewHelper;
 import com.example.myuidemo.reactpullrefreshlayout.PullRefreshLayout;
+import com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview.LoadMorePlaceholderView;
+import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshDefaultView;
+import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshPlaceholderView;
 import com.reactnativecommunity.webview.NestedRNCWebView;
 
 public class ReactPullRefreshLayout extends PullRefreshLayout {
@@ -18,29 +21,26 @@ public class ReactPullRefreshLayout extends PullRefreshLayout {
 
     @Override
     public void addView(View child, int index, LayoutParams params) {
-        if (child instanceof PullRefreshLayoutPlaceholderView) {
-            ViewType viewType = ((PullRefreshLayoutPlaceholderView) child).getViewType();
-            if (viewType == ViewType.REFRESH) {
-                addRefreshView(child, index, params);
-                return;
-            }
-            if (viewType == ViewType.LOAD_MORE) {
-                addLoadMoreView(child, index, params);
-                return;
-            }
+        if (child instanceof RefreshPlaceholderView) {
+            addRefreshView(child, index, params);
+        } else if (child instanceof LoadMorePlaceholderView) {
+            addLoadMoreView(child, index, params);
+        } else {
+            super.addView(child, index, params);
         }
-        super.addView(child, index, params);
+    }
+
+    @Override
+    protected View createDefaultRefreshView() {
+        return new RefreshDefaultView(getContext());
     }
 
     @Override
     public void onViewRemoved(View child) {
-        if (child instanceof PullRefreshLayoutPlaceholderView) {
-            ViewType viewType = ((PullRefreshLayoutPlaceholderView) child).getViewType();
-            if (viewType == ViewType.REFRESH) {
-                addDefaultRefreshView();
-            } else if (viewType == ViewType.LOAD_MORE) {
-                addDefaultLoadMoreView();
-            }
+        if (child instanceof RefreshPlaceholderView) {
+            addDefaultRefreshView();
+        } else if (child instanceof LoadMorePlaceholderView) {
+            addDefaultLoadMoreView();
         }
         super.onViewRemoved(child);
     }

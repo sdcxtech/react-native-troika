@@ -1,47 +1,65 @@
-import React, { PropsWithChildren, useRef, useState } from 'react'
-import { LayoutChangeEvent, PixelRatio, requireNativeComponent, View, ViewProps } from 'react-native'
+import React, { PropsWithChildren, useMemo, useRef, useState } from 'react'
+import {
+  LayoutChangeEvent,
+  PixelRatio,
+  requireNativeComponent,
+  View,
+  ViewProps,
+} from 'react-native'
 
 const AppBarLayoutAndroid = requireNativeComponent<AppBarLayoutProps>('AppBarLayout')
 
-interface AppBarLayoutProps extends ViewProps {
+export interface AppBarLayoutProps extends ViewProps {
   fixedRange?: number
   stickyHeaderBeginIndex?: number
 }
 
-function AppBarLayout({ style, children, fixedRange, stickyHeaderBeginIndex }: PropsWithChildren<AppBarLayoutProps>) {
+function AppBarLayout({
+  style,
+  children,
+  fixedRange,
+  stickyHeaderBeginIndex,
+  onLayout,
+  ...props
+}: PropsWithChildren<AppBarLayoutProps>) {
   const [layoutHeight, setLayoutHeight] = useState(0)
   const childMap = useRef<Map<number, number>>(new Map())
 
-  const handleChildLayoutChange = (index: number, layoutEvent: LayoutChangeEvent) => {
-    const { y } = layoutEvent.nativeEvent.layout
-    childMap.current.set(index, y)
-  }
-
-  const handleLayoutChange = (layoutEvent: LayoutChangeEvent) => {
-    const { height } = layoutEvent.nativeEvent.layout
-    setLayoutHeight(height)
-  }
-
-  const getFixedRange = () => {
-    if (fixedRange) return fixedRange
-    if (stickyHeaderBeginIndex) {
-      const stickyHeaderBeginY = childMap.current.get(stickyHeaderBeginIndex)
-      if (stickyHeaderBeginY !== undefined) {
-        return PixelRatio.getPixelSizeForLayoutSize(layoutHeight - stickyHeaderBeginY)
-      }
-    }
-    return 0
-  }
-
   const _children = React.Children.map(children, (child, index) => {
     if (React.isValidElement(child)) {
-      return <View onLayout={event => handleChildLayoutChange(index, event)}>{child}</View>
+      const handleChildLayoutEvent = (layoutEvent: LayoutChangeEvent) => {
+        childMap.current.set(index, layoutEvent.nativeEvent.layout.y)
+      }
+      return <View onLayout={handleChildLayoutEvent}>{child}</View>
     }
     return child
   })
 
+  const handleLayoutChange = (layoutEvent: LayoutChangeEvent) => {
+    const { height } = layoutEvent.nativeEvent.layout
+    setLayoutHeight(height)
+    onLayout?.(layoutEvent)
+  }
+
+  const _fixedRange = useMemo(() => {
+    if (typeof fixedRange === 'number') {
+      return fixedRange
+    }
+    if (typeof stickyHeaderBeginIndex === 'number') {
+      const stickyHeaderBeginY = childMap.current.get(stickyHeaderBeginIndex)
+      if (typeof stickyHeaderBeginY === 'number') {
+        return PixelRatio.getPixelSizeForLayoutSize(layoutHeight - stickyHeaderBeginY)
+      }
+    }
+    return 0
+  }, [fixedRange, layoutHeight, stickyHeaderBeginIndex])
+
   return (
-    <AppBarLayoutAndroid style={style} fixedRange={getFixedRange()} onLayout={handleLayoutChange}>
+    <AppBarLayoutAndroid
+      style={style}
+      fixedRange={_fixedRange}
+      onLayout={handleLayoutChange}
+      {...props}>
       {_children}
     </AppBarLayoutAndroid>
   )

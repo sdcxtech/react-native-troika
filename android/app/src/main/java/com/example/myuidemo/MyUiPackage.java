@@ -3,7 +3,8 @@ package com.example.myuidemo;
 import androidx.annotation.NonNull;
 
 import com.example.myuidemo.reactpullrefreshlayout.react.PullRefreshLayoutManager;
-import com.example.myuidemo.reactpullrefreshlayout.react.PullRefreshLayoutPlaceholderViewManager;
+import com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview.LoadMorePlaceholderViewManager;
+import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshPlaceholderViewManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -24,6 +25,12 @@ public class MyUiPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList( new CoordinatorLayoutManager(), new AppBarLayoutManager(),new NestedRNCWebViewManager(),new PullRefreshLayoutManager(),new PullRefreshLayoutPlaceholderViewManager() );
+        return Arrays.asList(new CoordinatorLayoutManager(),
+                new AppBarLayoutManager(),
+                new NestedRNCWebViewManager(),
+                new PullRefreshLayoutManager(),
+                new RefreshPlaceholderViewManager(),
+                new LoadMorePlaceholderViewManager()
+        );
     }
 }

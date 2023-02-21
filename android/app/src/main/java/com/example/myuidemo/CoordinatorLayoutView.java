@@ -15,22 +15,18 @@ import androidx.core.view.NestedScrollingChildHelper;
 import com.example.myuidemo.Helper.ViewHelper;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.AppbarLayoutHeaderBehavior;
+import com.google.android.material.appbar.ScrollViewBehavior;
 
 public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIndexedViewGroup, NestedScrollingChild3 {
-
+    private static final String TAG = "CoordinatorLayoutView";
     private final ViewGroupDrawingOrderHelper drawingOrderHelper;
 
-    private NestedScrollingChildHelper mNestedScrollingChildHelper;
+    private final NestedScrollingChildHelper mNestedScrollingChildHelper;
 
     public CoordinatorLayoutView(@NonNull Context context) {
         super(context);
-        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        int height = ViewGroup.LayoutParams.MATCH_PARENT;
-        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
-        params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-        this.setLayoutParams(params);
+        setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
         mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
@@ -54,6 +50,9 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
         drawingOrderHelper.handleAddView(child);
         setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.addView(child, index, params);
+        ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setBehavior(
+                child instanceof AppBarLayoutView ? new AppbarLayoutHeaderBehavior() : new ScrollViewBehavior()
+        );
     }
 
     @Override

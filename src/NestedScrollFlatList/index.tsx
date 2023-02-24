@@ -8,8 +8,12 @@ import { FlatListPage } from '../components/FlatListPage'
 export function NestedScrollFlatList() {
   return (
     <CoordinatorLayout style={styles.coordinator}>
-      <AppBarLayout stickyHeaderBeginIndex={1}>
-        <Image source={require('../components/assets/cover.webp')} style={styles.image} resizeMode="cover" />
+      <AppBarLayout fixedHeight={120}>
+        <Image
+          source={require('../components/assets/cover.webp')}
+          style={styles.image}
+          resizeMode="cover"
+        />
         <View style={[styles.text]}>
           <Text>anchor</Text>
         </View>

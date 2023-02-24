@@ -21,7 +21,7 @@ function CoordinatorLayout({ style, children }: PropsWithChildren<CoordinatorLay
         if (isValidElement(element) && element.type === AppBarLayout) {
           const { style, ...props } = element.props as AppBarLayoutProps
           if (
-            typeof props.fixedRange === 'number' ||
+            typeof props.fixedHeight === 'number' ||
             typeof props.stickyHeaderBeginIndex === 'number'
           ) {
             siblingMaxZIndex = siblingMaxZIndex ?? getChildMaxZIndex(children)

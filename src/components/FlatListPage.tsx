@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 
 const FLATLIST_DATA = Array(40)
   .fill(Math.random() + '')
@@ -28,7 +28,7 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
   const renderItem = ({ item }: { item: { title: string } }) => <Item title={item.title} />
   return (
     <FlatList
-      style={{ flex: 1 }}
+      onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
       contentContainerStyle={{ flexGrow: 1 }}
       data={data}
       renderItem={renderItem}
@@ -40,13 +40,13 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
 const Item = ({ title }: { title: string }) => {
   const [clickCount, setClickCount] = useState(0)
   return (
-    <TouchableHighlight underlayColor={'#e3e'} onPress={() => setClickCount(v => v + 1)}>
+    <TouchableWithoutFeedback onPress={() => setClickCount(v => v + 1)}>
       <View style={styles.item}>
         <Text style={styles.title}>
           {title} {clickCount}
         </Text>
       </View>
-    </TouchableHighlight>
+    </TouchableWithoutFeedback>
   )
 }
 

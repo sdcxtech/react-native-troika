@@ -1,6 +1,5 @@
 package com.example.myuidemo;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -13,10 +12,10 @@ import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
 
 import com.example.myuidemo.Helper.ViewHelper;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
-import com.google.android.material.appbar.AppbarLayoutHeaderBehavior;
-import com.google.android.material.appbar.ScrollViewBehavior;
+import com.google.android.material.appbar.AppBarLayout;
 
 public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIndexedViewGroup, NestedScrollingChild3 {
     private static final String TAG = "CoordinatorLayoutView";
@@ -24,7 +23,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
 
     private final NestedScrollingChildHelper mNestedScrollingChildHelper;
 
-    public CoordinatorLayoutView(@NonNull Context context) {
+
+    public CoordinatorLayoutView(@NonNull ReactContext context) {
         super(context);
         setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
@@ -49,9 +49,10 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         drawingOrderHelper.handleAddView(child);
         setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
+
         super.addView(child, index, params);
         ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setBehavior(
-                child instanceof AppBarLayoutView ? new AppbarLayoutHeaderBehavior() : new ScrollViewBehavior()
+                child instanceof AppBarLayoutView ? new AppBarLayout.Behavior() : new AppBarLayout.ScrollingViewBehavior()
         );
     }
 
@@ -90,8 +91,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
             }
             final CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             final CoordinatorLayout.Behavior viewBehavior = lp.getBehavior();
-            if (viewBehavior instanceof AppbarLayoutHeaderBehavior &&
-                    (((AppbarLayoutHeaderBehavior) viewBehavior).getTopAndBottomOffset() < 0)) {
+            if (viewBehavior instanceof AppBarLayout.Behavior &&
+                    (((AppBarLayout.Behavior) viewBehavior).getTopAndBottomOffset() < 0)) {
                 return true;
             }
         }
@@ -116,8 +117,8 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
             }
             final CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
             final CoordinatorLayout.Behavior viewBehavior = lp.getBehavior();
-            if (viewBehavior instanceof AppbarLayoutHeaderBehavior) {
-                ((AppbarLayoutHeaderBehavior) viewBehavior).setTopAndBottomOffset(0);
+            if (viewBehavior instanceof AppBarLayout.Behavior) {
+                ((AppBarLayout.Behavior) viewBehavior).setTopAndBottomOffset(0);
             }
             View view = ViewHelper.findSpecificView(child, new Class[]{ScrollView.class, WebView.class});
             if (view != null) {

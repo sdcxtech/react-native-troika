@@ -25,13 +25,30 @@ public class ReactLinearPlaceholderLayout extends LinearLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Size size = linearLayoutReactViewGroupMeasureHelper.getLayoutSize();
-        boolean isSizeChange = getWidth() != size.getWidth() || getHeight() != size.getHeight();
-        setMeasuredDimension(size.getWidth(), size.getHeight());
-        if (isSizeChange) {
-            layout(getLeft(), getTop(), getRight(), getBottom());
-            postDelayed(this::requestLayout, 0);
+        if (linearLayoutReactViewGroupMeasureHelper.shouldDelegate()) {
+            Size size = linearLayoutReactViewGroupMeasureHelper.getLayoutSize();
+            boolean isSizeChange = getWidth() != size.getWidth() || getHeight() != size.getHeight();
+            setMeasuredDimension(size.getWidth(), size.getHeight());
+            if (isSizeChange) {
+                layout(getLeft(), getTop(), getRight(), getBottom());
+                requestLayout();
+            }
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+    }
+
+    private final Runnable measureAndLayout = () -> {
+        measure(
+                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        post(measureAndLayout);
     }
 }
 

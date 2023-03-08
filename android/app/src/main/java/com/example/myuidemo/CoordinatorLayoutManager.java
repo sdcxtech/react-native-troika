@@ -46,7 +46,6 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         });
     }
 
-
     @Override
     public boolean needsCustomLayoutForChildren() {
         return true;

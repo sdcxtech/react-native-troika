@@ -27,12 +27,21 @@ ReactRegistry.registerComponent('NestedScroll', () => NestedScroll)
 ReactRegistry.registerComponent('RefreshControl', () => PullRefresh)
 ReactRegistry.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList)
 ReactRegistry.registerComponent('NestedScrollPagerView', () => NestedScrollPagerView)
-ReactRegistry.registerComponent('NestedScrollPagerViewStickyHeader', () => NestedScrollPagerViewStickyHeader)
+ReactRegistry.registerComponent(
+  'NestedScrollPagerViewStickyHeader',
+  () => NestedScrollPagerViewStickyHeader,
+)
 
 ReactRegistry.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList)
-ReactRegistry.registerComponent('PullRefreshFlatListNestedScroll', () => PullRefreshFlatListNestedScroll)
+ReactRegistry.registerComponent(
+  'PullRefreshFlatListNestedScroll',
+  () => PullRefreshFlatListNestedScroll,
+)
 ReactRegistry.registerComponent('PullRefreshPagerView', () => PullRefreshPagerView)
-ReactRegistry.registerComponent('PullRefreshPagerViewNestedScroll', () => PullRefreshPagerViewNestedScroll)
+ReactRegistry.registerComponent(
+  'PullRefreshPagerViewNestedScroll',
+  () => PullRefreshPagerViewNestedScroll,
+)
 
 // 重要必须
 ReactRegistry.endRegisterComponent()

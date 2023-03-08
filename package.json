@@ -11,7 +11,7 @@
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "hybrid-navigation": "^2.13.17",
+    "hybrid-navigation": "^2.15.2",
     "react": "17.0.2",
     "react-native": "^0.67.5",
     "react-native-iphone-x-helper": "^1.3.1",

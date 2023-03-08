@@ -12,10 +12,9 @@ import com.google.android.material.appbar.AppBarLayout;
 
 public class AppBarLayoutView extends AppBarLayout {
     private final static int INVALID_INDEX = -1;
-    int mStickyHeaderBeginIndex = INVALID_INDEX;
-    int mFixedHeight = 0;
-
-    private final LinearLayoutReactViewGroupMeasureHelper linearLayoutReactViewGroupMeasureHelper;
+    private int mStickyHeaderBeginIndex = INVALID_INDEX;
+    private int mFixedHeight = 0;
+    private final LinearLayoutReactViewGroupMeasureHelper mMeasureHelper;
 
     public AppBarLayoutView(@NonNull Context context) {
         super(context);
@@ -23,13 +22,17 @@ public class AppBarLayoutView extends AppBarLayout {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         CoordinatorLayoutView.LayoutParams params = new CoordinatorLayoutView.LayoutParams(width, height);
         setLayoutParams(params);
-        linearLayoutReactViewGroupMeasureHelper = new LinearLayoutReactViewGroupMeasureHelper(this);
+        mMeasureHelper = new LinearLayoutReactViewGroupMeasureHelper(this);
+    }
+
+    public boolean canDrag() {
+        return true;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (linearLayoutReactViewGroupMeasureHelper.shouldDelegate()) {
-            Size size = linearLayoutReactViewGroupMeasureHelper.getLayoutSize();
+        if (mMeasureHelper.shouldDelegate()) {
+            Size size = mMeasureHelper.getLayoutSize();
             boolean isSizeChange = getWidth() != size.getWidth() || getHeight() != size.getHeight();
             setMeasuredDimension(size.getWidth(), size.getHeight());
             if (isSizeChange) {
@@ -41,15 +44,13 @@ public class AppBarLayoutView extends AppBarLayout {
         }
     }
 
-
     public void setAppbarLayoutFixedHeight(int fixedHeight) {
-        this.mFixedHeight = fixedHeight;
+        mFixedHeight = fixedHeight;
         refreshFixedHeader();
     }
 
-
     public void setStickyHeaderBeginIndex(int index) {
-        this.mStickyHeaderBeginIndex = index;
+        mStickyHeaderBeginIndex = index;
         refreshFixedHeader();
     }
 
@@ -73,6 +74,7 @@ public class AppBarLayoutView extends AppBarLayout {
         } else {
             refreshFixedHeightByHeaderIndex();
         }
+
         if (getParent() instanceof CoordinatorLayoutView) {
             post(() -> getParent().requestLayout());
         }
@@ -109,7 +111,8 @@ public class AppBarLayoutView extends AppBarLayout {
     void setAppbarLayoutFixedChildHeight(View view, int height) {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         if (layoutParams instanceof AppBarLayout.LayoutParams) {
-            ((AppBarLayout.LayoutParams) layoutParams).setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+            int flags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED;
+            ((AppBarLayout.LayoutParams) layoutParams).setScrollFlags(flags);
             view.setMinimumHeight(height);
         }
     }

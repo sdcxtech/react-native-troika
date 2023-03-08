@@ -1,11 +1,8 @@
 package com.example.myuidemo.Helper;
 
-import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.facebook.react.views.view.ReactViewGroup;
 
 import java.util.HashMap;
 import java.util.Map;

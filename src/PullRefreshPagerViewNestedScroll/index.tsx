@@ -6,9 +6,9 @@ import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
-import PullRefreshFlatList from '../PullRefreshFlatList'
-import PullRefreshScrollView from '../PullRefreshScrollView'
-import PullRefreshWebView from '../PullRefreshWebView'
+import PullRefreshFlatList from '../components/PullRefreshFlatList'
+import PullRefreshScrollView from '../components/PullRefreshScrollView'
+import PullRefreshWebView from '../components/PullRefreshWebView'
 import { FlatListPage } from '../components/FlatListPage'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
 
 export default withNavigationItem({
   titleItem: {
-    title: 'PullRefresh + PagerView + NestedScroll',
+    title: 'NestedScroll + PagerView + PullRefresh',
   },
 })(PullRefreshPagerViewNestedScroll)

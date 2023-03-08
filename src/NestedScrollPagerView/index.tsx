@@ -15,21 +15,39 @@ const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(Pag
 const pages = ['FlatList', 'ScrollView', 'WebView']
 
 export function NestedScrollPagerView() {
-  const { pagerRef, setPage, page, position, offset, isIdle, onPageScroll, onPageSelected, onPageScrollStateChanged } =
-    usePagerView()
+  const {
+    pagerRef,
+    setPage,
+    page,
+    position,
+    offset,
+    isIdle,
+    onPageScroll,
+    onPageSelected,
+    onPageScrollStateChanged,
+  } = usePagerView()
 
   return (
     <CoordinatorLayout style={styles.coordinator}>
       <AppBarLayout>
-        <Image source={require('../components/assets/cover.webp')} style={styles.image} resizeMode="cover" />
+        <Image
+          source={require('../components/assets/cover.webp')}
+          style={styles.image}
+          resizeMode="cover"
+        />
       </AppBarLayout>
       <View style={{ height: '100%' }} collapsable={false}>
-        <TabBar tabs={pages} onTabPress={setPage} position={position} offset={offset} page={page} isIdle={isIdle} />
+        <TabBar
+          tabs={pages}
+          onTabPress={setPage}
+          position={position}
+          offset={offset}
+          page={page}
+          isIdle={isIdle}
+        />
         <AnimatedPagerView
           ref={pagerRef}
           style={styles.pager}
-          overdrag={true}
-          overScrollMode="always"
           onPageScroll={onPageScroll}
           onPageSelected={onPageSelected}
           onPageScrollStateChanged={onPageScrollStateChanged}>

@@ -9,14 +9,6 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: '嵌套滑动',
-    routeName: 'NestedScroll',
-  },
-  {
-    title: 'Pull Refresh',
-    routeName: 'RefreshControl',
-  },
-  {
     title: 'NestedScroll + FlastList',
     routeName: 'NestedScrollFlatList',
   },
@@ -33,15 +25,19 @@ const data: Array<Item> = [
     routeName: 'PullRefreshFlatList',
   },
   {
-    title: 'PullRefresh + FlatList + NestedScroll',
+    title: 'PullRefresh + NestedScroll + FlatList',
     routeName: 'PullRefreshFlatListNestedScroll',
   },
   {
-    title: 'PullRefresh + PagerView',
+    title: 'PullRefresh + NestedScroll + PagerView',
+    routeName: 'PullRefreshNestedScrollPagerView',
+  },
+  {
+    title: 'PagerView + PullRefresh',
     routeName: 'PullRefreshPagerView',
   },
   {
-    title: 'PullRefresh + PagerView + NestedScroll',
+    title: 'NestedScroll + PagerView + PullRefresh',
     routeName: 'PullRefreshPagerViewNestedScroll',
   },
 ]

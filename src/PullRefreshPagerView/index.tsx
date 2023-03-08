@@ -4,21 +4,37 @@ import { Animated, StyleSheet, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
-import PullRefreshFlatList from '../PullRefreshFlatList'
-import PullRefreshScrollView from '../PullRefreshScrollView'
-import PullRefreshWebView from '../PullRefreshWebView'
+import PullRefreshFlatList from '../components/PullRefreshFlatList'
+import PullRefreshScrollView from '../components/PullRefreshScrollView'
+import PullRefreshWebView from '../components/PullRefreshWebView'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
 const pages = ['FlatList', 'ScrollView', 'WebView']
 
 export function PullRefreshPagerView() {
-  const { pagerRef, setPage, page, position, offset, isIdle, onPageScroll, onPageSelected, onPageScrollStateChanged } =
-    usePagerView()
+  const {
+    pagerRef,
+    setPage,
+    page,
+    position,
+    offset,
+    isIdle,
+    onPageScroll,
+    onPageSelected,
+    onPageScrollStateChanged,
+  } = usePagerView()
 
   return (
     <View style={styles.container}>
-      <TabBar tabs={pages} onTabPress={setPage} position={position} offset={offset} page={page} isIdle={isIdle} />
+      <TabBar
+        tabs={pages}
+        onTabPress={setPage}
+        position={position}
+        offset={offset}
+        page={page}
+        isIdle={isIdle}
+      />
       <AnimatedPagerView
         ref={pagerRef}
         style={styles.pager}
@@ -46,6 +62,6 @@ const styles = StyleSheet.create({
 
 export default withNavigationItem({
   titleItem: {
-    title: 'PullRefresh + PagerView',
+    title: 'PagerView + PullRefresh',
   },
 })(PullRefreshPagerView)

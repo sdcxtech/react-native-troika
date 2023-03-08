@@ -1,52 +1,54 @@
 import App from './App'
-import { ReactRegistry, Garden, Navigator } from 'hybrid-navigation'
+import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
-import NestedScroll from './src/NestedScroll'
 import NestedScrollFlatList from './src/NestedScrollFlatList'
 import NestedScrollPagerView from './src/NestedScrollPagerView'
 import NestedScrollPagerViewStickyHeader from './src/NestedScrollPagerViewStickyHeader'
 
-import PullRefresh from './src/PullRefresh'
-import PullRefreshFlatList from './src/PullRefreshFlatList'
+import PullRefreshFlatList from './src/components/PullRefreshFlatList'
 import PullRefreshPagerView from './src/PullRefreshPagerView'
 import PullRefreshFlatListNestedScroll from './src/PullRefreshFlatListNestedScroll'
 import PullRefreshPagerViewNestedScroll from './src/PullRefreshPagerViewNestedScroll'
+import PullRefreshNestedScrollPagerView from './src/PullRefreshNestedScrollPagerView'
 
 // 配置全局样式
-Garden.setStyle({
+Navigation.setDefaultOptions({
   topBarStyle: 'dark-content',
   statusBarColorAndroid: Platform.Version > 21 ? undefined : '#4A4A4A',
+  scrimAlphaAndroid: 100,
 })
 
 // 重要必须
-ReactRegistry.startRegisterComponent()
+Navigation.startRegisterComponent()
 
 // 注意，你的每一个页面都需要注册
-ReactRegistry.registerComponent('App', () => App)
-ReactRegistry.registerComponent('NestedScroll', () => NestedScroll)
-ReactRegistry.registerComponent('RefreshControl', () => PullRefresh)
-ReactRegistry.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList)
-ReactRegistry.registerComponent('NestedScrollPagerView', () => NestedScrollPagerView)
-ReactRegistry.registerComponent(
+Navigation.registerComponent('App', () => App)
+Navigation.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList)
+Navigation.registerComponent('NestedScrollPagerView', () => NestedScrollPagerView)
+Navigation.registerComponent(
   'NestedScrollPagerViewStickyHeader',
   () => NestedScrollPagerViewStickyHeader,
 )
 
-ReactRegistry.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList)
-ReactRegistry.registerComponent(
+Navigation.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList)
+Navigation.registerComponent(
   'PullRefreshFlatListNestedScroll',
   () => PullRefreshFlatListNestedScroll,
 )
-ReactRegistry.registerComponent('PullRefreshPagerView', () => PullRefreshPagerView)
-ReactRegistry.registerComponent(
+Navigation.registerComponent('PullRefreshPagerView', () => PullRefreshPagerView)
+Navigation.registerComponent(
   'PullRefreshPagerViewNestedScroll',
   () => PullRefreshPagerViewNestedScroll,
 )
+Navigation.registerComponent(
+  'PullRefreshNestedScrollPagerView',
+  () => PullRefreshNestedScrollPagerView,
+)
 
 // 重要必须
-ReactRegistry.endRegisterComponent()
+Navigation.endRegisterComponent()
 
-Navigator.setRoot({
+Navigation.setRoot({
   stack: {
     children: [{ screen: { moduleName: 'App' } }],
   },

@@ -1,8 +1,8 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { View, Text } from 'react-native'
-import { ScrollViewPage } from '../components/ScrollViewPage'
-import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
+import { ScrollViewPage } from '../ScrollViewPage'
+import PullRefreshLayout, { PullEvent } from '../../PullRefreshLayout'
 
 function PullRefreshScrollView() {
   const [refreshing, setRefreshing] = useState(false)

@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
-import { WebViewPage } from '../components/WebViewPage'
-import PullRefreshLayout from '../PullRefreshLayout'
+import { WebViewPage } from '../WebViewPage'
+import PullRefreshLayout from '../../PullRefreshLayout'
 
 function PullRefreshWebView() {
   const [refreshing, setRefreshing] = useState(false)

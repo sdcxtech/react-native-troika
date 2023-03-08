@@ -4,7 +4,6 @@ import {
   NativeSyntheticEvent,
   requireNativeComponent,
   StyleProp,
-  View,
   ViewStyle,
 } from 'react-native'
 import { setNativeLoadingMoreManually, setNativeRefreshingManually } from './commands'

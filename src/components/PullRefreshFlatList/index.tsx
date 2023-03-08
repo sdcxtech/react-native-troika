@@ -1,8 +1,8 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { View, Text } from 'react-native'
-import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
-import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
+import { FlatListPage, useDemoFlatlistData } from '../FlatListPage'
+import PullRefreshLayout, { PullEvent } from '../../PullRefreshLayout'
 
 function PullRefreshFlatList() {
   const [refreshing, setRefreshing] = useState(false)

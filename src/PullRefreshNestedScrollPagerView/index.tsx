@@ -1,17 +1,38 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Animated, Image, StyleSheet, Text, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
+import PagerView from 'react-native-pager-view'
+import { ScrollViewPage } from '../components/ScrollViewPage'
+import { WebViewPage } from '../components/WebViewPage'
+import TabBar from '../components/TabBar'
+import usePagerView from '../components/usePagerView'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
 import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
 
-export function PullRefreshFlatListNestedScroll() {
+const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
+
+const pages = ['FlatList', 'ScrollView', 'WebView']
+
+export function PullRefreshNestedScrollPagerView() {
   const [refreshing, setRefreshing] = useState(false)
   const [statusText, setStatusText] = useState('下拉刷新')
   const [loadingMore, setLoadingMore] = useState(false)
-  const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
+  const { addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
   const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const {
+    pagerRef,
+    setPage,
+    page,
+    position,
+    offset,
+    isIdle,
+    onPageScroll,
+    onPageSelected,
+    onPageScrollStateChanged,
+  } = usePagerView()
 
   const clearPendingAction = () => {
     if (pendingAction.current) {
@@ -95,11 +116,27 @@ export function PullRefreshFlatListNestedScroll() {
             style={styles.image}
             resizeMode="cover"
           />
-          <View style={[styles.text]}>
-            <Text>anchor</Text>
-          </View>
+          <TabBar
+            tabs={pages}
+            onTabPress={setPage}
+            position={position}
+            offset={offset}
+            page={page}
+            isIdle={isIdle}
+          />
         </AppBarLayout>
-        <FlatListPage data={flatlistData} />
+        <AnimatedPagerView
+          ref={pagerRef}
+          style={styles.pager}
+          overdrag={true}
+          overScrollMode="always"
+          onPageScroll={onPageScroll}
+          onPageSelected={onPageSelected}
+          onPageScrollStateChanged={onPageScrollStateChanged}>
+          <FlatListPage />
+          <ScrollViewPage />
+          <WebViewPage url="https://wangdoc.com" />
+        </AnimatedPagerView>
       </CoordinatorLayout>
     </PullRefreshLayout>
   )
@@ -109,6 +146,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FF0000',
+  },
+  pager: {
+    height: '100%',
   },
   coordinator: {
     flex: 1,
@@ -132,6 +172,6 @@ const styles = StyleSheet.create({
 
 export default withNavigationItem({
   titleItem: {
-    title: 'PullRefresh + NestedScroll + FlatList',
+    title: 'PullRefresh + NestedScroll + PagerView',
   },
-})(PullRefreshFlatListNestedScroll)
+})(PullRefreshNestedScrollPagerView)

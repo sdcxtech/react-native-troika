@@ -86,6 +86,11 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     }
 
     @Override
+    protected int getChildDrawingOrder(int childCount, int drawingPosition) {
+        return mDrawingOrderHelper.getChildDrawingOrder(childCount, drawingPosition);
+    }
+
+    @Override
     public void updateDrawingOrder() {
         mDrawingOrderHelper.update();
         setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
@@ -176,7 +181,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     @Override
     public void onStopNestedScroll(View target, int type) {
         super.onStopNestedScroll(target, type);
-        mNestedScrollingChildHelper.stopNestedScroll(type);
+        stopNestedScroll(type);
     }
 
     @Override

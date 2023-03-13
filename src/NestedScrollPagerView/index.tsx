@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
-import { Animated, Image, StyleSheet, View } from 'react-native'
+import { Animated, Image, RefreshControl, StyleSheet, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
@@ -52,7 +52,9 @@ export function NestedScrollPagerView() {
           onPageSelected={onPageSelected}
           onPageScrollStateChanged={onPageScrollStateChanged}>
           <FlatListPage />
-          <ScrollViewPage />
+          <RefreshControl refreshing={false}>
+            <ScrollViewPage />
+          </RefreshControl>
           <WebViewPage url="https://wangdoc.com" />
         </AnimatedPagerView>
       </View>

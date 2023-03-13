@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { Animated, Image, StyleSheet } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { Animated, Image, RefreshControl, StyleSheet } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
@@ -26,6 +26,15 @@ export function NestedScrollPagerViewStickyHeader() {
     onPageSelected,
     onPageScrollStateChanged,
   } = usePagerView()
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
+  }, [])
 
   return (
     <CoordinatorLayout style={styles.coordinator}>
@@ -53,7 +62,9 @@ export function NestedScrollPagerViewStickyHeader() {
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
         <FlatListPage />
-        <ScrollViewPage />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
+          <ScrollViewPage />
+        </RefreshControl>
         <WebViewPage url="https://wangdoc.com" />
       </AnimatedPagerView>
     </CoordinatorLayout>

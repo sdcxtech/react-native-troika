@@ -1,7 +1,10 @@
 import React, { PropsWithChildren } from 'react'
-import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native'
+import { Platform, requireNativeComponent, StyleProp, ViewStyle } from 'react-native'
 
-const CoordinatorLayoutAndroid = requireNativeComponent<any>('CoordinatorLayout')
+const CoordinatorLayoutAndroid =
+  Platform.OS === 'android'
+    ? requireNativeComponent<any>('CoordinatorLayout')
+    : requireNativeComponent<any>('NestedScrollView')
 
 interface CoordinatorLayoutProps {
   style?: StyleProp<ViewStyle>

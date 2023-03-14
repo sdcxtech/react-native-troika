@@ -8,7 +8,7 @@ import { FlatListPage } from '../components/FlatListPage'
 export function NestedScrollFlatList() {
   return (
     <CoordinatorLayout style={styles.coordinator}>
-      <AppBarLayout fixedHeight={120}>
+      <AppBarLayout fixedHeight={80}>
         <Image
           source={require('../components/assets/cover.webp')}
           style={styles.image}
@@ -18,14 +18,16 @@ export function NestedScrollFlatList() {
           <Text>anchor</Text>
         </View>
       </AppBarLayout>
-      <FlatListPage />
+      <View style={{ height: '100%' }}>
+        <FlatListPage />
+      </View>
     </CoordinatorLayout>
   )
 }
 
 const styles = StyleSheet.create({
   coordinator: {
-    flex: 1,
+    height: '100%',
     backgroundColor: '#fff',
   },
   content: {
@@ -38,7 +40,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    paddingVertical: 20,
+    height: 60,
+    justifyContent: 'center',
     fontSize: 18,
     color: '#FFFFFF',
   },

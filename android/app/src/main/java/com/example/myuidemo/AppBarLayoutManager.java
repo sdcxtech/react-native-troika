@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -35,7 +36,7 @@ public class AppBarLayoutManager extends ViewGroupManager<AppBarLayoutView> {
 
     @ReactProp(name = "fixedHeight")
     public void setFixedHeight(AppBarLayoutView view, int fixedHeight) {
-        view.setAppbarLayoutFixedHeight(fixedHeight);
+        view.setAppbarLayoutFixedHeight((int) PixelUtil.toPixelFromDIP(fixedHeight));
     }
 
     @ReactProp(name = "stickyHeaderBeginIndex")

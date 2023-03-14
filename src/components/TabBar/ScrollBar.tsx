@@ -53,7 +53,7 @@ export default function ScrollBar({ style, page, children, ...props }: ScrollBar
       horizontal
       onContentSizeChange={onContentSizeChange}
       onLayout={onLayout}
-      bounces={true}
+      bounces={false}
       showsHorizontalScrollIndicator={false}
       {...props}>
       {React.cloneElement(children as any, { onTabsLayout })}

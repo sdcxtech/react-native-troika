@@ -1,7 +1,10 @@
 import React, { PropsWithChildren } from 'react'
-import { PixelRatio, requireNativeComponent, ViewProps } from 'react-native'
+import { Platform, requireNativeComponent, ViewProps } from 'react-native'
 
-const AppBarLayoutAndroid = requireNativeComponent<AppBarLayoutProps>('AppBarLayout')
+const AppBarLayoutAndroid =
+  Platform.OS === 'android'
+    ? requireNativeComponent<AppBarLayoutProps>('AppBarLayout')
+    : requireNativeComponent('NestedScrollViewHeader')
 
 export interface AppBarLayoutProps extends ViewProps {
   fixedHeight?: number
@@ -11,14 +14,14 @@ export interface AppBarLayoutProps extends ViewProps {
 function AppBarLayout({
   style,
   children,
-  fixedHeight,
+  fixedHeight = 0,
   stickyHeaderBeginIndex,
   ...props
 }: PropsWithChildren<AppBarLayoutProps>) {
   return (
     <AppBarLayoutAndroid
       style={style}
-      fixedHeight={fixedHeight ? PixelRatio.getPixelSizeForLayoutSize(fixedHeight) : 0}
+      fixedHeight={fixedHeight}
       stickyHeaderBeginIndex={stickyHeaderBeginIndex}
       {...props}>
       {children}

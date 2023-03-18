@@ -1,5 +1,4 @@
 #import <React/RCTUIManager.h>
-#import <React/RCTBridge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

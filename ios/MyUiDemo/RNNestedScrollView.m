@@ -93,11 +93,11 @@
         _main.showsVerticalScrollIndicator = NO;
         _main.showsHorizontalScrollIndicator = NO;
         _main.scrollsToTop = NO;
- 
+        _main.delaysContentTouches = NO;
+        _main.bounces = NO;
         if (@available(iOS 11.0, *)) {
             _main.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
-
         [self addSubview:_main];
     }
     return self;
@@ -234,6 +234,10 @@
     return CGSizeMake(self.frame.size.width, self.frame.size.height + [self headerScrollRange]);
 }
 
+- (void)reactSetFrame:(CGRect)frame {
+    [super reactSetFrame:frame];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self updateContentSizeIfNeeded];
@@ -241,16 +245,20 @@
 
 - (void)updateContentSizeIfNeeded {
     CGSize contentSize = self.contentSize;
-    if (!CGSizeEqualToSize(_main.contentSize, contentSize)) {
+    if (_CGSizeValid(contentSize) && !CGSizeEqualToSize(_main.contentSize, contentSize)) {
         _main.contentSize = contentSize;
     }
     
     CGSize scrollingChildSize = CGSizeMake(self.frame.size.width, self.frame.size.height - (self.header.frame.size.height -  [self headerScrollRange]));
     
-    if (scrollingChildSize.height > 0) {
+    if (_CGSizeValid(scrollingChildSize)) {
         RNNestedScrollViewLocalData *localData = [[RNNestedScrollViewLocalData alloc] initWithSize:scrollingChildSize];
         [_bridge.uiManager setLocalData:localData forView:self];
     }
+}
+
+static BOOL _CGSizeValid(CGSize size) {
+    return size.width >0 && size.height >0;
 }
 
 @end

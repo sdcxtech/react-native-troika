@@ -2,6 +2,8 @@
 #import "RNNestedScrollView.h"
 #import "RNNestedScrollShadowView.h"
 
+#import <React/RCTBridge.h>
+
 @implementation RNNestedScrollViewManager
 
 RCT_EXPORT_MODULE(NestedScrollView)

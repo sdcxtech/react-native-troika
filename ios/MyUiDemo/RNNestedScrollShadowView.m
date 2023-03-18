@@ -15,7 +15,7 @@
     CGSize size = localData.scrollingChildSize;
     NSUInteger count = self.reactSubviews.count;
 
-    RCTAssert(count <= 2, @"`NNestedScrollView` can have at most two child component.");
+    RCTAssert(count <= 2, @"`NestedScrollView` can have at most two child component.");
 
     for (NSUInteger i = 0; i < count; i ++) {
         if (i == 1) {
@@ -33,7 +33,7 @@
         return;
     }
     
-    RCTAssert(self.reactSubviews.count == 2, @"`NNestedScrollView` can have at most two child component.");
+    RCTAssert(self.reactSubviews.count == 2, @"`NestedScrollView` can have at most two child component.");
     
     RCTLayoutMetrics layoutMetrics = self.layoutMetrics;
     if (layoutMetrics.displayType == RCTDisplayTypeNone) {

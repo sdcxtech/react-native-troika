@@ -32,6 +32,14 @@
     }
 }
 
+- (void)reactSetFrame:(CGRect)frame {
+    [super reactSetFrame:frame];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+}
+
 - (void)notityContentSizeChanged {
     RNNestedScrollView *scrollView = (RNNestedScrollView *)self.superview.superview;
     if (!scrollView) {

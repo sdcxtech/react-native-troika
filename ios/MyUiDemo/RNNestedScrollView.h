@@ -1,9 +1,9 @@
-#import <React/RCTView.h>
+#import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNNestedScrollView : RCTView
+@interface RNNestedScrollView : UIView
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 

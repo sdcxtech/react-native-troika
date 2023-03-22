@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import RefreshFooter from '../RefreshFooter'
+import PullToRefresh from '../PullToRefresh'
+import RefreshHeader from '../RefreshHeader'
 
 const FLATLIST_DATA = Array(40)
   .fill(Math.random() + '')
@@ -37,17 +40,47 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
     }, 2000)
   }
 
+  const [loadingMore, setLoadingMore] = useState(false)
+
+  const onLoadMore = () => {
+    setLoadingMore(true)
+    console.log('onLoadMore')
+    setTimeout(() => {
+      setLoadingMore(false)
+    }, 2000)
+  }
+
   return (
-    <FlatList
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
-      contentContainerStyle={{ flexGrow: 1 }}
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      nestedScrollEnabled
-    />
+    <PullToRefresh style={{ flex: 1 }}>
+      <RefreshHeader
+        style={{
+          backgroundColor: 'red',
+          paddingVertical: 24,
+          alignItems: 'center',
+        }}
+        onRefresh={onRefresh}
+        refreshing={refreshing}>
+        <Text style={{ fontSize: 18, color: 'white' }}>下拉刷新</Text>
+      </RefreshHeader>
+      <FlatList
+        onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
+        contentContainerStyle={{ flexGrow: 1 }}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        nestedScrollEnabled
+      />
+      <RefreshFooter
+        style={{
+          backgroundColor: 'red',
+          paddingVertical: 18,
+          alignItems: 'center',
+        }}
+        onRefresh={onLoadMore}
+        refreshing={loadingMore}>
+        <Text style={{ fontSize: 18, color: 'white' }}>上拉加载更多</Text>
+      </RefreshFooter>
+    </PullToRefresh>
   )
 }
 const Item = ({ title }: { title: string }) => {

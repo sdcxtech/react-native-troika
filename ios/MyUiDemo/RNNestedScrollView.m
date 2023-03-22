@@ -57,6 +57,7 @@
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     [super willMoveToSuperview:newSuperview];
+    // FIXME: 内存泄漏
     if (newSuperview == nil && self.target) {
         [self.target removeObserver:self.superview forKeyPath:@"contentOffset"];
     }
@@ -116,7 +117,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat offsetY = scrollView.contentOffset.y;
     
-    RCTLogInfo(@"scrollViewDidScroll %f", offsetY);
+    //RCTLogInfo(@"scrollViewDidScroll %f", offsetY);
     
     if (offsetY >= self.headerScrollRange) {
         scrollView.contentOffset = CGPointMake(0, self.headerScrollRange);
@@ -134,13 +135,13 @@
 
         if (dy < 0) {
             // 向上
-            RCTLogInfo(@"向上拖拽 main");
+            //RCTLogInfo(@"向上拖拽 main");
         }
 
 
         if (dy > 0) {
             // 向下
-            RCTLogInfo(@"向下拖拽 main");
+            //RCTLogInfo(@"向下拖拽 main");
         }
 
 
@@ -168,7 +169,7 @@
         CGFloat dy = old - new;
 
         if (dy < 0) {
-            RCTLogInfo(@"向上拖拽 target");
+            // RCTLogInfo(@"向上拖拽 target");
             //向上
             if (self.main.contentOffset.y < self.headerScrollRange) {
                 if (((UIScrollView *)object).contentOffset.y > 0) {
@@ -182,7 +183,7 @@
         }
 
         if (dy > 0) {
-            RCTLogInfo(@"向下拖拽 target");
+            // RCTLogInfo(@"向下拖拽 target");
             //向下
             if(((UIScrollView *)object).contentOffset.y < 0){
                 if (self.main.contentOffset.y > 0) {
@@ -191,9 +192,6 @@
                 }
             }
         }
-
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

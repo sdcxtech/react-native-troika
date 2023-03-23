@@ -1,6 +1,6 @@
 package com.example.myuidemo;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -13,21 +13,22 @@ import androidx.core.view.NestedScrollingChild3;
 import androidx.core.view.NestedScrollingChildHelper;
 
 import com.example.myuidemo.Helper.ViewHelper;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
-import com.google.android.material.appbar.AppbarLayoutHeaderBehavior;
-import com.google.android.material.appbar.ScrollViewBehavior;
+import com.google.android.material.appbar.AppBarLayout;
 
+@SuppressLint("ViewConstructor")
 public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIndexedViewGroup, NestedScrollingChild3 {
-    private static final String TAG = "CoordinatorLayoutView";
-    private final ViewGroupDrawingOrderHelper drawingOrderHelper;
+
+    private final ViewGroupDrawingOrderHelper mDrawingOrderHelper;
 
     private final NestedScrollingChildHelper mNestedScrollingChildHelper;
 
-    public CoordinatorLayoutView(@NonNull Context context) {
+    public CoordinatorLayoutView(@NonNull ReactContext context) {
         super(context);
         setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        drawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
+        mDrawingOrderHelper = new ViewGroupDrawingOrderHelper(this);
         mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
     }
@@ -47,37 +48,52 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        drawingOrderHelper.handleAddView(child);
-        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
+        mDrawingOrderHelper.handleAddView(child);
+        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.addView(child, index, params);
-        ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setBehavior(
-                child instanceof AppBarLayoutView ? new AppbarLayoutHeaderBehavior() : new ScrollViewBehavior()
-        );
+
+        if (child instanceof AppBarLayoutView) {
+            AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+            behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return ((AppBarLayoutView) child).canDrag();
+                }
+            });
+            ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setBehavior(behavior);
+        } else {
+            ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setBehavior(new AppBarLayout.ScrollingViewBehavior());
+        }
     }
 
     @Override
     public void removeView(View view) {
-        drawingOrderHelper.handleRemoveView(view);
-        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
+        mDrawingOrderHelper.handleRemoveView(view);
+        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.removeView(view);
     }
 
     @Override
     public void removeViewAt(int index) {
-        drawingOrderHelper.handleRemoveView(getChildAt(index));
-        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
+        mDrawingOrderHelper.handleRemoveView(getChildAt(index));
+        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
         super.removeViewAt(index);
     }
 
     @Override
     public int getZIndexMappedChildIndex(int index) {
-        return drawingOrderHelper.getChildDrawingOrder(getChildCount(), index);
+        return mDrawingOrderHelper.getChildDrawingOrder(getChildCount(), index);
+    }
+
+    @Override
+    protected int getChildDrawingOrder(int childCount, int drawingPosition) {
+        return mDrawingOrderHelper.getChildDrawingOrder(childCount, drawingPosition);
     }
 
     @Override
     public void updateDrawingOrder() {
-        drawingOrderHelper.update();
-        setChildrenDrawingOrderEnabled(drawingOrderHelper.shouldEnableCustomDrawingOrder());
+        mDrawingOrderHelper.update();
+        setChildrenDrawingOrderEnabled(mDrawingOrderHelper.shouldEnableCustomDrawingOrder());
         invalidate();
     }
 
@@ -89,9 +105,9 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
                 continue;
             }
             final CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            final CoordinatorLayout.Behavior viewBehavior = lp.getBehavior();
-            if (viewBehavior instanceof AppbarLayoutHeaderBehavior &&
-                    (((AppbarLayoutHeaderBehavior) viewBehavior).getTopAndBottomOffset() < 0)) {
+            final CoordinatorLayout.Behavior<?> viewBehavior = lp.getBehavior();
+            if (viewBehavior instanceof AppBarLayout.Behavior &&
+                    (((AppBarLayout.Behavior) viewBehavior).getTopAndBottomOffset() < 0)) {
                 return true;
             }
         }
@@ -115,9 +131,9 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
                 continue;
             }
             final CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            final CoordinatorLayout.Behavior viewBehavior = lp.getBehavior();
-            if (viewBehavior instanceof AppbarLayoutHeaderBehavior) {
-                ((AppbarLayoutHeaderBehavior) viewBehavior).setTopAndBottomOffset(0);
+            final CoordinatorLayout.Behavior<?> viewBehavior = lp.getBehavior();
+            if (viewBehavior instanceof AppBarLayout.Behavior) {
+                ((AppBarLayout.Behavior) viewBehavior).setTopAndBottomOffset(0);
             }
             View view = ViewHelper.findSpecificView(child, new Class[]{ScrollView.class, WebView.class});
             if (view != null) {
@@ -165,7 +181,7 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     @Override
     public void onStopNestedScroll(View target, int type) {
         super.onStopNestedScroll(target, type);
-        mNestedScrollingChildHelper.stopNestedScroll(type);
+        stopNestedScroll(type);
     }
 
     @Override

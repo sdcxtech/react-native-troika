@@ -4,7 +4,6 @@ import {
   NativeSyntheticEvent,
   requireNativeComponent,
   StyleProp,
-  View,
   ViewStyle,
 } from 'react-native'
 import { setNativeLoadingMoreManually, setNativeRefreshingManually } from './commands'
@@ -133,14 +132,7 @@ export default function PullRefreshLayout({
     onLoadMoreStop && onLoadMoreStop()
   }
 
-  const _children =
-    React.Children.only(children) && React.isValidElement(children) ? (
-      <View style={{ height: '100%' }} removeClippedSubviews={false}>
-        {children}
-      </View>
-    ) : (
-      children
-    )
+  const _children = React.isValidElement(children) ? React.Children.only(children) : children
 
   return (
     <PullRefreshLayoutAndroid

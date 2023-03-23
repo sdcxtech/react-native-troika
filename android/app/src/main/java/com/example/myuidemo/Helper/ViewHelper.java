@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ViewHelper {
-    public static View findSpecificView(View view, Class[] viewClasses) {
-        for (Class viewClass : viewClasses) {
+    public static View findSpecificView(View view, Class<?>[] viewClasses) {
+        for (Class<?> viewClass : viewClasses) {
             if (viewClass.isInstance(view)) {
                 return view;
             }

@@ -4,8 +4,6 @@ import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.react.views.view.ReactViewGroup;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,11 +38,16 @@ public class LinearLayoutReactViewGroupMeasureHelper {
             refreshChildrenSize();
         }
         for (Map.Entry<View, Size> entry : mChildViewSizeMap.entrySet()) {
-            if (entry.getKey() instanceof ReactViewGroup) {
+            String viewClass = entry.getKey().getClass().getName();
+            if (isReactNativeView(viewClass)) {
                 return true;
             }
         }
         return false;
+    }
+
+    boolean isReactNativeView(String className) {
+        return className.toLowerCase().startsWith("com.facebook.react.views");
     }
 
     public Size getLayoutSize() {

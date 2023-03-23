@@ -3332,10 +3332,10 @@ human-signals@^2.1.0:
   resolved "https://registry.nlark.com/human-signals/download/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha1-3JH8ukLk0G5Kuu0zs+ejwC9RTqA=
 
-hybrid-navigation@^2.13.17:
-  version "2.13.17"
-  resolved "https://registry.npmmirror.com/hybrid-navigation/-/hybrid-navigation-2.13.17.tgz#c263f897d587d40b98fc7a31f0551242f48d9a97"
-  integrity sha512-ppYQ08hDBykDOgVSfI5tlICM+E1h+6gZ2f5bb6+FkoYNn99vOiEiMq/k7724Xgus+ucubrq7FH97UnCYeHQvzg==
+hybrid-navigation@^2.15.2:
+  version "2.15.2"
+  resolved "https://registry.npmmirror.com/hybrid-navigation/-/hybrid-navigation-2.15.2.tgz#8bd1602aa332d448984d1ff3e3b33381497d220e"
+  integrity sha512-MZQHV7rms++3Yw3+d8QnqzeVs+yatJe9c7XDZjtCASX3bXo85g8F9Ml3RSOfBO1ndiHrt8f8fsUW6NVtSS7Xqg==
   dependencies:
     path-to-regexp "^6.1.0"
 
@@ -5476,10 +5476,10 @@ react-native-iphone-x-helper@^1.3.1:
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha1-IMYD6aDnZf1vlzlmOL3rDlpgsBA=
 
-react-native-pager-view@^5.4.9:
-  version "5.4.9"
-  resolved "https://registry.npmmirror.com/react-native-pager-view/download/react-native-pager-view-5.4.9.tgz#c0d40847cfeda5a4e729b53271b0ee0fedff3eb5"
-  integrity sha512-D6tzxpwMGdl6CXgtskGWhKRc5cJakCazESRGt7PkqnpyiH3N35ft1KmR82pCSQetAFlytFiToeu3a/dG5CELvA==
+react-native-pager-view@^6.1.4:
+  version "6.1.4"
+  resolved "https://registry.npmmirror.com/react-native-pager-view/-/react-native-pager-view-6.1.4.tgz#3a63ebd1b72f81991157ea552bb9c887e529bc8c"
+  integrity sha512-fmTwgGwPxGCBusKAq7gHzm+s1Yp0qh5rKPoQszaCuxrb+76KgK4Qe82jJNPUp2xTZOKSw+FbJU2QahF8ncTl+w==
 
 react-native-testing-library@^6.0.0:
   version "6.0.0"

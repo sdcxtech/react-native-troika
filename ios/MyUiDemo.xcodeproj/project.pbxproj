@@ -10,8 +10,24 @@
 		047B8517EA7B5047F0A2DD5B /* libPods-MyUiDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E122DC6660A2FD7515F28ED7 /* libPods-MyUiDemo.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		912BC80829CB069900B77519 /* RNRefreshShadowHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80729CB069900B77519 /* RNRefreshShadowHeader.m */; };
+		912BC80B29CB467800B77519 /* RNRefreshShadowFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80A29CB467800B77519 /* RNRefreshShadowFooter.m */; };
+		912BC80E29CBFAE400B77519 /* RNRefreshFooterLocalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */; };
 		91459E512605ACD000EFBE6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91459E502605ACD000EFBE6E /* Assets.xcassets */; };
 		91459E552605ACE600EFBE6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91459E532605ACE600EFBE6E /* LaunchScreen.storyboard */; };
+		9191B23229BF09E3008CA10F /* RNNestedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23129BF09E3008CA10F /* RNNestedScrollView.m */; };
+		9191B23529BF0AA9008CA10F /* RNNestedScrollViewHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23429BF0AA9008CA10F /* RNNestedScrollViewHeader.m */; };
+		9191B23829BF0B06008CA10F /* RNNestedScrollViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23729BF0B06008CA10F /* RNNestedScrollViewManager.m */; };
+		9191B23B29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23A29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m */; };
+		9191B23E29C22B5A008CA10F /* RNNestedScrollShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23D29C22B5A008CA10F /* RNNestedScrollShadowView.m */; };
+		9191B24129C22CD6008CA10F /* RNNestedScrollViewLocalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24029C22CD6008CA10F /* RNNestedScrollViewLocalData.m */; };
+		9191B24429C80717008CA10F /* RNPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24329C80717008CA10F /* RNPullToRefresh.m */; };
+		9191B24729C80755008CA10F /* RNPullToRefreshManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24629C80755008CA10F /* RNPullToRefreshManager.m */; };
+		9191B24A29C80779008CA10F /* RNRefreshHeaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24929C80779008CA10F /* RNRefreshHeaderManager.m */; };
+		9191B24D29C807B2008CA10F /* RNRefreshFooterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24C29C807B2008CA10F /* RNRefreshFooterManager.m */; };
+		9191B25029C807D0008CA10F /* RNRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B24F29C807D0008CA10F /* RNRefreshHeader.m */; };
+		9191B25329C807F8008CA10F /* RNRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B25229C807F8008CA10F /* RNRefreshFooter.m */; };
+		91AE2B4D29CC5CE00075EEEA /* RNRefreshState.m in Sources */ = {isa = PBXBuildFile; fileRef = 91AE2B4C29CC5CE00075EEEA /* RNRefreshState.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +38,40 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MyUiDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MyUiDemo/main.m; sourceTree = "<group>"; };
 		514699031AF404FCBE8E8782 /* Pods-MyUiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyUiDemo.debug.xcconfig"; path = "Target Support Files/Pods-MyUiDemo/Pods-MyUiDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		912BC80629CB069900B77519 /* RNRefreshShadowHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshShadowHeader.h; path = MyUiDemo/RNRefreshShadowHeader.h; sourceTree = "<group>"; };
+		912BC80729CB069900B77519 /* RNRefreshShadowHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshShadowHeader.m; path = MyUiDemo/RNRefreshShadowHeader.m; sourceTree = "<group>"; };
+		912BC80929CB467800B77519 /* RNRefreshShadowFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshShadowFooter.h; path = MyUiDemo/RNRefreshShadowFooter.h; sourceTree = "<group>"; };
+		912BC80A29CB467800B77519 /* RNRefreshShadowFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshShadowFooter.m; path = MyUiDemo/RNRefreshShadowFooter.m; sourceTree = "<group>"; };
+		912BC80C29CBFAE400B77519 /* RNRefreshFooterLocalData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshFooterLocalData.h; path = MyUiDemo/RNRefreshFooterLocalData.h; sourceTree = "<group>"; };
+		912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshFooterLocalData.m; path = MyUiDemo/RNRefreshFooterLocalData.m; sourceTree = "<group>"; };
 		91459E502605ACD000EFBE6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MyUiDemo/Assets.xcassets; sourceTree = "<group>"; };
 		91459E542605ACE600EFBE6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MyUiDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9191B23029BF09E3008CA10F /* RNNestedScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollView.h; path = MyUiDemo/RNNestedScrollView.h; sourceTree = "<group>"; };
+		9191B23129BF09E3008CA10F /* RNNestedScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollView.m; path = MyUiDemo/RNNestedScrollView.m; sourceTree = "<group>"; };
+		9191B23329BF0AA9008CA10F /* RNNestedScrollViewHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollViewHeader.h; path = MyUiDemo/RNNestedScrollViewHeader.h; sourceTree = "<group>"; };
+		9191B23429BF0AA9008CA10F /* RNNestedScrollViewHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollViewHeader.m; path = MyUiDemo/RNNestedScrollViewHeader.m; sourceTree = "<group>"; };
+		9191B23629BF0B06008CA10F /* RNNestedScrollViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollViewManager.h; path = MyUiDemo/RNNestedScrollViewManager.h; sourceTree = "<group>"; };
+		9191B23729BF0B06008CA10F /* RNNestedScrollViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollViewManager.m; path = MyUiDemo/RNNestedScrollViewManager.m; sourceTree = "<group>"; };
+		9191B23929BF0B37008CA10F /* RNNestedScrollViewHeaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollViewHeaderManager.h; path = MyUiDemo/RNNestedScrollViewHeaderManager.h; sourceTree = "<group>"; };
+		9191B23A29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollViewHeaderManager.m; path = MyUiDemo/RNNestedScrollViewHeaderManager.m; sourceTree = "<group>"; };
+		9191B23C29C22B5A008CA10F /* RNNestedScrollShadowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollShadowView.h; path = MyUiDemo/RNNestedScrollShadowView.h; sourceTree = "<group>"; };
+		9191B23D29C22B5A008CA10F /* RNNestedScrollShadowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollShadowView.m; path = MyUiDemo/RNNestedScrollShadowView.m; sourceTree = "<group>"; };
+		9191B23F29C22CD6008CA10F /* RNNestedScrollViewLocalData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollViewLocalData.h; path = MyUiDemo/RNNestedScrollViewLocalData.h; sourceTree = "<group>"; };
+		9191B24029C22CD6008CA10F /* RNNestedScrollViewLocalData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNNestedScrollViewLocalData.m; path = MyUiDemo/RNNestedScrollViewLocalData.m; sourceTree = "<group>"; };
+		9191B24229C80717008CA10F /* RNPullToRefresh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNPullToRefresh.h; path = MyUiDemo/RNPullToRefresh.h; sourceTree = "<group>"; };
+		9191B24329C80717008CA10F /* RNPullToRefresh.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNPullToRefresh.m; path = MyUiDemo/RNPullToRefresh.m; sourceTree = "<group>"; };
+		9191B24529C80755008CA10F /* RNPullToRefreshManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNPullToRefreshManager.h; path = MyUiDemo/RNPullToRefreshManager.h; sourceTree = "<group>"; };
+		9191B24629C80755008CA10F /* RNPullToRefreshManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNPullToRefreshManager.m; path = MyUiDemo/RNPullToRefreshManager.m; sourceTree = "<group>"; };
+		9191B24829C80779008CA10F /* RNRefreshHeaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshHeaderManager.h; path = MyUiDemo/RNRefreshHeaderManager.h; sourceTree = "<group>"; };
+		9191B24929C80779008CA10F /* RNRefreshHeaderManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshHeaderManager.m; path = MyUiDemo/RNRefreshHeaderManager.m; sourceTree = "<group>"; };
+		9191B24B29C807B2008CA10F /* RNRefreshFooterManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshFooterManager.h; path = MyUiDemo/RNRefreshFooterManager.h; sourceTree = "<group>"; };
+		9191B24C29C807B2008CA10F /* RNRefreshFooterManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshFooterManager.m; path = MyUiDemo/RNRefreshFooterManager.m; sourceTree = "<group>"; };
+		9191B24E29C807D0008CA10F /* RNRefreshHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshHeader.h; path = MyUiDemo/RNRefreshHeader.h; sourceTree = "<group>"; };
+		9191B24F29C807D0008CA10F /* RNRefreshHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshHeader.m; path = MyUiDemo/RNRefreshHeader.m; sourceTree = "<group>"; };
+		9191B25129C807F8008CA10F /* RNRefreshFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshFooter.h; path = MyUiDemo/RNRefreshFooter.h; sourceTree = "<group>"; };
+		9191B25229C807F8008CA10F /* RNRefreshFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshFooter.m; path = MyUiDemo/RNRefreshFooter.m; sourceTree = "<group>"; };
+		91AE2B4B29CC5CE00075EEEA /* RNRefreshState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshState.h; path = MyUiDemo/RNRefreshState.h; sourceTree = "<group>"; };
+		91AE2B4C29CC5CE00075EEEA /* RNRefreshState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshState.m; path = MyUiDemo/RNRefreshState.m; sourceTree = "<group>"; };
 		E122DC6660A2FD7515F28ED7 /* libPods-MyUiDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyUiDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -49,6 +97,38 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				9191B23029BF09E3008CA10F /* RNNestedScrollView.h */,
+				9191B23129BF09E3008CA10F /* RNNestedScrollView.m */,
+				9191B23329BF0AA9008CA10F /* RNNestedScrollViewHeader.h */,
+				9191B23429BF0AA9008CA10F /* RNNestedScrollViewHeader.m */,
+				9191B23629BF0B06008CA10F /* RNNestedScrollViewManager.h */,
+				9191B23729BF0B06008CA10F /* RNNestedScrollViewManager.m */,
+				9191B23929BF0B37008CA10F /* RNNestedScrollViewHeaderManager.h */,
+				9191B23A29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m */,
+				9191B23C29C22B5A008CA10F /* RNNestedScrollShadowView.h */,
+				9191B23D29C22B5A008CA10F /* RNNestedScrollShadowView.m */,
+				9191B23F29C22CD6008CA10F /* RNNestedScrollViewLocalData.h */,
+				9191B24029C22CD6008CA10F /* RNNestedScrollViewLocalData.m */,
+				9191B24229C80717008CA10F /* RNPullToRefresh.h */,
+				9191B24329C80717008CA10F /* RNPullToRefresh.m */,
+				9191B24529C80755008CA10F /* RNPullToRefreshManager.h */,
+				9191B24629C80755008CA10F /* RNPullToRefreshManager.m */,
+				9191B24829C80779008CA10F /* RNRefreshHeaderManager.h */,
+				9191B24929C80779008CA10F /* RNRefreshHeaderManager.m */,
+				9191B24B29C807B2008CA10F /* RNRefreshFooterManager.h */,
+				9191B24C29C807B2008CA10F /* RNRefreshFooterManager.m */,
+				9191B24E29C807D0008CA10F /* RNRefreshHeader.h */,
+				9191B24F29C807D0008CA10F /* RNRefreshHeader.m */,
+				9191B25129C807F8008CA10F /* RNRefreshFooter.h */,
+				9191B25229C807F8008CA10F /* RNRefreshFooter.m */,
+				912BC80629CB069900B77519 /* RNRefreshShadowHeader.h */,
+				912BC80729CB069900B77519 /* RNRefreshShadowHeader.m */,
+				912BC80929CB467800B77519 /* RNRefreshShadowFooter.h */,
+				912BC80A29CB467800B77519 /* RNRefreshShadowFooter.m */,
+				912BC80C29CBFAE400B77519 /* RNRefreshFooterLocalData.h */,
+				912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */,
+				91AE2B4B29CC5CE00075EEEA /* RNRefreshState.h */,
+				91AE2B4C29CC5CE00075EEEA /* RNRefreshState.m */,
 			);
 			name = MyUiDemo;
 			sourceTree = "<group>";
@@ -227,8 +307,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9191B25329C807F8008CA10F /* RNRefreshFooter.m in Sources */,
+				9191B24D29C807B2008CA10F /* RNRefreshFooterManager.m in Sources */,
+				9191B23829BF0B06008CA10F /* RNNestedScrollViewManager.m in Sources */,
+				9191B24429C80717008CA10F /* RNPullToRefresh.m in Sources */,
+				9191B23229BF09E3008CA10F /* RNNestedScrollView.m in Sources */,
+				9191B25029C807D0008CA10F /* RNRefreshHeader.m in Sources */,
+				912BC80B29CB467800B77519 /* RNRefreshShadowFooter.m in Sources */,
+				9191B24129C22CD6008CA10F /* RNNestedScrollViewLocalData.m in Sources */,
+				9191B24A29C80779008CA10F /* RNRefreshHeaderManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				9191B23B29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m in Sources */,
+				912BC80829CB069900B77519 /* RNRefreshShadowHeader.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				91AE2B4D29CC5CE00075EEEA /* RNRefreshState.m in Sources */,
+				9191B23E29C22B5A008CA10F /* RNNestedScrollShadowView.m in Sources */,
+				912BC80E29CBFAE400B77519 /* RNRefreshFooterLocalData.m in Sources */,
+				9191B23529BF0AA9008CA10F /* RNNestedScrollViewHeader.m in Sources */,
+				9191B24729C80755008CA10F /* RNPullToRefreshManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

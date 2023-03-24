@@ -55,11 +55,11 @@
     return YES;
 }
 
-- (void)willMoveToSuperview:(UIView *)newSuperview {
-    [super willMoveToSuperview:newSuperview];
-    // FIXME: 内存泄漏
-    if (newSuperview == nil && self.target) {
+- (void)willMoveToSuperview:(UIView *)superview {
+    [super willMoveToSuperview:superview];
+    if (superview == nil && self.target) {
         [self.target removeObserver:self.superview forKeyPath:@"contentOffset"];
+        self.target = nil;
     }
 }
 
@@ -95,7 +95,6 @@
         _main.showsHorizontalScrollIndicator = NO;
         _main.scrollsToTop = NO;
         _main.delaysContentTouches = NO;
-        _main.bounces = NO;
         if (@available(iOS 11.0, *)) {
             _main.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
@@ -109,88 +108,84 @@
     RCTLogInfo(@"RNNestedScrollView dealloc");
 }
 
+- (void)setBounces:(BOOL)bounces {
+    self.main.bounces = bounces;
+}
+
 - (CGFloat)headerScrollRange {
     return [self.header maxScrollRange];
 }
 
 // main scrollView
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat offsetY = scrollView.contentOffset.y;
+- (void)scrollViewDidScroll:(UIScrollView *)main {
+    CGFloat newOffset = main.contentOffset.y;
+    CGFloat dy = _lastOffsetY - newOffset;
     
-    //RCTLogInfo(@"scrollViewDidScroll %f", offsetY);
-    
-    if (offsetY >= self.headerScrollRange) {
-        scrollView.contentOffset = CGPointMake(0, self.headerScrollRange);
-        self.lastOffsetY = scrollView.contentOffset.y;
-    } else if(offsetY <= 0) {
-        scrollView.contentOffset = CGPointMake(0, 0);
-        self.lastOffsetY = scrollView.contentOffset.y;
-    } else {
-        if (self.main.target == nil) {
-            self.lastOffsetY = scrollView.contentOffset.y;
-            return;
-        }
-
-        CGFloat dy = self.lastOffsetY - offsetY;
-
-        if (dy < 0) {
-            // 向上
-            //RCTLogInfo(@"向上拖拽 main");
-        }
-
-
-        if (dy > 0) {
-            // 向下
-            //RCTLogInfo(@"向下拖拽 main");
-        }
-
-
-        if(self.main.target.contentOffset.y > 0 && (scrollView.contentOffset.y < self.headerScrollRange) && (scrollView.contentOffset.y - self.lastOffsetY) < 0) {
-            //向下拖拽
-            scrollView.contentOffset = CGPointMake(0, self.lastOffsetY);
-        } else if((scrollView.contentOffset.y - self.lastOffsetY) > 0 && self.main.target.contentOffset.y < 0) {
-            //向上
-            scrollView.contentOffset = CGPointMake(0, self.lastOffsetY);
-        }
-        self.lastOffsetY = scrollView.contentOffset.y;
+    if (newOffset >= self.headerScrollRange) {
+        main.contentOffset = CGPointMake(0, self.headerScrollRange);
+        _lastOffsetY = main.contentOffset.y;
+        return;
     }
+    
+    if (newOffset <= 0 && !main.bounces) {
+        main.contentOffset = CGPointMake(0, 0);
+        _lastOffsetY = main.contentOffset.y;
+        return;
+    }
+    
+    UIScrollView *target = self.main.target;
+    if (target == nil) {
+        _lastOffsetY = main.contentOffset.y;
+        return;
+    }
+    
+    // 向下，target 可向下，main 归位
+    if(dy > 0 && target.contentOffset.y > 0) {
+        main.contentOffset = CGPointMake(0, _lastOffsetY);
+        return;
+    }
+    
+    // 向上，target 可向上，main 归位
+    if(dy < 0 && target.contentOffset.y < 0) {
+        main.contentOffset = CGPointMake(0, _lastOffsetY);
+        return;
+    }
+    
+    _lastOffsetY = newOffset;
 }
 
 // target scrollView
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        if (_nextReturn) {
-            _nextReturn = false;
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(UIScrollView *)target change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if (_nextReturn) {
+        _nextReturn = false;
+        return;
+    }
+    
+    if (![keyPath isEqualToString:@"contentOffset"]) {
+        return;
+    }
+    
+    UIScrollView *main = self.main;
+    CGFloat new = [change[@"new"] CGPointValue].y;
+    CGFloat old = [change[@"old"] CGPointValue].y;
+    CGFloat dy = old - new;
+    
+    // 向上
+    if (dy < 0) {
+        // main 可向上，target 归位
+        if (main.contentOffset.y < self.headerScrollRange && target.contentOffset.y > 0) {
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0, fmax(0, old));
             return;
         }
-        CGFloat new = [change[@"new"] CGPointValue].y;
-        CGFloat old = [change[@"old"] CGPointValue].y;
-
-        CGFloat dy = old - new;
-
-        if (dy < 0) {
-            // RCTLogInfo(@"向上拖拽 target");
-            //向上
-            if (self.main.contentOffset.y < self.headerScrollRange) {
-                if (((UIScrollView *)object).contentOffset.y > 0) {
-                    _nextReturn = true;
-                    if(old < 0) {
-                        old = 0;
-                    }
-                   ((UIScrollView *)object).contentOffset = CGPointMake(0, old);
-                }
-            }
-        }
-
-        if (dy > 0) {
-            // RCTLogInfo(@"向下拖拽 target");
-            //向下
-            if(((UIScrollView *)object).contentOffset.y < 0){
-                if (self.main.contentOffset.y > 0) {
-                    _nextReturn = true;
-                    ((UIScrollView *)object).contentOffset = CGPointMake(0, 0);
-                }
-            }
+    }
+    
+    //向下
+    if (dy > 0) {
+        // main 可向下，target 归位
+        if((main.contentOffset.y > 0 || main.bounces) && target.contentOffset.y < 0){
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0, 0);
         }
     }
 }

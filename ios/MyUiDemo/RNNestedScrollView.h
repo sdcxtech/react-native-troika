@@ -5,6 +5,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RNNestedScrollView : UIView
 
+@property(nonatomic, assign) BOOL bounces;
+
 - (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 - (void)updateContentSizeIfNeeded;

@@ -14,4 +14,6 @@ RCT_EXPORT_MODULE(NestedScrollView)
     return [RNNestedScrollShadowView new];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(bounces, BOOL)
+
 @end

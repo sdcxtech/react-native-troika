@@ -2,10 +2,10 @@ import React, { useCallback } from 'react'
 import { NativeSyntheticEvent, requireNativeComponent, ViewProps } from 'react-native'
 
 export const RefreshStateIdle = 1
-export const RefreshStatePulling = 2
+export const RefreshStateComing = 2
 export const RefreshStateRefreshing = 3
 export type RefreshStateIdle = typeof RefreshStateIdle
-export type RefreshStatePulling = typeof RefreshStatePulling
+export type RefreshStatePulling = typeof RefreshStateComing
 export type RefreshStateRefreshing = typeof RefreshStateRefreshing
 
 export type RefreshState = RefreshStateIdle | RefreshStatePulling | RefreshStateRefreshing
@@ -22,7 +22,7 @@ interface NativeRefreshFooterProps {
   manual?: boolean
 }
 
-interface RefreshFooterProps extends ViewProps {
+export interface RefreshFooterProps extends ViewProps {
   onRefresh?: () => void
   onStateChanged?: (state: RefreshState) => void
   refreshing?: boolean
@@ -44,7 +44,7 @@ function RefreshFooter(props: RefreshFooterProps) {
     [onStateChanged],
   )
 
-  return <NativeRefreshFooter onStateChanged={handleStateChanged} manual {...rest} />
+  return <NativeRefreshFooter onStateChanged={handleStateChanged} {...rest} />
 }
 
 export default RefreshFooter

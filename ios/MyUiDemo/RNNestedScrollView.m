@@ -95,6 +95,7 @@
         _main.showsHorizontalScrollIndicator = NO;
         _main.scrollsToTop = NO;
         _main.delaysContentTouches = NO;
+        _main.bounces = NO;
         if (@available(iOS 11.0, *)) {
             _main.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }

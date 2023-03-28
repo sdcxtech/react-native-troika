@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import PullToRefresh from '../PullToRefresh'
 
 const FLATLIST_DATA = Array(40)
   .fill(Math.random() + '')
@@ -48,14 +49,20 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
   }
 
   return (
-    <FlatList
-      onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
-      contentContainerStyle={{ flexGrow: 1 }}
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      nestedScrollEnabled
-    />
+    <PullToRefresh
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+      onLoadMore={onLoadMore}
+      loading={loadingMore}>
+      <FlatList
+        onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
+        contentContainerStyle={{ flexGrow: 1 }}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        nestedScrollEnabled
+      />
+    </PullToRefresh>
   )
 }
 const Item = ({ title }: { title: string }) => {

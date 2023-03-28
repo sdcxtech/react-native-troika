@@ -8,10 +8,11 @@ const CoordinatorLayoutAndroid =
 
 interface CoordinatorLayoutProps {
   style?: StyleProp<ViewStyle>
+  bounces?: boolean
 }
 
-function CoordinatorLayout({ style, children }: PropsWithChildren<CoordinatorLayoutProps>) {
-  return <CoordinatorLayoutAndroid style={style}>{children}</CoordinatorLayoutAndroid>
+function CoordinatorLayout({ children, ...props }: PropsWithChildren<CoordinatorLayoutProps>) {
+  return <CoordinatorLayoutAndroid {...props}>{children}</CoordinatorLayoutAndroid>
 }
 
 export default CoordinatorLayout

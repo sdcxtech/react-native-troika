@@ -4,11 +4,10 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
-import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
+import PullToRefresh from '../PullToRefresh'
 
 export function PullRefreshFlatListNestedScroll() {
   const [refreshing, setRefreshing] = useState(false)
-  const [statusText, setStatusText] = useState('下拉刷新')
   const [loadingMore, setLoadingMore] = useState(false)
   const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
   const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -21,7 +20,6 @@ export function PullRefreshFlatListNestedScroll() {
 
   const beginRefresh = async () => {
     setRefreshing(true)
-    setStatusText('正在刷新...')
     pendingAction.current = setTimeout(() => {
       addFlatlistRefreshItem()
       endRefresh()
@@ -31,12 +29,10 @@ export function PullRefreshFlatListNestedScroll() {
   const endRefresh = () => {
     clearPendingAction()
     setRefreshing(false)
-    setStatusText('下拉刷新')
   }
 
   const loadMore = () => {
     setLoadingMore(true)
-    setStatusText('load more')
     pendingAction.current = setTimeout(() => {
       addFlatlistLoadMoreItem()
       endLoadMore()
@@ -48,46 +44,13 @@ export function PullRefreshFlatListNestedScroll() {
     setLoadingMore(false)
   }
 
-  const handlePullEvent = (event: PullEvent) => {
-    const { currentRefreshViewOffset, totalRefreshViewOffset } = event.nativeEvent
-    if (refreshing) {
-      setStatusText('正在刷新...')
-    } else if (currentRefreshViewOffset >= totalRefreshViewOffset) {
-      setStatusText('释放刷新')
-    } else {
-      setStatusText('下拉刷新')
-    }
-  }
-
-  const renderRefreshView = () => {
-    return (
-      <View style={{ overflow: 'hidden' }}>
-        <Text
-          style={{
-            color: 'white',
-            paddingTop: 40,
-            paddingBottom: 40,
-            backgroundColor: refreshing ? 'red' : 'aqua',
-          }}>
-          {statusText}
-        </Text>
-      </View>
-    )
-  }
   return (
-    <PullRefreshLayout
+    <PullToRefresh
       style={{ flex: 1 }}
-      refreshViewOverPullLocation="bottom"
-      enableRefreshAction={true}
       refreshing={refreshing}
-      loadingMore={loadingMore}
+      loading={loadingMore}
       onRefresh={beginRefresh}
-      onRefreshStop={endRefresh}
-      onRefreshPull={handlePullEvent}
-      enableLoadMoreAction={true}
-      RefreshView={renderRefreshView()}
-      onLoadMore={loadMore}
-      onLoadMoreStop={endLoadMore}>
+      onLoadMore={loadMore}>
       <CoordinatorLayout style={styles.coordinator}>
         <AppBarLayout stickyHeaderBeginIndex={1}>
           <Image
@@ -101,7 +64,7 @@ export function PullRefreshFlatListNestedScroll() {
         </AppBarLayout>
         <FlatListPage data={flatlistData} />
       </CoordinatorLayout>
-    </PullRefreshLayout>
+    </PullToRefresh>
   )
 }
 

@@ -2,6 +2,7 @@ package com.example.myuidemo.Helper;
 
 import android.view.View;
 
+import com.example.myuidemo.reactpullrefreshlayout.offsetCalculator.LocateBottomRefreshOffsetCalculator;
 import com.example.myuidemo.reactpullrefreshlayout.offsetCalculator.LocateTopRefreshOffsetCalculator;
 import com.example.myuidemo.reactpullrefreshlayout.offsetCalculator.RefreshOffsetCalculator;
 
@@ -150,7 +151,7 @@ public class RefreshHelper {
         }
 
         if (mRefreshOffsetCalculator == null) {
-            mRefreshOffsetCalculator = new LocateTopRefreshOffsetCalculator();
+            mRefreshOffsetCalculator = new LocateBottomRefreshOffsetCalculator();
         }
         int newRefreshOffset = mRefreshOffsetCalculator.calculateRefreshOffset(
                 mRefreshInitOffset,

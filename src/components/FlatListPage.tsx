@@ -27,26 +27,6 @@ export function useDemoFlatlistData() {
 export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; title: string }[] }) {
   const renderItem = ({ item }: { item: { title: string } }) => <Item title={item.title} />
 
-  const [refreshing, setRefreshing] = useState(false)
-
-  const onRefresh = () => {
-    setRefreshing(true)
-    console.log('onRefresh')
-    setTimeout(() => {
-      setRefreshing(false)
-    }, 2000)
-  }
-
-  const [loadingMore, setLoadingMore] = useState(false)
-
-  const onLoadMore = () => {
-    setLoadingMore(true)
-    console.log('onLoadMore')
-    setTimeout(() => {
-      setLoadingMore(false)
-    }, 2000)
-  }
-
   return (
     <FlatList
       onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}

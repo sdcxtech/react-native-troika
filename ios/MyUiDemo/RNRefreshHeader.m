@@ -85,16 +85,16 @@
         
         if (self.scrollView.isDragging) {
             if (self.state == RNRefreshStateIdle && fabs(offsetY) >= range) {
-                self.state = RNRefreshStatePulling;
+                self.state = RNRefreshStateComing;
                 
             } else
-            if (self.state == RNRefreshStatePulling && fabs(offsetY) <= range) {
+            if (self.state == RNRefreshStateComing && fabs(offsetY) <= range) {
                 self.state = RNRefreshStateIdle;
             }
             return;
         }
         
-        if (self.state == RNRefreshStatePulling) {
+        if (self.state == RNRefreshStateComing) {
             // 松开手
             [self beginRefreshing];
             return;

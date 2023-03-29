@@ -28,7 +28,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import java.util.Map;
 
 public class PullRefreshLayoutManager extends ViewGroupManager<ReactPullRefreshLayout> {
-    private final static String REACT_CLASS = "PullRefreshLayout";
+    private final static String REACT_CLASS = "PullToRefresh";
 
     @NonNull
     @Override
@@ -140,7 +140,7 @@ public class PullRefreshLayoutManager extends ViewGroupManager<ReactPullRefreshL
         });
     }
 
-    void emitEvent(ReactContext reactContext, int viewId, Event event) {
+    void emitEvent(ReactContext reactContext, int viewId, Event<?> event) {
         if (reactContext.hasActiveReactInstance()) {
             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId);
             if (eventDispatcher != null) {

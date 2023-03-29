@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { WebViewPage } from '../WebViewPage'
-import PullRefreshLayout from '../../PullRefreshLayout'
+import PullToRefresh from '../../PullToRefresh'
 
 function PullRefreshWebView() {
   const [refreshing, setRefreshing] = useState(false)
@@ -26,16 +26,12 @@ function PullRefreshWebView() {
   }
 
   return (
-    <PullRefreshLayout
+    <PullToRefresh
       style={{ height: '100%', overflow: 'hidden' }}
-      refreshViewOverPullLocation="bottom"
       refreshing={refreshing}
-      onRefresh={beginRefresh}
-      onRefreshStop={() => {
-        setRefreshing(false)
-      }}>
+      onRefresh={beginRefresh}>
       <WebViewPage url="https://wangdoc.com" />
-    </PullRefreshLayout>
+    </PullToRefresh>
   )
 }
 

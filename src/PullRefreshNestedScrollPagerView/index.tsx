@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
-import { Animated, Image, StyleSheet, Text, View } from 'react-native'
+import { Animated, Image, StyleSheet } from 'react-native'
 import CoordinatorLayout from '../CoordinatorLayout'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
@@ -9,7 +9,7 @@ import { WebViewPage } from '../components/WebViewPage'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
-import PullRefreshLayout, { PullEvent } from '../PullRefreshLayout'
+import PullToRefresh from '../PullToRefresh'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
@@ -17,7 +17,6 @@ const pages = ['FlatList', 'ScrollView', 'WebView']
 
 export function PullRefreshNestedScrollPagerView() {
   const [refreshing, setRefreshing] = useState(false)
-  const [statusText, setStatusText] = useState('下拉刷新')
   const [loadingMore, setLoadingMore] = useState(false)
   const { addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
   const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -42,7 +41,6 @@ export function PullRefreshNestedScrollPagerView() {
 
   const beginRefresh = async () => {
     setRefreshing(true)
-    setStatusText('正在刷新...')
     pendingAction.current = setTimeout(() => {
       addFlatlistRefreshItem()
       endRefresh()
@@ -52,12 +50,10 @@ export function PullRefreshNestedScrollPagerView() {
   const endRefresh = () => {
     clearPendingAction()
     setRefreshing(false)
-    setStatusText('下拉刷新')
   }
 
   const loadMore = () => {
     setLoadingMore(true)
-    setStatusText('load more')
     pendingAction.current = setTimeout(() => {
       addFlatlistLoadMoreItem()
       endLoadMore()
@@ -69,46 +65,13 @@ export function PullRefreshNestedScrollPagerView() {
     setLoadingMore(false)
   }
 
-  const handlePullEvent = (event: PullEvent) => {
-    const { currentRefreshViewOffset, totalRefreshViewOffset } = event.nativeEvent
-    if (refreshing) {
-      setStatusText('正在刷新...')
-    } else if (currentRefreshViewOffset >= totalRefreshViewOffset) {
-      setStatusText('释放刷新')
-    } else {
-      setStatusText('下拉刷新')
-    }
-  }
-
-  const renderRefreshView = () => {
-    return (
-      <View style={{ overflow: 'hidden' }}>
-        <Text
-          style={{
-            color: 'white',
-            paddingTop: 40,
-            paddingBottom: 40,
-            backgroundColor: refreshing ? 'red' : 'aqua',
-          }}>
-          {statusText}
-        </Text>
-      </View>
-    )
-  }
   return (
-    <PullRefreshLayout
+    <PullToRefresh
       style={{ flex: 1 }}
-      refreshViewOverPullLocation="bottom"
-      enableRefreshAction={true}
       refreshing={refreshing}
-      loadingMore={loadingMore}
+      loading={loadingMore}
       onRefresh={beginRefresh}
-      onRefreshStop={endRefresh}
-      onRefreshPull={handlePullEvent}
-      enableLoadMoreAction={true}
-      RefreshView={renderRefreshView()}
-      onLoadMore={loadMore}
-      onLoadMoreStop={endLoadMore}>
+      onLoadMore={loadMore}>
       <CoordinatorLayout style={styles.coordinator}>
         <AppBarLayout stickyHeaderBeginIndex={1}>
           <Image
@@ -138,7 +101,7 @@ export function PullRefreshNestedScrollPagerView() {
           <WebViewPage url="https://wangdoc.com" />
         </AnimatedPagerView>
       </CoordinatorLayout>
-    </PullRefreshLayout>
+    </PullToRefresh>
   )
 }
 

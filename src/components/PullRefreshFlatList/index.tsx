@@ -46,7 +46,7 @@ function PullRefreshFlatList() {
     <PullToRefresh
       style={{ height: '100%', overflow: 'hidden' }}
       refreshing={refreshing}
-      loading={loadingMore}
+      loadingMore={loadingMore}
       onRefresh={beginRefresh}
       onLoadMore={loadMore}>
       <FlatListPage data={flatlistData} />

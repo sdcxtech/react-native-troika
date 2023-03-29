@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { NativeSyntheticEvent, RefreshControlProps, requireNativeComponent } from 'react-native'
 
-export const RefreshStateIdle = 1
-export const RefreshStateComing = 2
-export const RefreshStateRefreshing = 3
+export const RefreshStateIdle = 0
+export const RefreshStateComing = 1
+export const RefreshStateRefreshing = 2
 export type RefreshStateIdle = typeof RefreshStateIdle
 export type RefreshStatePulling = typeof RefreshStateComing
 export type RefreshStateRefreshing = typeof RefreshStateRefreshing

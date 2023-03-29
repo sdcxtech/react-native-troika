@@ -69,7 +69,7 @@ export function PullRefreshNestedScrollPagerView() {
     <PullToRefresh
       style={{ flex: 1 }}
       refreshing={refreshing}
-      loading={loadingMore}
+      loadingMore={loadingMore}
       onRefresh={beginRefresh}
       onLoadMore={loadMore}>
       <CoordinatorLayout style={styles.coordinator}>

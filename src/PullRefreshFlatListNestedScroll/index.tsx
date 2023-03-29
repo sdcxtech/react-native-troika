@@ -48,8 +48,8 @@ export function PullRefreshFlatListNestedScroll() {
     <PullToRefresh
       style={{ flex: 1 }}
       refreshing={refreshing}
-      loading={loadingMore}
       onRefresh={beginRefresh}
+      loadingMore={loadingMore}
       onLoadMore={loadMore}>
       <CoordinatorLayout style={styles.coordinator}>
         <AppBarLayout stickyHeaderBeginIndex={1}>

@@ -33,6 +33,7 @@
 
 - (void)assembleIfNeeded {
     if (self.scrollView) {
+        self.scrollView.bounces = YES;
         if (self.header) {
             [self.header removeFromSuperview];
             [self.scrollView addSubview:self.header];
@@ -56,6 +57,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    if (self.scrollView == nil) {
+        self.scrollView = [self findScrollView:self];
+        [self assembleIfNeeded];
+    }
 }
 
 - (UIScrollView *)findScrollView:(UIView *)superview {

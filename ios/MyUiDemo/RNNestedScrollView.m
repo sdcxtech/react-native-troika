@@ -44,6 +44,9 @@
         if ([touchView isKindOfClass:[UIScrollView class]]) {
             UIScrollView *scrollView = (UIScrollView *)touchView;
             if (![self isHorizontal:scrollView]) {
+                if (self.bounces) {
+                    scrollView.bounces = NO;
+                }
                 self.target = scrollView;
                 [self.target addObserver:self.superview forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
                 break;
@@ -122,6 +125,18 @@
     CGFloat newOffset = main.contentOffset.y;
     CGFloat dy = _lastOffsetY - newOffset;
     
+    UIScrollView *target = self.main.target;
+    
+    if (dy < 0 && main.bounces && newOffset > [self headerScrollRange] && target &&  target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
+        _lastOffsetY = newOffset;
+        return;
+    }
+    
+    if (dy > 0 && main.bounces && newOffset > [self headerScrollRange] && target) {
+        _lastOffsetY = newOffset;
+        return;
+    }
+    
     if (newOffset >= self.headerScrollRange) {
         main.contentOffset = CGPointMake(0, self.headerScrollRange);
         _lastOffsetY = main.contentOffset.y;
@@ -134,7 +149,6 @@
         return;
     }
     
-    UIScrollView *target = self.main.target;
     if (target == nil) {
         _lastOffsetY = main.contentOffset.y;
         return;
@@ -179,6 +193,12 @@
             target.contentOffset = CGPointMake(0, fmax(0, old));
             return;
         }
+        
+        if (main.bounces && main.contentOffset.y > [self headerScrollRange] && target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0,  target.contentSize.height - target.frame.size.height);
+            return;
+        }
     }
     
     //向下
@@ -187,6 +207,12 @@
         if((main.contentOffset.y > 0 || main.bounces) && target.contentOffset.y < 0){
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, 0);
+            return;
+        }
+        
+        if (main.bounces && main.contentOffset.y > [self headerScrollRange] && old + 0.01 >= target.contentSize.height - target.frame.size.height) {
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0, old);
         }
     }
 }

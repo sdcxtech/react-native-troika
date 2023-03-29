@@ -8,13 +8,16 @@ import RefreshHeader, {
   RefreshStateRefreshing,
 } from '../RefreshHeader'
 
-interface NativePullToRefreshProps extends ViewProps {}
+interface NativePullToRefreshProps extends ViewProps {
+  enableRefreshAction?: boolean
+  enableLoadMoreAction?: boolean
+}
 
 interface PullToRefreshProps extends ViewProps {
   onRefresh?: () => void
   refreshing?: boolean
   onLoadMore?: () => void
-  loading?: boolean
+  loadingMore?: boolean
   header?: React.ReactElement<RefreshHeaderProps>
   footer?: React.ReactElement<RefreshFooterProps>
 }
@@ -22,8 +25,17 @@ interface PullToRefreshProps extends ViewProps {
 const NativePullToRefresh = requireNativeComponent<NativePullToRefreshProps>('PullToRefresh')
 
 function PullToRefresh(props: PullToRefreshProps) {
-  const { children, onRefresh, refreshing, onLoadMore, loading, header, footer, style, ...rest } =
-    props
+  const {
+    children,
+    onRefresh,
+    refreshing,
+    onLoadMore,
+    loadingMore,
+    header,
+    footer,
+    style,
+    ...rest
+  } = props
 
   const renderHeader = () => {
     if (header) {
@@ -43,14 +55,18 @@ function PullToRefresh(props: PullToRefreshProps) {
     }
 
     if (onLoadMore) {
-      return <DefaultRefreshFooter onRefresh={onLoadMore} refreshing={!!loading} />
+      return <DefaultRefreshFooter onRefresh={onLoadMore} refreshing={!!loadingMore} />
     }
 
     return null
   }
 
   return (
-    <NativePullToRefresh style={[styles.fill, style]} {...rest}>
+    <NativePullToRefresh
+      style={[styles.fill, style]}
+      {...rest}
+      enableLoadMoreAction={!!onLoadMore || !!footer}
+      enableRefreshAction={!!onRefresh || !!header}>
       {renderHeader()}
       {children}
       {renderFooter()}

@@ -217,10 +217,6 @@
     }
 }
 
-- (BOOL)canBounceVertical:(UIScrollView *)scrollView {
-    return YES;
-}
-
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
     [super insertReactSubview:subview atIndex:atIndex];
 
@@ -278,7 +274,7 @@
 }
 
 static BOOL _CGSizeValid(CGSize size) {
-    return size.width >0 && size.height >0;
+    return size.width > 0 && size.height > 0;
 }
 
 @end

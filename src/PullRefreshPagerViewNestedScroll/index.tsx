@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
-import { Animated, Image, StyleSheet, View } from 'react-native'
-import CoordinatorLayout from '../CoordinatorLayout'
+import { Animated, Image, StyleSheet } from 'react-native'
+import NestedScrollView from '../NestedScrollView'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import TabBar from '../components/TabBar'
@@ -9,7 +9,6 @@ import usePagerView from '../components/usePagerView'
 import PullRefreshFlatList from '../components/PullRefreshFlatList'
 import PullRefreshScrollView from '../components/PullRefreshScrollView'
 import PullRefreshWebView from '../components/PullRefreshWebView'
-import { FlatListPage } from '../components/FlatListPage'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
@@ -29,7 +28,7 @@ export function PullRefreshPagerViewNestedScroll() {
   } = usePagerView()
 
   return (
-    <CoordinatorLayout style={styles.coordinator}>
+    <NestedScrollView style={styles.coordinator}>
       <AppBarLayout stickyHeaderBeginIndex={1}>
         <Image
           source={require('../components/assets/cover.webp')}
@@ -53,14 +52,11 @@ export function PullRefreshPagerViewNestedScroll() {
         onPageScroll={onPageScroll}
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
-        <View removeClippedSubviews={false}>
-          <FlatListPage />
-        </View>
         <PullRefreshFlatList />
         <PullRefreshScrollView />
         <PullRefreshWebView />
       </AnimatedPagerView>
-    </CoordinatorLayout>
+    </NestedScrollView>
   )
 }
 

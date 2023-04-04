@@ -12,7 +12,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.google.android.material.appbar.AppBarLayout;
 
 public class AppBarLayoutManager extends ViewGroupManager<AppBarLayoutView> {
-    private final static String REACT_CLASS = "AppBarLayout";
+    public final static String REACT_CLASS = "AppBarLayout";
 
     @NonNull
     @Override

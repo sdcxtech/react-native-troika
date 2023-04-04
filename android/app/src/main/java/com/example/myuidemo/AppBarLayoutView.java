@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,7 @@ public class AppBarLayoutView extends AppBarLayout {
     private int mStickyHeaderBeginIndex = INVALID_INDEX;
     private int mFixedHeight = 0;
     private final LinearLayoutReactViewGroupMeasureHelper mMeasureHelper;
+    private int mFixedHeaderHeight = 0;
 
     public AppBarLayoutView(@NonNull Context context) {
         super(context);
@@ -49,6 +51,10 @@ public class AppBarLayoutView extends AppBarLayout {
         refreshFixedHeader();
     }
 
+    public int getFixedHeight() {
+        return mFixedHeaderHeight;
+    }
+
     public void setStickyHeaderBeginIndex(int index) {
         mStickyHeaderBeginIndex = index;
         refreshFixedHeader();
@@ -70,42 +76,53 @@ public class AppBarLayoutView extends AppBarLayout {
 
     void refreshFixedHeaderInner() {
         if (mFixedHeight > 0) {
-            refreshFixedHeight();
+            mFixedHeaderHeight = refreshFixedHeight();
         } else {
-            refreshFixedHeightByHeaderIndex();
+            mFixedHeaderHeight = refreshFixedHeightByHeaderIndex();
         }
-
-        if (getParent() instanceof CoordinatorLayoutView) {
-            post(() -> getParent().requestLayout());
+        ViewParent parent = getParent();
+        while (parent != null) {
+            if (parent instanceof CoordinatorLayoutView || parent instanceof NestedScrollView) {
+                post(parent::requestLayout);
+                return;
+            }
+            parent = parent.getParent();
         }
     }
 
-    private void refreshFixedHeight() {
+    private int refreshFixedHeight() {
         int fixedRange = mFixedHeight;
+        int fixedHeaderHeight = 0;
         for (int i = getChildCount() - 1; i >= 0; i--) {
             View child = getChildAt(i);
             int childHeight = child.getHeight();
             if (childHeight >= fixedRange) {
                 setAppbarLayoutFixedChildHeight(child, fixedRange);
+                fixedHeaderHeight += fixedRange;
                 break;
             } else {
                 setAppbarLayoutFixedChildHeight(child, childHeight);
                 fixedRange -= childHeight;
+                fixedHeaderHeight += childHeight;
                 if (fixedRange <= 0) {
                     break;
                 }
             }
         }
+        return fixedHeaderHeight;
     }
 
-    private void refreshFixedHeightByHeaderIndex() {
+    private int refreshFixedHeightByHeaderIndex() {
+        int fixedHeaderHeight = 0;
         if (mStickyHeaderBeginIndex != INVALID_INDEX) {
             for (int i = 0, count = getChildCount(); i < count; i++) {
                 View child = getChildAt(i);
                 int childHeight = i >= mStickyHeaderBeginIndex ? child.getHeight() : 0;
+                fixedHeaderHeight += childHeight;
                 setAppbarLayoutFixedChildHeight(child, childHeight);
             }
         }
+        return fixedHeaderHeight;
     }
 
     void setAppbarLayoutFixedChildHeight(View view, int height) {

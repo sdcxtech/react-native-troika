@@ -1,12 +1,11 @@
 package com.example.myuidemo;
 
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 
 public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayoutView> {
@@ -27,28 +26,4 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
         mContext = reactContext;
         return new CoordinatorLayoutView(reactContext);
     }
-
-    @Override
-    protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull CoordinatorLayoutView view) {
-        super.addEventEmitters(reactContext, view);
-        view.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if (mContext != null && mContext.hasActiveReactInstance()) {
-                mContext.runOnNativeModulesQueueThread(() -> {
-                    UIManagerModule uiManagerModule = mContext.getNativeModule(UIManagerModule.class);
-                    if (uiManagerModule != null) {
-                        for (int i = 0, count = view.getChildCount(); i < count; i++) {
-                            View child = view.getChildAt(i);
-                            uiManagerModule.updateNodeSize(child.getId(), child.getWidth(), child.getHeight());
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public boolean needsCustomLayoutForChildren() {
-        return true;
-    }
-
 }

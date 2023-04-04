@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { Animated, Image, StyleSheet } from 'react-native'
-import CoordinatorLayout from '../CoordinatorLayout'
+import NestedScrollView from '../NestedScrollView'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import { ScrollViewPage } from '../components/ScrollViewPage'
@@ -72,7 +72,7 @@ export function PullRefreshNestedScrollPagerView() {
       loadingMore={loadingMore}
       onRefresh={beginRefresh}
       onLoadMore={loadMore}>
-      <CoordinatorLayout style={styles.coordinator}>
+      <NestedScrollView style={styles.coordinator}>
         <AppBarLayout stickyHeaderBeginIndex={1}>
           <Image
             source={require('../components/assets/cover.webp')}
@@ -100,7 +100,7 @@ export function PullRefreshNestedScrollPagerView() {
           <ScrollViewPage />
           <WebViewPage url="https://wangdoc.com" />
         </AnimatedPagerView>
-      </CoordinatorLayout>
+      </NestedScrollView>
     </PullToRefresh>
   )
 }

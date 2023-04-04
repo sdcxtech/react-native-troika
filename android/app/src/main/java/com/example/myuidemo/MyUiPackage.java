@@ -30,7 +30,8 @@ public class MyUiPackage implements ReactPackage {
                 new NestedRNCWebViewManager(),
                 new PullRefreshLayoutManager(),
                 new RefreshPlaceholderViewManager(),
-                new LoadMorePlaceholderViewManager()
+                new LoadMorePlaceholderViewManager(),
+                new NestedScrollViewManager()
         );
     }
 }

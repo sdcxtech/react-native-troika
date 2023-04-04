@@ -1,6 +1,7 @@
 package com.example.myuidemo;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -15,6 +16,7 @@ import androidx.core.view.NestedScrollingChildHelper;
 import com.example.myuidemo.Helper.ViewHelper;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.ReactZIndexedViewGroup;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupDrawingOrderHelper;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -22,8 +24,8 @@ import com.google.android.material.appbar.AppBarLayout;
 public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIndexedViewGroup, NestedScrollingChild3 {
 
     private final ViewGroupDrawingOrderHelper mDrawingOrderHelper;
-
     private final NestedScrollingChildHelper mNestedScrollingChildHelper;
+
 
     public CoordinatorLayoutView(@NonNull ReactContext context) {
         super(context);
@@ -44,6 +46,12 @@ public class CoordinatorLayoutView extends CoordinatorLayout implements ReactZIn
     public void requestLayout() {
         super.requestLayout();
         post(measureAndLayout);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        Context context = getContext();
     }
 
     @Override

@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
 import { Animated, Image, StyleSheet, View } from 'react-native'
-import CoordinatorLayout from '../CoordinatorLayout'
+import NestedScrollView from '../NestedScrollView'
 import AppBarLayout from '../AppBarLayout'
 import PagerView from 'react-native-pager-view'
 import { FlatListPage } from '../components/FlatListPage'
@@ -28,7 +28,7 @@ export function NestedScrollPagerView() {
   } = usePagerView()
 
   return (
-    <CoordinatorLayout style={styles.coordinator}>
+    <NestedScrollView style={styles.coordinator}>
       <AppBarLayout>
         <Image
           source={require('../components/assets/cover.webp')}
@@ -57,7 +57,7 @@ export function NestedScrollPagerView() {
           <WebViewPage url="https://wangdoc.com" />
         </AnimatedPagerView>
       </View>
-    </CoordinatorLayout>
+    </NestedScrollView>
   )
 }
 

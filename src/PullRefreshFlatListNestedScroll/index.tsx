@@ -2,7 +2,7 @@ import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import NestedScrollView from '../NestedScrollView'
-import AppBarLayout from '../AppBarLayout'
+import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
 import PullToRefresh from '../PullToRefresh'
 
@@ -52,7 +52,7 @@ export function PullRefreshFlatListNestedScroll() {
       loadingMore={loadingMore}
       onLoadMore={loadMore}>
       <NestedScrollView style={styles.coordinator}>
-        <AppBarLayout stickyHeaderBeginIndex={1}>
+        <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
           <Image
             source={require('../components/assets/cover.webp')}
             style={styles.image}
@@ -61,7 +61,7 @@ export function PullRefreshFlatListNestedScroll() {
           <View style={[styles.text]}>
             <Text>anchor</Text>
           </View>
-        </AppBarLayout>
+        </NestedScrollViewHeader>
         <FlatListPage data={flatlistData} />
       </NestedScrollView>
     </PullToRefresh>

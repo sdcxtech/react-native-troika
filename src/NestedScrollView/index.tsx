@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Platform,
   requireNativeComponent,
   StyleProp,
@@ -7,12 +9,14 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
+
 export type NestedScrollViewProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>
+  onScroll?: (event: NativeSyntheticEvent<Omit<NativeScrollEvent, 'velocity'>>) => void
   //Android Only
   contentContainerStyle?: StyleProp<ViewStyle>
   //iOS Only
-  bounces?:boolean
+  bounces?: boolean
 }>
 
 type NestedScrollViewNativeProps = Omit<NestedScrollViewProps, 'contentContainerStyle'>
@@ -22,7 +26,7 @@ const NestedScrollViewNative =
     ? requireNativeComponent<NestedScrollViewNativeProps>('NestedScrollView')
     : requireNativeComponent<NestedScrollViewNativeProps>('NestedScrollView')
 
-function NestedScrollView({  children ,...props}: NestedScrollViewProps) {
+function NestedScrollView({ children, ...props }: NestedScrollViewProps) {
   if (Platform.OS === 'android') {
     return <NestedScrollViewAndroid {...props}>{children}</NestedScrollViewAndroid>
   }
@@ -30,12 +34,12 @@ function NestedScrollView({  children ,...props}: NestedScrollViewProps) {
 }
 
 export function NestedScrollViewAndroid({
-  style,
   children,
   contentContainerStyle,
+  ...props
 }: NestedScrollViewProps) {
   return (
-    <NestedScrollViewNative style={style}>
+    <NestedScrollViewNative {...props}>
       <View style={[styles.flex1, contentContainerStyle]} removeClippedSubviews={false}>
         {children}
       </View>

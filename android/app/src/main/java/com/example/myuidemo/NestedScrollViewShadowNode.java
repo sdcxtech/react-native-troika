@@ -8,19 +8,23 @@ public class NestedScrollViewShadowNode extends LayoutShadowNode {
 
     @Override
     public void setLocalData(Object data) {
-        if (data instanceof NestedScrollVIewLocalData) {
-            NestedScrollVIewLocalData nestedScrollVIewLocalData = ((NestedScrollVIewLocalData) data);
+        if (data instanceof NestedScrollViewLocalData) {
+            NestedScrollViewLocalData nestedScrollViewLocalData = ((NestedScrollViewLocalData) data);
             ReactShadowNode<?> parent = getChildAt(0);
-            parent.setStyleMinHeight(nestedScrollVIewLocalData.containerNodeH);
-            parent.setStyleMaxHeight(nestedScrollVIewLocalData.containerNodeH);
+            float parentNodeH = nestedScrollViewLocalData.headerNodeH + nestedScrollViewLocalData.contentNodeH;
+            setNodeHeight(parent, parentNodeH);
             for (int i = 0, count = parent.getChildCount(); i < count; i++) {
                 ReactShadowNode<?> shadowNode = parent.getChildAt(i);
-                float childNodeH = AppBarLayoutManager.REACT_CLASS.equals((shadowNode.getViewClass()))
-                        ? nestedScrollVIewLocalData.appbarNodeH
-                        : nestedScrollVIewLocalData.contentNodeH;
-                shadowNode.setStyleMinHeight(childNodeH);
-                shadowNode.setStyleMaxHeight(childNodeH);
+                float childNodeH = NestedScrollViewHeaderManager.REACT_CLASS.equals((shadowNode.getViewClass()))
+                        ? nestedScrollViewLocalData.headerNodeH
+                        : nestedScrollViewLocalData.contentNodeH;
+                setNodeHeight(shadowNode, childNodeH);
             }
         }
+    }
+
+    void setNodeHeight(ReactShadowNode<?> shadowNode, float h) {
+        shadowNode.setStyleMinHeight(h);
+        shadowNode.setStyleMaxHeight(h);
     }
 }

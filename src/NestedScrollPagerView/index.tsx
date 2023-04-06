@@ -2,7 +2,7 @@ import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
 import { Animated, Image, StyleSheet, View } from 'react-native'
 import NestedScrollView from '../NestedScrollView'
-import AppBarLayout from '../AppBarLayout'
+import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
 import PagerView from 'react-native-pager-view'
 import { FlatListPage } from '../components/FlatListPage'
 import { ScrollViewPage } from '../components/ScrollViewPage'
@@ -29,13 +29,13 @@ export function NestedScrollPagerView() {
 
   return (
     <NestedScrollView style={styles.coordinator}>
-      <AppBarLayout>
+      <NestedScrollViewHeader>
         <Image
           source={require('../components/assets/cover.webp')}
           style={styles.image}
           resizeMode="cover"
         />
-      </AppBarLayout>
+      </NestedScrollViewHeader>
       <View style={{ height: '100%' }} collapsable={false}>
         <TabBar
           tabs={pages}

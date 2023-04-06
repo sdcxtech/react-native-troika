@@ -2,13 +2,16 @@ import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import NestedScrollView from '../NestedScrollView'
-import AppBarLayout from '../AppBarLayout'
+import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
 import { FlatListPage } from '../components/FlatListPage'
 
 export function NestedScrollFlatList() {
   return (
-    <NestedScrollView style={styles.coordinator} bounces>
-      <AppBarLayout fixedHeight={60}>
+    <NestedScrollView
+      style={styles.coordinator}
+      bounces
+      onScroll={event => console.log(event.nativeEvent)}>
+      <NestedScrollViewHeader fixedHeight={60}>
         <Image
           source={require('../components/assets/cover.webp')}
           style={styles.image}
@@ -17,7 +20,7 @@ export function NestedScrollFlatList() {
         <View style={[styles.text]}>
           <Text>anchor</Text>
         </View>
-      </AppBarLayout>
+      </NestedScrollViewHeader>
       <FlatListPage />
     </NestedScrollView>
   )

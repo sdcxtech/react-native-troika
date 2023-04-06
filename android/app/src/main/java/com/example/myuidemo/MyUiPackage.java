@@ -25,13 +25,13 @@ public class MyUiPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList(new CoordinatorLayoutManager(),
-                new AppBarLayoutManager(),
+        return Arrays.asList(
                 new NestedRNCWebViewManager(),
                 new PullRefreshLayoutManager(),
                 new RefreshPlaceholderViewManager(),
                 new LoadMorePlaceholderViewManager(),
-                new NestedScrollViewManager()
+                new NestedScrollViewManager(),
+                new NestedScrollViewHeaderManager()
         );
     }
 }

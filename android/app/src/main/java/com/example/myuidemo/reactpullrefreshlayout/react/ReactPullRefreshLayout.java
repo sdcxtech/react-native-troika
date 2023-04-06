@@ -5,7 +5,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ScrollView;
 
-import com.example.myuidemo.CoordinatorLayoutView;
 import com.example.myuidemo.Helper.ViewHelper;
 import com.example.myuidemo.reactpullrefreshlayout.PullRefreshLayout;
 import com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview.LoadMorePlaceholderView;
@@ -79,7 +78,7 @@ public class ReactPullRefreshLayout extends PullRefreshLayout {
     }
 
     private View findSpecificScrollableView(View view) {
-        Class[] classes = new Class[]{WebView.class, ScrollView.class, CoordinatorLayoutView.class};
+        Class[] classes = new Class[]{WebView.class, ScrollView.class};
         return ViewHelper.findSpecificView(view, classes);
     }
 

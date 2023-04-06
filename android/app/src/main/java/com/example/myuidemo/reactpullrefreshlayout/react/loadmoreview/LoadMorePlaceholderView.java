@@ -3,7 +3,6 @@ package com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview;
 import androidx.annotation.NonNull;
 
 import com.example.myuidemo.reactpullrefreshlayout.react.MJRefreshState;
-import com.example.myuidemo.reactpullrefreshlayout.react.ReactLinearPlaceholderLayout;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshEvent;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshStateChangedEvent;
 import com.example.myuidemo.reactpullrefreshlayout.refreshView.ILoadMoreView;
@@ -13,9 +12,10 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.view.ReactViewGroup;
 
 
-public class LoadMorePlaceholderView extends ReactLinearPlaceholderLayout implements ILoadMoreView {
+public class LoadMorePlaceholderView extends ReactViewGroup implements ILoadMoreView {
     private static final String TAG = "LoadMorePlaceholderView";
 
     private final ReactContext reactContext;

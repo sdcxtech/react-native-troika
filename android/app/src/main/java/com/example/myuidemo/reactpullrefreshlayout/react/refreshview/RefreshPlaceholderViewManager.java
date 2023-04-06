@@ -6,6 +6,7 @@ import com.example.myuidemo.reactpullrefreshlayout.react.ReactPullRefreshLayout;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.OffsetChangedEvent;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshStateChangedEvent;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -25,6 +26,16 @@ public class RefreshPlaceholderViewManager extends ViewGroupManager<RefreshPlace
     @Override
     protected RefreshPlaceholderView createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new RefreshPlaceholderView(reactContext);
+    }
+
+    @Override
+    public LayoutShadowNode createShadowNodeInstance() {
+        return new RefreshPlaceholderShadowNode();
+    }
+
+    @Override
+    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
+        return RefreshPlaceholderShadowNode.class;
     }
 
     @Override

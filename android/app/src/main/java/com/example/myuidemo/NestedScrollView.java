@@ -80,7 +80,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView {
                 if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
                     //首次渲染时不需要进行额外偏移矫正位置
                     if (mNestedScrollViewLocalData.contentNodeH != 0) {
-                        mExtraScrollWhenSizeChange = (int) Math.abs(mNestedScrollViewLocalData.contentNodeH - contentHeight);
+                        mExtraScrollWhenSizeChange = (int) Math.abs(mNestedScrollViewLocalData.contentNodeH - contentHeight + mNestedScrollViewLocalData.headerNodeH - headerHeight);
                     }
                     mNestedScrollViewLocalData.contentNodeH = contentHeight;
                     mNestedScrollViewLocalData.headerNodeH = headerHeight;

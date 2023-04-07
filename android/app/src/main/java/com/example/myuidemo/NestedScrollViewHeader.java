@@ -19,6 +19,10 @@ public class NestedScrollViewHeader extends ReactViewGroup {
 
     private androidx.core.widget.NestedScrollView.OnScrollChangeListener mOnScrollChangeListener;
 
+    public NestedScrollViewHeader(@NonNull Context context) {
+        super(context);
+    }
+
     public void setOnScrollChangeListener(androidx.core.widget.NestedScrollView.OnScrollChangeListener onScrollChangeListener) {
         this.mOnScrollChangeListener = onScrollChangeListener;
     }
@@ -32,8 +36,10 @@ public class NestedScrollViewHeader extends ReactViewGroup {
         }
     }
 
-    public NestedScrollViewHeader(@NonNull Context context) {
-        super(context);
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        notifyFixedHeightChange();
     }
 
     public void setFixedHeight(int fixedHeight) {

@@ -15,9 +15,10 @@ public class NestedScrollViewShadowNode extends LayoutShadowNode {
             setNodeHeight(parent, parentNodeH);
             for (int i = 0, count = parent.getChildCount(); i < count; i++) {
                 ReactShadowNode<?> shadowNode = parent.getChildAt(i);
-                float childNodeH = NestedScrollViewHeaderManager.REACT_CLASS.equals((shadowNode.getViewClass()))
-                        ? nestedScrollViewLocalData.headerNodeH
-                        : nestedScrollViewLocalData.contentNodeH;
+                if (NestedScrollViewHeaderManager.REACT_CLASS.equals((shadowNode.getViewClass()))) {
+                    continue;
+                }
+                float childNodeH = nestedScrollViewLocalData.contentNodeH;
                 setNodeHeight(shadowNode, childNodeH);
             }
         }

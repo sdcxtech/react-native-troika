@@ -102,9 +102,14 @@ function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
     }
   }, [])
 
+  const onOffsetChanged = useCallback((offset: number) => {
+    console.log('refresh header offset', offset)
+  }, [])
+
   return (
     <RefreshHeader
       style={styles.container}
+      onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
       refreshing={refreshing}>
@@ -124,33 +129,30 @@ function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
 
   const [text, setText] = useState('上拉加载更多')
 
-  const onStateChanged = useCallback(
-    (state: RefreshState) => {
-      if (noMoreData) {
-        setText('没有更多数据了')
-        return
-      }
+  const onStateChanged = useCallback((state: RefreshState) => {
+    if (state === RefreshStateIdle) {
+      setText('上拉加载更多')
+    } else if (state === RefreshStateRefreshing) {
+      setText('正在加载更多...')
+    } else {
+      setText('松开加载更多')
+    }
+  }, [])
 
-      if (state === RefreshStateIdle) {
-        setText('上拉加载更多')
-      } else if (state === RefreshStateRefreshing) {
-        setText('正在加载更多...')
-      } else {
-        setText('松开加载更多')
-      }
-    },
-    [noMoreData],
-  )
+  const onOffsetChanged = useCallback((offset: number) => {
+    console.log('refresh footer offset', offset)
+  }, [])
 
   return (
     <RefreshFooter
       style={styles.container}
       manual
+      onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
       refreshing={refreshing}
       noMoreData={noMoreData}>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text}>{noMoreData ? '没有更多数据了' : text}</Text>
     </RefreshFooter>
   )
 }

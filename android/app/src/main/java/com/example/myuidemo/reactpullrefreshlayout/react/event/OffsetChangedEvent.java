@@ -9,8 +9,8 @@ import com.facebook.react.uimanager.events.Event;
 
 public class OffsetChangedEvent extends Event<OffsetChangedEvent> {
 
-    public static final String Name = "refreshEvent";
-    public static final String JSEventName = "onRefresh";
+    public static final String Name = "offsetChangedEvent";
+    public static final String JSEventName = "onOffsetChanged";
 
     private final float offset;
 

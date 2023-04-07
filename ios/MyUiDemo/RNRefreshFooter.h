@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) RCTDirectEventBlock onRefresh;
 @property (nonatomic, copy) RCTDirectEventBlock onStateChanged;
+@property (nonatomic, copy) RCTDirectEventBlock onOffsetChanged;
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
 
 @property (nonatomic, assign) BOOL noMoreData;

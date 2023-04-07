@@ -14,9 +14,14 @@ interface StateChangeEventData {
   state: RefreshState
 }
 
+interface OffsetChangedEventData {
+  offset: number
+}
+
 interface NativeRefreshFooterProps {
   onRefresh?: () => void
   onStateChanged?: (event: NativeSyntheticEvent<StateChangeEventData>) => void
+  onOffsetChanged?: (event: NativeSyntheticEvent<OffsetChangedEventData>) => void
   refreshing?: boolean
   noMoreData?: boolean
   manual?: boolean
@@ -25,6 +30,7 @@ interface NativeRefreshFooterProps {
 export interface RefreshFooterProps extends ViewProps {
   onRefresh?: () => void
   onStateChanged?: (state: RefreshState) => void
+  onOffsetChanged?: (offset: number) => void
   refreshing: boolean
   noMoreData?: boolean
   manual?: boolean
@@ -33,7 +39,7 @@ export interface RefreshFooterProps extends ViewProps {
 const NativeRefreshFooter = requireNativeComponent<NativeRefreshFooterProps>('RefreshFooter')
 
 function RefreshFooter(props: RefreshFooterProps) {
-  const { onStateChanged, ...rest } = props
+  const { onStateChanged, onOffsetChanged, ...rest } = props
 
   const handleStateChanged = useCallback(
     (event: NativeSyntheticEvent<StateChangeEventData>) => {
@@ -44,7 +50,22 @@ function RefreshFooter(props: RefreshFooterProps) {
     [onStateChanged],
   )
 
-  return <NativeRefreshFooter onStateChanged={handleStateChanged} {...rest} />
+  const handleOffsetChanged = useCallback(
+    (event: NativeSyntheticEvent<OffsetChangedEventData>) => {
+      if (onOffsetChanged) {
+        onOffsetChanged(event.nativeEvent.offset)
+      }
+    },
+    [onOffsetChanged],
+  )
+
+  return (
+    <NativeRefreshFooter
+      onStateChanged={handleStateChanged}
+      onOffsetChanged={handleOffsetChanged}
+      {...rest}
+    />
+  )
 }
 
 export default RefreshFooter

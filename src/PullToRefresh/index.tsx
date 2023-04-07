@@ -18,6 +18,7 @@ interface PullToRefreshProps extends ViewProps {
   refreshing?: boolean
   onLoadMore?: () => void
   loadingMore?: boolean
+  noMoreData?: boolean
   header?: React.ReactElement<RefreshHeaderProps>
   footer?: React.ReactElement<RefreshFooterProps>
 }
@@ -31,6 +32,7 @@ function PullToRefresh(props: PullToRefreshProps) {
     refreshing,
     onLoadMore,
     loadingMore,
+    noMoreData,
     header,
     footer,
     style,
@@ -55,7 +57,13 @@ function PullToRefresh(props: PullToRefreshProps) {
     }
 
     if (onLoadMore) {
-      return <DefaultRefreshFooter onRefresh={onLoadMore} refreshing={!!loadingMore} />
+      return (
+        <DefaultRefreshFooter
+          onRefresh={onLoadMore}
+          refreshing={!!loadingMore}
+          noMoreData={noMoreData}
+        />
+      )
     }
 
     return null
@@ -108,22 +116,31 @@ function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
 interface DefaultRefreshFooterProps {
   onRefresh?: () => void
   refreshing: boolean
+  noMoreData?: boolean
 }
 
 function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
-  const { onRefresh, refreshing } = props
+  const { onRefresh, refreshing, noMoreData } = props
 
   const [text, setText] = useState('上拉加载更多')
 
-  const onStateChanged = useCallback((state: RefreshState) => {
-    if (state === RefreshStateIdle) {
-      setText('上拉加载更多')
-    } else if (state === RefreshStateRefreshing) {
-      setText('正在加载更多...')
-    } else {
-      setText('松开加载更多')
-    }
-  }, [])
+  const onStateChanged = useCallback(
+    (state: RefreshState) => {
+      if (noMoreData) {
+        setText('没有更多数据了')
+        return
+      }
+
+      if (state === RefreshStateIdle) {
+        setText('上拉加载更多')
+      } else if (state === RefreshStateRefreshing) {
+        setText('正在加载更多...')
+      } else {
+        setText('松开加载更多')
+      }
+    },
+    [noMoreData],
+  )
 
   return (
     <RefreshFooter
@@ -131,7 +148,8 @@ function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
       manual
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
-      refreshing={refreshing}>
+      refreshing={refreshing}
+      noMoreData={noMoreData}>
       <Text style={styles.text}>{text}</Text>
     </RefreshFooter>
   )

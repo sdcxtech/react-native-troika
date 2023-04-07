@@ -5,10 +5,10 @@ export const RefreshStateIdle = 0
 export const RefreshStateComing = 1
 export const RefreshStateRefreshing = 2
 export type RefreshStateIdle = typeof RefreshStateIdle
-export type RefreshStatePulling = typeof RefreshStateComing
+export type RefreshStateComing = typeof RefreshStateComing
 export type RefreshStateRefreshing = typeof RefreshStateRefreshing
 
-export type RefreshState = RefreshStateIdle | RefreshStatePulling | RefreshStateRefreshing
+export type RefreshState = RefreshStateIdle | RefreshStateComing | RefreshStateRefreshing
 
 interface StateChangeEventData {
   state: RefreshState

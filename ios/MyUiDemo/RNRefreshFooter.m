@@ -26,7 +26,7 @@
         _bridge = bridge;
         _hasObserver = NO;
         _state = RNRefreshStateIdle;
-        _enabled = YES;
+        _noMoreData = NO;
         _manual = NO;
     }
     return self;
@@ -105,7 +105,7 @@
     }
     
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        if (self.hidden || !self.enabled) {
+        if (self.hidden || self.noMoreData) {
             return;
         }
         

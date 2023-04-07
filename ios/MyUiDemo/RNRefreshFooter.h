@@ -12,8 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) RCTDirectEventBlock onStateChanged;
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
 
-// 是否响应上拉加载更多，当没有更多数据时，设置为 NO，默认为 YES
-@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign) BOOL noMoreData;
 // 手动触发加载更多，设置为 NO，将自动触发加载更多，默认为 NO
 @property (nonatomic, assign) BOOL manual;
 

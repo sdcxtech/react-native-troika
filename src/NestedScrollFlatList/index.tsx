@@ -7,11 +7,8 @@ import { FlatListPage } from '../components/FlatListPage'
 
 export function NestedScrollFlatList() {
   return (
-    <NestedScrollView
-      style={styles.coordinator}
-      bounces
-      onScroll={event => console.log(event.nativeEvent)}>
-      <NestedScrollViewHeader fixedHeight={60}>
+    <NestedScrollView style={styles.coordinator} bounces>
+      <NestedScrollViewHeader fixedHeight={60} onScroll={e => console.log(e.nativeEvent)}>
         <Image
           source={require('../components/assets/cover.webp')}
           style={styles.image}

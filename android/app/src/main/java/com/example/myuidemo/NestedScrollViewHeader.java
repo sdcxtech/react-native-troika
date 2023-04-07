@@ -17,6 +17,21 @@ public class NestedScrollViewHeader extends ReactViewGroup {
 
     private int mStickyHeaderBeginIndex = INVALID_STICKY_BEGIN_INDEX;
 
+    private androidx.core.widget.NestedScrollView.OnScrollChangeListener mOnScrollChangeListener;
+
+    public void setOnScrollChangeListener(androidx.core.widget.NestedScrollView.OnScrollChangeListener onScrollChangeListener) {
+        this.mOnScrollChangeListener = onScrollChangeListener;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        NestedScrollView nestedScrollView = getParentNestedScrollView();
+        if (nestedScrollView != null && mOnScrollChangeListener != null) {
+            nestedScrollView.setOnScrollChangeListener(mOnScrollChangeListener);
+        }
+    }
+
     public NestedScrollViewHeader(@NonNull Context context) {
         super(context);
     }
@@ -49,13 +64,21 @@ public class NestedScrollViewHeader extends ReactViewGroup {
 
 
     private void notifyFixedHeightChange() {
-        ViewParent parent = getParent();
-        while (parent != null) {
-            if (parent instanceof NestedScrollView) {
-                post(parent::requestLayout);
-                return;
-            }
-            parent = parent.getParent();
+        NestedScrollView nestedScrollView = getParentNestedScrollView();
+        if (nestedScrollView != null) {
+            post(nestedScrollView::requestLayout);
         }
     }
+
+    private NestedScrollView getParentNestedScrollView() {
+        ViewParent parent = getParent();
+        if (parent != null) {
+            parent = parent.getParent();
+            if (parent instanceof NestedScrollView) {
+                return (NestedScrollView) parent;
+            }
+        }
+        return null;
+    }
 }
+

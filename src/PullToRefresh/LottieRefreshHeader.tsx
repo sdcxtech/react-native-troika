@@ -15,8 +15,6 @@ interface LottieRefreshHeaderProps {
 }
 
 function LottieRefreshHeader(props: LottieRefreshHeaderProps) {
-  const { onRefresh, refreshing } = props
-
   const [progress, setProgress] = useState(0)
   const lottieRef = useRef<Lottie>(null)
   const stateRef = useRef<RefreshState>(RefreshStateIdle)
@@ -31,7 +29,7 @@ function LottieRefreshHeader(props: LottieRefreshHeaderProps) {
     (state: RefreshState) => {
       stateRef.current = state
       if (state === RefreshStateIdle) {
-        lottieRef.current?.pause()
+        lottieRef.current?.reset()
         setProgress(0)
       } else if (state === RefreshStateRefreshing) {
         lottieRef.current?.play(progress)
@@ -45,14 +43,13 @@ function LottieRefreshHeader(props: LottieRefreshHeaderProps) {
   return (
     <RefreshHeader
       style={styles.header}
-      onRefresh={onRefresh}
-      refreshing={refreshing}
+      {...props}
       onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}>
       <Lottie
         ref={lottieRef}
         style={{ height: 50 }}
-        source={require('./car.json')}
+        source={require('./square-loading.json')}
         autoPlay={false}
         speed={1}
         cacheStrategy={'strong'}

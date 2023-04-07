@@ -21,7 +21,7 @@ function PullRefreshFlatList() {
     pendingAction.current = setTimeout(() => {
       addFlatlistRefreshItem()
       endRefresh()
-    }, 1500)
+    }, 2000)
   }
 
   const endRefresh = () => {

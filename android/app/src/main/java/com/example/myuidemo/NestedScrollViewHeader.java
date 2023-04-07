@@ -13,7 +13,7 @@ public class NestedScrollViewHeader extends ReactViewGroup {
 
     public final static int INVALID_STICKY_BEGIN_INDEX = Integer.MAX_VALUE;
 
-    private int mFixedHeight = 0;
+    private int mFixedHeight = INVALID_FIXED_HEIGHT;
 
     private int mStickyHeaderBeginIndex = INVALID_STICKY_BEGIN_INDEX;
 

@@ -35,13 +35,13 @@ function PullRefreshFlatList() {
     pendingAction.current = setTimeout(() => {
       addFlatlistLoadMoreItem()
       endLoadMore()
-    }, 1500)
+    }, 3500)
   }
 
   const endLoadMore = () => {
     clearPendingAction()
     setLoadingMore(false)
-    setNoMoreData(true)
+    // setNoMoreData(true)
   }
 
   return (

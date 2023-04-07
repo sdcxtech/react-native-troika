@@ -16,6 +16,7 @@ Navigation.setDefaultOptions({
   topBarStyle: 'dark-content',
   statusBarColorAndroid: Platform.Version > 21 ? undefined : '#4A4A4A',
   scrimAlphaAndroid: 100,
+  fitsOpaqueNavigationBarAndroid: true,
 })
 
 // 重要必须

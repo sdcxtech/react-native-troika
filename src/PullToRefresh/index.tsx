@@ -7,6 +7,8 @@ import RefreshHeader, {
   RefreshStateIdle,
   RefreshStateRefreshing,
 } from '../RefreshHeader'
+import { LottieRefreshFooter } from './LottieRefreshFooter'
+import { LottieRefreshHeader } from './LottieRefreshHeader'
 
 interface NativePullToRefreshProps extends ViewProps {
   enableRefreshAction?: boolean
@@ -45,7 +47,7 @@ function PullToRefresh(props: PullToRefreshProps) {
     }
 
     if (onRefresh) {
-      return <DefaultRefreshHeader onRefresh={onRefresh} refreshing={!!refreshing} />
+      return <LottieRefreshHeader onRefresh={onRefresh} refreshing={!!refreshing} />
     }
 
     return null
@@ -58,7 +60,7 @@ function PullToRefresh(props: PullToRefreshProps) {
 
     if (onLoadMore) {
       return (
-        <DefaultRefreshFooter
+        <LottieRefreshFooter
           onRefresh={onLoadMore}
           refreshing={!!loadingMore}
           noMoreData={noMoreData}

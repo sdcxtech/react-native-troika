@@ -9,7 +9,7 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: 'NestedScroll + FlastList',
+    title: 'NestedScroll + FastList',
     routeName: 'NestedScrollFlatList',
   },
   {

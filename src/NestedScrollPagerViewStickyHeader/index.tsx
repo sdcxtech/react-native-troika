@@ -9,10 +9,11 @@ import { ScrollViewPage } from '../components/ScrollViewPage'
 import { WebViewPage } from '../components/WebViewPage'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
+import Contacts from '../components/contacts/Contacts'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
-const pages = ['FlatList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
 
 export function NestedScrollPagerViewStickyHeader() {
   const {
@@ -53,6 +54,7 @@ export function NestedScrollPagerViewStickyHeader() {
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
         <FlatListPage />
+        <Contacts />
         <ScrollViewPage />
         <WebViewPage url="https://wangdoc.com" />
       </AnimatedPagerView>

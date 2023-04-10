@@ -10,10 +10,11 @@ import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
 import PullToRefresh from '../PullToRefresh'
+import Contacts from '../components/contacts/Contacts'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
-const pages = ['FlatList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
 
 export function PullRefreshNestedScrollPagerView() {
   const [refreshing, setRefreshing] = useState(false)
@@ -97,6 +98,7 @@ export function PullRefreshNestedScrollPagerView() {
           onPageSelected={onPageSelected}
           onPageScrollStateChanged={onPageScrollStateChanged}>
           <FlatListPage />
+          <Contacts />
           <ScrollViewPage />
           <WebViewPage url="https://wangdoc.com" />
         </AnimatedPagerView>

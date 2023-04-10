@@ -9,10 +9,11 @@ import usePagerView from '../components/usePagerView'
 import PullRefreshFlatList from '../components/PullRefreshFlatList'
 import PullRefreshScrollView from '../components/PullRefreshScrollView'
 import PullRefreshWebView from '../components/PullRefreshWebView'
+import { Twitter } from '../components/twitter'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
-const pages = ['FlatList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
 
 export function PullRefreshPagerViewNestedScroll() {
   const {
@@ -53,6 +54,7 @@ export function PullRefreshPagerViewNestedScroll() {
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
         <PullRefreshFlatList />
+        <Twitter />
         <PullRefreshScrollView />
         <PullRefreshWebView />
       </AnimatedPagerView>

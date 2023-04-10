@@ -4,7 +4,9 @@
 #import <React/UIView+React.h>
 #import <React/RCTAssert.h>
 
-@implementation RNNestedScrollViewHeader
+@implementation RNNestedScrollViewHeader {
+    BOOL _hasObserver;
+}
 
 - (CGFloat)maxScrollRange {
     if (self.fixedHeight > 0) {
@@ -48,6 +50,44 @@
 
     RCTAssert([scrollView isKindOfClass:[RNNestedScrollView class]], @"Unexpected view hierarchy of NestedScrollView component.");
     [scrollView updateContentSizeIfNeeded];
+}
+
+- (void)willMoveToWindow:(UIWindow *)newWindow {
+    [super willMoveToWindow:newWindow];
+    if (newWindow) {
+        [self addObserver];
+    } else {
+        [self removeObserver];
+    }
+}
+
+- (void)addObserver {
+    if (!_hasObserver && self.superview) {
+        NSKeyValueObservingOptions options = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
+        [self.superview addObserver:self forKeyPath:@"contentOffset" options:options context:nil];
+        _hasObserver = YES;
+    }
+}
+
+- (void)removeObserver {
+    if (_hasObserver && self.superview) {
+        [self.superview removeObserver:self forKeyPath:@"contentOffset" context:nil];
+        _hasObserver = NO;
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"contentOffset"]) {
+        CGPoint p = [change[@"new"] CGPointValue];
+        if (self.onScroll && p.y <= [self maxScrollRange]) {
+            self.onScroll(@{
+                @"contentOffset": @{
+                    @"y": @(p.y),
+                    @"x": @(p.x)
+                }
+            });
+        }
+    }
 }
 
 @end

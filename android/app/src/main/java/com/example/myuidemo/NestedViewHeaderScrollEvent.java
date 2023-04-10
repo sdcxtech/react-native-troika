@@ -4,16 +4,17 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.Event;
 
 public class NestedViewHeaderScrollEvent extends Event<NestedViewHeaderScrollEvent> {
     public static final String Name = "scrollEvent";
     public static final String JSEventName = "onScroll";
-    private int mScrollY;
+    private final float y;
 
-    public NestedViewHeaderScrollEvent(int surfaceId, int viewTag, int scrollY) {
+    public NestedViewHeaderScrollEvent(int surfaceId, int viewTag, int offset) {
         super(surfaceId, viewTag);
-        mScrollY = scrollY;
+        this.y = PixelUtil.toDIPFromPixel(offset);
     }
 
     @Override
@@ -24,7 +25,10 @@ public class NestedViewHeaderScrollEvent extends Event<NestedViewHeaderScrollEve
     @Nullable
     protected WritableMap getEventData() {
         WritableMap event = Arguments.createMap();
-        event.putInt("scrollY", mScrollY);
+        WritableMap offset = Arguments.createMap();
+        offset.putDouble("y", y);
+        offset.putDouble("x", 0);
+        event.putMap("contentOffset", offset);
         return event;
     }
 }

@@ -286,6 +286,8 @@ PODS:
     - React-perflogger (= 0.67.5)
   - RNReactNativeHapticFeedback (2.0.3):
     - React-Core
+  - RNSVG (13.9.0):
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -325,6 +327,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -401,6 +404,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -441,6 +446,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 434efc9e5b6d0f14f49867f130b39376c971c1aa
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
 
 PODFILE CHECKSUM: 886fa8c5152d2d82f224b396e487f74ebcea4787

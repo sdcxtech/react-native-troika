@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, assign) CGFloat fixedHeight;
 @property(nonatomic, assign) NSUInteger stickyHeaderBeginIndex;
+@property(nonatomic, copy) RCTDirectEventBlock onScroll;
 
 - (CGFloat)maxScrollRange;
 

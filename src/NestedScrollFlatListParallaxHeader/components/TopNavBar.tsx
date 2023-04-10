@@ -1,7 +1,7 @@
 import { RoundButton } from './RoundButton'
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import * as React from 'react'
-import ArrowLeft from './ArrowLeft'
+import ArrowLeft from '../icons/ArrowLeft'
 import { useNavigator } from 'hybrid-navigation'
 
 export const TopNavBar = () => {

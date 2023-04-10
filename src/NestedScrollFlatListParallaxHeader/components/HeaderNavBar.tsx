@@ -1,9 +1,9 @@
 import { RoundButton } from './RoundButton'
 import { StyleSheet, View } from 'react-native'
 import * as React from 'react'
-import ArrowLeft from './ArrowLeft'
-import ArrowRight from './ArrowRight'
-import { Share } from './Share'
+import ArrowLeft from '../icons/ArrowLeft'
+import ArrowRight from '../icons/ArrowRight'
+import { Share } from '../icons/Share'
 import { useNavigator } from 'hybrid-navigation'
 
 export const HeaderNavBar = () => {

@@ -10,8 +10,8 @@ RCT_EXPORT_MODULE(NestedScrollViewHeader)
 }
 
 RCT_EXPORT_VIEW_PROPERTY(fixedHeight, CGFloat)
-
 RCT_EXPORT_VIEW_PROPERTY(stickyHeaderBeginIndex, NSUInteger)
+RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 
 
 @end

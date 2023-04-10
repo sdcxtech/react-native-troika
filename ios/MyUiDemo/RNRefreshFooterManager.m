@@ -19,8 +19,9 @@ RCT_EXPORT_MODULE(RefreshFooter)
 
 RCT_EXPORT_VIEW_PROPERTY(onRefresh, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onStateChanged, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onOffsetChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(refreshing, BOOL)
-RCT_EXPORT_VIEW_PROPERTY(enabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(noMoreData, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(manual, BOOL)
 
 RCT_EXPORT_METHOD(setNativeRefreshing : (nonnull NSNumber *)viewTag toRefreshing : (BOOL)refreshing) {

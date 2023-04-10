@@ -3,20 +3,19 @@ package com.example.myuidemo.reactpullrefreshlayout.react.refreshview;
 import androidx.annotation.NonNull;
 
 import com.example.myuidemo.reactpullrefreshlayout.react.MJRefreshState;
-import com.example.myuidemo.reactpullrefreshlayout.react.ReactLinearPlaceholderLayout;
+import com.example.myuidemo.reactpullrefreshlayout.react.event.OffsetChangedEvent;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshEvent;
-import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshStateChangedEvent;
+import com.example.myuidemo.reactpullrefreshlayout.react.event.StateChangedEvent;
 import com.example.myuidemo.reactpullrefreshlayout.refreshView.IRefreshView;
-import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.PointerEvents;
 import com.facebook.react.uimanager.ReactPointerEventsView;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.view.ReactViewGroup;
 
-
-public class RefreshPlaceholderView extends ReactLinearPlaceholderLayout implements IRefreshView, ReactPointerEventsView {
+public class RefreshPlaceholderView extends ReactViewGroup implements IRefreshView, ReactPointerEventsView {
     private static final String TAG = "RefreshPlaceholderView";
 
     private final ReactContext reactContext;
@@ -60,11 +59,16 @@ public class RefreshPlaceholderView extends ReactLinearPlaceholderLayout impleme
             enableTouch();
         }
 
+        emitEvent(reactContext, new OffsetChangedEvent(UIManagerHelper.getSurfaceId(this), getId(), currentTargetViewOffset));
+
         if (this.state == MJRefreshState.Refreshing) {
             return;
         }
 
-        FLog.i(TAG, "currentRefreshViewOffset:" + currentRefreshViewOffset + " currentTargetViewOffset:" + currentTargetViewOffset + " totalRefreshViewOffset:" + totalRefreshViewOffset + " totalTargetViewOffset:" + totalTargetViewOffset);
+//        FLog.i(TAG, "currentRefreshViewOffset:" + currentRefreshViewOffset +
+//                " currentTargetViewOffset:" + currentTargetViewOffset +
+//                " totalRefreshViewOffset:" + totalRefreshViewOffset +
+//                " totalTargetViewOffset:" + totalTargetViewOffset);
 
         if (currentRefreshViewOffset >= totalRefreshViewOffset) {
             setState(MJRefreshState.Coming);
@@ -84,7 +88,7 @@ public class RefreshPlaceholderView extends ReactLinearPlaceholderLayout impleme
             return;
         }
         this.state = state;
-        emitEvent(reactContext, new RefreshStateChangedEvent(UIManagerHelper.getSurfaceId(this), getId(), this.state));
+        emitEvent(reactContext, new StateChangedEvent(UIManagerHelper.getSurfaceId(this), getId(), this.state));
     }
 
     void emitEvent(ReactContext reactContext, Event<?> event) {

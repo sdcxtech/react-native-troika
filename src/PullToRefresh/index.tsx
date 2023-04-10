@@ -7,6 +7,8 @@ import RefreshHeader, {
   RefreshStateIdle,
   RefreshStateRefreshing,
 } from '../RefreshHeader'
+import { LottieRefreshFooter } from './LottieRefreshFooter'
+import { LottieRefreshHeader } from './LottieRefreshHeader'
 
 interface NativePullToRefreshProps extends ViewProps {
   enableRefreshAction?: boolean
@@ -18,6 +20,7 @@ interface PullToRefreshProps extends ViewProps {
   refreshing?: boolean
   onLoadMore?: () => void
   loadingMore?: boolean
+  noMoreData?: boolean
   header?: React.ReactElement<RefreshHeaderProps>
   footer?: React.ReactElement<RefreshFooterProps>
 }
@@ -31,6 +34,7 @@ function PullToRefresh(props: PullToRefreshProps) {
     refreshing,
     onLoadMore,
     loadingMore,
+    noMoreData,
     header,
     footer,
     style,
@@ -43,7 +47,7 @@ function PullToRefresh(props: PullToRefreshProps) {
     }
 
     if (onRefresh) {
-      return <DefaultRefreshHeader onRefresh={onRefresh} refreshing={!!refreshing} />
+      return <LottieRefreshHeader onRefresh={onRefresh} refreshing={!!refreshing} />
     }
 
     return null
@@ -55,7 +59,13 @@ function PullToRefresh(props: PullToRefreshProps) {
     }
 
     if (onLoadMore) {
-      return <DefaultRefreshFooter onRefresh={onLoadMore} refreshing={!!loadingMore} />
+      return (
+        <LottieRefreshFooter
+          onRefresh={onLoadMore}
+          refreshing={!!loadingMore}
+          noMoreData={noMoreData}
+        />
+      )
     }
 
     return null
@@ -94,9 +104,14 @@ function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
     }
   }, [])
 
+  const onOffsetChanged = useCallback((offset: number) => {
+    console.log('refresh header offset', offset)
+  }, [])
+
   return (
     <RefreshHeader
       style={styles.container}
+      onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
       refreshing={refreshing}>
@@ -108,10 +123,11 @@ function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
 interface DefaultRefreshFooterProps {
   onRefresh?: () => void
   refreshing: boolean
+  noMoreData?: boolean
 }
 
 function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
-  const { onRefresh, refreshing } = props
+  const { onRefresh, refreshing, noMoreData } = props
 
   const [text, setText] = useState('上拉加载更多')
 
@@ -125,14 +141,20 @@ function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
     }
   }, [])
 
+  const onOffsetChanged = useCallback((offset: number) => {
+    console.log('refresh footer offset', offset)
+  }, [])
+
   return (
     <RefreshFooter
       style={styles.container}
       manual
+      onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
-      refreshing={refreshing}>
-      <Text style={styles.text}>{text}</Text>
+      refreshing={refreshing}
+      noMoreData={noMoreData}>
+      <Text style={styles.text}>{noMoreData ? '没有更多数据了' : text}</Text>
     </RefreshFooter>
   )
 }

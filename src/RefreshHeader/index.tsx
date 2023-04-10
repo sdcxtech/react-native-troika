@@ -5,34 +5,40 @@ export const RefreshStateIdle = 0
 export const RefreshStateComing = 1
 export const RefreshStateRefreshing = 2
 export type RefreshStateIdle = typeof RefreshStateIdle
-export type RefreshStatePulling = typeof RefreshStateComing
+export type RefreshStateComing = typeof RefreshStateComing
 export type RefreshStateRefreshing = typeof RefreshStateRefreshing
 
-export type RefreshState = RefreshStateIdle | RefreshStatePulling | RefreshStateRefreshing
+export type RefreshState = RefreshStateIdle | RefreshStateComing | RefreshStateRefreshing
 
-interface StateChangeEventData {
+interface StateChangedEventData {
   state: RefreshState
+}
+
+interface OffsetChangedEventData {
+  offset: number
 }
 
 interface NativeRefreshHeaderProps {
   onRefresh?: () => void
-  onStateChanged?: (event: NativeSyntheticEvent<StateChangeEventData>) => void
+  onStateChanged?: (event: NativeSyntheticEvent<StateChangedEventData>) => void
+  onOffsetChanged?: (event: NativeSyntheticEvent<OffsetChangedEventData>) => void
   refreshing: boolean
 }
 
 export interface RefreshHeaderProps extends RefreshControlProps {
   onRefresh?: () => void
   onStateChanged?: (state: RefreshState) => void
+  onOffsetChanged?: (offset: number) => void
   refreshing: boolean
 }
 
 const NativeRefreshHeader = requireNativeComponent<NativeRefreshHeaderProps>('RefreshHeader')
 
 function RefreshHeader(props: RefreshHeaderProps) {
-  const { onStateChanged, ...rest } = props
+  const { onStateChanged, onOffsetChanged, ...rest } = props
 
   const handleStateChanged = useCallback(
-    (event: NativeSyntheticEvent<StateChangeEventData>) => {
+    (event: NativeSyntheticEvent<StateChangedEventData>) => {
       if (onStateChanged) {
         onStateChanged(event.nativeEvent.state)
       }
@@ -40,7 +46,22 @@ function RefreshHeader(props: RefreshHeaderProps) {
     [onStateChanged],
   )
 
-  return <NativeRefreshHeader onStateChanged={handleStateChanged} {...rest} />
+  const handleOffsetChanged = useCallback(
+    (event: NativeSyntheticEvent<OffsetChangedEventData>) => {
+      if (onOffsetChanged) {
+        onOffsetChanged(event.nativeEvent.offset)
+      }
+    },
+    [onOffsetChanged],
+  )
+
+  return (
+    <NativeRefreshHeader
+      onStateChanged={handleStateChanged}
+      onOffsetChanged={handleOffsetChanged}
+      {...rest}
+    />
+  )
 }
 
 export default RefreshHeader

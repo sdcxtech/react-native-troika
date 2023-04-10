@@ -26,7 +26,7 @@
         _bridge = bridge;
         _hasObserver = NO;
         _state = RNRefreshStateIdle;
-        _enabled = YES;
+        _noMoreData = NO;
         _manual = NO;
     }
     return self;
@@ -105,7 +105,17 @@
     }
     
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        if (self.hidden || !self.enabled) {
+        
+        // 马上可看见 footer
+        CGFloat minRange = self.scrollView.contentSize.height - self.scrollView.frame.size.height;
+        
+        if (self.onOffsetChanged && self.scrollView.contentOffset.y >= minRange) {
+            self.onOffsetChanged(@{
+                @"offset": @(self.scrollView.contentOffset.y - minRange)
+            });
+        }
+        
+        if (self.hidden || self.noMoreData) {
             return;
         }
         
@@ -120,9 +130,6 @@
         CGFloat offset = self.scrollView.contentOffset.y;
         
         if (self.manual) {
-            // 马上可看见 footer
-            CGFloat minRange = self.scrollView.contentSize.height - self.scrollView.frame.size.height;
-            
             if (offset < minRange) {
                 // 未到临界点，返回
                 return;

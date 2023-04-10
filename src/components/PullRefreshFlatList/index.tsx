@@ -5,8 +5,8 @@ import { FlatListPage, useDemoFlatlistData } from '../FlatListPage'
 
 function PullRefreshFlatList() {
   const [refreshing, setRefreshing] = useState(false)
-
   const [loadingMore, setLoadingMore] = useState(false)
+  const [noMoreData, setNoMoreData] = useState(false)
   const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
   const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -21,12 +21,13 @@ function PullRefreshFlatList() {
     pendingAction.current = setTimeout(() => {
       addFlatlistRefreshItem()
       endRefresh()
-    }, 1500)
+    }, 2000)
   }
 
   const endRefresh = () => {
     clearPendingAction()
     setRefreshing(false)
+    setNoMoreData(false)
   }
 
   const loadMore = () => {
@@ -34,20 +35,22 @@ function PullRefreshFlatList() {
     pendingAction.current = setTimeout(() => {
       addFlatlistLoadMoreItem()
       endLoadMore()
-    }, 1500)
+    }, 3500)
   }
 
   const endLoadMore = () => {
     clearPendingAction()
     setLoadingMore(false)
+    // setNoMoreData(true)
   }
 
   return (
     <PullToRefresh
       style={{ height: '100%', overflow: 'hidden' }}
       refreshing={refreshing}
-      loadingMore={loadingMore}
       onRefresh={beginRefresh}
+      loadingMore={loadingMore}
+      noMoreData={noMoreData}
       onLoadMore={loadMore}>
       <FlatListPage data={flatlistData} />
     </PullToRefresh>

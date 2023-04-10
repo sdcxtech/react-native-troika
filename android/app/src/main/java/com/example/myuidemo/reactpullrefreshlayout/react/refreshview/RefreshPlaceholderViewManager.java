@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.example.myuidemo.reactpullrefreshlayout.react.ReactPullRefreshLayout;
 import com.example.myuidemo.reactpullrefreshlayout.react.event.OffsetChangedEvent;
-import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshStateChangedEvent;
+import com.example.myuidemo.reactpullrefreshlayout.react.event.RefreshEvent;
+import com.example.myuidemo.reactpullrefreshlayout.react.event.StateChangedEvent;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -28,6 +30,16 @@ public class RefreshPlaceholderViewManager extends ViewGroupManager<RefreshPlace
     }
 
     @Override
+    public LayoutShadowNode createShadowNodeInstance() {
+        return new RefreshPlaceholderShadowNode();
+    }
+
+    @Override
+    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
+        return RefreshPlaceholderShadowNode.class;
+    }
+
+    @Override
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull RefreshPlaceholderView view) {
         super.addEventEmitters(reactContext, view);
     }
@@ -35,8 +47,9 @@ public class RefreshPlaceholderViewManager extends ViewGroupManager<RefreshPlace
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.<String, Object>builder()
-                .put(RefreshStateChangedEvent.Name, MapBuilder.of("registrationName", RefreshStateChangedEvent.JSEventName))
+                .put(StateChangedEvent.Name, MapBuilder.of("registrationName", StateChangedEvent.JSEventName))
                 .put(OffsetChangedEvent.Name, MapBuilder.of("registrationName", OffsetChangedEvent.JSEventName))
+                .put(RefreshEvent.Name, MapBuilder.of("registrationName", RefreshEvent.JSEventName))
                 .build();
     }
 

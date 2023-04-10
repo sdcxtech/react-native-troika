@@ -5,35 +5,41 @@ export const RefreshStateIdle = 0
 export const RefreshStateComing = 1
 export const RefreshStateRefreshing = 2
 export type RefreshStateIdle = typeof RefreshStateIdle
-export type RefreshStatePulling = typeof RefreshStateComing
+export type RefreshStateComing = typeof RefreshStateComing
 export type RefreshStateRefreshing = typeof RefreshStateRefreshing
 
-export type RefreshState = RefreshStateIdle | RefreshStatePulling | RefreshStateRefreshing
+export type RefreshState = RefreshStateIdle | RefreshStateComing | RefreshStateRefreshing
 
 interface StateChangeEventData {
   state: RefreshState
 }
 
+interface OffsetChangedEventData {
+  offset: number
+}
+
 interface NativeRefreshFooterProps {
   onRefresh?: () => void
   onStateChanged?: (event: NativeSyntheticEvent<StateChangeEventData>) => void
+  onOffsetChanged?: (event: NativeSyntheticEvent<OffsetChangedEventData>) => void
   refreshing?: boolean
-  enabled?: boolean
+  noMoreData?: boolean
   manual?: boolean
 }
 
 export interface RefreshFooterProps extends ViewProps {
   onRefresh?: () => void
   onStateChanged?: (state: RefreshState) => void
-  refreshing?: boolean
-  enabled?: boolean
+  onOffsetChanged?: (offset: number) => void
+  refreshing: boolean
+  noMoreData?: boolean
   manual?: boolean
 }
 
 const NativeRefreshFooter = requireNativeComponent<NativeRefreshFooterProps>('RefreshFooter')
 
 function RefreshFooter(props: RefreshFooterProps) {
-  const { onStateChanged, ...rest } = props
+  const { onStateChanged, onOffsetChanged, ...rest } = props
 
   const handleStateChanged = useCallback(
     (event: NativeSyntheticEvent<StateChangeEventData>) => {
@@ -44,7 +50,22 @@ function RefreshFooter(props: RefreshFooterProps) {
     [onStateChanged],
   )
 
-  return <NativeRefreshFooter onStateChanged={handleStateChanged} {...rest} />
+  const handleOffsetChanged = useCallback(
+    (event: NativeSyntheticEvent<OffsetChangedEventData>) => {
+      if (onOffsetChanged) {
+        onOffsetChanged(event.nativeEvent.offset)
+      }
+    },
+    [onOffsetChanged],
+  )
+
+  return (
+    <NativeRefreshFooter
+      onStateChanged={handleStateChanged}
+      onOffsetChanged={handleOffsetChanged}
+      {...rest}
+    />
+  )
 }
 
 export default RefreshFooter

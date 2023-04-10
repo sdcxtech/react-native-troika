@@ -2,7 +2,7 @@
 #import "RNRefreshState.h"
 
 #import <React/RCTRefreshableProtocol.h>
-
+#import <React/RCTLog.h>
 
 @interface RNRefreshHeader () <RCTRefreshableProtocol>
 
@@ -70,12 +70,18 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         
+        CGFloat offsetY = self.scrollView.contentOffset.y;
+        CGFloat insetT = -self.scrollView.contentInset.top;
+        
+        if (self.onOffsetChanged && offsetY <= 0) {
+            self.onOffsetChanged(@{
+                @"offset": @(fabs(offsetY))
+            });
+        }
+        
         if (self.state == RNRefreshStateRefreshing) {
             return;
         }
-        
-        CGFloat offsetY = self.scrollView.contentOffset.y;
-        CGFloat insetT = -self.scrollView.contentInset.top;
         
         if (offsetY > insetT) {
             return;

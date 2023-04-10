@@ -37,6 +37,7 @@ import com.example.myuidemo.reactpullrefreshlayout.refreshView.SpinnerLoadMoreVi
 import com.example.myuidemo.reactpullrefreshlayout.refreshView.SpinnerRefreshView;
 import com.example.myuidemo.reactpullrefreshlayout.util.DisplayHelper;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.MeasureSpecAssertions;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -441,35 +442,18 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
             addDefaultLoadMoreView();
         }
 
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        measureChild(mRefreshView, widthMeasureSpec, heightMeasureSpec);
-        mRefreshHelper.calculateOffsetConfig();
 
-        measureTargetView(widthSize, heightSize);
 
-        measureChild(mLoadMoreView, widthMeasureSpec, heightMeasureSpec);
-        mLoadingMoreHelper.calculateLoadMoreOffsetConfig(false);
-
-        setMeasuredDimension(widthSize, heightSize);
-    }
-
-    void measureTargetView(int widthSize, int heightSize) {
-        ensureTargetView();
-        if (mTargetView == null) {
-            Log.d(TAG, "onMeasure: mTargetView == null");
-            return;
-        }
-        int targetMeasureWidthSpec = MeasureSpec.makeMeasureSpec(widthSize - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY);
-        int targetMeasureHeightSpec = MeasureSpec.makeMeasureSpec(heightSize - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY);
-        mTargetView.measure(targetMeasureWidthSpec, targetMeasureHeightSpec);
+        MeasureSpecAssertions.assertExplicitMeasureSpec(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(
+                MeasureSpec.getSize(widthMeasureSpec),
+                MeasureSpec.getSize(heightMeasureSpec)
+        );
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int width = getMeasuredWidth();
-        final int height = getMeasuredHeight();
         if (getChildCount() == 0) {
             return;
         }
@@ -478,6 +462,12 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         if (mTargetView == null) {
             return;
         }
+        final int width = getMeasuredWidth();
+        final int height = getMeasuredHeight();
+
+        mLoadingMoreHelper.calculateLoadMoreOffsetConfig(false);
+        mRefreshHelper.calculateOffsetConfig();
+
         layoutTargetView(width, height);
         layoutRefreshView(width);
     }
@@ -488,7 +478,6 @@ public class PullRefreshLayout extends ViewGroup implements NestedScrollingParen
         final int childWidth = parentWidth - getPaddingLeft() - getPaddingRight();
         final int childHeight = parentHeight - getPaddingTop() - getPaddingBottom();
         mTargetView.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
-
         int loadMoreViewWidth = mLoadMoreView.getMeasuredWidth();
         int loadMoreViewHeight = mLoadMoreView.getMeasuredHeight();
         mLoadMoreView.layout((parentWidth / 2 - loadMoreViewWidth / 2), childTop + childHeight, (parentWidth / 2 + loadMoreViewWidth / 2), childTop + childHeight + loadMoreViewHeight);

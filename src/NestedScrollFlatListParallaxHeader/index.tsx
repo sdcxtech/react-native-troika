@@ -26,7 +26,7 @@ export function NestedScrollParallaxHeader() {
         <ParallaxHeader
           topBarHeight={topBarHeight()}
           imageHeight={imageHeight}
-          imageSource={require('../components/assets/cover.webp')}
+          imageSource={require('assets/cover.webp')}
           onScroll={onScroll}
           scale={scale}
           translateYDown={translateYDown}

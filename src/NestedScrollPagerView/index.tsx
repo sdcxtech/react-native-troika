@@ -31,11 +31,7 @@ export function NestedScrollPagerView() {
   return (
     <NestedScrollView style={styles.coordinator}>
       <NestedScrollViewHeader>
-        <Image
-          source={require('../components/assets/cover.webp')}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
       </NestedScrollViewHeader>
       <View style={{ height: '100%' }} collapsable={false}>
         <TabBar

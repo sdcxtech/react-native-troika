@@ -53,11 +53,7 @@ export function PullRefreshFlatListNestedScroll() {
       onLoadMore={loadMore}>
       <NestedScrollView style={styles.coordinator}>
         <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
-          <Image
-            source={require('../components/assets/cover.webp')}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
           <View style={[styles.text]}>
             <Text>anchor</Text>
           </View>

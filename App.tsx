@@ -17,8 +17,8 @@ const data: Array<Item> = [
     routeName: 'NestedScrollParallaxHeader',
   },
   {
-    title: 'NestedScroll + PagerView',
-    routeName: 'NestedScrollPagerView',
+    title: 'NestedScroll + TabView',
+    routeName: 'NestedScrollTabView',
   },
   {
     title: 'NestedScroll + PagerView + StickyHeader',

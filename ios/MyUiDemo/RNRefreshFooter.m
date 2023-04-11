@@ -69,6 +69,7 @@
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {
+    [self removeObserver];
     _scrollView = scrollView;
     [self addObserver];
 }

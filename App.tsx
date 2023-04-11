@@ -13,7 +13,7 @@ const data: Array<Item> = [
     routeName: 'NestedScrollFlatList',
   },
   {
-    title: 'NestedScroll + FlastList + ParallaxHeader',
+    title: 'NestedScroll + ParallaxHeader',
     routeName: 'NestedScrollParallaxHeader',
   },
   {

@@ -2,7 +2,7 @@ import App from './App'
 import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
 import NestedScrollFlatList from './src/NestedScrollFlatList'
-import NestedScrollParallaxHeader from './src/NestedScrollFlatListParallaxHeader'
+import NestedScrollParallaxHeader from './src/NestedScrollParallaxHeader'
 import NestedScrollTabView from './src/NestedScrollTabView'
 import NestedScrollPagerViewStickyHeader from './src/NestedScrollPagerViewStickyHeader'
 

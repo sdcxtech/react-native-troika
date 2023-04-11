@@ -2,25 +2,37 @@ package com.example.myuidemo;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.RectF;
-import android.util.Log;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.MeasureSpecAssertions;
+import com.facebook.react.uimanager.ReactOverflowView;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.facebook.react.views.scroll.ReactScrollView;
 
-public class NestedScrollView extends androidx.core.widget.NestedScrollView {
+public class NestedScrollView extends androidx.core.widget.NestedScrollView implements ReactOverflowView {
     private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
-    private int mExtraScrollWhenSizeChange = 0;
-
+    private String mOverflow = "hidden";
+    private final Rect mRect;
 
     public NestedScrollView(@NonNull Context context) {
         super(context);
+        mRect = new Rect();
+    }
+
+    public void setOverflow(String overflow) {
+        mOverflow = overflow;
+        this.invalidate();
+    }
+
+    @Nullable
+    @Override
+    public String getOverflow() {
+        return mOverflow;
     }
 
     @Override
@@ -57,7 +69,6 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView {
         post(measureAndLayout);
     }
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -78,27 +89,24 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView {
                 int nestedScrollViewH = getHeight();
                 float contentHeight = nestedScrollViewH - headerFixedHeight;
                 if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
-                    //首次渲染时不需要进行额外偏移矫正位置
-                    if (mNestedScrollViewLocalData.contentNodeH != 0) {
-                        mExtraScrollWhenSizeChange = (int) Math.abs(mNestedScrollViewLocalData.contentNodeH - contentHeight + mNestedScrollViewLocalData.headerNodeH - headerHeight);
-                    }
                     mNestedScrollViewLocalData.contentNodeH = contentHeight;
                     mNestedScrollViewLocalData.headerNodeH = headerHeight;
                     uiManagerModule.setViewLocalData(getId(), mNestedScrollViewLocalData);
+                }
+                int maxScrollRange = (int) (headerHeight - headerFixedHeight);
+                if (getScrollY() > maxScrollRange) {
+                    scrollTo(0, maxScrollRange);
                 }
             }
         }
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
-        canvas.clipRect(new RectF(0f, 0f, getWidth(), getHeight() + getScrollY()));
-        super.dispatchDraw(canvas);
-        if (mExtraScrollWhenSizeChange != 0) {
-            post(() -> {
-                scrollBy(0, mExtraScrollWhenSizeChange);
-                mExtraScrollWhenSizeChange = 0;
-            });
+    public void draw(Canvas canvas) {
+        this.getDrawingRect(mRect);
+        if (!"visible".equals(mOverflow)) {
+            canvas.clipRect(mRect);
         }
+        super.draw(canvas);
     }
 }

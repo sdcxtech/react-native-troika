@@ -1,10 +1,12 @@
 package com.example.myuidemo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class NestedScrollViewManager extends ViewGroupManager<NestedScrollView> {
 
@@ -30,4 +32,8 @@ public class NestedScrollViewManager extends ViewGroupManager<NestedScrollView> 
         return NestedScrollViewShadowNode.class;
     }
 
+    @ReactProp(name = "overflow")
+    public void setOverflow(NestedScrollView view, @Nullable String overflow) {
+        view.setOverflow(overflow);
+    }
 }

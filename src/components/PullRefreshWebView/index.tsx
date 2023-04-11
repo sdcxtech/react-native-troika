@@ -7,6 +7,8 @@ function PullRefreshWebView() {
   const [refreshing, setRefreshing] = useState(false)
   const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  const [url, setUrl] = useState('https://wangdoc.com')
+
   const clearPendingAction = () => {
     if (pendingAction.current) {
       clearTimeout(pendingAction.current)
@@ -16,6 +18,11 @@ function PullRefreshWebView() {
   const beginRefresh = async () => {
     setRefreshing(true)
     pendingAction.current = setTimeout(() => {
+      setUrl(url =>
+        url === 'https://wangdoc.com'
+          ? 'https://juejin.cn/column/7125284195437379598'
+          : 'https://wangdoc.com',
+      )
       endRefresh()
     }, 1500)
   }
@@ -30,7 +37,7 @@ function PullRefreshWebView() {
       style={{ height: '100%', overflow: 'hidden' }}
       refreshing={refreshing}
       onRefresh={beginRefresh}>
-      <WebViewPage url="https://wangdoc.com" />
+      <WebViewPage url={url} />
     </PullToRefresh>
   )
 }

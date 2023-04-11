@@ -18,11 +18,7 @@ function PullRefreshWebView() {
   const beginRefresh = async () => {
     setRefreshing(true)
     pendingAction.current = setTimeout(() => {
-      setUrl(url =>
-        url === 'https://wangdoc.com'
-          ? 'https://juejin.cn/column/7125284195437379598'
-          : 'https://wangdoc.com',
-      )
+      setUrl(url => (url === 'https://wangdoc.com' ? 'https://todoit.tech' : 'https://wangdoc.com'))
       endRefresh()
     }, 1500)
   }

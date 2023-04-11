@@ -5931,6 +5931,11 @@ react-native-haptic-feedback@^2.0.3:
   resolved "https://registry.npmmirror.com/react-native-haptic-feedback/-/react-native-haptic-feedback-2.0.3.tgz#09133b2175503831c04798cb0dc63ae91e3959c1"
   integrity sha512-7+qvcxXZts/hA+HOOIFyM1x9m9fn/TJVSTgXaoQ8uT4gLc97IMvqHQ559tDmnlth+hHMzd3HRMpmRLWoKPL0DA==
 
+react-native-keyboard-insets@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.npmmirror.com/react-native-keyboard-insets/-/react-native-keyboard-insets-1.3.5.tgz#360ed1e0325f16946b12b9a7737e10d15a09ed9f"
+  integrity sha512-zb+Nqovse2xPHhAX+quVh7M6dUf4rVQhihCj5rHDA/7+y9DVTSHB8MNRgfkKen7Vlitpl6NBLsjUn1grLEJCGQ==
+
 react-native-pager-view@^6.1.4:
   version "6.1.4"
   resolved "https://registry.npmmirror.com/react-native-pager-view/-/react-native-pager-view-6.1.4.tgz#3a63ebd1b72f81991157ea552bb9c887e529bc8c"

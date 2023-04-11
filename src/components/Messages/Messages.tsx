@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import React, { useState } from 'react'
 
@@ -8,6 +8,7 @@ import TextInputBar from './TextInputBar'
 import userName from './userName'
 import MessageItem from './MessageItem'
 import Message from './models/Message'
+import { KeyboardInsetsView } from 'react-native-keyboard-insets'
 
 const Messages = () => {
   const [messages, setMessages] = useState(initialMessages)
@@ -23,10 +24,7 @@ const Messages = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={100}
-      style={styles.keyboardAvoidingViewStyles}>
+    <KeyboardInsetsView style={styles.keyboardAvoidingViewStyles} extraHeight={8}>
       <FlashList
         nestedScrollEnabled
         renderItem={MessageItem}
@@ -52,14 +50,13 @@ const Messages = () => {
           appendMessage(text)
         }}
       />
-    </KeyboardAvoidingView>
+    </KeyboardInsetsView>
   )
 }
 
 const styles = StyleSheet.create({
   keyboardAvoidingViewStyles: {
     flex: 1,
-    marginBottom: 40,
     backgroundColor: 'white',
   },
 })

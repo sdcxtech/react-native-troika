@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { View, Image, Text, TextInput, ScrollView, StyleSheet } from 'react-native'
+import { KeyboardInsetsView } from 'react-native-keyboard-insets'
 
 const MESSAGES = ['okay', 'sudo make me a sandwich', 'what? make it yourself', 'make me a sandwich']
 
 const Chat = () => {
   return (
-    <View style={styles.container}>
+    <KeyboardInsetsView style={styles.container}>
       <ScrollView
         nestedScrollEnabled
         style={styles.inverted}
@@ -31,7 +32,7 @@ const Chat = () => {
         placeholder="Write a message"
         underlineColorAndroid="transparent"
       />
-    </View>
+    </KeyboardInsetsView>
   )
 }
 

@@ -30,6 +30,7 @@ const ContactsSectionList = () => {
   return (
     <SectionList
       testID="SectionList"
+      nestedScrollEnabled
       keyExtractor={({ firstName, lastName }) => firstName + lastName}
       renderItem={({ item }) => <ContactCell contact={item} />}
       renderSectionHeader={({ section: { title } }) => <ContactSectionHeader title={title} />}

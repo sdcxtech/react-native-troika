@@ -13,21 +13,15 @@ export default function usePagerView(initialPage = 0) {
   const [activePage, setActivePage] = useState(initialPage)
   const [isIdle, setIdle] = useState(true)
 
-  const setPage = useCallback(
-    (page: number, animated = true) => {
-      if (animated) {
-        pagerRef.current?.setPage(page)
-      } else {
-        pagerRef.current?.setPageWithoutAnimation(page)
-      }
-      console.log(time() + ' setPage', page)
-      setActivePage(page)
-      if (activePage !== page) {
-        setIdle(false)
-      }
-    },
-    [activePage],
-  )
+  const setPage = useCallback((page: number, animated = true) => {
+    if (animated) {
+      pagerRef.current?.setPage(page)
+    } else {
+      pagerRef.current?.setPageWithoutAnimation(page)
+    }
+    console.log(time() + ' setPage', page)
+    setActivePage(page)
+  }, [])
 
   const offset = useRef(new Animated.Value(0)).current
   const position = useRef(new Animated.Value(0)).current
@@ -81,5 +75,13 @@ export default function usePagerView(initialPage = 0) {
 
 function time() {
   const date = new Date()
-  return date.getHours() + '时' + date.getMinutes() + '分' + date.getSeconds() + '秒:' + date.getMilliseconds()
+  return (
+    date.getHours() +
+    '时' +
+    date.getMinutes() +
+    '分' +
+    date.getSeconds() +
+    '秒:' +
+    date.getMilliseconds()
+  )
 }

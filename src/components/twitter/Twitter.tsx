@@ -23,7 +23,6 @@ const Twitter = ({
   const emptyListEnabled = false
 
   const [refreshing, setRefreshing] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
   const [noMoreData, setNoMoreData] = useState(false)
   const remainingTweets = useRef([...tweetsData].splice(10, tweetsData.length))
   const [tweets, setTweets] = useState([...tweetsData].splice(0, 10))
@@ -44,18 +43,6 @@ const Twitter = ({
           reversedTweets.reverse()
           setTweets(reversedTweets)
         }, 500)
-      }}
-      loadingMore={loadingMore}
-      noMoreData={noMoreData}
-      onLoadMore={() => {
-        setLoadingMore(true)
-        setTimeout(() => {
-          setLoadingMore(false)
-          setTweets([...tweets, ...remainingTweets.current.splice(0, 10)])
-          if (remainingTweets.current.length === 0) {
-            setNoMoreData(true)
-          }
-        }, 1000)
       }}>
       <FlashList
         nestedScrollEnabled
@@ -71,6 +58,17 @@ const Twitter = ({
         CellRendererComponent={CellRendererComponent}
         ListHeaderComponent={Header}
         ListHeaderComponentStyle={{ backgroundColor: '#ccc' }}
+        onEndReached={() => {
+          setTimeout(() => {
+            setTweets([...tweets, ...remainingTweets.current.splice(0, 10)])
+            if (remainingTweets.current.length === 0) {
+              setNoMoreData(true)
+            }
+          }, 1000)
+        }}
+        ListFooterComponent={
+          <Footer isLoading={tweets.length !== tweetsData.length} isPagingEnabled={!noMoreData} />
+        }
         ListEmptyComponent={Empty()}
         estimatedItemSize={150}
         ItemSeparatorComponent={Divider}

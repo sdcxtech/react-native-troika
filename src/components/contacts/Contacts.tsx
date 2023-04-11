@@ -31,6 +31,7 @@ const Contacts = () => {
 
   return (
     <FlashList
+      nestedScrollEnabled
       testID="FlashList"
       estimatedItemSize={44}
       data={data}

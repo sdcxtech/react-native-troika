@@ -7,7 +7,12 @@ interface TabBarIndicatorProps {
 }
 
 export default function TabBarIndicator({ style, scrollX }: TabBarIndicatorProps) {
-  return <Animated.View key={'indicator'} style={[styles.indicator, style, { transform: [{ translateX: scrollX }] }]} />
+  return (
+    <Animated.View
+      key={'indicator'}
+      style={[styles.indicator, style, { transform: [{ translateX: scrollX }] }]}
+    />
+  )
 }
 
 const styles = StyleSheet.create({

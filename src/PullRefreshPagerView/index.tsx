@@ -4,10 +4,9 @@ import { Animated, StyleSheet, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
-import PullRefreshFlatList from '../components/PullRefreshFlatList'
 import PullRefreshScrollView from '../components/PullRefreshScrollView'
 import PullRefreshWebView from '../components/PullRefreshWebView'
-import { Twitter } from '../components/twitter'
+import { Twitter, TwitterFlatList } from '../components/twitter'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
@@ -44,7 +43,7 @@ export function PullRefreshPagerView() {
         onPageScroll={onPageScroll}
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
-        <PullRefreshFlatList />
+        <TwitterFlatList />
         <Twitter />
         <PullRefreshScrollView />
         <PullRefreshWebView />

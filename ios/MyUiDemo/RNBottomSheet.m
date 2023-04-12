@@ -8,7 +8,6 @@
 @property(nonatomic, strong) UIScrollView *target;
 @property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
-@property(nonatomic, assign) CGFloat lastOffsetY;
 @property(nonatomic, assign) BOOL nextReturn;
 
 @property(nonatomic, assign) CGFloat peekHeight;
@@ -88,12 +87,26 @@
     CGFloat top = self.frame.origin.y;
     
     CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat minY = 0;
+    CGFloat minY = parentHeight - self.frame.size.height;
     CGFloat maxY = parentHeight - self.peekHeight;
     
-    if (self.target) { // 如果有嵌套滚动
+    // 如果有嵌套滚动
+    if (self.target) {
+        if(translationY > 0 && top < maxY && self.target.contentOffset.y <= 0) {
+            //向下拖
+            CGFloat y = fmin(top + translationY, maxY);
+            self.frame = CGRectOffset(self.frame, 0, y - top);
+        }
         
-    } else { // 没有嵌套滚动
+        if (translationY < 0 && top > minY) {
+            //向上拖
+            CGFloat y = fmax(top + translationY, minY);
+            self.frame = CGRectOffset(self.frame, 0, y - top);
+        }
+    }
+    
+    // 没有嵌套滚动
+    if (!self.target) {
         if(translationY > 0 && top < maxY) {
             //向下拖
             CGFloat y = fmin(top + translationY, maxY);
@@ -143,12 +156,37 @@
     if (![keyPath isEqualToString:@"contentOffset"]) {
         return;
     }
-}
+    
+    CGFloat new = [change[@"new"] CGPointValue].y;
+    CGFloat old = [change[@"old"] CGPointValue].y;
 
+    if (new == old) {
+        return;
+    }
+    
+    CGFloat dy = old - new;
+
+    if (dy > 0) {
+        //向下
+        if(target.contentOffset.y < 0){
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0, 0);
+        }
+    }
+    
+    if (dy < 0) {
+        CGFloat parentHeight = self.superview.frame.size.height;
+        CGFloat minY = parentHeight - self.frame.size.height;
+        //向上
+        if (self.frame.origin.y > minY) {
+            _nextReturn = true;
+            target.contentOffset = CGPointMake(0, old);
+        }
+    }
+}
 
 - (void)collapse {
     CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat minY = 0;
     CGFloat maxY = parentHeight - self.peekHeight;
     if(self.frame.origin.y == maxY) {
         return;
@@ -164,18 +202,19 @@
 
 - (void)expand {
     CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat minY = 0;
-    CGFloat maxY = parentHeight - self.peekHeight;
-    
+    CGFloat minY = parentHeight - self.frame.size.height;
+
     if(self.frame.origin.y == minY) {
         return;
     }
-    CGFloat time = (self.frame.origin.y - minY) / (self.frame.size.height - self.peekHeight) * 0.3;
     
-    [UIView animateWithDuration:time animations:^{
+    // 禁止 target fling
+    self.target.pagingEnabled = YES;
+    CGFloat duration = (self.frame.origin.y - minY) / (self.frame.size.height - self.peekHeight) * 0.3;
+    [UIView animateWithDuration:duration animations:^{
         self.frame = CGRectOffset(self.frame, 0, minY - self.frame.origin.y);
     } completion:^(BOOL finished) {
-        
+        self.target.pagingEnabled = NO;
     }];
 }
 

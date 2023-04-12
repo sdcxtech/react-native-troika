@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   },
   bottomSheet: {
     ...StyleSheet.absoluteFillObject,
+    top: 80,
     backgroundColor: '#ff9f7A',
   },
 })

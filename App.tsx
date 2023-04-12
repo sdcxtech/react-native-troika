@@ -48,6 +48,14 @@ const data: Array<Item> = [
     title: 'BottomSheet without ScrollView',
     routeName: 'BottomSheetWithoutScrollView',
   },
+  {
+    title: 'BottomSheet + FlashList',
+    routeName: 'BottomSheetFlashList',
+  },
+  {
+    title: 'BottomSheet + PagerView',
+    routeName: 'BottomSheetPagerView',
+  },
 ]
 
 function App() {

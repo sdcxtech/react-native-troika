@@ -13,6 +13,8 @@ import PullRefreshPagerViewNestedScroll from './src/PullRefreshPagerViewNestedSc
 import PullRefreshNestedScrollPagerView from './src/PullRefreshNestedScrollPagerView'
 
 import BottomSheetWithoutScrollView from './src/BottomSheetWithoutScrollView'
+import BottomSheetFlashList from './src/BottomSheetFlashList'
+import BottomSheetPagerView from './src/BottomSheetPagerView'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -51,6 +53,8 @@ Navigation.registerComponent(
 )
 
 Navigation.registerComponent('BottomSheetWithoutScrollView', () => BottomSheetWithoutScrollView)
+Navigation.registerComponent('BottomSheetFlashList', () => BottomSheetFlashList)
+Navigation.registerComponent('BottomSheetPagerView', () => BottomSheetPagerView)
 
 // 重要必须
 Navigation.endRegisterComponent()

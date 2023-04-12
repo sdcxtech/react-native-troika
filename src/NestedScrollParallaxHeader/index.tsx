@@ -6,11 +6,11 @@ import NestedScrollView from '../NestedScrollView'
 
 import { FlatListPage } from '../components/FlatListPage'
 import { ParallaxHeader } from './ParallaxHeader'
-import { useAnimateScrollView } from './useAnimatedScrollView'
+import { useAnimateScrollView } from './hooks/useAnimatedScrollView'
 import AnimatedNavbar from './AnimatedNavbar'
-import { TopNavBar } from './TopNavBar'
-import { HeaderNavBar } from './HeaderNavBar'
-import { HeaderComponent } from './HeaderComponent'
+import { TopNavBar } from './components/TopNavBar'
+import { HeaderNavBar } from './components/HeaderNavBar'
+import { HeaderComponent } from './components/HeaderComponent'
 
 export function NestedScrollParallaxHeader() {
   const imageHeight = 220
@@ -26,7 +26,7 @@ export function NestedScrollParallaxHeader() {
         <ParallaxHeader
           topBarHeight={topBarHeight()}
           imageHeight={imageHeight}
-          imageSource={require('../components/assets/cover.webp')}
+          imageSource={require('assets/cover.webp')}
           onScroll={onScroll}
           scale={scale}
           translateYDown={translateYDown}

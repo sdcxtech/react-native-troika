@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  HostComponent,
   NativeScrollPoint,
   NativeSyntheticEvent,
   requireNativeComponent,
@@ -19,14 +18,16 @@ export interface NestedScrollViewHeaderProps extends ViewProps {
   onScroll?: (event: NestedScrollEvent) => void
 }
 
-const NestedScrollViewHeaderNative =
+const NativeNestedScrollViewHeader =
   requireNativeComponent<NestedScrollViewHeaderProps>('NestedScrollViewHeader')
 
+type NativeNestedScrollViewHeaderInstance = InstanceType<typeof NativeNestedScrollViewHeader>
+
 const NestedScrollViewHeader = React.forwardRef<
-  HostComponent<NestedScrollViewHeaderProps>,
+  NativeNestedScrollViewHeaderInstance,
   NestedScrollViewHeaderProps
 >((props, ref) => {
-  return <NestedScrollViewHeaderNative ref={ref} {...props} />
+  return <NativeNestedScrollViewHeader {...props} ref={ref} />
 })
 
 export default NestedScrollViewHeader

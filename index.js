@@ -2,8 +2,8 @@ import App from './App'
 import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
 import NestedScrollFlatList from './src/NestedScrollFlatList'
-import NestedScrollParallaxHeader from './src/NestedScrollFlatListParallaxHeader'
-import NestedScrollPagerView from './src/NestedScrollPagerView'
+import NestedScrollParallaxHeader from './src/NestedScrollParallaxHeader'
+import NestedScrollTabView from './src/NestedScrollTabView'
 import NestedScrollPagerViewStickyHeader from './src/NestedScrollPagerViewStickyHeader'
 
 import PullRefreshFlatList from './src/components/PullRefreshFlatList'
@@ -27,7 +27,7 @@ Navigation.startRegisterComponent()
 Navigation.registerComponent('App', () => App)
 Navigation.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList)
 Navigation.registerComponent('NestedScrollParallaxHeader', () => NestedScrollParallaxHeader)
-Navigation.registerComponent('NestedScrollPagerView', () => NestedScrollPagerView)
+Navigation.registerComponent('NestedScrollTabView', () => NestedScrollTabView)
 Navigation.registerComponent(
   'NestedScrollPagerViewStickyHeader',
   () => NestedScrollPagerViewStickyHeader,

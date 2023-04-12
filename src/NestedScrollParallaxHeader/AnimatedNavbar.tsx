@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Animated } from 'react-native'
-import { useAnimatedNavbar } from './useAnimatedNavbar'
+import { useAnimatedNavbar } from './hooks/useAnimatedNavbar'
 
 export type AnimatedNavbarProps = {
   scroll: Animated.Value

@@ -6,13 +6,13 @@ import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
 import PagerView from 'react-native-pager-view'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
-import PullRefreshFlatList from '../components/PullRefreshFlatList'
 import PullRefreshScrollView from '../components/PullRefreshScrollView'
 import PullRefreshWebView from '../components/PullRefreshWebView'
+import { Twitter, TwitterFlatList } from '../components/twitter'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
-const pages = ['FlatList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
 
 export function PullRefreshPagerViewNestedScroll() {
   const {
@@ -30,11 +30,7 @@ export function PullRefreshPagerViewNestedScroll() {
   return (
     <NestedScrollView style={styles.coordinator}>
       <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
-        <Image
-          source={require('../components/assets/cover.webp')}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
         <TabBar
           tabs={pages}
           onTabPress={setPage}
@@ -52,7 +48,8 @@ export function PullRefreshPagerViewNestedScroll() {
         onPageScroll={onPageScroll}
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
-        <PullRefreshFlatList />
+        <TwitterFlatList />
+        <Twitter />
         <PullRefreshScrollView />
         <PullRefreshWebView />
       </AnimatedPagerView>

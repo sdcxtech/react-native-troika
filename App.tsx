@@ -9,16 +9,16 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: 'NestedScroll + FlastList',
+    title: 'NestedScroll + FastList',
     routeName: 'NestedScrollFlatList',
   },
   {
-    title: 'NestedScroll + FlastList + ParallaxHeader',
+    title: 'NestedScroll + ParallaxHeader',
     routeName: 'NestedScrollParallaxHeader',
   },
   {
-    title: 'NestedScroll + PagerView',
-    routeName: 'NestedScrollPagerView',
+    title: 'NestedScroll + TabView',
+    routeName: 'NestedScrollTabView',
   },
   {
     title: 'NestedScroll + PagerView + StickyHeader',

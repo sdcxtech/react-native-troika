@@ -5,7 +5,7 @@ export function ScrollViewPage() {
   return (
     <ScrollView contentContainerStyle={styles.content} scrollEnabled nestedScrollEnabled>
       <View style={styles.author}>
-        <Image style={styles.avatar} source={require('./assets/avatar-1.png')} />
+        <Image style={styles.avatar} source={require('assets/avatar-1.png')} />
         <View style={styles.meta}>
           <Text style={styles.name}>Knowledge Bot</Text>
           <Text style={styles.timestamp}>1st Jan 2025</Text>
@@ -16,7 +16,7 @@ export function ScrollViewPage() {
         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
         of classical Latin literature from 45 BC, making it over 2000 years old.
       </Text>
-      <Image style={styles.image} source={require('./assets/book.jpg')} />
+      <Image style={styles.image} source={require('assets/book.jpg')} />
       <Text style={styles.paragraph}>
         Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one
         of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through

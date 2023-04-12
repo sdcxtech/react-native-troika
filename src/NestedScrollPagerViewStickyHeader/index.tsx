@@ -4,15 +4,16 @@ import { Animated, Image, StyleSheet } from 'react-native'
 import NestedScrollView from '../NestedScrollView'
 import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
 import PagerView from 'react-native-pager-view'
-import { FlatListPage } from '../components/FlatListPage'
 import { ScrollViewPage } from '../components/ScrollViewPage'
 import { WebViewPage } from '../components/WebViewPage'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
+import Contacts from '../components/contacts/Contacts'
+import ContactsSectionList from '../components/contacts/ContactsSectionList'
 
 const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
 
-const pages = ['FlatList', 'ScrollView', 'WebView']
+const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView']
 
 export function NestedScrollPagerViewStickyHeader() {
   const {
@@ -30,11 +31,7 @@ export function NestedScrollPagerViewStickyHeader() {
   return (
     <NestedScrollView style={styles.coordinator}>
       <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
-        <Image
-          source={require('../components/assets/cover.webp')}
-          style={styles.image}
-          resizeMode="cover"
-        />
+        <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
         <TabBar
           tabs={pages}
           onTabPress={setPage}
@@ -52,7 +49,8 @@ export function NestedScrollPagerViewStickyHeader() {
         onPageScroll={onPageScroll}
         onPageSelected={onPageSelected}
         onPageScrollStateChanged={onPageScrollStateChanged}>
-        <FlatListPage />
+        <ContactsSectionList />
+        <Contacts />
         <ScrollViewPage />
         <WebViewPage url="https://wangdoc.com" />
       </AnimatedPagerView>

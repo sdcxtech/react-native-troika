@@ -126,43 +126,45 @@
     CGFloat dy = _lastOffsetY - newOffset;
     
     UIScrollView *target = self.main.target;
+    if (target == nil) {
+        if (dy < 0 && newOffset >= self.headerScrollRange) {
+            main.contentOffset = CGPointMake(0, self.headerScrollRange);
+            _lastOffsetY = main.contentOffset.y;
+            return;
+        }
+        _lastOffsetY = main.contentOffset.y;
+        return;
+    }
     
-    if (dy < 0 && main.bounces && newOffset > [self headerScrollRange] && target &&  target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
+    // 向下，main 下拉刷新
+    if (dy > 0 && target.contentOffset.y <= 0) {
         _lastOffsetY = newOffset;
         return;
     }
     
-    if (dy > 0 && main.bounces && newOffset > [self headerScrollRange] && target) {
-        _lastOffsetY = newOffset;
+    // 向下，main 上拉加载归位
+    if (dy > 0 && _lastOffsetY > self.headerScrollRange) {
+        main.contentOffset = CGPointMake(0, fmax(newOffset, self.headerScrollRange));
+        _lastOffsetY = main.contentOffset.y;
         return;
     }
     
-    if (newOffset >= self.headerScrollRange) {
+    // 向下，target 可向下，main 保持不变
+    if (dy > 0 && target.contentOffset.y > 0) {
+        main.contentOffset = CGPointMake(0, _lastOffsetY);
+        return;
+    }
+    
+    // 向上，target 优先取消下拉刷新，main 保持不变
+    if (dy < 0 && target.contentOffset.y < 0) {
+        main.contentOffset = CGPointMake(0, _lastOffsetY);
+        return;
+    }
+    
+    // 向上，target 可向上，main 保持 sticky
+    if (dy < 0 && newOffset > self.headerScrollRange && target.contentOffset.y + 0.01 < target.contentSize.height - target.frame.size.height) {
         main.contentOffset = CGPointMake(0, self.headerScrollRange);
         _lastOffsetY = main.contentOffset.y;
-        return;
-    }
-    
-    if (newOffset <= 0 && !main.bounces) {
-        main.contentOffset = CGPointMake(0, 0);
-        _lastOffsetY = main.contentOffset.y;
-        return;
-    }
-    
-    if (target == nil) {
-        _lastOffsetY = main.contentOffset.y;
-        return;
-    }
-    
-    // 向下，target 可向下，main 归位
-    if(dy > 0 && target.contentOffset.y > 0) {
-        main.contentOffset = CGPointMake(0, _lastOffsetY);
-        return;
-    }
-    
-    // 向上，target 可向上，main 归位
-    if(dy < 0 && target.contentOffset.y < 0) {
-        main.contentOffset = CGPointMake(0, _lastOffsetY);
         return;
     }
     
@@ -194,7 +196,7 @@
             return;
         }
         
-        if (main.bounces && main.contentOffset.y > [self headerScrollRange] && target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
+        if (main.bounces && main.contentOffset.y > self.headerScrollRange && target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0,  target.contentSize.height - target.frame.size.height);
             return;
@@ -210,7 +212,7 @@
             return;
         }
         
-        if (main.bounces && main.contentOffset.y > [self headerScrollRange] && old + 0.01 >= target.contentSize.height - target.frame.size.height) {
+        if (main.bounces && main.contentOffset.y > self.headerScrollRange && old + 0.01 >= target.contentSize.height - target.frame.size.height) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, old);
         }

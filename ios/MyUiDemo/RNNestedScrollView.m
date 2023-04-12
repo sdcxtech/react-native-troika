@@ -4,7 +4,6 @@
 
 #import <React/UIView+React.h>
 #import <React/RCTLog.h>
-#import <React/RCTScrollView.h>
 #import <React/RCTUIManager.h>
 
 
@@ -142,7 +141,7 @@
         return;
     }
     
-    // 向下，main 上拉加载归位
+    // 向下，main 上拉加载释放
     if (dy > 0 && _lastOffsetY > self.headerScrollRange) {
         main.contentOffset = CGPointMake(0, fmax(newOffset, self.headerScrollRange));
         _lastOffsetY = main.contentOffset.y;

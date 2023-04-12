@@ -12,6 +12,8 @@ import PullRefreshFlatListNestedScroll from './src/PullRefreshFlatListNestedScro
 import PullRefreshPagerViewNestedScroll from './src/PullRefreshPagerViewNestedScroll'
 import PullRefreshNestedScrollPagerView from './src/PullRefreshNestedScrollPagerView'
 
+import BottomSheetWithoutScrollView from './src/BottomSheetWithoutScrollView'
+
 // 配置全局样式
 Navigation.setDefaultOptions({
   topBarStyle: 'dark-content',
@@ -47,6 +49,8 @@ Navigation.registerComponent(
   'PullRefreshNestedScrollPagerView',
   () => PullRefreshNestedScrollPagerView,
 )
+
+Navigation.registerComponent('BottomSheetWithoutScrollView', () => BottomSheetWithoutScrollView)
 
 // 重要必须
 Navigation.endRegisterComponent()

@@ -44,6 +44,10 @@ const data: Array<Item> = [
     title: 'NestedScroll + PagerView + PullRefresh',
     routeName: 'PullRefreshPagerViewNestedScroll',
   },
+  {
+    title: 'BottomSheet without ScrollView',
+    routeName: 'BottomSheetWithoutScrollView',
+  },
 ]
 
 function App() {

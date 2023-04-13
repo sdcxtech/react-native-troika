@@ -11,23 +11,30 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.math.MathUtils;
 import androidx.core.util.Pools;
+import androidx.core.view.NestedScrollingParent;
+import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.facebook.react.views.view.ReactViewGroup;
 
 import java.lang.ref.WeakReference;
 
 @SuppressLint("ViewConstructor")
-public class BottomSheet extends ReactViewGroup {
+public class BottomSheet extends ReactViewGroup implements NestedScrollingParent {
+
+    private static final String TAG = "ReactBottomSheet";
 
     private final ReactContext reactContext;
 
@@ -35,6 +42,7 @@ public class BottomSheet extends ReactViewGroup {
         super(reactContext);
         this.reactContext = reactContext;
         this.peekHeight = (int) PixelUtil.toPixelFromDIP(200);
+        this.nestedScrollingParentHelper = new NestedScrollingParentHelper(this);
     }
 
     private BottomSheetState state = COLLAPSED;
@@ -47,8 +55,7 @@ public class BottomSheet extends ReactViewGroup {
 
     private int collapsedOffset;
 
-    @Nullable
-    private WeakReference<View> viewRef;
+    private View contentView;
 
     @Nullable
     private WeakReference<View> nestedScrollingChildRef;
@@ -58,7 +65,11 @@ public class BottomSheet extends ReactViewGroup {
     @Nullable
     private ViewDragHelper viewDragHelper;
 
+    private final NestedScrollingParentHelper nestedScrollingParentHelper;
+
     private boolean ignoreEvents;
+
+    private int lastNestedScrollDy;
 
     private VelocityTracker velocityTracker;
 
@@ -72,7 +83,6 @@ public class BottomSheet extends ReactViewGroup {
             viewDragHelper = ViewDragHelper.create(this, dragCallback);
         }
 
-        calculateOffset();
         layoutChild();
     }
 
@@ -80,29 +90,55 @@ public class BottomSheet extends ReactViewGroup {
         int count = getChildCount();
         if (count == 1) {
             View child = getChildAt(0);
-            if (viewRef == null) {
-                viewRef = new WeakReference<>(child);
+            if (contentView == null) {
+                contentView = child;
             }
-            child.offsetTopAndBottom(collapsedOffset);
+
+            calculateOffset();
+
+            if (state == COLLAPSED) {
+                child.offsetTopAndBottom(collapsedOffset);
+            }
         }
     }
 
     public void setPeekHeight(int peekHeight) {
         this.peekHeight = max(peekHeight, 0);
-        if (viewRef != null) {
+        if (contentView != null) {
             calculateOffset();
             if (state == COLLAPSED) {
-                View view = viewRef.get();
-                if (view != null) {
-                    settleToState(view, state);
-                }
+                settleToState(contentView, state);
             }
         }
     }
 
     private void calculateOffset() {
-        this.collapsedOffset = getHeight() - this.peekHeight;
-        this.expandedOffset = 0;
+        expandedOffset = Math.max(0, getHeight() - contentView.getHeight());
+        collapsedOffset = Math.max(getHeight() - peekHeight, expandedOffset);
+    }
+
+    @Nullable
+    @VisibleForTesting
+    View findScrollingChild(View view) {
+        if (ViewCompat.isNestedScrollingEnabled(view)) {
+            if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1)) {
+                return view;
+            }
+        }
+
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0, count = group.getChildCount(); i < count; i++) {
+                View child = group.getChildAt(i);
+                if (child.getVisibility() == VISIBLE) {
+                    View scrollingChild = findScrollingChild(child);
+                    if (scrollingChild != null) {
+                        return scrollingChild;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -128,6 +164,7 @@ public class BottomSheet extends ReactViewGroup {
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
+                nestedScrollingChildRef = new WeakReference<>(findScrollingChild(contentView));
                 int initialX = (int) event.getX();
                 initialY = (int) event.getY();
                 // Only intercept nested scrolling events here if the view not being moved by the
@@ -139,15 +176,18 @@ public class BottomSheet extends ReactViewGroup {
                         touchingScrollingChild = true;
                     }
                 }
-                View child = getChildAt(0);
-                ignoreEvents =
-                        activePointerId == MotionEvent.INVALID_POINTER_ID
-                                && !isPointInChildBounds(child, initialX, initialY);
+
+                ignoreEvents = activePointerId == MotionEvent.INVALID_POINTER_ID
+                        && !isPointInChildBounds(contentView, initialX, initialY);
                 break;
             default: // fall out
         }
 
         if (!ignoreEvents && viewDragHelper != null && viewDragHelper.shouldInterceptTouchEvent(event)) {
+            NativeGestureUtil.notifyNativeGestureStarted(this, event);
+            if (this.getParent() != null) {
+                this.getParent().requestDisallowInterceptTouchEvent(true);
+            }
             return true;
         }
 
@@ -155,13 +195,23 @@ public class BottomSheet extends ReactViewGroup {
         // it is not the top most view of its parent. This is not necessary when the touch event is
         // happening over the scrolling content as nested scrolling logic handles that case.
         View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-        return action == MotionEvent.ACTION_MOVE
+
+        boolean intercepted = action == MotionEvent.ACTION_MOVE
                 && scroll != null
                 && !ignoreEvents
                 && state != DRAGGING
                 && !isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY())
                 && viewDragHelper != null
                 && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
+
+        if (intercepted) {
+            NativeGestureUtil.notifyNativeGestureStarted(this, event);
+            if (this.getParent() != null) {
+                this.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+        }
+
+        return intercepted;
     }
 
     @Override
@@ -183,11 +233,122 @@ public class BottomSheet extends ReactViewGroup {
         velocityTracker.addMovement(event);
         if (viewDragHelper != null && action == MotionEvent.ACTION_MOVE && !ignoreEvents) {
             if (Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop()) {
-                viewDragHelper.captureChildView(getChildAt(0), event.getPointerId(event.getActionIndex()));
+                viewDragHelper.captureChildView(contentView, event.getPointerId(event.getActionIndex()));
             }
         }
 
         return !ignoreEvents;
+    }
+
+    @Override
+    public boolean onStartNestedScroll(@NonNull View child, @NonNull View target, int nestedScrollAxes) {
+        return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    }
+
+    @Override
+    public void onNestedScrollAccepted(@NonNull View child, @NonNull View target, int axes) {
+        lastNestedScrollDy = 0;
+        nestedScrollingParentHelper.onNestedScrollAccepted(child, target, axes);
+    }
+
+    @Override
+    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed) {
+        View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
+        if (target != scrollingChild) {
+            return;
+        }
+
+        View child = contentView;
+        int currentTop = child.getTop();
+        int newTop = currentTop - dy;
+        if (dy > 0) { // Upward
+            if (newTop < expandedOffset) {
+                consumed[1] = currentTop - expandedOffset;
+                ViewCompat.offsetTopAndBottom(child, -consumed[1]);
+                setStateInternal(EXPANDED);
+            } else {
+                consumed[1] = dy;
+                ViewCompat.offsetTopAndBottom(child, -dy);
+                setStateInternal(DRAGGING);
+            }
+        } else if (dy < 0) { // Downward
+            if (!target.canScrollVertically(-1)) {
+                if (newTop <= collapsedOffset) {
+                    consumed[1] = dy;
+                    ViewCompat.offsetTopAndBottom(child, -dy);
+                    setStateInternal(DRAGGING);
+                } else {
+                    consumed[1] = currentTop - collapsedOffset;
+                    ViewCompat.offsetTopAndBottom(child, -consumed[1]);
+                    setStateInternal(COLLAPSED);
+                }
+            }
+        }
+        if (currentTop != child.getTop()) {
+            dispatchOnSlide(child.getTop());
+        }
+        lastNestedScrollDy = dy;
+    }
+
+    @Override
+    public int getNestedScrollAxes() {
+        return nestedScrollingParentHelper.getNestedScrollAxes();
+    }
+
+    @Override
+    public void onStopNestedScroll(@NonNull View target) {
+        nestedScrollingParentHelper.onStopNestedScroll(target);
+        View child = contentView;
+
+        if (child.getTop() == expandedOffset) {
+            setStateInternal(EXPANDED);
+            return;
+        }
+
+        if (nestedScrollingChildRef == null || target != nestedScrollingChildRef.get()) {
+            return;
+        }
+
+        int top;
+        BottomSheetState targetState;
+
+        if (lastNestedScrollDy > 0) {
+            top = expandedOffset;
+            targetState = EXPANDED;
+        } else if (lastNestedScrollDy == 0) {
+            int currentTop = child.getTop();
+            if (Math.abs(currentTop - collapsedOffset) < Math.abs(currentTop - expandedOffset)) {
+                top = collapsedOffset;
+                targetState = COLLAPSED;
+            } else {
+                top = expandedOffset;
+                targetState = EXPANDED;
+            }
+        } else {
+            top = collapsedOffset;
+            targetState = COLLAPSED;
+        }
+
+        startSettlingAnimation(child, targetState, top, false);
+    }
+
+    @Override
+    public void onNestedScroll(@NonNull View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        // Overridden to prevent the default consumption of the entire scroll distance.
+    }
+
+    @Override
+    public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
+        if (nestedScrollingChildRef != null) {
+            return target == nestedScrollingChildRef.get() && (state != EXPANDED);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onNestedFling(@NonNull View target, float velocityX, float velocityY, boolean consumed) {
+        return false;
     }
 
     private void reset() {
@@ -240,7 +401,7 @@ public class BottomSheet extends ReactViewGroup {
                     return false;
                 }
             }
-            return viewRef != null && viewRef.get() == child;
+            return contentView == child;
         }
 
         @Override
@@ -277,6 +438,7 @@ public class BottomSheet extends ReactViewGroup {
                 top = collapsedOffset;
                 targetState = COLLAPSED;
             }
+
             startSettlingAnimation(releasedChild, targetState, top, true);
         }
 
@@ -297,17 +459,18 @@ public class BottomSheet extends ReactViewGroup {
     };
 
     void dispatchOnSlide(int top) {
-        // TODO: onOffsetChanged
+        if (contentView != null) {
+            // TODO: onOffsetChanged
+        }
     }
 
     public void setState(BottomSheetState state) {
         if (state == this.state) {
             return;
         }
-        if (isLaidOut()) {
-            // settleToState();
-        } else {
-            final BottomSheetState finalState = state;
+
+        if (contentView != null) {
+            settleToState(contentView, state);
         }
     }
 

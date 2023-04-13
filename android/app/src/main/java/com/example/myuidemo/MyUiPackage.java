@@ -31,7 +31,11 @@ public class MyUiPackage implements ReactPackage {
                 new RefreshPlaceholderViewManager(),
                 new LoadMorePlaceholderViewManager(),
                 new NestedScrollViewManager(),
-                new NestedScrollViewHeaderManager()
+                new NestedScrollViewHeaderManager(),
+                new BottomSheetManager(),
+                new ReactSmartPullRefreshLayoutManager(),
+                new ReactSmartPullRefreshHeaderManager(),
+                new ReactSmartPullRefreshFooterManager()
         );
     }
 }

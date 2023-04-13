@@ -1,5 +1,10 @@
 import React, { useCallback } from 'react'
-import { NativeSyntheticEvent, RefreshControlProps, requireNativeComponent } from 'react-native'
+import {
+  NativeSyntheticEvent,
+  Platform,
+  RefreshControlProps,
+  requireNativeComponent,
+} from 'react-native'
 
 export const RefreshStateIdle = 0
 export const RefreshStateComing = 1
@@ -26,13 +31,13 @@ interface NativeRefreshHeaderProps {
 }
 
 export interface RefreshHeaderProps extends RefreshControlProps {
-  onRefresh?: () => void
   onStateChanged?: (state: RefreshState) => void
   onOffsetChanged?: (offset: number) => void
-  refreshing: boolean
 }
 
-const NativeRefreshHeader = requireNativeComponent<NativeRefreshHeaderProps>('RefreshHeader')
+const NativeRefreshHeader = requireNativeComponent<NativeRefreshHeaderProps>(
+  Platform.OS === 'ios' ? 'RefreshHeader' : 'SPullRefreshHeader',
+)
 
 function RefreshHeader(props: RefreshHeaderProps) {
   const { onStateChanged, onOffsetChanged, ...rest } = props

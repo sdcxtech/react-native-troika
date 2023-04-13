@@ -64,6 +64,9 @@ dependencies {
 	implementation "com.facebook.react:react-native:+" // From node_modules
 	implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 	implementation 'com.google.android.material:material:1.6.1'
+	implementation 'androidx.appcompat:appcompat:1.4.1'
+	implementation  'io.github.scwang90:refresh-header-classics:2.0.5'
+	implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'
 
 	if (enableHermes) {
 		def hermesPath = "../../node_modules/hermes-engine/android/";

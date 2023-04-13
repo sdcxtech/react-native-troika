@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { NativeSyntheticEvent, requireNativeComponent, ViewProps } from 'react-native'
+import { NativeSyntheticEvent, Platform, requireNativeComponent, ViewProps } from 'react-native'
 
 export const RefreshStateIdle = 0
 export const RefreshStateComing = 1
@@ -36,7 +36,9 @@ export interface RefreshFooterProps extends ViewProps {
   manual?: boolean
 }
 
-const NativeRefreshFooter = requireNativeComponent<NativeRefreshFooterProps>('RefreshFooter')
+const NativeRefreshFooter = requireNativeComponent<NativeRefreshFooterProps>(
+  Platform.OS === 'ios' ? 'RefreshFooter' : 'SPullRefreshFooter',
+)
 
 function RefreshFooter(props: RefreshFooterProps) {
   const { onStateChanged, onOffsetChanged, ...rest } = props

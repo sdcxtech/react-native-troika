@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { requireNativeComponent, StyleSheet, Text, ViewProps } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Platform, requireNativeComponent, StyleSheet, Text, ViewProps } from 'react-native'
 import RefreshFooter, { RefreshFooterProps } from '../RefreshFooter'
 import RefreshHeader, {
   RefreshHeaderProps,
@@ -25,7 +25,9 @@ interface PullToRefreshProps extends ViewProps {
   footer?: React.ReactElement<RefreshFooterProps>
 }
 
-const NativePullToRefresh = requireNativeComponent<NativePullToRefreshProps>('PullToRefresh')
+const NativePullToRefresh = requireNativeComponent<NativePullToRefreshProps>(
+  Platform.OS === 'ios' ? 'PullToRefresh' : 'SPullRefreshLayout',
+)
 
 function PullToRefresh(props: PullToRefreshProps) {
   const {
@@ -52,7 +54,6 @@ function PullToRefresh(props: PullToRefreshProps) {
 
     return null
   }
-
   const renderFooter = () => {
     if (footer) {
       return footer
@@ -89,7 +90,7 @@ interface DefaultRefreshHeaderProps {
   refreshing: boolean
 }
 
-function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
+export function DefaultRefreshHeader(props: DefaultRefreshHeaderProps) {
   const { onRefresh, refreshing } = props
 
   const [text, setText] = useState('下拉刷新')
@@ -126,7 +127,7 @@ interface DefaultRefreshFooterProps {
   noMoreData?: boolean
 }
 
-function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
+export function DefaultRefreshFooter(props: DefaultRefreshFooterProps) {
   const { onRefresh, refreshing, noMoreData } = props
 
   const [text, setText] = useState('上拉加载更多')

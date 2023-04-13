@@ -2,6 +2,7 @@ package com.example.myuidemo;
 
 import androidx.annotation.NonNull;
 
+import com.example.myuidemo.bottomsheet.BottomSheetManager;
 import com.example.myuidemo.reactpullrefreshlayout.react.PullRefreshLayoutManager;
 import com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview.LoadMorePlaceholderViewManager;
 import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshPlaceholderViewManager;
@@ -31,7 +32,8 @@ public class MyUiPackage implements ReactPackage {
                 new RefreshPlaceholderViewManager(),
                 new LoadMorePlaceholderViewManager(),
                 new NestedScrollViewManager(),
-                new NestedScrollViewHeaderManager()
+                new NestedScrollViewHeaderManager(),
+                new BottomSheetManager()
         );
     }
 }

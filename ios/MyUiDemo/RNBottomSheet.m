@@ -8,10 +8,13 @@
 @property(nonatomic, strong) UIScrollView *target;
 @property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
-@property(nonatomic, assign) BOOL nextReturn;
+@property(nonatomic, assign) CGFloat minY;
+@property(nonatomic, assign) CGFloat maxY;
 
-@property(nonatomic, assign) CGFloat peekHeight;
+@property(nonatomic, assign) BOOL nextReturn;
 @property(nonatomic, assign) CGFloat lastDragDistance;
+
+@property(nonatomic, strong) CADisplayLink *displayLink;
 
 @end
 
@@ -21,7 +24,7 @@
     if (self = [super init]) {
         _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         _panGestureRecognizer.delegate = self;
-        _peekHeight = 200;
+        _state = @"collapsed";
         [self addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
@@ -67,6 +70,16 @@
         [self.target removeObserver:self forKeyPath:@"contentOffset"];
         self.target = nil;
     }
+    if (superview == nil) {
+        [self stopWatchBottomSheetTransition];
+    }
+}
+
+- (void)willMoveToWindow:(UIWindow *)newWindow {
+    [super willMoveToWindow:newWindow];
+    if (newWindow == nil) {
+        [self stopWatchBottomSheetTransition];
+    }
 }
 
 - (BOOL)isHorizontal:(UIScrollView *)scrollView {
@@ -76,7 +89,27 @@
 
 - (void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
-    self.frame = CGRectOffset(self.frame, 0, self.frame.size.height - self.peekHeight);
+    if (!CGRectEqualToRect(self.frame, CGRectZero)) {
+        [self calculateOffset];
+        if ([self.state isEqualToString:@"collapsed"]) {
+            self.frame = CGRectOffset(self.frame, 0, self.frame.size.height - self.peekHeight);
+            [self dispatchOnSlide:self.frame.origin.y];
+        } else if ([self.state isEqualToString:@"hidden"]) {
+            self.frame = CGRectOffset(self.frame, 0, self.frame.size.height);
+            [self dispatchOnSlide:self.frame.origin.y];
+        }
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self calculateOffset];
+}
+
+- (void)calculateOffset {
+    CGFloat parentHeight = self.superview.frame.size.height;
+    self.minY = fmax(0, parentHeight - self.frame.size.height);
+    self.maxY = fmax(self.minY, parentHeight - self.peekHeight);
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
@@ -86,37 +119,41 @@
     
     CGFloat top = self.frame.origin.y;
     
-    CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat minY = parentHeight - self.frame.size.height;
-    CGFloat maxY = parentHeight - self.peekHeight;
+    if (pan.state == UIGestureRecognizerStateChanged) {
+        [self setStateInternal:@"dragging"];
+    }
     
     // 如果有嵌套滚动
     if (self.target) {
-        if(translationY > 0 && top < maxY && self.target.contentOffset.y <= 0) {
+        if(translationY > 0 && top < self.maxY && self.target.contentOffset.y <= 0) {
             //向下拖
-            CGFloat y = fmin(top + translationY, maxY);
+            CGFloat y = fmin(top + translationY, self.maxY);
             self.frame = CGRectOffset(self.frame, 0, y - top);
+            [self dispatchOnSlide:self.frame.origin.y];
         }
         
-        if (translationY < 0 && top > minY) {
+        if (translationY < 0 && top > self.minY) {
             //向上拖
-            CGFloat y = fmax(top + translationY, minY);
+            CGFloat y = fmax(top + translationY, self.minY);
             self.frame = CGRectOffset(self.frame, 0, y - top);
+            [self dispatchOnSlide:self.frame.origin.y];
         }
     }
     
     // 没有嵌套滚动
     if (!self.target) {
-        if(translationY > 0 && top < maxY) {
+        if(translationY > 0 && top < self.maxY) {
             //向下拖
-            CGFloat y = fmin(top + translationY, maxY);
+            CGFloat y = fmin(top + translationY, self.maxY);
             self.frame = CGRectOffset(self.frame, 0, y - top);
+            [self dispatchOnSlide:self.frame.origin.y];
         }
         
-        if (translationY < 0 && top > minY) {
+        if (translationY < 0 && top > self.minY) {
             //向上拖
-            CGFloat y = fmax(top + translationY, minY);
+            CGFloat y = fmax(top + translationY, self.minY);
             self.frame = CGRectOffset(self.frame, 0, y - top);
+            [self dispatchOnSlide:self.frame.origin.y];
         }
     }
     
@@ -124,22 +161,22 @@
         if (self.lastDragDistance > 10) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
-                [self collapse];
+                [self settleToState:@"collapsed"];
             }
             
             if (!self.target) {
                 //如果是类似轻扫的那种
-                [self collapse];
+                [self settleToState:@"collapsed"];
             }
         } else if (self.lastDragDistance < -10) {
             //如果是类似轻扫的那种
-            [self expand];
+            [self settleToState:@"expanded"];
         } else {
             //如果是普通拖拽
-            if(fabs(self.frame.origin.y - minY) > fabs(self.frame.origin.y - maxY)) {
-                [self collapse];
+            if(fabs(self.frame.origin.y - self.minY) > fabs(self.frame.origin.y - self.maxY)) {
+                [self settleToState:@"collapsed"];
             } else {
-                [self expand];
+                [self settleToState:@"expanded"];
             }
         }
     }
@@ -175,47 +212,105 @@
     }
     
     if (dy < 0) {
-        CGFloat parentHeight = self.superview.frame.size.height;
-        CGFloat minY = parentHeight - self.frame.size.height;
         //向上
-        if (self.frame.origin.y > minY) {
+        if (self.frame.origin.y > self.minY) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, old);
         }
     }
 }
 
-- (void)collapse {
-    CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat maxY = parentHeight - self.peekHeight;
-    if(self.frame.origin.y == maxY) {
-        return;
+- (void)setPeekHeight:(CGFloat)peekHeight {
+    _peekHeight = peekHeight;
+    if (!CGRectEqualToRect(self.frame, CGRectZero)) {
+        [self calculateOffset];
+        if ([self.state isEqualToString:@"collapsed"]) {
+            [self settleToState:@"collapsed"];
+        }
     }
-    
-    CGFloat duration = (maxY - self.frame.origin.y) / (self.frame.size.height - self.peekHeight) * 0.3;
-    [UIView animateWithDuration:duration animations:^{
-        self.frame = CGRectOffset(self.frame, 0, maxY - self.frame.origin.y);
-    } completion:^(BOOL finished) {
-        
-    }];
 }
 
-- (void)expand {
-    CGFloat parentHeight = self.superview.frame.size.height;
-    CGFloat minY = parentHeight - self.frame.size.height;
+- (void)setState:(NSString *)state {
+    if ([_state isEqualToString:@"state"]) {
+        return;
+    }
 
-    if(self.frame.origin.y == minY) {
+    if (CGRectEqualToRect(self.frame, CGRectZero)) {
+        [self setStateInternal:state];
         return;
     }
     
-    // 禁止 target fling
+    [self settleToState:state];
+}
+
+- (void)settleToState:(NSString *)state {
+    if ([state isEqualToString:@"collapsed"]) {
+        [self startSettlingToState:state top:self.maxY];
+    } else if ([state isEqualToString:@"expanded"]) {
+        [self startSettlingToState:state top:self.minY];
+    } else if ([state isEqualToString:@"hidden"]) {
+        [self startSettlingToState:@"hidden" top:self.superview.frame.size.height];
+    }
+}
+
+- (void)startSettlingToState:(NSString *)state top:(CGFloat)top {
     self.target.pagingEnabled = YES;
-    CGFloat duration = (self.frame.origin.y - minY) / (self.frame.size.height - self.peekHeight) * 0.3;
-    [UIView animateWithDuration:duration animations:^{
-        self.frame = CGRectOffset(self.frame, 0, minY - self.frame.origin.y);
+    [self setStateInternal:@"settling"];
+    [self startWatchBottomSheetTransition];
+    [self.layer removeAllAnimations];
+    CGFloat duration = fmin(fabs(self.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.frame = CGRectOffset(self.frame, 0, top - self.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;
+        [self stopWatchBottomSheetTransition];
+        [self setStateInternal:state];
     }];
 }
 
+- (void)setStateInternal:(NSString *)state {
+    if ([_state isEqualToString:state]) {
+        return;
+    }
+    _state = state;
+    
+    if (self.onStateChanged) {
+        if ([state isEqualToString:@"collapsed"] || [state isEqualToString:@"expanded"] || [state isEqualToString:@"hidden"]) {
+            self.onStateChanged(@{
+                @"state": state,
+            });
+        }
+    }
+}
+
+- (void)dispatchOnSlide:(CGFloat)top {
+    if (top < 0) {
+        return;
+    }
+    if (self.onSlide) {
+        self.onSlide(@{
+            @"offset": @(fmax((self.maxY - top), 0) * 1.f / (self.maxY - self.minY)),
+        });
+    }
+}
+
+- (void)startWatchBottomSheetTransition {
+    [self stopWatchBottomSheetTransition];
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(watchBottomSheetTransition)];
+    _displayLink.preferredFramesPerSecond = 120;
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)stopWatchBottomSheetTransition {
+    if(_displayLink){
+        [_displayLink invalidate];
+        _displayLink = nil;
+    }
+}
+
+- (void)watchBottomSheetTransition {
+    CGFloat top = [self.layer presentationLayer].frame.origin.y;
+    [self dispatchOnSlide:top];
+}
+    
 @end

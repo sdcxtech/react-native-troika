@@ -56,6 +56,10 @@ const data: Array<Item> = [
     title: 'BottomSheet + PagerView',
     routeName: 'BottomSheetPagerView',
   },
+  {
+    title: 'BottomSheet + Backdrop + Shadow',
+    routeName: 'BottomSheetBackdropShadow',
+  },
 ]
 
 function App() {

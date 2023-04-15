@@ -3,6 +3,7 @@ package com.example.myuidemo.bottomsheet;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -31,14 +32,14 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheet> {
                 .build();
     }
 
-    @ReactProp(name = "peekHeight")
+    @ReactProp(name = "peekHeight", defaultInt = 200)
     public void setPeekHeight(BottomSheet view, int dp) {
-
+        view.setPeekHeight((int) (PixelUtil.toPixelFromDIP(dp) + 0.5));
     }
 
-    @ReactProp(name = "expanded")
-    public void setExpanded(BottomSheet view, boolean expanded) {
-
+    @ReactProp(name = "state")
+    public void setState(BottomSheet view, String state) {
+        view.setState(BottomSheetState.valueOf(state.toUpperCase()));
     }
 
 }

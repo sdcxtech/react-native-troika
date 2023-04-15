@@ -10,8 +10,11 @@ public class StateChangedEvent extends Event<StateChangedEvent> {
     public static final String Name = "stateEvent";
     public static final String JSEventName = "onStateChanged";
 
-    public StateChangedEvent(int surfaceId, int viewTag) {
+    private final String state;
+
+    public StateChangedEvent(int surfaceId, int viewTag, String state) {
         super(surfaceId, viewTag);
+        this.state = state;
     }
 
     @Override
@@ -21,6 +24,8 @@ public class StateChangedEvent extends Event<StateChangedEvent> {
 
     @Nullable
     protected WritableMap getEventData() {
-        return Arguments.createMap();
+        WritableMap data = Arguments.createMap();
+        data.putString("state", state);
+        return data;
     }
 }

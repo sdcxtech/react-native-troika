@@ -15,7 +15,7 @@ function BottomSheetFlashList() {
         <LoremIpsum />
         <LoremIpsum />
       </ScrollView>
-      <BottomSheet style={styles.bottomSheet}>
+      <BottomSheet onSlide={e => console.log(e.nativeEvent)} style={styles.bottomSheet}>
         <View style={styles.header} />
         <Contacts />
       </BottomSheet>

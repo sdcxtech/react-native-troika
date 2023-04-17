@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { LoremIpsum } from '../components/LoremIpsum'
-import BottomSheet from '../BottomSheet'
+import BottomSheet from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
 import Contacts from '../components/contacts/Contacts'
 

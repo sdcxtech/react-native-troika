@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  NativeSyntheticEvent,
-  Platform,
-  requireNativeComponent,
-  StyleSheet,
-  View,
-  ViewProps,
-} from 'react-native'
+import { NativeSyntheticEvent, Platform, requireNativeComponent, StyleSheet, View, ViewProps } from 'react-native'
 import splitLayoutProps from './splitLayoutProps'
 
 export interface OffsetChangedEventData {
@@ -48,9 +41,7 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
         state={state}
         {...rest}
         ref={ref}>
-        <View
-          style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]}
-          collapsable={false}>
+        <View style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]} collapsable={false}>
           {children}
         </View>
       </NativeBottomSheet>

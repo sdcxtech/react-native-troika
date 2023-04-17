@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native'
 import { LoremIpsum } from '../components/LoremIpsum'
-import BottomSheet, { OffsetChangedEventData } from '../BottomSheet'
+import BottomSheet, { OffsetChangedEventData } from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
 import DropShadow from 'react-native-drop-shadow'
 

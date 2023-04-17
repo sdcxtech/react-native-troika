@@ -13,8 +13,6 @@
 		912BC80829CB069900B77519 /* RNRefreshShadowHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80729CB069900B77519 /* RNRefreshShadowHeader.m */; };
 		912BC80B29CB467800B77519 /* RNRefreshShadowFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80A29CB467800B77519 /* RNRefreshShadowFooter.m */; };
 		912BC80E29CBFAE400B77519 /* RNRefreshFooterLocalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */; };
-		9138B76929E6AB7C0041A474 /* RNBottomSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9138B76829E6AB7C0041A474 /* RNBottomSheet.m */; };
-		9138B76C29E6AB930041A474 /* RNBottomSheetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9138B76B29E6AB930041A474 /* RNBottomSheetManager.m */; };
 		91459E512605ACD000EFBE6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91459E502605ACD000EFBE6E /* Assets.xcassets */; };
 		91459E552605ACE600EFBE6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91459E532605ACE600EFBE6E /* LaunchScreen.storyboard */; };
 		9191B23229BF09E3008CA10F /* RNNestedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9191B23129BF09E3008CA10F /* RNNestedScrollView.m */; };
@@ -46,10 +44,6 @@
 		912BC80A29CB467800B77519 /* RNRefreshShadowFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshShadowFooter.m; path = MyUiDemo/RNRefreshShadowFooter.m; sourceTree = "<group>"; };
 		912BC80C29CBFAE400B77519 /* RNRefreshFooterLocalData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNRefreshFooterLocalData.h; path = MyUiDemo/RNRefreshFooterLocalData.h; sourceTree = "<group>"; };
 		912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNRefreshFooterLocalData.m; path = MyUiDemo/RNRefreshFooterLocalData.m; sourceTree = "<group>"; };
-		9138B76729E6AB7C0041A474 /* RNBottomSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNBottomSheet.h; path = MyUiDemo/RNBottomSheet.h; sourceTree = "<group>"; };
-		9138B76829E6AB7C0041A474 /* RNBottomSheet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNBottomSheet.m; path = MyUiDemo/RNBottomSheet.m; sourceTree = "<group>"; };
-		9138B76A29E6AB930041A474 /* RNBottomSheetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNBottomSheetManager.h; path = MyUiDemo/RNBottomSheetManager.h; sourceTree = "<group>"; };
-		9138B76B29E6AB930041A474 /* RNBottomSheetManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNBottomSheetManager.m; path = MyUiDemo/RNBottomSheetManager.m; sourceTree = "<group>"; };
 		91459E502605ACD000EFBE6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MyUiDemo/Assets.xcassets; sourceTree = "<group>"; };
 		91459E542605ACE600EFBE6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MyUiDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9191B23029BF09E3008CA10F /* RNNestedScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNNestedScrollView.h; path = MyUiDemo/RNNestedScrollView.h; sourceTree = "<group>"; };
@@ -135,10 +129,6 @@
 				912BC80D29CBFAE400B77519 /* RNRefreshFooterLocalData.m */,
 				91AE2B4B29CC5CE00075EEEA /* RNRefreshState.h */,
 				91AE2B4C29CC5CE00075EEEA /* RNRefreshState.m */,
-				9138B76729E6AB7C0041A474 /* RNBottomSheet.h */,
-				9138B76829E6AB7C0041A474 /* RNBottomSheet.m */,
-				9138B76A29E6AB930041A474 /* RNBottomSheetManager.h */,
-				9138B76B29E6AB930041A474 /* RNBottomSheetManager.m */,
 			);
 			name = MyUiDemo;
 			sourceTree = "<group>";
@@ -319,7 +309,6 @@
 			files = (
 				9191B25329C807F8008CA10F /* RNRefreshFooter.m in Sources */,
 				9191B24D29C807B2008CA10F /* RNRefreshFooterManager.m in Sources */,
-				9138B76C29E6AB930041A474 /* RNBottomSheetManager.m in Sources */,
 				9191B23829BF0B06008CA10F /* RNNestedScrollViewManager.m in Sources */,
 				9191B24429C80717008CA10F /* RNPullToRefresh.m in Sources */,
 				9191B23229BF09E3008CA10F /* RNNestedScrollView.m in Sources */,
@@ -331,7 +320,6 @@
 				9191B23B29BF0B37008CA10F /* RNNestedScrollViewHeaderManager.m in Sources */,
 				912BC80829CB069900B77519 /* RNRefreshShadowHeader.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				9138B76929E6AB7C0041A474 /* RNBottomSheet.m in Sources */,
 				91AE2B4D29CC5CE00075EEEA /* RNRefreshState.m in Sources */,
 				9191B23E29C22B5A008CA10F /* RNNestedScrollShadowView.m in Sources */,
 				912BC80E29CBFAE400B77519 /* RNRefreshFooterLocalData.m in Sources */,

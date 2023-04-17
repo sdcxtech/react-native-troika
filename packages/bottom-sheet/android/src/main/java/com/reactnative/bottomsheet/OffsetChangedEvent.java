@@ -1,4 +1,4 @@
-package com.example.myuidemo.bottomsheet;
+package com.reactnative.bottomsheet;
 
 import androidx.annotation.Nullable;
 

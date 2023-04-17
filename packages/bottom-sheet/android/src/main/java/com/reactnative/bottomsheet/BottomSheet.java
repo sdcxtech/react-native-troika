@@ -1,11 +1,11 @@
-package com.example.myuidemo.bottomsheet;
+package com.reactnative.bottomsheet;
 
 
-import static com.example.myuidemo.bottomsheet.BottomSheetState.COLLAPSED;
-import static com.example.myuidemo.bottomsheet.BottomSheetState.DRAGGING;
-import static com.example.myuidemo.bottomsheet.BottomSheetState.EXPANDED;
-import static com.example.myuidemo.bottomsheet.BottomSheetState.HIDDEN;
-import static com.example.myuidemo.bottomsheet.BottomSheetState.SETTLING;
+import static com.reactnative.bottomsheet.BottomSheetState.COLLAPSED;
+import static com.reactnative.bottomsheet.BottomSheetState.DRAGGING;
+import static com.reactnative.bottomsheet.BottomSheetState.EXPANDED;
+import static com.reactnative.bottomsheet.BottomSheetState.HIDDEN;
+import static com.reactnative.bottomsheet.BottomSheetState.SETTLING;
 import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;

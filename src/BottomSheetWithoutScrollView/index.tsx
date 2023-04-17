@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native'
 import { LoremIpsum } from '../components/LoremIpsum'
-import BottomSheet, { BottomSheetState, StateChangedEventData } from '../BottomSheet'
+import BottomSheet, { BottomSheetState, StateChangedEventData } from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
 import Button from './Button'
 

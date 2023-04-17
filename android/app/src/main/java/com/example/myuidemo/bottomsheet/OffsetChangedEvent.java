@@ -29,9 +29,12 @@ public class OffsetChangedEvent extends Event<OffsetChangedEvent> {
 
     @Nullable
     protected WritableMap getEventData() {
+        double progress = Math.min((offset - minOffset) * 1.0f / (maxOffset - minOffset), 1);
         WritableMap data = Arguments.createMap();
-        double percent = Math.max(maxOffset - offset, 0) * 1.0f / (maxOffset - minOffset);
-        data.putDouble("offset", percent);
+        data.putDouble("progress", progress);
+        data.putDouble("offset", PixelUtil.toDIPFromPixel(offset));
+        data.putDouble("expandedOffset", PixelUtil.toDIPFromPixel(minOffset));
+        data.putDouble("collapsedOffset", PixelUtil.toDIPFromPixel(maxOffset));
         return data;
     }
 }

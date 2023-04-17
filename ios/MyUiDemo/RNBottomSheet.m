@@ -104,6 +104,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self calculateOffset];
+    [self dispatchOnSlide:self.frame.origin.y];
 }
 
 - (void)calculateOffset {
@@ -284,12 +285,16 @@
 }
 
 - (void)dispatchOnSlide:(CGFloat)top {
-    if (top < 0) {
+    if (top < 0 || self.maxY == 0) {
         return;
     }
     if (self.onSlide) {
+        CGFloat progress = fmin((top - self.minY) * 1.0f / (self.maxY - self.minY), 1);
         self.onSlide(@{
-            @"offset": @(fmax((self.maxY - top), 0) * 1.f / (self.maxY - self.minY)),
+            @"progress": @(progress),
+            @"offset": @(top),
+            @"collapsedOffset": @(self.maxY),
+            @"expandedOffset": @(self.minY)
         });
     }
 }

@@ -12,7 +12,10 @@ function BottomSheetBackdropShadow() {
   const offset = useRef(new Animated.Value(0)).current
 
   const backdropStyle = {
-    opacity: offset,
+    opacity: offset.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 0],
+    }),
   }
 
   const onSlide = useMemo(
@@ -21,7 +24,7 @@ function BottomSheetBackdropShadow() {
         [
           {
             nativeEvent: {
-              offset: offset,
+              progress: offset,
             },
           },
         ],

@@ -3,6 +3,7 @@ import { Animated, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 're
 import { LoremIpsum } from '../components/LoremIpsum'
 import BottomSheet, { OffsetChangedEventData } from '../BottomSheet'
 import { withNavigationItem } from 'hybrid-navigation'
+import DropShadow from 'react-native-drop-shadow'
 
 const HEADER_HEIGTH = 50
 
@@ -45,7 +46,10 @@ function BottomSheetBackdropShadow() {
         pointerEvents="box-none"
       />
       <AnimatedBottomSheet fitToContents peekHeight={200} onSlide={onSlide}>
-        <View style={styles.header} />
+        <DropShadow style={styles.shadow}>
+          <View style={styles.header} />
+        </DropShadow>
+
         <View style={styles.content}>
           <LoremIpsum words={200} />
         </View>
@@ -62,21 +66,20 @@ const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  header: {
-    height: HEADER_HEIGTH,
-    backgroundColor: 'white',
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    elevation: 16,
-    shadowRadius: 8,
+  shadow: {
+    shadowRadius: 16,
     shadowColor: '#000',
     shadowOpacity: 0.4,
     shadowOffset: {
       width: 0,
       height: 0,
     },
+  },
+  header: {
+    height: HEADER_HEIGTH,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   content: {
     backgroundColor: '#ff9f7A',

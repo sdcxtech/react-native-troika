@@ -5921,6 +5921,13 @@ react-native-codegen@^0.0.8:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-drop-shadow@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.npmmirror.com/react-native-drop-shadow/-/react-native-drop-shadow-0.0.6.tgz#390ce56af70a1aa29abd9e86c8ca883803f7c097"
+  integrity sha512-eIFZoU7yhr90xB0/Gfuolt/Eelk0F+ohy3piutuYFA+xJx1xtJ/t9xWaaTPwTGXK+56CTnp8mAX4VPDz464NZg==
+  dependencies:
+    logkitty "^0.7.1"
+
 react-native-fast-image@^8.6.3:
   version "8.6.3"
   resolved "https://registry.npmmirror.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"

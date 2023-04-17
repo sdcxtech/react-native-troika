@@ -1,0 +1,66 @@
+{
+  "name": "@sdcx/pull-to-refresh",
+  "description": "React Native pull to refresh component",
+  "version": "0.1.0",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "react-native": "src/index",
+  "nativePackage": true,
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "RNPullToRefresh.podspec",
+    "!android/build",
+    "!ios/build",
+    "!**/__tests__"
+  ],
+  "repository": "https://github.com/github-account/pull-to-refresh",
+  "homepage": "https://github.com/github-account/pull-to-refresh#readme",
+  "author": "author-name <author-email@gmail.com> (https://github.com/github-account)",
+  "license": "MIT",
+  "keywords": [
+    "react-native",
+    "pull-to-refresh"
+  ],
+  "scripts": {
+    "build": "rm -rf ./lib && tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
+    "tsc": "tsc",
+    "test": "jest",
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+  },
+  "peerDependencies": {
+    "react": ">=16.8",
+    "react-native": ">=0.60"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
+    "@react-native-community/eslint-config": "^3.0.0",
+    "@types/jest": "^26.0.21",
+    "@types/react": "^17.0.2",
+    "@types/react-native": "^0.67.0",
+    "@types/react-test-renderer": "17.0.2",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react": "17.0.2",
+    "react-native": "^0.67.4",
+    "react-test-renderer": "17.0.2",
+    "eslint": "^7.32.0",
+    "typescript": "^4.6.4"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

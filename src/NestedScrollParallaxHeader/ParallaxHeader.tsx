@@ -8,7 +8,8 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native'
-import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
+
+import { NestedScrollViewHeader } from '@sdcx/nested-scroll'
 
 const NestedScrollViewHeaderAnimated = Animated.createAnimatedComponent(NestedScrollViewHeader)
 const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground)

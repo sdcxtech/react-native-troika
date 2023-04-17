@@ -10,7 +10,7 @@ import com.example.myuidemo.reactpullrefreshlayout.PullRefreshLayout;
 import com.example.myuidemo.reactpullrefreshlayout.react.loadmoreview.LoadMorePlaceholderView;
 import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshDefaultView;
 import com.example.myuidemo.reactpullrefreshlayout.react.refreshview.RefreshPlaceholderView;
-import com.reactnativecommunity.webview.NestedRNCWebView;
+import com.reactnativecommunity.webview.RNCNestedScrollWebView;
 
 public class ReactPullRefreshLayout extends PullRefreshLayout {
     public ReactPullRefreshLayout(Context context) {
@@ -57,8 +57,8 @@ public class ReactPullRefreshLayout extends PullRefreshLayout {
     @Override
     protected void setTargetViewToBottom(View targetView) {
         View specificScrollView = findSpecificScrollableView(targetView);
-        if (specificScrollView instanceof NestedRNCWebView) {
-            NestedRNCWebView webView = (NestedRNCWebView) specificScrollView;
+        if (specificScrollView instanceof RNCNestedScrollWebView) {
+            RNCNestedScrollWebView webView = (RNCNestedScrollWebView) specificScrollView;
             postDelayed(webView::scrollToBottom, 0);
         } else if (specificScrollView instanceof ScrollView) {
             ScrollView scrollView = (ScrollView) specificScrollView;

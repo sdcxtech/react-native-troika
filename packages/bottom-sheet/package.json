@@ -1,6 +1,6 @@
 {
   "name": "@sdcx/bottom-sheet",
-  "description": "TODO",
+  "description": "A react-native bottom sheet component",
   "version": "0.1.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -21,7 +21,8 @@
   "author": "author-name <author-email@gmail.com> (https://github.com/github-account)",
   "license": "MIT",
   "keywords": [
-    "react-native"
+    "react-native",
+    "bottom-sheet"
   ],
   "scripts": {
     "build": "rm -rf ./lib && tsc -p tsconfig.build.json",

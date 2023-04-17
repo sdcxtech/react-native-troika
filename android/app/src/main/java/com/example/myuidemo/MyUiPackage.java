@@ -9,7 +9,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.reactnativecommunity.webview.NestedRNCWebViewManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,13 +25,9 @@ public class MyUiPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
         return Arrays.asList(
-                new NestedRNCWebViewManager(),
                 new PullRefreshLayoutManager(),
                 new RefreshPlaceholderViewManager(),
                 new LoadMorePlaceholderViewManager(),
-                new NestedScrollViewManager(),
-                new NestedScrollViewHeaderManager(),
-                new BottomSheetManager(),
                 new ReactSmartPullRefreshLayoutManager(),
                 new ReactSmartPullRefreshHeaderManager(),
                 new ReactSmartPullRefreshFooterManager()

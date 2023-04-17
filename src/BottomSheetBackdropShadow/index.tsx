@@ -1,5 +1,12 @@
 import React, { useMemo, useRef } from 'react'
-import { Animated, NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native'
+import {
+  Animated,
+  NativeSyntheticEvent,
+  PixelRatio,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
 import { LoremIpsum } from '../components/LoremIpsum'
 import BottomSheet, { OffsetChangedEventData } from '../BottomSheet'
 import { withNavigationItem } from 'hybrid-navigation'
@@ -49,7 +56,6 @@ function BottomSheetBackdropShadow() {
         <DropShadow style={styles.shadow}>
           <View style={styles.header} />
         </DropShadow>
-
         <View style={styles.content}>
           <LoremIpsum words={200} />
         </View>
@@ -76,8 +82,8 @@ const styles = StyleSheet.create({
     },
   },
   header: {
-    height: HEADER_HEIGTH,
-    backgroundColor: 'white',
+    height: PixelRatio.roundToNearestPixel(HEADER_HEIGTH),
+    backgroundColor: 'coral',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
   },

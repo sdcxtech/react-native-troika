@@ -1,6 +1,9 @@
 import App from './App'
 import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
+
+import './src/PullToRefresh'
+
 import NestedScrollFlatList from './src/NestedScrollFlatList'
 import NestedScrollParallaxHeader from './src/NestedScrollParallaxHeader'
 import NestedScrollTabView from './src/NestedScrollTabView'

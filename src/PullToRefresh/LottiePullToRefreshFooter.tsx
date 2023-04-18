@@ -6,8 +6,8 @@ import {
   PullToRefreshFooter,
   PullToRefreshFooterProps,
   PullToRefreshStateChangedEvent,
-  RefreshStateIdle,
-  RefreshStateRefreshing,
+  PullToRefreshStateIdle,
+  PullToRefreshStateRefreshing,
 } from '@sdcx/pull-to-refresh'
 
 function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
@@ -16,10 +16,10 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
 
   const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
     const state = event.nativeEvent.state
-    if (state === RefreshStateIdle) {
+    if (state === PullToRefreshStateIdle) {
       lottieRef.current?.pause()
       lottieRef.current?.reset()
-    } else if (state === RefreshStateRefreshing) {
+    } else if (state === PullToRefreshStateRefreshing) {
       lottieRef.current?.play()
     } else {
       HapticFeedback.trigger('impactLight')

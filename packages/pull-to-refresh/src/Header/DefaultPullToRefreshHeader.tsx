@@ -4,8 +4,8 @@ import {
   PullToRefreshHeaderProps,
   PullToRefreshOffsetChangedEvent,
   PullToRefreshStateChangedEvent,
-  RefreshStateIdle,
-  RefreshStateRefreshing,
+  PullToRefreshStateIdle,
+  PullToRefreshStateRefreshing,
 } from '../types'
 import { PullToRefreshHeader } from './native'
 
@@ -16,9 +16,9 @@ export function DefaultPullToRefreshHeader(props: PullToRefreshHeaderProps) {
 
   const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
     const state = event.nativeEvent.state
-    if (state === RefreshStateIdle) {
+    if (state === PullToRefreshStateIdle) {
       setText('下拉刷新')
-    } else if (state === RefreshStateRefreshing) {
+    } else if (state === PullToRefreshStateRefreshing) {
       setText('正在刷新...')
     } else {
       setText('松开刷新')

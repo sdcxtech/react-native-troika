@@ -7,19 +7,19 @@ import {
   PullToRefreshHeaderProps,
   PullToRefreshOffsetChangedEvent,
   PullToRefreshStateChangedEvent,
-  RefreshState,
-  RefreshStateIdle,
-  RefreshStateRefreshing,
+  PullToRefreshState,
+  PullToRefreshStateIdle,
+  PullToRefreshStateRefreshing,
 } from '@sdcx/pull-to-refresh'
 
 function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
   const [progress, setProgress] = useState(0)
   const lottieRef = useRef<Lottie>(null)
-  const stateRef = useRef<RefreshState>(RefreshStateIdle)
+  const stateRef = useRef<PullToRefreshState>(PullToRefreshStateIdle)
 
   const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
     const offset = event.nativeEvent.offset
-    if (stateRef.current !== RefreshStateRefreshing) {
+    if (stateRef.current !== PullToRefreshStateRefreshing) {
       setProgress(Math.min(1, offset / 50))
     }
   }, [])
@@ -28,10 +28,10 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
     (event: PullToRefreshStateChangedEvent) => {
       const state = event.nativeEvent.state
       stateRef.current = state
-      if (state === RefreshStateIdle) {
+      if (state === PullToRefreshStateIdle) {
         lottieRef.current?.reset()
         setProgress(0)
-      } else if (state === RefreshStateRefreshing) {
+      } else if (state === PullToRefreshStateRefreshing) {
         lottieRef.current?.play(progress)
       } else {
         HapticFeedback.trigger('impactLight')

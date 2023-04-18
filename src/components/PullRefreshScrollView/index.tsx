@@ -1,7 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { ScrollViewPage } from '../ScrollViewPage'
-import PullToRefresh from '../../PullToRefresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
 function PullRefreshScrollView() {
   const [refreshing, setRefreshing] = useState(false)

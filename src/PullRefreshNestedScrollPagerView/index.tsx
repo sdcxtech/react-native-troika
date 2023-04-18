@@ -8,7 +8,7 @@ import { WebViewPage } from '../components/WebViewPage'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
 import { useDemoFlatlistData } from '../components/FlatListPage'
-import PullToRefresh from '../PullToRefresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 import Contacts from '../components/contacts/Contacts'
 import ContactsSectionList from '../components/contacts/ContactsSectionList'
 

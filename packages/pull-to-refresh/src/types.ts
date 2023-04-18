@@ -1,17 +1,17 @@
 import React from 'react'
 import { NativeSyntheticEvent, ViewProps } from 'react-native'
 
-export const RefreshStateIdle = 0
-export const RefreshStateComing = 1
-export const RefreshStateRefreshing = 2
-export type RefreshStateIdle = typeof RefreshStateIdle
-export type RefreshStateComing = typeof RefreshStateComing
-export type RefreshStateRefreshing = typeof RefreshStateRefreshing
+export const PullToRefreshStateIdle = 0
+export const PullToRefreshStateComing = 1
+export const PullToRefreshStateRefreshing = 2
+export type PullToRefreshStateIdle = typeof PullToRefreshStateIdle
+export type PullToRefreshStateComing = typeof PullToRefreshStateComing
+export type PullToRefreshStateRefreshing = typeof PullToRefreshStateRefreshing
 
-export type RefreshState = RefreshStateIdle | RefreshStateComing | RefreshStateRefreshing
+export type PullToRefreshState = PullToRefreshStateIdle | PullToRefreshStateComing | PullToRefreshStateRefreshing
 
 interface StateChangedEventData {
-  state: RefreshState
+  state: PullToRefreshState
 }
 
 interface OffsetChangedEventData {

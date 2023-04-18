@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
-import PullToRefresh from '../PullToRefresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
 export function PullRefreshFlatListNestedScroll() {
   const [refreshing, setRefreshing] = useState(false)

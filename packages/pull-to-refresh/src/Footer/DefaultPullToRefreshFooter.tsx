@@ -4,8 +4,8 @@ import {
   PullToRefreshFooterProps,
   PullToRefreshOffsetChangedEvent,
   PullToRefreshStateChangedEvent,
-  RefreshStateIdle,
-  RefreshStateRefreshing,
+  PullToRefreshStateIdle,
+  PullToRefreshStateRefreshing,
 } from '../types'
 import { PullToRefreshFooter } from './native'
 
@@ -16,9 +16,9 @@ export function DefaultPullToRefreshFooter(props: PullToRefreshFooterProps) {
 
   const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
     const state = event.nativeEvent.state
-    if (state === RefreshStateIdle) {
+    if (state === PullToRefreshStateIdle) {
       setText('上拉加载更多')
-    } else if (state === RefreshStateRefreshing) {
+    } else if (state === PullToRefreshStateRefreshing) {
       setText('正在加载更多...')
     } else {
       setText('松开加载更多')

@@ -31,7 +31,8 @@
     "react-native-webview": "^11.16.0",
     "@sdcx/bottom-sheet": "0.1.0",
     "@sdcx/nested-scroll": "0.1.0",
-    "@sdcx/nested-scroll-webview": "0.1.0"
+    "@sdcx/nested-scroll-webview": "0.1.0",
+    "@sdcx/pull-to-refresh": "0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

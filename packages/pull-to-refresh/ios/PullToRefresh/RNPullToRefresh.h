@@ -1,5 +1,9 @@
-#import <React/RCTBridgeModule.h>
+#import <UIKit/UIKit.h>
 
-@interface RNPullToRefresh : NSObject <RCTBridgeModule>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface RNPullToRefresh : UIView
 
 @end
+
+NS_ASSUME_NONNULL_END

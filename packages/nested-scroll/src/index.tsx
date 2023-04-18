@@ -21,8 +21,7 @@ export type NestedScrollViewProps = PropsWithChildren<{
 
 type NestedScrollViewNativeProps = Omit<NestedScrollViewProps, 'contentContainerStyle'>
 
-const NestedScrollViewNative =
-  requireNativeComponent<NestedScrollViewNativeProps>('NestedScrollView')
+const NestedScrollViewNative = requireNativeComponent<NestedScrollViewNativeProps>('NestedScrollView')
 
 function NestedScrollView({ children, ...props }: NestedScrollViewProps) {
   if (Platform.OS === 'android') {
@@ -31,11 +30,7 @@ function NestedScrollView({ children, ...props }: NestedScrollViewProps) {
   return <NestedScrollViewNative {...props}>{children}</NestedScrollViewNative>
 }
 
-export function NestedScrollViewAndroid({
-  children,
-  contentContainerStyle,
-  ...props
-}: NestedScrollViewProps) {
+export function NestedScrollViewAndroid({ children, contentContainerStyle, ...props }: NestedScrollViewProps) {
   return (
     <NestedScrollViewNative {...props}>
       <View style={[styles.flex1, contentContainerStyle]} collapsable={false}>
@@ -51,8 +46,8 @@ const styles = StyleSheet.create({
   },
 })
 
-export { NestedScrollView } 
+export { NestedScrollView }
 
 export { NestedScrollViewHeader } from './NestedScrollViewHeader'
 
-export type {  NestedScrollEvent, NestedScrollViewHeaderProps } from './NestedScrollViewHeader'
+export type { NestedScrollEvent, NestedScrollViewHeaderProps } from './NestedScrollViewHeader'

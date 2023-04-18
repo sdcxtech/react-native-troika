@@ -5,7 +5,7 @@ import { BlankAreaEventHandler, FlashList } from '@shopify/flash-list'
 import TweetCell from './TweetCell'
 import { tweets as tweetsData } from './data/tweets'
 import Tweet from './models/Tweet'
-import PullToRefresh from '../../PullToRefresh'
+import { Refreshcontrol } from '@sdcx/pull-to-refresh'
 
 export interface TwitterProps {
   instance?: React.RefObject<FlashList<Tweet>>
@@ -33,53 +33,55 @@ const Twitter = ({
   }).current
 
   return (
-    <PullToRefresh
-      refreshing={refreshing}
-      onRefresh={() => {
-        setRefreshing(true)
+    <FlashList
+      nestedScrollEnabled
+      ref={instance}
+      onBlankArea={blankAreaTracker}
+      testID="FlashList"
+      keyExtractor={item => {
+        return item.id
+      }}
+      renderItem={({ item }) => {
+        return <TweetCell tweet={item} />
+      }}
+      CellRendererComponent={CellRendererComponent}
+      ListHeaderComponent={Header}
+      ListHeaderComponentStyle={{ backgroundColor: '#ccc' }}
+      refreshControl={
+        <Refreshcontrol
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true)
+            setTimeout(() => {
+              setRefreshing(false)
+              const reversedTweets = [...tweets]
+              reversedTweets.reverse()
+              setTweets(reversedTweets)
+            }, 500)
+          }}
+        />
+      }
+      onEndReached={() => {
         setTimeout(() => {
-          setRefreshing(false)
-          const reversedTweets = [...tweets]
-          reversedTweets.reverse()
-          setTweets(reversedTweets)
-        }, 500)
-      }}>
-      <FlashList
-        nestedScrollEnabled
-        ref={instance}
-        onBlankArea={blankAreaTracker}
-        testID="FlashList"
-        keyExtractor={item => {
-          return item.id
-        }}
-        renderItem={({ item }) => {
-          return <TweetCell tweet={item} />
-        }}
-        CellRendererComponent={CellRendererComponent}
-        ListHeaderComponent={Header}
-        ListHeaderComponentStyle={{ backgroundColor: '#ccc' }}
-        onEndReached={() => {
-          setTimeout(() => {
-            setTweets([...tweets, ...remainingTweets.current.splice(0, 10)])
-            if (remainingTweets.current.length === 0) {
-              setNoMoreData(true)
-            }
-          }, 1000)
-        }}
-        ListFooterComponent={
-          <Footer isLoading={tweets.length !== tweetsData.length} isPagingEnabled={!noMoreData} />
-        }
-        ListEmptyComponent={Empty()}
-        estimatedItemSize={150}
-        ItemSeparatorComponent={Divider}
-        data={emptyListEnabled ? [] : tweets}
-        viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={info => {
-          console.log(info)
-        }}
-        disableAutoLayout={disableAutoLayout}
-      />
-    </PullToRefresh>
+          setTweets([...tweets, ...remainingTweets.current.splice(0, 10)])
+          if (remainingTweets.current.length === 0) {
+            setNoMoreData(true)
+          }
+        }, 1000)
+      }}
+      ListFooterComponent={
+        <Footer isLoading={tweets.length !== tweetsData.length} isPagingEnabled={!noMoreData} />
+      }
+      ListEmptyComponent={Empty()}
+      estimatedItemSize={150}
+      ItemSeparatorComponent={Divider}
+      data={emptyListEnabled ? [] : tweets}
+      viewabilityConfig={viewabilityConfig}
+      onViewableItemsChanged={info => {
+        console.log(info)
+      }}
+      disableAutoLayout={disableAutoLayout}
+    />
   )
 }
 

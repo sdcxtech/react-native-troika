@@ -1,8 +1,7 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import NestedScrollView from '../NestedScrollView'
-import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
+import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
 import { FlatListPage } from '../components/FlatListPage'
 
 export function NestedScrollFlatList() {

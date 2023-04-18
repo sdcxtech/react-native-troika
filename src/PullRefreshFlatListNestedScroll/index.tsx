@@ -1,10 +1,9 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import NestedScrollView from '../NestedScrollView'
-import NestedScrollViewHeader from '../NestedScrollView/NestedScrollViewHeader'
+import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
-import PullToRefresh from '../PullToRefresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
 export function PullRefreshFlatListNestedScroll() {
   const [refreshing, setRefreshing] = useState(false)

@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
-import PullToRefresh from '../../PullToRefresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 import { FlatListPage, useDemoFlatlistData } from '../FlatListPage'
 
 function PullRefreshFlatList() {

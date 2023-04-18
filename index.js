@@ -1,6 +1,9 @@
 import App from './App'
 import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
+
+import './src/PullToRefresh'
+
 import NestedScrollFlatList from './src/NestedScrollFlatList'
 import NestedScrollParallaxHeader from './src/NestedScrollParallaxHeader'
 import NestedScrollTabView from './src/NestedScrollTabView'
@@ -11,6 +14,11 @@ import PullRefreshPagerView from './src/PullRefreshPagerView'
 import PullRefreshFlatListNestedScroll from './src/PullRefreshFlatListNestedScroll'
 import PullRefreshPagerViewNestedScroll from './src/PullRefreshPagerViewNestedScroll'
 import PullRefreshNestedScrollPagerView from './src/PullRefreshNestedScrollPagerView'
+
+import BottomSheetWithoutScrollView from './src/BottomSheetWithoutScrollView'
+import BottomSheetFlashList from './src/BottomSheetFlashList'
+import BottomSheetPagerView from './src/BottomSheetPagerView'
+import BottomSheetBackdropShadow from './src/BottomSheetBackdropShadow'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -47,6 +55,11 @@ Navigation.registerComponent(
   'PullRefreshNestedScrollPagerView',
   () => PullRefreshNestedScrollPagerView,
 )
+
+Navigation.registerComponent('BottomSheetWithoutScrollView', () => BottomSheetWithoutScrollView)
+Navigation.registerComponent('BottomSheetFlashList', () => BottomSheetFlashList)
+Navigation.registerComponent('BottomSheetPagerView', () => BottomSheetPagerView)
+Navigation.registerComponent('BottomSheetBackdropShadow', () => BottomSheetBackdropShadow)
 
 // 重要必须
 Navigation.endRegisterComponent()

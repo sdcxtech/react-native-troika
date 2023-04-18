@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { statusBarHeight, topBarHeight, withNavigationItem } from 'hybrid-navigation'
 
-import NestedScrollView from '../NestedScrollView'
+import { NestedScrollView } from '@sdcx/nested-scroll'
 
 import { FlatListPage } from '../components/FlatListPage'
 import { ParallaxHeader } from './ParallaxHeader'

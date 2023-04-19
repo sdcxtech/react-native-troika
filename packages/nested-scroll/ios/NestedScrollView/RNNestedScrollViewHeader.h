@@ -4,7 +4,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RNNestedScrollViewHeader : RCTView
 
-@property(nonatomic, assign) CGFloat fixedHeight;
+@property(nonatomic, assign) CGFloat stickyHeight;
 @property(nonatomic, assign) NSUInteger stickyHeaderBeginIndex;
 @property(nonatomic, copy) RCTDirectEventBlock onScroll;
 

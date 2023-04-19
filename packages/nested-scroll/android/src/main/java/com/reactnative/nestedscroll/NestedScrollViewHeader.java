@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import com.facebook.react.views.view.ReactViewGroup;
 
 public class NestedScrollViewHeader extends ReactViewGroup {
-    public final static int INVALID_FIXED_HEIGHT = -1;
+    public final static int INVALID_STICKY_HEIGHT = -1;
 
     public final static int INVALID_STICKY_BEGIN_INDEX = Integer.MAX_VALUE;
 
-    private int mFixedHeight = INVALID_FIXED_HEIGHT;
+    private int mStickyHeight = INVALID_STICKY_HEIGHT;
 
     private int mStickyHeaderBeginIndex = INVALID_STICKY_BEGIN_INDEX;
 
@@ -39,37 +39,37 @@ public class NestedScrollViewHeader extends ReactViewGroup {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        notifyFixedHeightChange();
+        notifyStickyHeightChange();
     }
 
-    public void setFixedHeight(int fixedHeight) {
-        mFixedHeight = fixedHeight;
-        notifyFixedHeightChange();
+    public void setStickyHeight(int stickyHeight) {
+        mStickyHeight = stickyHeight;
+        notifyStickyHeightChange();
     }
 
     public void setStickyHeaderBeginIndex(int index) {
         mStickyHeaderBeginIndex = index;
-        notifyFixedHeightChange();
+        notifyStickyHeightChange();
     }
 
-    public int getFixedHeight() {
-        if (mFixedHeight >= 0) {
-            return Math.min(mFixedHeight, getHeight());
+    public int getStickyHeight() {
+        if (mStickyHeight >= 0) {
+            return Math.min(mStickyHeight, getHeight());
         }
         if (mStickyHeaderBeginIndex != INVALID_STICKY_BEGIN_INDEX) {
-            int fixedHeaderHeight = 0;
+            int stickyHeaderHeight = 0;
             for (int i = 0, count = getChildCount(); i < count; i++) {
                 View child = getChildAt(i);
                 int childHeight = i >= mStickyHeaderBeginIndex ? child.getHeight() : 0;
-                fixedHeaderHeight += childHeight;
+                stickyHeaderHeight += childHeight;
             }
-            return fixedHeaderHeight;
+            return stickyHeaderHeight;
         }
         return 0;
     }
 
 
-    private void notifyFixedHeightChange() {
+    private void notifyStickyHeightChange() {
         NestedScrollView nestedScrollView = getParentNestedScrollView();
         if (nestedScrollView != null) {
             post(nestedScrollView::requestLayout);

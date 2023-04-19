@@ -60,6 +60,6 @@ const App = () => {
 
 ### NestedScrollViewHeader
 
-`NestedScrollViewHeader` 可以通过 `stickyHeaderBeginIndex` 或者 `fixedHeight` 属性来设置 sticky 效果。
+`NestedScrollViewHeader` 可以通过 `stickyHeaderBeginIndex` 或者 `stickyHeight` 属性来设置 sticky 效果。
 
 此外，`NestedScrollViewHeader` 可以通过 `onScroll` 回调函数来实现头部视图的视差效果。

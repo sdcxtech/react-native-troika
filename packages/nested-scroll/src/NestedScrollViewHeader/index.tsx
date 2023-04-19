@@ -8,7 +8,7 @@ interface NestedScrollEventData {
 export type NestedScrollEvent = NativeSyntheticEvent<NestedScrollEventData>
 
 export interface NestedScrollViewHeaderProps extends ViewProps {
-  fixedHeight?: number
+  stickyHeight?: number
   stickyHeaderBeginIndex?: number
   onScroll?: (event: NestedScrollEvent) => void
 }

@@ -82,7 +82,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
                     View child = viewGroup.getChildAt(i);
                     if (child instanceof NestedScrollViewHeader) {
-                        headerFixedHeight = ((NestedScrollViewHeader) child).getFixedHeight();
+                        headerFixedHeight = ((NestedScrollViewHeader) child).getStickyHeight();
                         headerHeight = child.getHeight();
                     }
                 }

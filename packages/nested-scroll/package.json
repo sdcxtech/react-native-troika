@@ -1,6 +1,6 @@
 {
   "name": "@sdcx/nested-scroll",
-  "description": "A react-native library for nested scroll view",
+  "description": "A react-native NestedScrollView component.",
   "version": "0.1.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -16,9 +16,8 @@
     "!ios/build",
     "!**/__tests__"
   ],
-  "repository": "https://github.com/github-account/nested-scroll",
-  "homepage": "https://github.com/github-account/nested-scroll#readme",
-  "author": "author-name <author-email@gmail.com> (https://github.com/github-account)",
+  "repository": "https://github.com/sdcxtech/react-native-troika",
+  "homepage": "https://github.com/sdcxtech/react-native-troika#readme",
   "license": "MIT",
   "keywords": [
     "react-native",

@@ -1,6 +1,6 @@
 {
   "name": "@sdcx/bottom-sheet",
-  "description": "A react-native bottom sheet component",
+  "description": "A react-native BottomSheet component.",
   "version": "0.1.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -16,9 +16,8 @@
     "!ios/build",
     "!**/__tests__"
   ],
-  "repository": "https://github.com/github-account/bottom-sheet",
-  "homepage": "https://github.com/github-account/bottom-sheet#readme",
-  "author": "author-name <author-email@gmail.com> (https://github.com/github-account)",
+  "repository": "https://github.com/sdcxtech/react-native-troika",
+  "homepage": "https://github.com/sdcxtech/react-native-troika#readme",
   "license": "MIT",
   "keywords": [
     "react-native",

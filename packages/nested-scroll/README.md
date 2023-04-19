@@ -46,7 +46,7 @@ const App = () => {
 }
 ```
 
-> Android 是基于 NestedScrolling API 实现的，因此，记得为最里层的可滚动视图设置 `nestedScrollEnabled` 属性。
+> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的，因此，记得为最里层的可滚动视图设置 `nestedScrollEnabled` 属性。
 
 ## API
 

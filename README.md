@@ -1,25 +1,9 @@
-# native-uikit
+# React Native 嵌套滚动三件套
 
-Native UI Lib for React Native.
+本库包含如下原生组件
 
-【开发中】
+[NestedScrollView](./packages/nested-scroll/README.md)
 
-包含以下组件：
+[PullToRefresh](./packages/pull-to-refresh/README.md)
 
-- NestedScrollView
-
-- PullToRefresh
-
-## 可能存在的问题
-
-### NestedScrollView
-
-- 没有适配 inverted 列表
-
-### PullToRefresh
-
-- 和 WebView 滑动有冲突
-
-## 需要验证的功能
-
-- 下拉刷新和 inverted 列表一起工作
+[BottomSheet](./packages/bottom-sheet/README.md)

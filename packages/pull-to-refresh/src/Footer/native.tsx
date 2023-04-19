@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, requireNativeComponent, ViewProps } from 'react-native'
+import { requireNativeComponent, ViewProps } from 'react-native'
 import { PullToRefreshOffsetChangedEvent, PullToRefreshStateChangedEvent } from '../types'
 
 interface NativePullToRefreshFooterProps extends ViewProps {
@@ -11,9 +11,7 @@ interface NativePullToRefreshFooterProps extends ViewProps {
   manual?: boolean
 }
 
-const NativePullToRefreshFooter = requireNativeComponent<NativePullToRefreshFooterProps>(
-  Platform.OS === 'ios' ? 'RefreshFooter' : 'SPullRefreshFooter',
-)
+const NativePullToRefreshFooter = requireNativeComponent<NativePullToRefreshFooterProps>('RefreshFooter')
 
 type NativePullToRefreshFooterInstance = InstanceType<typeof NativePullToRefreshFooter>
 

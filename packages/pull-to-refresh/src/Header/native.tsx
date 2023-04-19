@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, requireNativeComponent, ViewProps } from 'react-native'
+import { requireNativeComponent, ViewProps } from 'react-native'
 import { PullToRefreshOffsetChangedEvent, PullToRefreshStateChangedEvent } from '../types'
 
 interface NativePullToRefreshHeaderProps extends ViewProps {
@@ -9,9 +9,7 @@ interface NativePullToRefreshHeaderProps extends ViewProps {
   refreshing: boolean
 }
 
-const NativePullToRefreshHeader = requireNativeComponent<NativePullToRefreshHeaderProps>(
-  Platform.OS === 'ios' ? 'RefreshHeader' : 'SPullRefreshHeader',
-)
+const NativePullToRefreshHeader = requireNativeComponent<NativePullToRefreshHeaderProps>('RefreshHeader')
 
 type NativePullToRefreshHeaderInstance = InstanceType<typeof NativePullToRefreshHeader>
 

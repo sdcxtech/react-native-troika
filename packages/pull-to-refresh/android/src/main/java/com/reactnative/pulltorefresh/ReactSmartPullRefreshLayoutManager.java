@@ -1,8 +1,6 @@
 package com.reactnative.pulltorefresh;
 
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
@@ -14,8 +12,7 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import java.util.HashMap;
 
 public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSmartPullRefreshLayout> {
-    public final static String REACT_CLASS = "SPullRefreshLayout";
-    String TAG = REACT_CLASS;
+    public final static String REACT_CLASS = "PullToRefresh";
 
     @NonNull
     @Override
@@ -27,6 +24,11 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
     @Override
     protected ReactSmartPullRefreshLayout createViewInstance(@NonNull ThemedReactContext reactContext) {
         ReactSmartPullRefreshLayout reactSmartPullRefreshLayout = new ReactSmartPullRefreshLayout(reactContext);
+        float dragRate = 0.8f;
+        float maxDragRate = 9.99f;
+        reactSmartPullRefreshLayout.setDragRate(dragRate);
+        reactSmartPullRefreshLayout.setHeaderMaxDragRate(maxDragRate);
+        reactSmartPullRefreshLayout.setFooterMaxDragRate(maxDragRate);
         reactSmartPullRefreshLayout.setEnableOverScrollBounce(false);
         return reactSmartPullRefreshLayout;
     }
@@ -37,7 +39,7 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
      * 导致removeViewAt无法正确销毁特定子View
      * 此处记录View原始位置
      */
-    HashMap<Integer, View> childMap = new HashMap<>();
+    HashMap<Integer, View> reactChildMap = new HashMap<>();
 
     @Override
     public void addView(ReactSmartPullRefreshLayout parent, View child, int index) {
@@ -48,25 +50,18 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
         } else {
             parent.setRefreshContent(child);
         }
-        childMap.put(index, child);
+        reactChildMap.put(index, child);
     }
 
     @Override
     public void removeViewAt(ReactSmartPullRefreshLayout parent, int index) {
-        View view = childMap.get(index);
+        View view = reactChildMap.get(index);
         for (int i = 0; i < parent.getChildCount(); i++) {
             if (view == parent.getChildAt(i)) {
                 super.removeViewAt(parent, i);
                 break;
             }
         }
+        reactChildMap.remove(index);
     }
-
-    void printViewGroupChild(ViewGroup viewGroup, String stage) {
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            View child = viewGroup.getChildAt(i);
-            Log.d(TAG, stage + "  printViewGroupChild: " + "index:" + i + "  name:" + child.getClass().getSimpleName());
-        }
-    }
-
 }

@@ -3,7 +3,10 @@ package com.reactnative.pulltorefresh;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -18,7 +21,7 @@ import java.util.Map;
 
 
 public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
-    public final static String REACT_CLASS = "SPullRefreshFooter";
+    public final static String REACT_CLASS = "RefreshFooter";
 
     @NonNull
     @Override
@@ -32,18 +35,29 @@ public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
         return new ReactSmartPullRefreshFooter(context);
     }
 
+    @Override
+    public LayoutShadowNode createShadowNodeInstance() {
+        return new ReactSmartPullRefreshFooterShadowNode();
+    }
+
+    @Override
+    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
+        return ReactSmartPullRefreshFooterShadowNode.class;
+    }
+
     @ReactProp(name = "refreshing")
     public void setRefreshing(ReactSmartPullRefreshFooter footer, boolean refreshing) {
-        if (refreshing) {
-            footer.beginLoadMore();
-        } else {
-            footer.finishLoadMore();
-        }
+        footer.setLoadingMore(refreshing);
     }
 
     @ReactProp(name = "noMoreData")
     public void setNoMoreData(ReactSmartPullRefreshFooter footer, boolean noMoreData) {
         footer.setNoMoreData(noMoreData);
+    }
+
+    @ReactProp(name = "manual")
+    public void setManual(ReactSmartPullRefreshFooter footer, boolean manual) {
+        footer.setAutoLoadMore(!manual);
     }
 
     @Nullable
@@ -54,6 +68,18 @@ public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
                 .put(StateChangedEvent.Name, MapBuilder.of("registrationName", StateChangedEvent.JSEventName))
                 .put(OffsetChangedEvent.Name, MapBuilder.of("registrationName", OffsetChangedEvent.JSEventName))
                 .build();
+    }
+
+    @Override
+    public void receiveCommand(ReactViewGroup root, String commandId, @Nullable ReadableArray args) {
+        if (root instanceof ReactSmartPullRefreshFooter) {
+            ReactSmartPullRefreshFooter footer = (ReactSmartPullRefreshFooter) root;
+            if ("setNativeRefreshing".equals(commandId)) {
+                if (args != null && args.getType(0) == ReadableType.Boolean) {
+                    footer.setLoadingMore(args.getBoolean(0));
+                }
+            }
+        }
     }
 
     @Override

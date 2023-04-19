@@ -2,13 +2,11 @@ package com.reactnative.pulltorefresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
 public class ReactSmartPullRefreshLayout extends SmartRefreshLayout {
-    String TAG = "SmartPullRefreshLayout";
 
     public ReactSmartPullRefreshLayout(Context context) {
         super(context);
@@ -30,5 +28,4 @@ public class ReactSmartPullRefreshLayout extends SmartRefreshLayout {
         super.requestLayout();
         post(measureAndLayout);
     }
-
 }

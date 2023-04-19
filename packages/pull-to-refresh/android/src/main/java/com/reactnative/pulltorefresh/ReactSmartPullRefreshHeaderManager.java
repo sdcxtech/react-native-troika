@@ -3,7 +3,10 @@ package com.reactnative.pulltorefresh;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -18,7 +21,7 @@ import java.util.Map;
 
 
 public class ReactSmartPullRefreshHeaderManager extends ReactViewManager {
-    public final static String REACT_CLASS = "SPullRefreshHeader";
+    public final static String REACT_CLASS = "RefreshHeader";
 
     @NonNull
     @Override
@@ -32,13 +35,19 @@ public class ReactSmartPullRefreshHeaderManager extends ReactViewManager {
         return new ReactSmartPullRefreshHeader(context);
     }
 
+    @Override
+    public LayoutShadowNode createShadowNodeInstance() {
+        return new ReactSmartPullRefreshHeaderShadowNode();
+    }
+
+    @Override
+    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
+        return ReactSmartPullRefreshHeaderShadowNode.class;
+    }
+
     @ReactProp(name = "refreshing")
     public void setRefreshing(ReactSmartPullRefreshHeader reactSmartPullRefreshHeader, boolean refreshing) {
-        if (refreshing) {
-            reactSmartPullRefreshHeader.beginRefresh();
-        } else {
-            reactSmartPullRefreshHeader.finishRefresh();
-        }
+        reactSmartPullRefreshHeader.setRefreshing(refreshing);
     }
 
     @Nullable
@@ -49,6 +58,18 @@ public class ReactSmartPullRefreshHeaderManager extends ReactViewManager {
                 .put(StateChangedEvent.Name, MapBuilder.of("registrationName", StateChangedEvent.JSEventName))
                 .put(OffsetChangedEvent.Name, MapBuilder.of("registrationName", OffsetChangedEvent.JSEventName))
                 .build();
+    }
+
+    @Override
+    public void receiveCommand(ReactViewGroup root, String commandId, @Nullable ReadableArray args) {
+        if (root instanceof ReactSmartPullRefreshHeader) {
+            ReactSmartPullRefreshHeader header = (ReactSmartPullRefreshHeader) root;
+            if ("setNativeRefreshing".equals(commandId)) {
+                if (args != null && args.getType(0) == ReadableType.Boolean) {
+                    header.setRefreshing(args.getBoolean(0));
+                }
+            }
+        }
     }
 
     @Override

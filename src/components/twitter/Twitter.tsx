@@ -5,7 +5,7 @@ import { BlankAreaEventHandler, FlashList } from '@shopify/flash-list'
 import TweetCell from './TweetCell'
 import { tweets as tweetsData } from './data/tweets'
 import Tweet from './models/Tweet'
-import { Refreshcontrol } from '@sdcx/pull-to-refresh'
+import { RefreshControl } from '@sdcx/pull-to-refresh'
 
 export interface TwitterProps {
   instance?: React.RefObject<FlashList<Tweet>>
@@ -48,7 +48,7 @@ const Twitter = ({
       ListHeaderComponent={Header}
       ListHeaderComponentStyle={{ backgroundColor: '#ccc' }}
       refreshControl={
-        <Refreshcontrol
+        <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
             setRefreshing(true)

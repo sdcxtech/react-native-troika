@@ -536,12 +536,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: c3b8a3245267a3849b0c7cb91a37606bf5f3aa65
   React-runtimeexecutor: 434efc9e5b6d0f14f49867f130b39376c971c1aa
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
-  RNBottomSheet: 51d6df0ed90f98e6d52ade7f5b59935841f59d6e
+  RNBottomSheet: fcd438f47bcc0be4059e9a1cc7a327f0efece37c
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNKeyboardInsets: b4e8f3235eca5e2ee17c92459ef350941704d62b
-  RNNestedScrollView: ee652ec2a51c96e3e05a90719c6837a45b32997c
-  RNPullToRefresh: 8be0e96da0e5a3ebcbf024854de53e47be28d9ee
+  RNNestedScrollView: 2d1df8dea389eff73a655b9866df245d20dd1748
+  RNPullToRefresh: b33b8ffc5d6a8933990ef20216d1c48fa5a7297c
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
   RNReanimated: 7c2244798c6a597436f7692cef2fbf91b8358991
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315

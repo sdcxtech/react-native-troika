@@ -18,6 +18,7 @@
   ],
   "repository": "https://github.com/sdcxtech/react-native-troika",
   "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/nested-scroll/README.md",
+  "author": "sdcx",
   "license": "MIT",
   "keywords": [
     "react-native",

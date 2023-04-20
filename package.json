@@ -29,10 +29,10 @@
     "react-native-svg": "^13.9.0",
     "react-native-tab-view": "^3.5.1",
     "react-native-webview": "^11.16.0",
-    "@sdcx/bottom-sheet": "0.1.0",
-    "@sdcx/nested-scroll": "0.1.0",
-    "@sdcx/nested-scroll-webview": "0.1.0",
-    "@sdcx/pull-to-refresh": "0.1.0"
+    "@sdcx/bottom-sheet": "*",
+    "@sdcx/nested-scroll": "*",
+    "@sdcx/nested-scroll-webview": "*",
+    "@sdcx/pull-to-refresh": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

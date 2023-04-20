@@ -1,14 +1,13 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Animated, Image, StyleSheet } from 'react-native'
+import { withNavigationItem } from 'hybrid-navigation'
 import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
+import { PullToRefresh } from '@sdcx/pull-to-refresh'
 import PagerView from 'react-native-pager-view'
-import { ScrollViewPage } from '../components/ScrollViewPage'
-import { WebViewPage } from '../components/WebViewPage'
 import TabBar from '../components/TabBar'
 import usePagerView from '../components/usePagerView'
-import { useDemoFlatlistData } from '../components/FlatListPage'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { ScrollViewPage } from '../components/ScrollViewPage'
+import { WebViewPage } from '../components/WebViewPage'
 import Contacts from '../components/contacts/Contacts'
 import ContactsSectionList from '../components/contacts/ContactsSectionList'
 
@@ -18,9 +17,6 @@ const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView']
 
 export function PullRefreshNestedScrollPagerView() {
   const [refreshing, setRefreshing] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const { addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
-  const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const {
     pagerRef,
@@ -34,45 +30,15 @@ export function PullRefreshNestedScrollPagerView() {
     onPageScrollStateChanged,
   } = usePagerView()
 
-  const clearPendingAction = () => {
-    if (pendingAction.current) {
-      clearTimeout(pendingAction.current)
-    }
-  }
-
   const beginRefresh = async () => {
     setRefreshing(true)
-    pendingAction.current = setTimeout(() => {
-      addFlatlistRefreshItem()
-      endRefresh()
-    }, 1500)
-  }
-
-  const endRefresh = () => {
-    clearPendingAction()
-    setRefreshing(false)
-  }
-
-  const loadMore = () => {
-    setLoadingMore(true)
-    pendingAction.current = setTimeout(() => {
-      addFlatlistLoadMoreItem()
-      endLoadMore()
-    }, 1500)
-  }
-
-  const endLoadMore = () => {
-    clearPendingAction()
-    setLoadingMore(false)
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 2000)
   }
 
   return (
-    <PullToRefresh
-      style={{ flex: 1 }}
-      refreshing={refreshing}
-      loadingMore={loadingMore}
-      onRefresh={beginRefresh}
-      onLoadMore={loadMore}>
+    <PullToRefresh style={{ flex: 1 }} refreshing={refreshing} onRefresh={beginRefresh}>
       <NestedScrollView style={styles.coordinator}>
         <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
           <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />

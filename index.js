@@ -26,6 +26,7 @@ Navigation.setDefaultOptions({
   statusBarColorAndroid: Platform.Version > 21 ? undefined : '#4A4A4A',
   scrimAlphaAndroid: 100,
   fitsOpaqueNavigationBarAndroid: true,
+  swipeBackEnabledAndroid: true,
 })
 
 // 重要必须

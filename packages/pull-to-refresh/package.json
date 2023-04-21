@@ -22,7 +22,8 @@
   "license": "MIT",
   "keywords": [
     "react-native",
-    "pull-to-refresh"
+    "pull-to-refresh",
+    "refresh-control"
   ],
   "scripts": {
     "build": "rm -rf ./lib && tsc -p tsconfig.build.json",

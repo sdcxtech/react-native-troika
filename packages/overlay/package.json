@@ -21,7 +21,8 @@
   "author": "sdcx",
   "license": "MIT",
   "keywords": [
-    "react-native"
+    "react-native",
+    "overlay"
   ],
   "scripts": {
     "build": "rm -rf ./lib && tsc -p tsconfig.build.json",

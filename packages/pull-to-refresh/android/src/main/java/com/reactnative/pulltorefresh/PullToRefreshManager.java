@@ -24,11 +24,6 @@ public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
     @Override
     protected PullToRefresh createViewInstance(@NonNull ThemedReactContext reactContext) {
         PullToRefresh pullToRefresh = new PullToRefresh(reactContext);
-        float dragRate = 0.8f;
-        float maxDragRate = 9.99f;
-        pullToRefresh.setDragRate(dragRate);
-        pullToRefresh.setHeaderMaxDragRate(maxDragRate);
-        pullToRefresh.setFooterMaxDragRate(maxDragRate);
         pullToRefresh.setEnableOverScrollBounce(false);
         return pullToRefresh;
     }

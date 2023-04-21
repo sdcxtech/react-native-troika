@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
 import { FlatListPage, useDemoFlatlistData } from '../components/FlatListPage'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { LottiePullToRefreshFooter } from '../PullToRefresh/LottiePullToRefreshFooter'
 
 export function PullRefreshFlatListNestedScroll() {
   const [refreshing, setRefreshing] = useState(false)
@@ -48,8 +49,7 @@ export function PullRefreshFlatListNestedScroll() {
       style={{ flex: 1 }}
       refreshing={refreshing}
       onRefresh={beginRefresh}
-      loadingMore={loadingMore}
-      onLoadMore={loadMore}>
+      footer={<LottiePullToRefreshFooter manual refreshing={loadingMore} onRefresh={loadMore} />}>
       <NestedScrollView style={styles.coordinator}>
         <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
           <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />

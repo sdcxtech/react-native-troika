@@ -8,7 +8,7 @@
 
 - 支持自定义下拉刷新
 - 支持全局设置下拉刷新的样式
-- 支持 `WebView`、`NestedScrollView`
+- 支持 `WebView`、[NestedScrollView](../nested-scroll/README.md)
 - 支持上拉加载更多
 
 ## Installation
@@ -37,6 +37,7 @@ function App() {
         }, 2000)
       }}>
       <FlatList
+        nestedScrollEnabled
         data={Array.from({ length: 20 })}
         renderItem={({ item, index }) => <Text>{index}</Text>}
         keyExtractor={(item, index) => index.toString()}
@@ -56,6 +57,7 @@ function App() {
 
   return (
     <FlatList
+      nestedScrollEnabled
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -75,9 +77,11 @@ function App() {
 }
 ```
 
+> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的，请记得为你的可滚动列表打开 `nestedScrollEnabled` 属性。
+
 这两种使用方式在效果上并无不同。
 
-此外，`PullToRefresh` 支持上拉加载更多，以及所有可滚动列表，譬如 `WebView`，`NestedScrollView`。
+此外，`PullToRefresh` 支持上拉加载更多，以及所有可滚动视图，譬如 `WebView`，`NestedScrollView`。
 
 ### 自定义下拉刷新
 
@@ -167,6 +171,7 @@ function App() {
         />
       }>
       <FlatList
+        nestedScrollEnabled
         data={Array.from({ length: 20 })}
         renderItem={({ item, index }) => <Text>{index}</Text>}
         keyExtractor={(item, index) => index.toString()}
@@ -176,9 +181,12 @@ function App() {
 }
 ```
 
+### 自定义 `RefreshControl`
+
 当然，如果你不喜欢包裹 `PullToRefresh`，也可以自定义 `RefreshControl`
 
 ```tsx
+import { RefreshControlProps } from 'react-native'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
 export function LocalRefreshControl(props: RefreshControlProps) {
@@ -197,6 +205,7 @@ function App() {
 
   return (
     <FlatList
+      nestedScrollEnabled
       refreshControl={
         <LocalRefreshControl
           refreshing={refreshing}
@@ -216,17 +225,15 @@ function App() {
 }
 ```
 
-### 触底加载更多
+### 上拉加载更多
 
-加载更多有两种方式，一种方式是列表自身提供的触底加载更多，通过 `onEndReached` 属性实现。另一种方式是经典的上拉加载更多，通过 `PullToRefresh` 提供的 `onLoadMore` 属性实现。
+加载更多有两种方式，一种方式是列表自身提供的**触底加载**更多，通过 `onEndReached` 属性实现。另一种方式是经典的**上拉加载**更多，通过 `PullToRefresh` 提供的 `onLoadMore` 属性实现。
 
 大多数情况下，使用 `onEndReached` 或许是较好的选择。
 
-### 上拉加载更多
-
 如果你的 App 更倾向于上拉加载更多，那么你可以使用 `PullToRefresh` 的 `onLoadMore` 属性。
 
-上拉加载更多有两种模式，一种是像下拉刷新那样，释放后加载更多，另一种是上拉一定距离后自动加载更多。
+上拉加载有两种模式，一种是手动模式，像下拉刷新那样，释放后加载更多；另一种是自动模式，上拉一定距离后自动加载更多。
 
 你需要根据 App 的设计偏好来选择合适的模式。
 
@@ -247,6 +254,7 @@ function App() {
   return (
     <PullToRefresh loadingMore={loadingMore} onLoadMore={loadMore} noMoreData={noMoreData}>
       <FlatList
+        nestedScrollEnabled
         data={Array.from({ length: 20 })}
         renderItem={({ item, index }) => <Text>{index}</Text>}
         keyExtractor={(item, index) => index.toString()}
@@ -292,7 +300,7 @@ export function CustomPullToRefreshFooter(props: PullToRefreshFooterProps) {
   return (
     <PullToRefreshFooter
       style={styles.container}
-      manual
+      manual={true /* 设置模式为手动 */}
       onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
@@ -309,7 +317,7 @@ export function CustomPullToRefreshFooter(props: PullToRefreshFooterProps) {
 ```tsx
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
-PullToRefresh.setDefaultFooter(PullToRefreshFooter)
+PullToRefresh.setDefaultFooter(CustomPullToRefreshFooter)
 ```
 
 当然，也可以通过 `PullToRefresh` 的 `footer` 属性来为特定页面设置特定的上拉加载更多样式。
@@ -334,6 +342,7 @@ function App() {
         />
       }>
       <FlatList
+        nestedScrollEnabled
         data={Array.from({ length: 20 })}
         renderItem={({ item, index }) => <Text>{index}</Text>}
         keyExtractor={(item, index) => index.toString()}
@@ -343,11 +352,12 @@ function App() {
 }
 ```
 
-### 使用 `refreshControl` 来实现加载更多
+### 自定义 `RefreshControl` 来实现加载更多
 
 如果你钟爱 `refreshControl`, 那么也可以定义一个 `LoadMoreRefreshControl`
 
 ```tsx
+import { RefreshControlProps } from 'react-native'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
 export function LoadMoreRefreshControl(props: RefreshControlProps) {
@@ -366,6 +376,7 @@ function App() {
 
   return (
     <FlatList
+      nestedScrollEnabled
       refreshControl={
         <LoadMoreRefreshControl
           refreshing={loadingMore}

@@ -11,25 +11,28 @@ import {
 } from '@sdcx/pull-to-refresh'
 
 function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
-  const { onRefresh, refreshing, noMoreData } = props
+  const { onRefresh, refreshing, noMoreData, manual } = props
   const lottieRef = useRef<Lottie>(null)
 
-  const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
-    const state = event.nativeEvent.state
-    if (state === PullToRefreshStateIdle) {
-      lottieRef.current?.pause()
-      lottieRef.current?.reset()
-    } else if (state === PullToRefreshStateRefreshing) {
-      lottieRef.current?.play()
-    } else {
-      HapticFeedback.trigger('impactLight')
-    }
-  }, [])
+  const onStateChanged = useCallback(
+    (event: PullToRefreshStateChangedEvent) => {
+      const state = event.nativeEvent.state
+      if (state === PullToRefreshStateIdle) {
+        lottieRef.current?.pause()
+        lottieRef.current?.reset()
+      } else if (state === PullToRefreshStateRefreshing) {
+        lottieRef.current?.play()
+      } else {
+        !!manual && HapticFeedback.trigger('impactLight')
+      }
+    },
+    [manual],
+  )
 
   return (
     <PullToRefreshFooter
       style={styles.footer}
-      manual
+      manual={!!manual}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
       refreshing={refreshing}

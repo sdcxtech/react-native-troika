@@ -9,8 +9,8 @@
 }
 
 - (CGFloat)maxScrollRange {
-    if (self.fixedHeight > 0) {
-        return fmax(self.frame.size.height - self.fixedHeight, 0);
+    if (self.stickyHeight > 0) {
+        return fmax(self.frame.size.height - self.stickyHeight, 0);
     }
     
     if (self.stickyHeaderBeginIndex > 0 && self.stickyHeaderBeginIndex < self.subviews.count) {
@@ -29,7 +29,7 @@
 }
 
 -(void)didSetProps:(NSArray<NSString *> *)props {
-    if ([props containsObject:@"fixedHeight"] || [props containsObject:@"stickyHeaderBeginIndex"]) {
+    if ([props containsObject:@"stickyHeight"] || [props containsObject:@"stickyHeaderBeginIndex"]) {
         [self notityContentSizeChanged];
     }
 }

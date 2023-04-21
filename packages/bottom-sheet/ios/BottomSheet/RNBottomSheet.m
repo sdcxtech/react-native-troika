@@ -232,7 +232,7 @@
 }
 
 - (void)setState:(NSString *)state {
-    if ([_state isEqualToString:@"state"]) {
+    if ([_state isEqualToString:state]) {
         return;
     }
 

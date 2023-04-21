@@ -30,9 +30,9 @@ public class NestedScrollViewHeaderManager extends ReactViewManager {
         return new NestedScrollViewHeader(context);
     }
 
-    @ReactProp(name = "fixedHeight", defaultInt = NestedScrollViewHeader.INVALID_FIXED_HEIGHT)
-    public void setFixedHeight(NestedScrollViewHeader view, int fixedHeight) {
-        view.setFixedHeight((int) PixelUtil.toPixelFromDIP(fixedHeight));
+    @ReactProp(name = "stickyHeight", defaultInt = NestedScrollViewHeader.INVALID_STICKY_HEIGHT)
+    public void setFixedHeight(NestedScrollViewHeader view, int stickyHeight) {
+        view.setStickyHeight((int) PixelUtil.toPixelFromDIP(stickyHeight));
     }
 
     @ReactProp(name = "stickyHeaderBeginIndex", defaultInt = NestedScrollViewHeader.INVALID_STICKY_BEGIN_INDEX)

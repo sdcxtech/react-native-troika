@@ -41,7 +41,7 @@ export function ParallaxHeader(props: PropsWithChildren<ParallaxHeaderProps>) {
   const width = useWindowDimensions().width
 
   return (
-    <NestedScrollViewHeaderAnimated fixedHeight={topBarHeight} onScroll={onScroll}>
+    <NestedScrollViewHeaderAnimated stickyHeight={topBarHeight} onScroll={onScroll}>
       <View
         style={[
           styles.imgContainer,

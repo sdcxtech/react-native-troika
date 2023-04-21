@@ -30,6 +30,7 @@ export interface PullToRefreshFooterProps {
   onRefresh?: () => void
   refreshing: boolean
   noMoreData?: boolean
+  manual?: boolean
 }
 
 export interface PullToRefreshProps extends ViewProps {

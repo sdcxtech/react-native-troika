@@ -2,6 +2,6 @@ package com.reactnative.pulltorefresh;
 
 import android.graphics.Rect;
 
-public class ReactSmartPullRefreshFooterLocalData {
+public class PullToRefreshHeaderLocalData {
     Rect viewRect = new Rect();
 }

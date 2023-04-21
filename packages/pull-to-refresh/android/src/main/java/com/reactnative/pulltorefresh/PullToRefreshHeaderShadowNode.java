@@ -5,13 +5,13 @@ import com.facebook.react.uimanager.NativeViewHierarchyOptimizer;
 import com.facebook.yoga.YogaEdge;
 import com.facebook.yoga.YogaPositionType;
 
-public class ReactSmartPullRefreshFooterShadowNode extends LayoutShadowNode {
+public class PullToRefreshHeaderShadowNode extends LayoutShadowNode {
     @Override
     public void setLocalData(Object data) {
         super.setLocalData(data);
-        if (data instanceof ReactSmartPullRefreshFooterLocalData) {
-            ReactSmartPullRefreshFooterLocalData footerLocalData = (ReactSmartPullRefreshFooterLocalData) data;
-            setStyleHeight(footerLocalData.viewRect.bottom - footerLocalData.viewRect.top);
+        if (data instanceof PullToRefreshHeaderLocalData) {
+            PullToRefreshHeaderLocalData headerLocalData = (PullToRefreshHeaderLocalData) data;
+            setStyleHeight(headerLocalData.viewRect.bottom - headerLocalData.viewRect.top);
             calculateLayout();
         }
     }
@@ -21,6 +21,6 @@ public class ReactSmartPullRefreshFooterShadowNode extends LayoutShadowNode {
         setPositionType(YogaPositionType.ABSOLUTE);
         setPosition(YogaEdge.LEFT.intValue(), 0);
         setPosition(YogaEdge.RIGHT.intValue(), 0);
-        setPosition(YogaEdge.BOTTOM.intValue(), -getLayoutHeight());
+        setPosition(YogaEdge.TOP.intValue(), -getLayoutHeight());
     }
 }

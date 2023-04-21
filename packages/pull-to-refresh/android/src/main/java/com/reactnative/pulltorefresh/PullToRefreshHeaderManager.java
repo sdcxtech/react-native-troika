@@ -20,8 +20,8 @@ import com.reactnative.pulltorefresh.event.StateChangedEvent;
 import java.util.Map;
 
 
-public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
-    public final static String REACT_CLASS = "RefreshFooter";
+public class PullToRefreshHeaderManager extends ReactViewManager {
+    public final static String REACT_CLASS = "RefreshHeader";
 
     @NonNull
     @Override
@@ -32,32 +32,22 @@ public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
     @NonNull
     @Override
     public ReactViewGroup createViewInstance(ThemedReactContext context) {
-        return new ReactSmartPullRefreshFooter(context);
+        return new PullToRefreshHeader(context);
     }
 
     @Override
     public LayoutShadowNode createShadowNodeInstance() {
-        return new ReactSmartPullRefreshFooterShadowNode();
+        return new PullToRefreshHeaderShadowNode();
     }
 
     @Override
     public Class<? extends LayoutShadowNode> getShadowNodeClass() {
-        return ReactSmartPullRefreshFooterShadowNode.class;
+        return PullToRefreshHeaderShadowNode.class;
     }
 
     @ReactProp(name = "refreshing")
-    public void setRefreshing(ReactSmartPullRefreshFooter footer, boolean refreshing) {
-        footer.setLoadingMore(refreshing);
-    }
-
-    @ReactProp(name = "noMoreData")
-    public void setNoMoreData(ReactSmartPullRefreshFooter footer, boolean noMoreData) {
-        footer.setNoMoreData(noMoreData);
-    }
-
-    @ReactProp(name = "manual")
-    public void setManual(ReactSmartPullRefreshFooter footer, boolean manual) {
-        footer.setAutoLoadMore(!manual);
+    public void setRefreshing(PullToRefreshHeader pullToRefreshHeader, boolean refreshing) {
+        pullToRefreshHeader.setRefreshing(refreshing);
     }
 
     @Nullable
@@ -72,11 +62,11 @@ public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
 
     @Override
     public void receiveCommand(ReactViewGroup root, String commandId, @Nullable ReadableArray args) {
-        if (root instanceof ReactSmartPullRefreshFooter) {
-            ReactSmartPullRefreshFooter footer = (ReactSmartPullRefreshFooter) root;
+        if (root instanceof PullToRefreshHeader) {
+            PullToRefreshHeader header = (PullToRefreshHeader) root;
             if ("setNativeRefreshing".equals(commandId)) {
                 if (args != null && args.getType(0) == ReadableType.Boolean) {
-                    footer.setLoadingMore(args.getBoolean(0));
+                    header.setRefreshing(args.getBoolean(0));
                 }
             }
         }
@@ -85,11 +75,11 @@ public class ReactSmartPullRefreshFooterManager extends ReactViewManager {
     @Override
     protected void addEventEmitters(@NonNull ThemedReactContext reactContext, @NonNull ReactViewGroup view) {
         super.addEventEmitters(reactContext, view);
-        if (view instanceof ReactSmartPullRefreshFooter) {
-            ReactSmartPullRefreshFooter reactSmartPullRefreshFooter = ((ReactSmartPullRefreshFooter) view);
+        if (view instanceof PullToRefreshHeader) {
+            PullToRefreshHeader pullToRefreshHeader = ((PullToRefreshHeader) view);
             int surfaceId = UIManagerHelper.getSurfaceId(reactContext);
             int viewId = view.getId();
-            reactSmartPullRefreshFooter.setOnRefreshHeaderChangeListener(new OnRefreshChangeListener() {
+            pullToRefreshHeader.setOnRefreshHeaderChangeListener(new OnRefreshChangeListener() {
                 @Override
                 public void onRefresh() {
                     if (reactContext.hasActiveReactInstance()) {

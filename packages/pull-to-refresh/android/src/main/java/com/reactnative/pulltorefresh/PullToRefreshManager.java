@@ -11,7 +11,7 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader;
 
 import java.util.HashMap;
 
-public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSmartPullRefreshLayout> {
+public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
     public final static String REACT_CLASS = "PullToRefresh";
 
     @NonNull
@@ -22,15 +22,15 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
 
     @NonNull
     @Override
-    protected ReactSmartPullRefreshLayout createViewInstance(@NonNull ThemedReactContext reactContext) {
-        ReactSmartPullRefreshLayout reactSmartPullRefreshLayout = new ReactSmartPullRefreshLayout(reactContext);
+    protected PullToRefresh createViewInstance(@NonNull ThemedReactContext reactContext) {
+        PullToRefresh pullToRefresh = new PullToRefresh(reactContext);
         float dragRate = 0.8f;
         float maxDragRate = 9.99f;
-        reactSmartPullRefreshLayout.setDragRate(dragRate);
-        reactSmartPullRefreshLayout.setHeaderMaxDragRate(maxDragRate);
-        reactSmartPullRefreshLayout.setFooterMaxDragRate(maxDragRate);
-        reactSmartPullRefreshLayout.setEnableOverScrollBounce(false);
-        return reactSmartPullRefreshLayout;
+        pullToRefresh.setDragRate(dragRate);
+        pullToRefresh.setHeaderMaxDragRate(maxDragRate);
+        pullToRefresh.setFooterMaxDragRate(maxDragRate);
+        pullToRefresh.setEnableOverScrollBounce(false);
+        return pullToRefresh;
     }
 
     /**
@@ -42,10 +42,10 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
     HashMap<Integer, View> reactChildMap = new HashMap<>();
 
     @Override
-    public void addView(ReactSmartPullRefreshLayout parent, View child, int index) {
-        if (child instanceof ReactSmartPullRefreshHeader) {
+    public void addView(PullToRefresh parent, View child, int index) {
+        if (child instanceof PullToRefreshHeader) {
             parent.setRefreshHeader((RefreshHeader) child);
-        } else if (child instanceof ReactSmartPullRefreshFooter) {
+        } else if (child instanceof PullToRefreshFooter) {
             parent.setRefreshFooter((RefreshFooter) child);
         } else {
             parent.setRefreshContent(child);
@@ -54,7 +54,7 @@ public class ReactSmartPullRefreshLayoutManager extends ViewGroupManager<ReactSm
     }
 
     @Override
-    public void removeViewAt(ReactSmartPullRefreshLayout parent, int index) {
+    public void removeViewAt(PullToRefresh parent, int index) {
         View view = reactChildMap.get(index);
         for (int i = 0; i < parent.getChildCount(); i++) {
             if (view == parent.getChildAt(i)) {

@@ -6,13 +6,13 @@ import android.view.View;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
-public class ReactSmartPullRefreshLayout extends SmartRefreshLayout {
+public class PullToRefresh extends SmartRefreshLayout {
 
-    public ReactSmartPullRefreshLayout(Context context) {
+    public PullToRefresh(Context context) {
         super(context);
     }
 
-    public ReactSmartPullRefreshLayout(Context context, AttributeSet attrs) {
+    public PullToRefresh(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

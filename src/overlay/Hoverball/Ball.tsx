@@ -31,9 +31,18 @@ export default function Ball({
   const x = useSharedValue(anchor.x)
   const y = useSharedValue(anchor.y)
 
-  const ballStyles = useAnimatedStyle(() => {
+  const shadowStyles = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: transf.value.x }, { translateY: transf.value.y }],
+      width: anchor.size,
+      height: anchor.size,
+      borderRadius: anchor.size / 2,
+      overflow: 'hidden',
+    }
+  }, [])
+
+  const ballStyles = useAnimatedStyle(() => {
+    return {
       width: anchor.size,
       height: anchor.size,
       borderRadius: anchor.size / 2,
@@ -73,13 +82,15 @@ export default function Ball({
     })
 
   return (
-    <AnimatedDropShadow style={[animatedStyles, styles.shadow]}>
+    <Animated.View style={animatedStyles}>
       <GestureHandlerRootView>
         <GestureDetector gesture={dragGesture}>
-          <Animated.View style={ballStyles}>{children}</Animated.View>
+          <AnimatedDropShadow style={[styles.shadow, shadowStyles]}>
+            <Animated.View style={ballStyles}>{children}</Animated.View>
+          </AnimatedDropShadow>
         </GestureDetector>
       </GestureHandlerRootView>
-    </AnimatedDropShadow>
+    </Animated.View>
   )
 }
 

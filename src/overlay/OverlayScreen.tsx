@@ -21,7 +21,7 @@ function FloatingBall() {
 
 export default withNavigationItem({
   titleItem: {
-    title: 'FloatingBall',
+    title: '悬浮球',
   },
 })(FloatingBall)
 

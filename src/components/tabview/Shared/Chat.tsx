@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, Image, Text, TextInput, ScrollView, StyleSheet } from 'react-native'
-import { KeyboardInsetsView } from 'react-native-keyboard-insets'
+import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
 
 const MESSAGES = ['okay', 'sudo make me a sandwich', 'what? make it yourself', 'make me a sandwich']
 

@@ -19,6 +19,7 @@
     "@sdcx/nested-scroll-webview": "*",
     "@sdcx/overlay": "*",
     "@sdcx/pull-to-refresh": "*",
+    "@sdcx/keyboard-insets": "*",
     "@shopify/flash-list": "^1.4.2",
     "hybrid-navigation": "^2.15.9",
     "lottie-react-native": "^5.1.5",

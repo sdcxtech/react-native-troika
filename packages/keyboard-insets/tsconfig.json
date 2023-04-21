@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "jsx": "react-native",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./lib",
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "baseUrl": "./",
+    "paths": {
+      "react-native-keyboard-insets": ["src/index"]
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "useUnknownInCatchVariables": false
+  },
+  "include": ["./src/**/*"]
+}

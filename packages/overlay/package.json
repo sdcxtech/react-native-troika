@@ -1,6 +1,6 @@
 {
-  "name": "@sdcx/pull-to-refresh",
-  "description": "A react-native PullToRefresh component.",
+  "name": "@sdcx/overlay",
+  "description": "A react-native Overlay component.",
   "version": "0.1.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -11,19 +11,18 @@
     "lib",
     "android",
     "ios",
-    "RNPullToRefresh.podspec",
+    "RNOverlay.podspec",
     "!android/build",
     "!ios/build",
     "!**/__tests__"
   ],
   "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/pull-to-refresh/README.md",
+  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/overlay#readme",
   "author": "sdcx",
   "license": "MIT",
   "keywords": [
     "react-native",
-    "pull-to-refresh",
-    "refresh-control"
+    "overlay"
   ],
   "scripts": {
     "build": "rm -rf ./lib && tsc -p tsconfig.build.json",

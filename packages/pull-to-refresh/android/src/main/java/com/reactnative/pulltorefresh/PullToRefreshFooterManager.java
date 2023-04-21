@@ -111,7 +111,7 @@ public class PullToRefreshFooterManager extends ReactViewManager {
                 }
 
                 @Override
-                public void onStateChanged(MJRefreshState state) {
+                public void onStateChanged(PullToRefreshState state) {
                     if (reactContext.hasActiveReactInstance()) {
                         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, viewId);
                         if (eventDispatcher != null) {

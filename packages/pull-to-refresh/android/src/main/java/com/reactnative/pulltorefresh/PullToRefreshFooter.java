@@ -181,7 +181,7 @@ public class PullToRefreshFooter extends ReactViewGroup implements RefreshFooter
     @Override
     public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
         if (onRefreshChangeListener != null && newState.isFooter) {
-            MJRefreshState state = convertRefreshStateToMJRefreshState(newState);
+            PullToRefreshState state = convertRefreshStateToMJRefreshState(newState);
             onRefreshChangeListener.onStateChanged(state);
         }
     }
@@ -195,13 +195,13 @@ public class PullToRefreshFooter extends ReactViewGroup implements RefreshFooter
         return PointerEvents.NONE;
     }
 
-    private MJRefreshState convertRefreshStateToMJRefreshState(RefreshState state) {
+    private PullToRefreshState convertRefreshStateToMJRefreshState(RefreshState state) {
         if (state.isReleaseToOpening) {
-            return MJRefreshState.Coming;
+            return PullToRefreshState.Coming;
         }
         if (state.isOpening) {
-            return MJRefreshState.Refreshing;
+            return PullToRefreshState.Refreshing;
         }
-        return MJRefreshState.Idle;
+        return PullToRefreshState.Idle;
     }
 }

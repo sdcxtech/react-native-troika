@@ -8,7 +8,7 @@ import TextInputBar from './TextInputBar'
 import userName from './userName'
 import MessageItem from './MessageItem'
 import Message from './models/Message'
-import { KeyboardInsetsView } from 'react-native-keyboard-insets'
+import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
 
 const Messages = () => {
   const [messages, setMessages] = useState(initialMessages)

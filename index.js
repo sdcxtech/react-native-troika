@@ -23,6 +23,9 @@ import BottomSheetBackdropShadow from './src/BottomSheetBackdropShadow'
 
 import HoverBall from './src/overlay/OverlayScreen'
 
+import KeyboardAdvoiding from './src/keyboard-insets/KeyboardAdvoiding'
+import KeyboardChat from './src/keyboard-insets/KeyboardChat'
+
 // 配置全局样式
 Navigation.setDefaultOptions({
   topBarStyle: 'dark-content',
@@ -66,6 +69,8 @@ Navigation.registerComponent('BottomSheetPagerView', () => BottomSheetPagerView)
 Navigation.registerComponent('BottomSheetBackdropShadow', () => BottomSheetBackdropShadow)
 
 Navigation.registerComponent('HoverBall', () => HoverBall)
+Navigation.registerComponent('KeyboardAdvoiding', () => KeyboardAdvoiding)
+Navigation.registerComponent('KeyboardChat', () => KeyboardChat)
 
 // 重要必须
 Navigation.endRegisterComponent()

@@ -64,6 +64,14 @@ const data: Array<Item> = [
     title: '悬浮球',
     routeName: 'HoverBall',
   },
+  {
+    title: 'Keyboard Advoiding',
+    routeName: 'KeyboardAdvoiding',
+  },
+  {
+    title: '聊天键盘处理',
+    routeName: 'KeyboardChat',
+  },
 ]
 
 function App() {

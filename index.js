@@ -1,6 +1,7 @@
 import App from './App'
 import Navigation from 'hybrid-navigation'
 import { Platform } from 'react-native'
+import 'react-native-gesture-handler'
 
 import './src/PullToRefresh'
 
@@ -19,6 +20,8 @@ import BottomSheetWithoutScrollView from './src/BottomSheetWithoutScrollView'
 import BottomSheetFlashList from './src/BottomSheetFlashList'
 import BottomSheetPagerView from './src/BottomSheetPagerView'
 import BottomSheetBackdropShadow from './src/BottomSheetBackdropShadow'
+
+import HoverBall from './src/overlay/OverlayScreen'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -61,6 +64,8 @@ Navigation.registerComponent('BottomSheetWithoutScrollView', () => BottomSheetWi
 Navigation.registerComponent('BottomSheetFlashList', () => BottomSheetFlashList)
 Navigation.registerComponent('BottomSheetPagerView', () => BottomSheetPagerView)
 Navigation.registerComponent('BottomSheetBackdropShadow', () => BottomSheetBackdropShadow)
+
+Navigation.registerComponent('HoverBall', () => HoverBall)
 
 // 重要必须
 Navigation.endRegisterComponent()

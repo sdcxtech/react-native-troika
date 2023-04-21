@@ -60,6 +60,10 @@ const data: Array<Item> = [
     title: 'BottomSheet + Backdrop + Shadow',
     routeName: 'BottomSheetBackdropShadow',
   },
+  {
+    title: '悬浮球',
+    routeName: 'HoverBall',
+  },
 ]
 
 function App() {

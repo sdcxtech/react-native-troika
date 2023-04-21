@@ -1,30 +1,49 @@
 package com.reactnative.keyboardinsets;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.PixelUtil;
+import com.facebook.react.uimanager.UIManagerModule;
 
 public class KeyboardInsetsModule extends ReactContextBaseJavaModule {
 
-    private final ReactApplicationContext reactContext;
-
     public KeyboardInsetsModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.reactContext = reactContext;
     }
 
     @NonNull
     @Override
     public String getName() {
-        return "RNKeyboardInsets";
+        return "KeyboardInsetsModule";
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
-        // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+    public void getEdgeInsetsForView(int viewTag, Callback callback) {
+        UiThreadUtil.runOnUiThread(() -> {
+            UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
+            View view = uiManagerModule.resolveView(viewTag);
+            WritableMap map = Arguments.createMap();
+            map.putDouble("top", 0);
+            map.putDouble("left", 0);
+            map.putDouble("right", 0);
+            map.putDouble("bottom", 0);
+            if (view != null) {
+                EdgeInsets insets = SystemUI.getEdgeInsetsForView(view);
+                map.putDouble("top", PixelUtil.toDIPFromPixel(insets.top));
+                map.putDouble("left", PixelUtil.toDIPFromPixel(insets.left));
+                map.putDouble("right", PixelUtil.toDIPFromPixel(insets.right));
+                map.putDouble("bottom", PixelUtil.toDIPFromPixel(insets.bottom));
+            }
+            callback.invoke(map);
+        });
     }
 }

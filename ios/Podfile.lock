@@ -309,7 +309,7 @@ PODS:
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
-  - RNKeyboardInsets (1.3.5):
+  - RNKeyboardInsets (0.1.0):
     - React-Core
   - RNNestedScrollView (0.1.0):
     - React-Core
@@ -397,7 +397,7 @@ DEPENDENCIES:
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNKeyboardInsets (from `../node_modules/react-native-keyboard-insets`)
+  - RNKeyboardInsets (from `../packages/keyboard-insets`)
   - RNNestedScrollView (from `../packages/nested-scroll`)
   - RNOverlay (from `../packages/overlay`)
   - RNPullToRefresh (from `../packages/pull-to-refresh`)
@@ -492,7 +492,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeyboardInsets:
-    :path: "../node_modules/react-native-keyboard-insets"
+    :path: "../packages/keyboard-insets"
   RNNestedScrollView:
     :path: "../packages/nested-scroll"
   RNOverlay:
@@ -550,7 +550,7 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
-  RNKeyboardInsets: b4e8f3235eca5e2ee17c92459ef350941704d62b
+  RNKeyboardInsets: b601abfbb7ebcd4b970d7ed17733657e50d746a5
   RNNestedScrollView: 2d1df8dea389eff73a655b9866df245d20dd1748
   RNOverlay: a30c320072e930575300a094e061649b23a735e2
   RNPullToRefresh: b33b8ffc5d6a8933990ef20216d1c48fa5a7297c

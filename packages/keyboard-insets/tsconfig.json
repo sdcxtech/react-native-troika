@@ -13,9 +13,6 @@
     "strict": true,
     "noImplicitAny": true,
     "baseUrl": "./",
-    "paths": {
-      "react-native-keyboard-insets": ["src/index"]
-    },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "useUnknownInCatchVariables": false

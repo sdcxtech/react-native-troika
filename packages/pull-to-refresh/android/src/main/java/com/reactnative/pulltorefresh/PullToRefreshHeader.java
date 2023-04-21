@@ -6,7 +6,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.PointerEvents;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshKernel;
@@ -15,17 +17,17 @@ import com.scwang.smart.refresh.layout.constant.RefreshState;
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 
 @SuppressLint("RestrictedApi")
-public class ReactSmartPullRefreshHeader extends ReactViewGroup implements RefreshHeader {
-    private String TAG = ReactSmartPullRefreshHeaderManager.REACT_CLASS;
+public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader {
     private RefreshKernel mRefreshKernel;
 
     private OnRefreshChangeListener onRefreshChangeListener;
+    private boolean mIsRefreshing = false;
 
     public void setOnRefreshHeaderChangeListener(OnRefreshChangeListener onRefreshChangeListener) {
         this.onRefreshChangeListener = onRefreshChangeListener;
     }
 
-    public ReactSmartPullRefreshHeader(Context context) {
+    public PullToRefreshHeader(Context context) {
         super(context);
     }
 
@@ -35,15 +37,30 @@ public class ReactSmartPullRefreshHeader extends ReactViewGroup implements Refre
         return this;
     }
 
+    public void setRefreshing(boolean refreshing) {
+        mIsRefreshing = refreshing;
+        if (refreshing) {
+            beginRefresh();
+        } else {
+            finishRefresh();
+        }
+    }
+
     public void beginRefresh() {
         if (mRefreshKernel != null) {
-            mRefreshKernel.getRefreshLayout().autoRefresh();
+            RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
+            if (!refreshState.isFooter && !refreshState.isOpening) {
+                mRefreshKernel.getRefreshLayout().autoRefresh();
+            }
         }
     }
 
     public void finishRefresh() {
         if (mRefreshKernel != null) {
-            mRefreshKernel.getRefreshLayout().finishRefresh();
+            RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
+            if (!refreshState.isFooter && !refreshState.isFinishing) {
+                mRefreshKernel.getRefreshLayout().finishRefresh();
+            }
         }
     }
 
@@ -66,6 +83,7 @@ public class ReactSmartPullRefreshHeader extends ReactViewGroup implements Refre
                 onRefreshChangeListener.onRefresh();
             }
         });
+        setRefreshing(mIsRefreshing);
     }
 
 
@@ -87,10 +105,35 @@ public class ReactSmartPullRefreshHeader extends ReactViewGroup implements Refre
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (getParent() instanceof ReactSmartPullRefreshLayout && mRefreshKernel == null) {
-            ReactSmartPullRefreshLayout refreshLayout = (ReactSmartPullRefreshLayout) getParent();
+        if (getParent() instanceof PullToRefresh && mRefreshKernel == null) {
+            PullToRefresh refreshLayout = (PullToRefresh) getParent();
             int h = MeasureSpec.getSize(heightMeasureSpec);
             refreshLayout.setHeaderHeightPx(h);
+        }
+    }
+
+    PullToRefreshHeaderLocalData headerLocalData = new PullToRefreshHeaderLocalData();
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (headerLocalData.viewRect.top == top
+                && headerLocalData.viewRect.bottom == bottom
+                && headerLocalData.viewRect.left == left
+                && headerLocalData.viewRect.right == right) {
+            return;
+        }
+        headerLocalData.viewRect.top = top;
+        headerLocalData.viewRect.bottom = bottom;
+        headerLocalData.viewRect.left = left;
+        headerLocalData.viewRect.right = right;
+        Context context = getContext();
+        if (context instanceof ReactContext) {
+            ReactContext reactContext = (ReactContext) context;
+            UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
+            if (uiManagerModule != null) {
+                uiManagerModule.setViewLocalData(getId(), headerLocalData);
+            }
         }
     }
 
@@ -117,7 +160,7 @@ public class ReactSmartPullRefreshHeader extends ReactViewGroup implements Refre
     @Override
     public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
         if (onRefreshChangeListener != null && newState.isHeader) {
-            MJRefreshState state = convertRefreshStateToMJRefreshState(newState);
+            PullToRefreshState state = convertRefreshStateToMJRefreshState(newState);
             onRefreshChangeListener.onStateChanged(state);
         }
     }
@@ -131,14 +174,26 @@ public class ReactSmartPullRefreshHeader extends ReactViewGroup implements Refre
         return PointerEvents.NONE;
     }
 
-    private MJRefreshState convertRefreshStateToMJRefreshState(RefreshState state) {
+    private PullToRefreshState convertRefreshStateToMJRefreshState(RefreshState state) {
         if (state.isReleaseToOpening) {
-            return MJRefreshState.Coming;
+            return PullToRefreshState.Coming;
         }
         if (state.isOpening) {
-            return MJRefreshState.Refreshing;
+            return PullToRefreshState.Refreshing;
         }
-        return MJRefreshState.Idle;
+        return PullToRefreshState.Idle;
     }
 
+    private final Runnable measureAndLayout = () -> {
+        measure(
+                View.MeasureSpec.makeMeasureSpec(getWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(getHeight(), View.MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+    };
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        post(measureAndLayout);
+    }
 }

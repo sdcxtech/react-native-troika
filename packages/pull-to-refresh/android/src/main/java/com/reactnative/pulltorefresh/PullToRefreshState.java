@@ -1,5 +1,5 @@
 package com.reactnative.pulltorefresh;
 
-public enum MJRefreshState {
+public enum PullToRefreshState {
     Idle, Coming, Refreshing
 }

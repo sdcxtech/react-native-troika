@@ -22,9 +22,9 @@ public class PullToRefreshPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
         return Arrays.asList(
-                new ReactSmartPullRefreshLayoutManager(),
-                new ReactSmartPullRefreshHeaderManager(),
-                new ReactSmartPullRefreshFooterManager()
+                new PullToRefreshManager(),
+                new PullToRefreshHeaderManager(),
+                new PullToRefreshFooterManager()
         );
     }
 }

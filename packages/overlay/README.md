@@ -10,6 +10,23 @@ yarn add @sdcx/overlay
 pod install
 ```
 
+在你的项目更目录下添加或修改 react-native.config.js 文件，内容如下：
+
+```js
+// react-native.config.js
+module.exports = {
+  dependencies: {
+    '@sdcx/overlay': {
+      platforms: {
+        android: {
+          packageInstance: 'new OverlayPackage(getReactNativeHost())',
+        },
+      },
+    },
+  },
+}
+```
+
 ## Usage
 
 请查看 Hoverball 示例代码

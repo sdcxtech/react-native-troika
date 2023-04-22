@@ -56,49 +56,54 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
         );
     }
 
-    private final Runnable measureAndLayout = () -> {
-        measure(
-                MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-        layout(getLeft(), getTop(), getRight(), getBottom());
-    };
+    void notifyStickyHeightChanged() {
+        if (isLaidOut() && !isInLayout()) {
+            fitStickyHeightIfNeeded();
+        }
+    }
 
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(measureAndLayout);
+    private void fitStickyHeightIfNeeded() {
+        Context context = getContext();
+        if (context instanceof ReactContext) {
+            UIManagerModule uiManagerModule = ((ReactContext) context).getNativeModule(UIManagerModule.class);
+            if (uiManagerModule == null) {
+                return;
+            }
+
+            ViewGroup content = (ViewGroup) getChildAt(0);
+            if (content == null) {
+                return;
+            }
+
+            int headerFixedHeight = 0;
+            float headerHeight = 0;
+            for (int i = 0; i < content.getChildCount(); i++) {
+                View child = content.getChildAt(i);
+                if (child instanceof NestedScrollViewHeader) {
+                    headerFixedHeight = ((NestedScrollViewHeader) child).getStickyHeight();
+                    headerHeight = child.getHeight();
+                }
+            }
+
+            int nestedScrollViewH = getHeight();
+            float contentHeight = nestedScrollViewH - headerFixedHeight;
+            if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
+                mNestedScrollViewLocalData.contentNodeH = contentHeight;
+                mNestedScrollViewLocalData.headerNodeH = headerHeight;
+                uiManagerModule.setViewLocalData(getId(), mNestedScrollViewLocalData);
+            }
+
+            int maxScrollRange = (int) (headerHeight - headerFixedHeight);
+            if (getScrollY() > maxScrollRange) {
+                scrollTo(0, maxScrollRange);
+            }
+        }
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        Context context = getContext();
-        if (context instanceof ReactContext) {
-            UIManagerModule uiManagerModule = ((ReactContext) context).getNativeModule(UIManagerModule.class);
-            if (uiManagerModule != null) {
-                ViewGroup viewGroup = (ViewGroup) getChildAt(0);
-                int headerFixedHeight = 0;
-                float headerHeight = 0;
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                    View child = viewGroup.getChildAt(i);
-                    if (child instanceof NestedScrollViewHeader) {
-                        headerFixedHeight = ((NestedScrollViewHeader) child).getStickyHeight();
-                        headerHeight = child.getHeight();
-                    }
-                }
-                int nestedScrollViewH = getHeight();
-                float contentHeight = nestedScrollViewH - headerFixedHeight;
-                if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
-                    mNestedScrollViewLocalData.contentNodeH = contentHeight;
-                    mNestedScrollViewLocalData.headerNodeH = headerHeight;
-                    uiManagerModule.setViewLocalData(getId(), mNestedScrollViewLocalData);
-                }
-                int maxScrollRange = (int) (headerHeight - headerFixedHeight);
-                if (getScrollY() > maxScrollRange) {
-                    scrollTo(0, maxScrollRange);
-                }
-            }
-        }
+        fitStickyHeightIfNeeded();
     }
 
     @Override

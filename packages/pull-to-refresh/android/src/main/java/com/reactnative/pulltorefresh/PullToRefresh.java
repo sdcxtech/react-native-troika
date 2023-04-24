@@ -2,11 +2,14 @@ package com.reactnative.pulltorefresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
+import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
+import com.scwang.smart.refresh.layout.api.RefreshKernel;
 
 public class PullToRefresh extends SmartRefreshLayout {
 
@@ -31,6 +34,14 @@ public class PullToRefresh extends SmartRefreshLayout {
         post(measureAndLayout);
     }
 
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (super.onInterceptTouchEvent(ev)) {
+            NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -46,5 +57,9 @@ public class PullToRefresh extends SmartRefreshLayout {
             int footerHeight = footer.getView().getMeasuredHeight();
             setFooterMaxDragRate(height / footerHeight);
         }
+    }
+
+    public RefreshKernel getRefreshKernel() {
+        return mKernel;
     }
 }

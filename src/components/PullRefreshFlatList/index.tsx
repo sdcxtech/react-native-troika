@@ -41,7 +41,7 @@ function PullRefreshFlatList() {
   const endLoadMore = () => {
     clearPendingAction()
     setLoadingMore(false)
-    // setNoMoreData(true)
+    setNoMoreData(true)
   }
 
   return (

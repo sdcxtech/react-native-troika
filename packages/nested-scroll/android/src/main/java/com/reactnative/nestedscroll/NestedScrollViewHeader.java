@@ -39,17 +39,17 @@ public class NestedScrollViewHeader extends ReactViewGroup {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        notifyStickyHeightChange();
+        notifyStickyHeightChanged();
     }
 
     public void setStickyHeight(int stickyHeight) {
         mStickyHeight = stickyHeight;
-        notifyStickyHeightChange();
+        notifyStickyHeightChanged();
     }
 
     public void setStickyHeaderBeginIndex(int index) {
         mStickyHeaderBeginIndex = index;
-        notifyStickyHeightChange();
+        notifyStickyHeightChanged();
     }
 
     public int getStickyHeight() {
@@ -69,10 +69,10 @@ public class NestedScrollViewHeader extends ReactViewGroup {
     }
 
 
-    private void notifyStickyHeightChange() {
+    private void notifyStickyHeightChanged() {
         NestedScrollView nestedScrollView = getParentNestedScrollView();
         if (nestedScrollView != null) {
-            post(nestedScrollView::requestLayout);
+            nestedScrollView.notifyStickyHeightChanged();
         }
     }
 

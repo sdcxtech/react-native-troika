@@ -86,7 +86,6 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         setRefreshing(mIsRefreshing);
     }
 
-
     @Override
     public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
         if (isDragging && onRefreshChangeListener != null) {
@@ -184,16 +183,4 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         return PullToRefreshState.Idle;
     }
 
-    private final Runnable measureAndLayout = () -> {
-        measure(
-                View.MeasureSpec.makeMeasureSpec(getWidth(), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(getHeight(), View.MeasureSpec.EXACTLY));
-        layout(getLeft(), getTop(), getRight(), getBottom());
-    };
-
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(measureAndLayout);
-    }
 }

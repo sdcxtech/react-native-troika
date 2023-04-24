@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Component, ReactNode } from 'react'
 import { findNodeHandle, requireNativeComponent, UIManager, ViewProps } from 'react-native'
 import { PullToRefreshOffsetChangedEvent, PullToRefreshStateChangedEvent } from '../types'
 
@@ -11,53 +11,43 @@ interface NativePullToRefreshHeaderProps extends ViewProps {
 
 const NativePullToRefreshHeader = requireNativeComponent<NativePullToRefreshHeaderProps>('RefreshHeader')
 
-export type NativePullToRefreshHeaderInstance = InstanceType<typeof NativePullToRefreshHeader>
+type NativePullToRefreshHeaderInstance = InstanceType<typeof NativePullToRefreshHeader>
 
 const PullToRefreshHeaderCommands = {
   setNativeRefreshing(componentOrHandle: NativePullToRefreshHeaderInstance, refreshing: boolean) {
     UIManager.dispatchViewManagerCommand(findNodeHandle(componentOrHandle), 'setNativeRefreshing', [refreshing])
   },
 }
+class PullToRefreshHeader extends Component<NativePullToRefreshHeaderProps> {
+  _nativeRef: NativePullToRefreshHeaderInstance | null = null
+  _lastNativeRefreshing = false
 
-const PullToRefreshHeader = React.forwardRef<NativePullToRefreshHeaderInstance, NativePullToRefreshHeaderProps>(
-  (props, ref) => {
-    const [, forceUpdate] = useState(false)
-    const innerRef = useRef<NativePullToRefreshHeaderInstance | null>(null)
-    const nativeRefreshing = useRef(props.refreshing)
+  _onRefresh = () => {
+    this._lastNativeRefreshing = true
+    this.props?.onRefresh?.()
+    this.forceUpdate()
+  }
 
-    useEffect(() => {
-      nativeRefreshing.current = props.refreshing
-    }, [props.refreshing])
+  _setNativeRef = (ref: NativePullToRefreshHeaderInstance) => {
+    this._nativeRef = ref
+  }
 
-    useEffect(() => {
-      if (props.refreshing !== nativeRefreshing.current && innerRef?.current) {
-        nativeRefreshing.current = props.refreshing
-        PullToRefreshHeaderCommands.setNativeRefreshing(innerRef.current, props.refreshing)
-      }
-    })
+  componentDidMount() {
+    this._lastNativeRefreshing = this.props.refreshing
+  }
 
-    const { onRefresh, ..._props } = props
-    const _onRefresh = () => {
-      nativeRefreshing.current = true
-      onRefresh?.()
-      forceUpdate(v => !v)
+  componentDidUpdate(prevProps: NativePullToRefreshHeaderProps) {
+    if (this.props.refreshing !== prevProps.refreshing) {
+      this._lastNativeRefreshing = this.props.refreshing
+    } else if (this.props.refreshing !== this._lastNativeRefreshing && this._nativeRef) {
+      PullToRefreshHeaderCommands.setNativeRefreshing(this._nativeRef, this.props.refreshing)
+      this._lastNativeRefreshing = this.props.refreshing
     }
+  }
 
-    return (
-      <NativePullToRefreshHeader
-        {..._props}
-        ref={instance => {
-          innerRef.current = instance
-          if (typeof ref === 'function') {
-            ref(instance)
-          } else if (ref !== null) {
-            ref.current = instance
-          }
-        }}
-        onRefresh={_onRefresh}
-      />
-    )
-  },
-)
+  render(): ReactNode {
+    return <NativePullToRefreshHeader {...this.props} ref={this._setNativeRef} onRefresh={this._onRefresh} />
+  }
+}
 
 export { PullToRefreshHeader }

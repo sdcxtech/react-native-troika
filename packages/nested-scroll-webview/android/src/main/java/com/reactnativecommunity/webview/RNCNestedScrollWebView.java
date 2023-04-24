@@ -51,17 +51,12 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (nestedScrollEnabled) {
-            return super.onTouchEvent(ev);
-        }
-
         initVelocityTrackerIfNotExists();
         boolean consumedScrollEvent = false;
         final int actionMasked = ev.getAction();
         if (actionMasked == MotionEvent.ACTION_DOWN) {
             mNestedYOffset = 0;
         }
-
         MotionEvent vtev = MotionEvent.obtain(ev);
         vtev.offsetLocation(0, mNestedYOffset);
         switch (actionMasked) {

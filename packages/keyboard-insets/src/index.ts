@@ -1,5 +1,5 @@
 import { KeyboardInsetsView, KeyboardState } from './KeyboardInsetsView'
-import { getEdgeInsetsForView } from './native'
+import { getEdgeInsetsForView, NativeKeyboardInsetsView } from './native'
 import { useKeyboard } from './hook'
 
-export { KeyboardInsetsView, KeyboardState, useKeyboard, getEdgeInsetsForView }
+export { KeyboardInsetsView, NativeKeyboardInsetsView, KeyboardState, useKeyboard, getEdgeInsetsForView }

@@ -3,6 +3,7 @@ package com.reactnative.nestedscroll;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +14,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.MeasureSpecAssertions;
 import com.facebook.react.uimanager.ReactOverflowView;
 import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class NestedScrollView extends androidx.core.widget.NestedScrollView implements ReactOverflowView {
     private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
@@ -45,6 +47,15 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
             final int myConsumed = getScrollY() - oldScrollY;
             consumed[1] += myConsumed;
         }
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (super.onInterceptTouchEvent(ev)) {
+            NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+            return true;
+        }
+        return false;
     }
 
     @Override

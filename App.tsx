@@ -1,7 +1,15 @@
 import React from 'react'
-import { StyleSheet, FlatList, ListRenderItem, Text, TouchableOpacity, Image } from 'react-native'
+import {
+  StyleSheet,
+  FlatList,
+  ListRenderItem,
+  Text,
+  TouchableOpacity,
+  Image,
+  View,
+} from 'react-native'
 import { useNavigator, withNavigationItem } from 'hybrid-navigation'
-
+import Lottie from 'lottie-react-native'
 interface Item {
   title: string
   routeName: string
@@ -9,68 +17,24 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: 'NestedScroll + FastList',
-    routeName: 'NestedScrollFlatList',
+    title: 'NestedScroll',
+    routeName: 'NestedScroll',
   },
   {
-    title: 'NestedScroll + ParallaxHeader',
-    routeName: 'NestedScrollParallaxHeader',
+    title: 'PullToRefresh',
+    routeName: 'PullToRefresh',
   },
   {
-    title: 'NestedScroll + TabView',
-    routeName: 'NestedScrollTabView',
+    title: 'BottomSheet',
+    routeName: 'BottomSheet',
   },
   {
-    title: 'NestedScroll + PagerView + StickyHeader',
-    routeName: 'NestedScrollPagerViewStickyHeader',
-  },
-  {
-    title: 'PullRefresh + FlastList',
-    routeName: 'PullRefreshFlatList',
-  },
-  {
-    title: 'PullRefresh + NestedScroll + FlatList',
-    routeName: 'PullRefreshFlatListNestedScroll',
-  },
-  {
-    title: 'PullRefresh + NestedScroll + PagerView',
-    routeName: 'PullRefreshNestedScrollPagerView',
-  },
-  {
-    title: 'PagerView + PullRefresh',
-    routeName: 'PullRefreshPagerView',
-  },
-  {
-    title: 'NestedScroll + PagerView + PullRefresh',
-    routeName: 'PullRefreshPagerViewNestedScroll',
-  },
-  {
-    title: 'BottomSheet without ScrollView',
-    routeName: 'BottomSheetWithoutScrollView',
-  },
-  {
-    title: 'BottomSheet + FlashList',
-    routeName: 'BottomSheetFlashList',
-  },
-  {
-    title: 'BottomSheet + PagerView',
-    routeName: 'BottomSheetPagerView',
-  },
-  {
-    title: 'BottomSheet + Backdrop + Shadow',
-    routeName: 'BottomSheetBackdropShadow',
+    title: 'Keyboard',
+    routeName: 'Keyboard',
   },
   {
     title: '悬浮球',
     routeName: 'HoverBall',
-  },
-  {
-    title: 'Keyboard Advoiding',
-    routeName: 'KeyboardAdvoiding',
-  },
-  {
-    title: '聊天键盘处理',
-    routeName: 'KeyboardChat',
   },
 ]
 
@@ -81,7 +45,42 @@ function App() {
     return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />
   }
 
-  return <FlatList data={data} keyExtractor={item => item.title} renderItem={renderListItem} />
+  return (
+    <FlatList
+      ListHeaderComponent={Header}
+      data={data}
+      keyExtractor={item => item.title}
+      renderItem={renderListItem}
+    />
+  )
+}
+
+function Header() {
+  return (
+    <View style={styles.header}>
+      <Lottie
+        style={styles.lottie}
+        source={require('assets/trilo-3.json')}
+        autoPlay
+        loop
+        speed={1}
+      />
+      <Lottie
+        style={styles.lottie}
+        source={require('assets/trilo-4.json')}
+        autoPlay
+        loop
+        speed={1}
+      />
+      <Lottie
+        style={styles.lottie}
+        source={require('assets/trilo-5.json')}
+        autoPlay
+        loop
+        speed={1}
+      />
+    </View>
+  )
 }
 
 interface ListItemProps {
@@ -105,6 +104,16 @@ export default withNavigationItem({
 })(App)
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    paddingVertical: 12,
+  },
+  lottie: {
+    height: 100,
+  },
   item: {
     height: 60,
     justifyContent: 'space-between',

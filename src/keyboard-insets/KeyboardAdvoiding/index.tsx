@@ -69,7 +69,7 @@ function SubmitToNextInputFragment() {
 
 export default withNavigationItem({
   titleItem: {
-    title: 'KeyboardAdvoiding',
+    title: 'Keyboard Advoiding',
   },
 })(KeyboardAdvoiding)
 

@@ -159,7 +159,7 @@
     }
     
     if (pan.state == UIGestureRecognizerStateEnded) {
-        if (self.lastDragDistance > 10) {
+        if (self.lastDragDistance > 0) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
                 [self settleToState:@"collapsed"];
@@ -169,7 +169,7 @@
                 //如果是类似轻扫的那种
                 [self settleToState:@"collapsed"];
             }
-        } else if (self.lastDragDistance < -10) {
+        } else if (self.lastDragDistance < 0) {
             //如果是类似轻扫的那种
             [self settleToState:@"expanded"];
         } else {

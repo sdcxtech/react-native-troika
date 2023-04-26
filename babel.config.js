@@ -5,11 +5,11 @@ module.exports = {
     [
       'module-resolver',
       {
-        root: './src',
+        root: './demo',
         cwd: 'babelrc',
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
         alias: {
-          assets: './src/assets',
+          assets: './demo/assets',
         },
       },
     ],

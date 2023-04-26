@@ -92,7 +92,7 @@ function ListItem({ title, onPress }: ListItemProps) {
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
-      <Image source={require('./src/assets/indicator.png')} />
+      <Image source={require('assets/indicator.png')} />
     </TouchableOpacity>
   )
 }

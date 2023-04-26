@@ -4,13 +4,13 @@ import { Platform } from 'react-native'
 import 'react-native-gesture-handler'
 
 // 设置全局下拉刷新样式
-import './src/pull-to-refresh/PullToRefresh'
+import './demo/pull-to-refresh/PullToRefresh'
 
-import HoverBall from './src/overlay/OverlayScreen'
-import { registerNestedScrollComponent } from './src/nested-scroll'
-import { registerPullToRefreshComponent } from './src/pull-to-refresh'
-import { registerBottomSheetComponent } from './src/bottom-sheet'
-import { registerKeyboardComponent } from './src/keyboard-insets'
+import HoverBall from './demo/overlay/OverlayScreen'
+import { registerNestedScrollComponent } from './demo/nested-scroll'
+import { registerPullToRefreshComponent } from './demo/pull-to-refresh'
+import { registerBottomSheetComponent } from './demo/bottom-sheet'
+import { registerKeyboardComponent } from './demo/keyboard-insets'
 
 // 配置全局样式
 Navigation.setDefaultOptions({

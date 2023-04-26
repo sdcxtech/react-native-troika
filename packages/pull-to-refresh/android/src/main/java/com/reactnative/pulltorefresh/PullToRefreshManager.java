@@ -77,4 +77,9 @@ public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
         }
         reactChildMap.remove(index);
     }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 }

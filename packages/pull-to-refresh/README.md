@@ -8,7 +8,7 @@
 
 - 支持自定义下拉刷新
 - 支持全局设置下拉刷新的样式
-- 支持 `WebView`、[NestedScrollView](../nested-scroll/README.md)
+- 支持 `WebView`、[NestedScrollView](https://github.com/sdcxtech/react-native-troika/blob/master/packages/nested-scroll/README.md)
 - 支持上拉加载更多
 
 ## Installation

@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start --reset-cache",
+    "start": "watchman watch-del-all && react-native start --reset-cache",
     "test": "jest",
     "tsc": "tsc --noEmit",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"

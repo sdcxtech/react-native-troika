@@ -3,6 +3,7 @@ import { NativeSyntheticEvent, Platform, requireNativeComponent, StyleSheet, Vie
 import splitLayoutProps from './splitLayoutProps'
 
 export interface OffsetChangedEventData {
+  progress: number
   offset: number
   expandedOffset: number
   collapsedOffset: number

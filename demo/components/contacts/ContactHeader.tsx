@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 
 const ContactHeader = () => {
-  return <Text style={styles.headerTitle}>Android 的 SectionList 无 sticky header</Text>
+  return <Text style={styles.headerTitle}>My contacts</Text>
 }
 
 export default ContactHeader

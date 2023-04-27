@@ -3,7 +3,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 
 export function ScrollViewPage() {
   return (
-    <ScrollView contentContainerStyle={styles.content} scrollEnabled nestedScrollEnabled>
+    <ScrollView nestedScrollEnabled contentContainerStyle={styles.content}>
       <View style={styles.author}>
         <Image style={styles.avatar} source={require('assets/avatar-1.png')} />
         <View style={styles.meta}>

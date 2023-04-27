@@ -14,6 +14,10 @@
 
 `NestedScrollView` 的作用是协调最里层和最外层可滚动视图之间的（纵向）滚动，使得滚动体验更加流畅。
 
+|                                                                                                           |                                                                                                           |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-26-09.gif" width="320"> | <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-31-00.gif" width="320"> |
+
 ## Installation
 
 ```sh
@@ -60,6 +64,19 @@ const App = () => {
 
 ### NestedScrollViewHeader
 
-`NestedScrollViewHeader` 可以通过 `stickyHeaderBeginIndex` 或者 `stickyHeight` 属性来设置 sticky 效果。
+- `stickyHeaderBeginIndex`，它表示从第几个子组件开始，子组件将会被固定在顶部。
 
-此外，`NestedScrollViewHeader` 可以通过 `onScroll` 回调函数来实现头部视图的视差效果。
+- `stickyHeight`，它表示 header 多高的区域将会被固定在顶部，优先级高于 `stickyHeaderBeginIndex`。
+
+- `onScroll`， 是一个回调函数，可用于实现头部视图的视差效果。
+
+  ```ts
+  type OnScroll = (event: {
+    nativeEvent: {
+      contentOffset: {
+        x: number
+        y: number
+      }
+    }
+  }) => void
+  ```

@@ -1,9 +1,6 @@
-import { NativeModules } from 'react-native'
+import ImageCropView from './ImageCropView'
+import { ImageCropViewRef } from './ImageCropViewRef'
+import { ObjectRect } from './typings'
 
-const { RNImageCrop } = NativeModules
-
-export default RNImageCrop
-
-export function lib(a: number, b: number) {
-  return a + b + 2
-}
+export { ImageCropView }
+export type { ImageCropViewRef, ObjectRect }

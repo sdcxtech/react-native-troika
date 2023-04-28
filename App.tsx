@@ -36,6 +36,10 @@ const data: Array<Item> = [
     title: '悬浮球',
     routeName: 'HoverBall',
   },
+  {
+    title: 'ImageCrop',
+    routeName: 'ImageCropDemo',
+  },
 ]
 
 function App() {

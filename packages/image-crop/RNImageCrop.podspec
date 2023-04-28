@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/ImageCrop/**/*.{h,m,mm}"
   s.dependency "React-Core"
+  s.dependency "TOCropViewController"
 end

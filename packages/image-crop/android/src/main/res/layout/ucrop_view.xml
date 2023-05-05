@@ -5,13 +5,13 @@
 
     <!-- Padding for both views can be different -->
 
-    <com.reactnative.imagecrop.ucrop.view.GestureCropImageView
+    <com.yalantis.ucrop.view.GestureCropImageView
         android:id="@+id/image_view_crop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/ucrop_padding_crop_frame"/>
 
-    <com.reactnative.imagecrop.ucrop.view.OverlayView
+    <com.yalantis.ucrop.view.OverlayView
         android:id="@+id/view_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

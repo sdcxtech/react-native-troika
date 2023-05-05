@@ -18,12 +18,15 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.reactnative.imagecrop.ucrop.callback.BitmapCropCallback;
-import com.reactnative.imagecrop.ucrop.view.GestureCropImageView;
-import com.reactnative.imagecrop.ucrop.view.OverlayView;
-import com.reactnative.imagecrop.ucrop.view.UCropView;
+import com.yalantis.ucrop.callback.BitmapCropCallback;
+import com.yalantis.ucrop.callback.OverlayViewChangeListener;
+import com.yalantis.ucrop.view.GestureCropImageView;
+import com.yalantis.ucrop.view.OverlayView;
+import com.yalantis.ucrop.view.UCropView;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 public class RNImageCropView extends FrameLayout {
@@ -93,12 +96,51 @@ public class RNImageCropView extends FrameLayout {
 
                     FLog.i(TAG, "imageHeight ：" + imageHeight);
                     FLog.i(TAG, "imageWidth ：" + imageWidth);
-                    mOverlayView.setupDetectedObjectBounds(imageWidth, imageHeight, objectRect.getTop(), objectRect.getLeft(), objectRect.getWidth(), objectRect.getHeight());
+                    setupDetectedObjectBounds(mOverlayView, imageWidth, imageHeight, objectRect.getTop(), objectRect.getLeft(), objectRect.getWidth(), objectRect.getHeight());
                 }
             }
         } catch (Exception e) {
             FLog.i(TAG, "初始化相关属性失败：" + e.getMessage());
         }
+    }
+
+    private void setupDetectedObjectBounds(OverlayView overlayView, float imageWidth, float imageHeight, float top, float left, float width, float height) {
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Field mTargetAspectRatioField = OverlayView.class.getDeclaredField("mTargetAspectRatio");
+                    mTargetAspectRatioField.setAccessible(true);
+                    float mTargetAspectRatio = mTargetAspectRatioField.getFloat(overlayView);
+                    Field mThisHeightField = OverlayView.class.getDeclaredField("mThisHeight");
+                    mThisHeightField.setAccessible(true);
+                    int mThisHeight = mThisHeightField.getInt(overlayView);
+                    Field mThisWidthField = OverlayView.class.getDeclaredField("mThisWidth");
+                    mThisWidthField.setAccessible(true);
+                    int mThisWidth = mThisWidthField.getInt(overlayView);
+
+                    int halfDiff = (mThisHeight - (int) (mThisWidth / mTargetAspectRatio)) / 2;
+                    float mLeft = overlayView.getPaddingLeft() + mThisWidth * (left / imageWidth);
+                    float mTop = overlayView.getPaddingTop() + halfDiff + (mThisWidth / mTargetAspectRatio) * top / imageHeight;
+                    float mRight = mLeft + mThisWidth * width / imageWidth;
+                    float mBottom = mTop + mThisWidth / mTargetAspectRatio * height / imageHeight;
+                    overlayView.getCropViewRect().set(mLeft, mTop, mRight, mBottom);
+
+                    OverlayViewChangeListener overlayViewChangeListener = overlayView.getOverlayViewChangeListener();
+                    if (overlayViewChangeListener != null) {
+                        overlayViewChangeListener.onCropRectUpdated(overlayView.getCropViewRect());
+                    }
+
+                    Method method = OverlayView.class.getDeclaredMethod("updateGridPoints");
+                    method.setAccessible(true);
+                    method.invoke(overlayView);
+                    overlayView.postInvalidate();
+
+                } catch (Exception e) {
+                    FLog.e(TAG, "setupDetectedObjectBounds on Error: " + e.getMessage());
+                }
+            }
+        }, 10);
     }
 
     private UCropView mUCropView;

@@ -131,9 +131,9 @@ public class RNImageCropView extends FrameLayout {
                         overlayViewChangeListener.onCropRectUpdated(overlayView.getCropViewRect());
                     }
 
-                    Method method = OverlayView.class.getDeclaredMethod("updateGridPoints");
-                    method.setAccessible(true);
-                    method.invoke(overlayView);
+                    Method updateGridPointsMethod = OverlayView.class.getDeclaredMethod("updateGridPoints");
+                    updateGridPointsMethod.setAccessible(true);
+                    updateGridPointsMethod.invoke(overlayView);
                     overlayView.postInvalidate();
 
                 } catch (Exception e) {

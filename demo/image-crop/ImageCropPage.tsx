@@ -25,7 +25,7 @@ function ImageCropPage({ fileUri, cropStyle, objectRect, sceneId, navigator }: P
   const onCropped = useCallback(
     async (uri: string) => {
       console.log('RN获取到剪切成功的uri = ', uri)
-      await navigator.redirectTo('CropResultPage', {
+      await navigator.redirectTo('ImageCropResultPage', {
         fileUri: uri,
       })
     },

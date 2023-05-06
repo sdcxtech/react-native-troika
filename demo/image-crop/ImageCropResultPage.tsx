@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+    backgroundColor: '#eef',
   },
   image: {
     flex: 1,

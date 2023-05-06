@@ -1,6 +1,0 @@
-<resources>
-
-    <!--uCrop Activity-->
-    <dimen name="ucrop_padding_crop_frame">16dp</dimen>
-
-</resources>

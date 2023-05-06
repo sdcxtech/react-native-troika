@@ -74,8 +74,7 @@ public class RNImageCropView extends FrameLayout {
                 mOverlayView.setShowCropFrame(false);
                 mGestureCropImageView.setTargetAspectRatio(1f);
             } else {
-                mOverlayView.setFreestyleCropMode(OverlayView.FREESTYLE_CROP_MODE_ENABLE_WITH_PASS_THROUGH);
-
+                mOverlayView.setFreestyleCropMode(OverlayView.FREESTYLE_CROP_MODE_ENABLE);
                 if (objectRect != null) {
                     //设置图像主体边框
                     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -96,7 +95,9 @@ public class RNImageCropView extends FrameLayout {
 
                     FLog.i(TAG, "imageHeight ：" + imageHeight);
                     FLog.i(TAG, "imageWidth ：" + imageWidth);
-                    setupDetectedObjectBounds(mOverlayView, imageWidth, imageHeight, objectRect.getTop(), objectRect.getLeft(), objectRect.getWidth(), objectRect.getHeight());
+                    setupDetectedObjectBounds(imageWidth, imageHeight, objectRect.getTop(), objectRect.getLeft(), objectRect.getWidth(), objectRect.getHeight());
+                } else {
+                    mGestureCropImageView.setTargetAspectRatio(1f);
                 }
             }
         } catch (Exception e) {
@@ -104,37 +105,37 @@ public class RNImageCropView extends FrameLayout {
         }
     }
 
-    private void setupDetectedObjectBounds(OverlayView overlayView, float imageWidth, float imageHeight, float top, float left, float width, float height) {
+    private void setupDetectedObjectBounds(float imageWidth, float imageHeight, float top, float left, float width, float height) {
         postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
                     Field mTargetAspectRatioField = OverlayView.class.getDeclaredField("mTargetAspectRatio");
                     mTargetAspectRatioField.setAccessible(true);
-                    float mTargetAspectRatio = mTargetAspectRatioField.getFloat(overlayView);
+                    float mTargetAspectRatio = mTargetAspectRatioField.getFloat(mOverlayView);
                     Field mThisHeightField = OverlayView.class.getDeclaredField("mThisHeight");
                     mThisHeightField.setAccessible(true);
-                    int mThisHeight = mThisHeightField.getInt(overlayView);
+                    int mThisHeight = mThisHeightField.getInt(mOverlayView);
                     Field mThisWidthField = OverlayView.class.getDeclaredField("mThisWidth");
                     mThisWidthField.setAccessible(true);
-                    int mThisWidth = mThisWidthField.getInt(overlayView);
+                    int mThisWidth = mThisWidthField.getInt(mOverlayView);
 
                     int halfDiff = (mThisHeight - (int) (mThisWidth / mTargetAspectRatio)) / 2;
-                    float mLeft = overlayView.getPaddingLeft() + mThisWidth * (left / imageWidth);
-                    float mTop = overlayView.getPaddingTop() + halfDiff + (mThisWidth / mTargetAspectRatio) * top / imageHeight;
+                    float mLeft = mOverlayView.getPaddingLeft() + mThisWidth * (left / imageWidth);
+                    float mTop = mOverlayView.getPaddingTop() + halfDiff + (mThisWidth / mTargetAspectRatio) * top / imageHeight;
                     float mRight = mLeft + mThisWidth * width / imageWidth;
                     float mBottom = mTop + mThisWidth / mTargetAspectRatio * height / imageHeight;
-                    overlayView.getCropViewRect().set(mLeft, mTop, mRight, mBottom);
+                    mOverlayView.getCropViewRect().set(mLeft, mTop, mRight, mBottom);
 
-                    OverlayViewChangeListener overlayViewChangeListener = overlayView.getOverlayViewChangeListener();
+                    OverlayViewChangeListener overlayViewChangeListener = mOverlayView.getOverlayViewChangeListener();
                     if (overlayViewChangeListener != null) {
-                        overlayViewChangeListener.onCropRectUpdated(overlayView.getCropViewRect());
+                        overlayViewChangeListener.onCropRectUpdated(mOverlayView.getCropViewRect());
                     }
 
                     Method updateGridPointsMethod = OverlayView.class.getDeclaredMethod("updateGridPoints");
                     updateGridPointsMethod.setAccessible(true);
-                    updateGridPointsMethod.invoke(overlayView);
-                    overlayView.postInvalidate();
+                    updateGridPointsMethod.invoke(mOverlayView);
+                    mOverlayView.postInvalidate();
 
                 } catch (Exception e) {
                     FLog.e(TAG, "setupDetectedObjectBounds on Error: " + e.getMessage());
@@ -142,7 +143,6 @@ public class RNImageCropView extends FrameLayout {
             }
         }, 10);
     }
-
     private UCropView mUCropView;
     private GestureCropImageView mGestureCropImageView;
     private OverlayView mOverlayView;

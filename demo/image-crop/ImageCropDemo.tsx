@@ -1,11 +1,25 @@
 import React, { useCallback } from 'react'
 import { NavigationProps, withNavigationItem } from 'hybrid-navigation'
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, Image } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useToast } from 'react-native-toast-hybrid'
 import { ObjectRect } from '@sdcx/image-crop'
 import RNFS from 'react-native-fs'
 const qs = require('qs')
+
+interface ListItemProps {
+  title: string
+  onPress?: () => void
+}
+
+function ListItem({ title, onPress }: ListItemProps) {
+  return (
+    <TouchableOpacity style={styles.item} onPress={onPress}>
+      <Text style={styles.text}>{title}</Text>
+      <Image source={require('assets/indicator.png')} />
+    </TouchableOpacity>
+  )
+}
 
 function ImageCropDemo({ navigator }: NavigationProps) {
   const toast = useToast()
@@ -85,17 +99,9 @@ function ImageCropDemo({ navigator }: NavigationProps) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handlePhotoPress} activeOpacity={0.2} style={styles.button}>
-        <Text style={styles.buttonText}>照片裁剪（矩形）</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={handlePhotoDetectPress} activeOpacity={0.2} style={styles.button}>
-        <Text style={styles.buttonText}>照片裁剪（矩形 + 图像主体检测）</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={handleHeadPhotoPress} activeOpacity={0.2} style={styles.button}>
-        <Text style={styles.buttonText}>头像裁剪（圆形）</Text>
-      </TouchableOpacity>
+      <ListItem title={'头像裁剪（圆形）'} onPress={handleHeadPhotoPress} />
+      <ListItem title={'照片裁剪（矩形）'} onPress={handlePhotoPress} />
+      <ListItem title={'照片裁剪（矩形 + 图像主体检测）'} onPress={handlePhotoDetectPress} />
     </View>
   )
 }
@@ -107,24 +113,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    paddingTop: 16,
   },
-  button: {
+  item: {
+    height: 60,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    marginTop: 20,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    paddingLeft: 16,
+    paddingRight: 16,
   },
-
-  buttonText: {
-    backgroundColor: 'transparent',
-    color: 'rgb(34,88,220)',
-  },
-
-  welcome: {
-    backgroundColor: 'transparent',
+  text: {
+    color: '#222222',
     fontSize: 17,
-    textAlign: 'center',
-    margin: 8,
   },
 })

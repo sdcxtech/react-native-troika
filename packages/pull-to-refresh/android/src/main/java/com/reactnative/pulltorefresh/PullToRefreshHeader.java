@@ -158,8 +158,8 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
 
     @Override
     public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
-        if (onRefreshChangeListener != null && newState.isHeader) {
-            PullToRefreshState state = convertRefreshStateToMJRefreshState(newState);
+        if (onRefreshChangeListener != null) {
+            PullToRefreshState state = convertRefreshStateToPullToRefreshState(newState);
             onRefreshChangeListener.onStateChanged(state);
         }
     }
@@ -173,11 +173,11 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         return PointerEvents.NONE;
     }
 
-    private PullToRefreshState convertRefreshStateToMJRefreshState(RefreshState state) {
-        if (state.isReleaseToOpening) {
+    private PullToRefreshState convertRefreshStateToPullToRefreshState(RefreshState state) {
+        if (state == RefreshState.ReleaseToRefresh) {
             return PullToRefreshState.Coming;
         }
-        if (state.isOpening) {
+        if (state == RefreshState.Refreshing || state == RefreshState.RefreshReleased) {
             return PullToRefreshState.Refreshing;
         }
         return PullToRefreshState.Idle;

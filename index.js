@@ -11,6 +11,7 @@ import { registerNestedScrollComponent } from './demo/nested-scroll'
 import { registerPullToRefreshComponent } from './demo/pull-to-refresh'
 import { registerBottomSheetComponent } from './demo/bottom-sheet'
 import { registerKeyboardComponent } from './demo/keyboard-insets'
+import { registerImageCropComponent } from './demo/image-crop'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -31,6 +32,7 @@ registerNestedScrollComponent()
 registerPullToRefreshComponent()
 registerBottomSheetComponent()
 registerKeyboardComponent()
+registerImageCropComponent()
 
 Navigation.registerComponent('HoverBall', () => HoverBall)
 

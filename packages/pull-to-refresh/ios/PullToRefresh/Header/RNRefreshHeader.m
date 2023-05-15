@@ -32,10 +32,12 @@
         self.backgroundColor = [UIColor clearColor];
     }
     
-    if (self.state == RNRefreshStateRefreshing && _isInitialRender) {
-        [self animateToRefreshingState];
-    }
-    _isInitialRender = false;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.state == RNRefreshStateRefreshing && _isInitialRender) {
+            [self settleToRefreshing];
+        }
+        _isInitialRender = false;
+    });
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {
@@ -132,16 +134,17 @@
 }
 
 - (void)setState:(RNRefreshState)state {
+    if (_isInitialRender) {
+        _state = state;
+        return;
+    }
+    
     if (_state == state || !self.scrollView) {
         return;
     }
     
     RNRefreshState old = _state;
     _state = state;
-    
-    if (_isInitialRender) {
-        return;
-    }
     
     if (self.onStateChanged) {
         self.onStateChanged(@{
@@ -161,6 +164,20 @@
             self.onRefresh(nil);
         }
         return;
+    }
+}
+
+- (void)settleToRefreshing {
+    if (self.onStateChanged) {
+        self.onStateChanged(@{
+            @"state": @(RNRefreshStateRefreshing)
+        });
+    }
+    
+    [self animateToRefreshingState];
+    
+    if (self.onRefresh) {
+        self.onRefresh(nil);
     }
 }
 

@@ -3,6 +3,7 @@ package com.reactnative.pulltorefresh;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 
@@ -50,6 +51,13 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         if (mRefreshKernel != null) {
             RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
             if (!refreshState.isFooter && !refreshState.isOpening) {
+                View scrollable = mRefreshKernel.getRefreshContent().getScrollableView();
+                if (scrollable instanceof ScrollView) {
+                    ScrollView scrollView = (ScrollView) scrollable;
+                    scrollView.smoothScrollTo(0, 0);
+                } else {
+                    scrollable.scrollTo(0, 0);
+                }
                 mRefreshKernel.getRefreshLayout().autoRefresh();
             }
         }

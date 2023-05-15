@@ -9,7 +9,7 @@ interface Item {
 
 const data: Array<Item> = [
   {
-    title: 'PullRefresh + FlastList',
+    title: 'PullRefresh + FlatList',
     routeName: 'PullRefreshFlatList',
   },
   {

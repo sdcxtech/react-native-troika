@@ -4,7 +4,7 @@ import { PullToRefresh } from '@sdcx/pull-to-refresh'
 import { FlatListPage, useDemoFlatlistData } from '../../components/FlatListPage'
 
 function PullRefreshFlatList() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [noMoreData, setNoMoreData] = useState(false)
   const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()

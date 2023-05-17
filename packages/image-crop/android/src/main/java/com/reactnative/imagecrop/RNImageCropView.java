@@ -62,6 +62,7 @@ public class RNImageCropView extends FrameLayout {
             mGestureCropImageView.setImageUri(Uri.parse(fileUri), mOutputUri);
         } catch (Exception e) {
             FLog.i(TAG, "设置初始图片失败：" + e.getMessage());
+            return;
         }
 
         try {

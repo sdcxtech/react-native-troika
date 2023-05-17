@@ -14,6 +14,7 @@ pod install
 
 ```
  <ImageCropView
+    ref={imageCropViewRef}
     style={'your style'}
     fileUri={'your file uri'}
     cropStyle={'circular' | 'default'}
@@ -33,3 +34,8 @@ objectRect的四个属性分别是（单位都是像素px）：
 3. width: 裁剪区域的宽度；
 4. height: 裁剪区域的高度；
 
+#### 裁剪
+```
+imageCropViewRef.crop()
+```
+然后裁剪成功后会在onCropped属性中回调裁剪后图片的uri；

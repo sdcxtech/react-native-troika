@@ -16,8 +16,8 @@ interface CropViewNativeComponentProps extends SupperProps {
 }
 
 interface CropViewProps extends SupperProps {
+  style?: ViewStyle
   onCropped: (uri: string) => void
-  style: ViewStyle
 }
 
 const ImageCropView = forwardRef<ImageCropViewRef, CropViewProps>(

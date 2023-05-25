@@ -170,7 +170,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     @VisibleForTesting
     View findScrollingChild(View view) {
         if (ViewCompat.isNestedScrollingEnabled(view)) {
-            if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1)) {
+            if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1) && (view.canScrollVertically(-1) || view.canScrollVertically(1))) {
                 return view;
             }
         }
@@ -187,6 +187,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
                 }
             }
         }
+
         return null;
     }
 

@@ -3850,10 +3850,10 @@ human-signals@^2.1.0:
   resolved "https://registry.nlark.com/human-signals/download/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha1-3JH8ukLk0G5Kuu0zs+ejwC9RTqA=
 
-hybrid-navigation@^2.15.15:
-  version "2.15.15"
-  resolved "https://registry.npmmirror.com/hybrid-navigation/-/hybrid-navigation-2.15.15.tgz#2f40361870a441e5d48f67b6fa228d02af06f420"
-  integrity sha512-DeBikjuGrftMh2CRhQPnPUmukXI+w0SqPLvI/EwZaUGO9vOSTZYLQ/9mA+7fcoJziX1HSODx2QmSY/u5o2szfg==
+hybrid-navigation@^2.16.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/hybrid-navigation/-/hybrid-navigation-2.16.0.tgz#1cebedefd9b31c981434a30b3ddd64d12f52f434"
+  integrity sha512-gzIwFuHqwazgITi6XVu38qR4IMhAh8Tnd0lmY64r6UtlpsTKKJ88H/WJSyp11equPKcOo6MdBQD1p8pODQvDxQ==
   dependencies:
     path-to-regexp "^6.1.0"
 

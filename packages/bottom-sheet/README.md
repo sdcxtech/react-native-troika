@@ -65,7 +65,7 @@ const App = () => {
 
   - `'hidden'`，隐藏状态，此时 BottomSheet 的高度为 0。
 
-- `fitToContents`，是指 BottomSheet 在展开时，是否适应内容的高度，默认是 `false`。
+- `fitToContents`，是指 BottomSheet 在展开时，是否适应内容的高度，默认是 `false`。当和可滚动列表，譬如 ScrollView 一起使用时，请保持默认值。
 
 ### 回调
 

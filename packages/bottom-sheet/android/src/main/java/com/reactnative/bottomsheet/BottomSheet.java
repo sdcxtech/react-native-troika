@@ -91,6 +91,11 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
             viewDragHelper = ViewDragHelper.create(this, dragCallback);
         }
 
+        viewDragHelper.abort();
+        if (settleRunnable != null && settleRunnable.isPosted) {
+            settleRunnable.run();
+        }
+
         layoutChild();
     }
 
@@ -110,7 +115,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
             if (state == COLLAPSED) {
                 child.offsetTopAndBottom(collapsedOffset - top);
             } else if (state == EXPANDED) {
-                child.offsetTopAndBottom(expandedOffset -top);
+                child.offsetTopAndBottom(expandedOffset - top);
             } else if (state == HIDDEN) {
                 child.offsetTopAndBottom(getHeight() - top);
             }
@@ -170,7 +175,8 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     @VisibleForTesting
     View findScrollingChild(View view) {
         if (ViewCompat.isNestedScrollingEnabled(view)) {
-            if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1) && (view.canScrollVertically(-1) || view.canScrollVertically(1))) {
+            if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1) &&
+                    (view.canScrollVertically(-1) || view.canScrollVertically(1))) {
                 return view;
             }
         }
@@ -253,7 +259,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
         // it is not the top most view of its parent. This is not necessary when the touch event is
         // happening over the scrolling content as nested scrolling logic handles that case.
         View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-        return  action == MotionEvent.ACTION_MOVE
+        return action == MotionEvent.ACTION_MOVE
                 && scroll != null
                 && !ignoreEvents
                 && state != DRAGGING

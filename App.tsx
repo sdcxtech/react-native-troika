@@ -40,6 +40,10 @@ const data: Array<Item> = [
     title: 'ImageCrop',
     routeName: 'ImageCropDemo',
   },
+  {
+    title: '菊花 Loading',
+    routeName: 'ActivityIndicator',
+  },
 ]
 
 function App() {

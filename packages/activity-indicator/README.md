@@ -2,6 +2,8 @@
 
 `ActivityIndicator` 是一个 React Native 原生 UI 组件，是一个菊花转圈的动画。
 
+<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-05-26-16-46-28.png" width="320">
+
 ## Installation
 
 ```bash
@@ -12,5 +14,16 @@ yarn install @sdcx/activity-indicator
 
 ```tsx
 import ActivityIndicator from '@sdcx/activity-indicator'
-// API 什么的和 官方的 ActivityIndicator 完全一样
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator />
+    </View>
+  )
+}
 ```
+
+## Props
+
+基本与 RN 的 [ActivityIndicator](https://reactnative.dev/docs/activityindicator) 一致。

@@ -14,12 +14,12 @@ public class ActivityIndicatorPackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-        return Collections.singletonList(new ActivityIndicatorModule(reactContext));
+        return Collections.emptyList();
     }
 
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        return Collections.singletonList(new ActivityIndicatorManager());
     }
 }

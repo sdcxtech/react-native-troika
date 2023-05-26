@@ -7,6 +7,7 @@ import 'react-native-gesture-handler'
 import './demo/pull-to-refresh/PullToRefresh'
 
 import HoverBall from './demo/overlay/OverlayScreen'
+import ActivityIndicator from './demo/activity-indicator/ActivityIndicatorScreen'
 import { registerNestedScrollComponent } from './demo/nested-scroll'
 import { registerPullToRefreshComponent } from './demo/pull-to-refresh'
 import { registerBottomSheetComponent } from './demo/bottom-sheet'
@@ -35,6 +36,7 @@ registerKeyboardComponent()
 registerImageCropComponent()
 
 Navigation.registerComponent('HoverBall', () => HoverBall)
+Navigation.registerComponent('ActivityIndicator', () => ActivityIndicator)
 
 // 重要必须
 Navigation.endRegisterComponent()

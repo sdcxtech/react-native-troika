@@ -158,7 +158,7 @@
         }
     }
     
-    if (pan.state == UIGestureRecognizerStateEnded) {
+    if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
         if (self.lastDragDistance > 0) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
@@ -307,6 +307,11 @@
 }
 
 - (void)stopWatchBottomSheetTransition {
+    if ([self.state isEqualToString:@"collapsed"]) {
+        [self dispatchOnSlide:self.maxY];
+    } else if ([self.state isEqualToString:@"expanded"]) {
+        [self dispatchOnSlide:self.minY];
+    }
     if(_displayLink){
         [_displayLink invalidate];
         _displayLink = nil;

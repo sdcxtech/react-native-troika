@@ -158,7 +158,7 @@
         }
     }
     
-    if (pan.state == UIGestureRecognizerStateEnded) {
+    if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
         if (self.lastDragDistance > 0) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种

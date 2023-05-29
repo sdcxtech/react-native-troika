@@ -2,6 +2,7 @@ import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
 import { FlatListPage, useDemoFlatlistData } from '../../components/FlatListPage'
+import { SpinnerPullToRefreshHeader } from '../PullToRefresh/SpinnerPullToRefreshHeader'
 
 function PullRefreshFlatList() {
   const [refreshing, setRefreshing] = useState(true)
@@ -47,8 +48,7 @@ function PullRefreshFlatList() {
   return (
     <PullToRefresh
       style={{ height: '100%', overflow: 'hidden' }}
-      refreshing={refreshing}
-      onRefresh={beginRefresh}
+      header={<SpinnerPullToRefreshHeader refreshing={refreshing} onRefresh={beginRefresh} />}
       loadingMore={loadingMore}
       noMoreData={noMoreData}
       onLoadMore={loadMore}>

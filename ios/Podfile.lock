@@ -301,7 +301,7 @@ PODS:
     - React-jsi (= 0.67.5)
     - React-logger (= 0.67.5)
     - React-perflogger (= 0.67.5)
-  - RNBottomSheet (0.7.0):
+  - RNBottomSheet (0.8.0):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -570,7 +570,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: c3b8a3245267a3849b0c7cb91a37606bf5f3aa65
   React-runtimeexecutor: 434efc9e5b6d0f14f49867f130b39376c971c1aa
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
-  RNBottomSheet: 0f4b86bb3020d61242089aec24b251b6934e8796
+  RNBottomSheet: f010234b73186685a00c929b8578e924ed57056b
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688

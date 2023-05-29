@@ -4,7 +4,7 @@ import ActivityIndicatorAndroid from './ActivityIndicatorAndroid'
 
 const ActivityIndicator = (props: ActivityIndicatorProps) => {
   if (Platform.OS === 'ios') {
-    return <ActivityIndicatorIOS {...props} />
+    return <ActivityIndicatorIOS hidesWhenStopped={false} {...props} />
   } else {
     return <ActivityIndicatorAndroid {...props} />
   }

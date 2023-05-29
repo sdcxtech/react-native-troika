@@ -72,7 +72,7 @@ public class ActivityIndicatorManager extends SimpleViewManager<ActivityIndicato
         if (sizeStr == null) {
             sizeStr = "small";
         }
-        int size =  sizeStr.equals("small") ? 20 : 36;
+        int size = sizeStr.equals("small") ? 20 : 36;
         return YogaMeasureOutput.make(size, size);
     }
 
@@ -88,7 +88,7 @@ public class ActivityIndicatorManager extends SimpleViewManager<ActivityIndicato
         }
 
         @ReactProp(name = "size")
-        public void setSize( @Nullable String size) {
+        public void setSize(@Nullable String size) {
             if (mSize == null || !mSize.equals(size)) {
                 mSize = size;
                 dirty();
@@ -100,7 +100,7 @@ public class ActivityIndicatorManager extends SimpleViewManager<ActivityIndicato
             if (mSize == null) {
                 mSize = "small";
             }
-            int size =  (int) (PixelUtil.toPixelFromDIP(mSize.equals("small") ? 20 : 36) + 0.5);
+            int size = (int) (PixelUtil.toPixelFromDIP(mSize.equals("small") ? 20 : 36) + 0.5);
             return YogaMeasureOutput.make(size, size);
         }
     }

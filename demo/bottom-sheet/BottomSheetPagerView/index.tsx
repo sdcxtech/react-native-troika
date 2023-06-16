@@ -16,7 +16,7 @@ const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(Pag
 
 const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView']
 
-const HEADER_HEIGTH = 80
+const HEADER_HEIGHT = 80
 
 function BottomSheetPagerView() {
   const {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eef',
   },
   header: {
-    height: HEADER_HEIGTH,
+    height: HEADER_HEIGHT,
     backgroundColor: 'coral',
     justifyContent: 'flex-end',
   },

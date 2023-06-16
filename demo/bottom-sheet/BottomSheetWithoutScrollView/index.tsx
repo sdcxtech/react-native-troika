@@ -3,9 +3,10 @@ import { NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native
 import { LoremIpsum } from '../../components/LoremIpsum'
 import BottomSheet, { BottomSheetState, StateChangedEventData } from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
+
 import Button from './Button'
 
-const HEADER_HEIGTH = 50
+const HEADER_HEIGHT = 50
 
 function BottomSheetWithoutScrollView() {
   const [state, setBottomSheetState] = useState<BottomSheetState>('collapsed')
@@ -70,13 +71,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#eef',
   },
   header: {
-    height: HEADER_HEIGTH,
+    height: HEADER_HEIGHT,
     backgroundColor: 'coral',
     paddingHorizontal: 16,
     flexDirection: 'row',
   },
   toolbar: {
-    height: HEADER_HEIGTH,
+    height: HEADER_HEIGHT,
     backgroundColor: 'cadetblue',
     paddingHorizontal: 16,
     flexDirection: 'row',

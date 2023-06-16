@@ -12,7 +12,7 @@ import BottomSheet, { OffsetChangedEventData } from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
 import DropShadow from 'react-native-drop-shadow'
 
-const HEADER_HEIGTH = 50
+const HEADER_HEIGHT = 50
 
 const AnimatedBottomSheet = Animated.createAnimatedComponent(BottomSheet)
 
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
   },
   header: {
-    height: PixelRatio.roundToNearestPixel(HEADER_HEIGTH),
+    height: PixelRatio.roundToNearestPixel(HEADER_HEIGHT),
     backgroundColor: 'coral',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,

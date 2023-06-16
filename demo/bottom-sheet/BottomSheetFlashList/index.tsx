@@ -5,7 +5,7 @@ import BottomSheet from '@sdcx/bottom-sheet'
 import { withNavigationItem } from 'hybrid-navigation'
 import Contacts from '../../components/contacts/Contacts'
 
-const HEADER_HEIGTH = 50
+const HEADER_HEIGHT = 50
 
 function BottomSheetFlashList() {
   return (
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eef',
   },
   header: {
-    height: HEADER_HEIGTH,
+    height: HEADER_HEIGHT,
     backgroundColor: 'coral',
   },
   bottomSheet: {

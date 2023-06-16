@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { withNavigationItem } from 'hybrid-navigation'
+
 import ActivityIndicator from '@sdcx/activity-indicator'
+import { withNavigationItem } from 'hybrid-navigation'
 
 function ActivityIndicatorScreen() {
   return (

@@ -14,7 +14,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
 
 import java.util.HashMap;
-
 public class OverlayModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
     private final HashMap<String, Overlay> overlays = new HashMap<>();
@@ -87,12 +86,12 @@ public class OverlayModule extends ReactContextBaseJavaModule implements Lifecyc
 
     @Override
     public void onHostResume() {
-        UiThreadUtil.assertOnUiThread();
+        //
     }
 
     @Override
     public void onHostPause() {
-
+        //
     }
 
     @Override

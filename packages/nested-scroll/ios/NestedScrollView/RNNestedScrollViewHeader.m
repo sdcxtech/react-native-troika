@@ -36,6 +36,7 @@
 
 - (void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
+    [self notityContentSizeChanged];
 }
 
 - (void)layoutSubviews {

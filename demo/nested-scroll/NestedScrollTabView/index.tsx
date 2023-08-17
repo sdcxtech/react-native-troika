@@ -6,7 +6,7 @@ import TabView from '../../components/tabview'
 
 export function NestedScrollTabView() {
   return (
-    <NestedScrollView style={styles.container}>
+    <NestedScrollView>
       <NestedScrollViewHeader>
         <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
       </NestedScrollViewHeader>
@@ -16,10 +16,6 @@ export function NestedScrollTabView() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: '#fff',
-  },
   image: {
     height: 160,
     width: '100%',

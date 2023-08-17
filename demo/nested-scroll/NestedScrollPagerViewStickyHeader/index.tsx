@@ -28,7 +28,7 @@ export function NestedScrollPagerViewStickyHeader() {
   } = usePagerView()
 
   return (
-    <NestedScrollView style={styles.coordinator}>
+    <NestedScrollView style={styles.nestedscroll}>
       <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
         <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
         <TabBar
@@ -58,27 +58,12 @@ export function NestedScrollPagerViewStickyHeader() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FF0000',
-  },
-  coordinator: {
-    flex: 1,
+  nestedscroll: {
     backgroundColor: '#fff',
-  },
-  content: {
-    backgroundColor: '#0000FF',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   image: {
     height: 160,
     width: '100%',
-  },
-  text: {
-    paddingVertical: 20,
-    fontSize: 18,
-    color: '#FFFFFF',
   },
   pager: {
     height: '100%',

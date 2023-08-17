@@ -20,7 +20,6 @@ export function NestedScrollFlatList() {
 
 const styles = StyleSheet.create({
   coordinator: {
-    height: '100%',
     backgroundColor: '#fff',
   },
   content: {

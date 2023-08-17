@@ -22,7 +22,7 @@ export function NestedScrollParallaxHeader() {
 
   return (
     <View style={styles.fill}>
-      <NestedScrollView style={styles.coordinator} bounces>
+      <NestedScrollView bounces>
         <ParallaxHeader
           topBarHeight={topBarHeight()}
           imageHeight={imageHeight}
@@ -51,29 +51,9 @@ const styles = StyleSheet.create({
   fill: {
     flex: 1,
   },
-  coordinator: {
-    height: '100%',
-    backgroundColor: '#fff',
-  },
-  content: {
-    backgroundColor: '#0000FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imgContainer: {
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
   image: {
     height: 160,
     width: '100%',
-  },
-  text: {
-    height: 60,
-    justifyContent: 'center',
-    fontSize: 18,
-    alignSelf: 'center',
-    color: '#FFFFFF',
   },
 })
 

@@ -33,7 +33,7 @@ function NestedScrollView({ children, ...props }: NestedScrollViewProps) {
 export function NestedScrollViewAndroid({ children, contentContainerStyle, ...props }: NestedScrollViewProps) {
   return (
     <NestedScrollViewNative {...props}>
-      <View style={[styles.flex1, contentContainerStyle]} collapsable={false}>
+      <View style={[styles.content, contentContainerStyle]} collapsable={false}>
         {children}
       </View>
     </NestedScrollViewNative>
@@ -41,7 +41,7 @@ export function NestedScrollViewAndroid({ children, contentContainerStyle, ...pr
 }
 
 const styles = StyleSheet.create({
-  flex1: {
+  content: {
     flex: 1,
   },
 })

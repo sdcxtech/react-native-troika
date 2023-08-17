@@ -320,7 +320,7 @@ PODS:
     - React-Core
   - RNNestedScrollView (0.4.0):
     - React-Core
-  - RNOverlay (0.2.0):
+  - RNOverlay (0.3.0):
     - React-Core
   - RNPullToRefresh (0.7.0):
     - React-Core
@@ -578,7 +578,7 @@ SPEC CHECKSUMS:
   RNImageCrop: e0f88d4e36e0045ae83e507876fe89135503b821
   RNKeyboardInsets: b601abfbb7ebcd4b970d7ed17733657e50d746a5
   RNNestedScrollView: d469193773222d0db80f6230355bf4acfeec1aae
-  RNOverlay: adf004b9466f74f1ab617a9f8357b4d41e3f5927
+  RNOverlay: 6a401236f9ad0bba41d4f953739a9ca34826d958
   RNPullToRefresh: 88e37418b963137c5ff22ea9751e11a55019935a
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
   RNReanimated: 7c2244798c6a597436f7692cef2fbf91b8358991

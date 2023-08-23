@@ -50,6 +50,16 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
     }
 
     @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+        boolean consumed = super.onNestedPreFling(target, velocityX, velocityY);
+        if (!consumed && velocityY > 0 && canScrollVertically(1)) {
+            fling((int) velocityY);
+            return true;
+        }
+        return consumed;
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (super.onInterceptTouchEvent(ev)) {
             NativeGestureUtil.notifyNativeGestureStarted(this, ev);

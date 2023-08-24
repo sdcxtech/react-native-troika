@@ -6,6 +6,19 @@
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
 
+#define FLOAT_EPSILON 0.01
+
+BOOL eq(float a, float b) {
+    return fabs(a - b) < FLOAT_EPSILON;
+}
+
+BOOL gt(float a, float b) {
+    return (a - b) > FLOAT_EPSILON;
+}
+
+BOOL lt(float a, float b) {
+    return (b - a) > FLOAT_EPSILON;
+}
 
 #pragma mark - RNMainScrollView
 
@@ -126,7 +139,7 @@
     
     UIScrollView *target = self.main.target;
     if (target == nil) {
-        if (dy < 0 && newOffset >= self.headerScrollRange) {
+        if (dy < 0 && gt(newOffset, [self headerScrollRange])) {
             main.contentOffset = CGPointMake(0, self.headerScrollRange);
             _lastOffsetY = main.contentOffset.y;
             return;
@@ -136,13 +149,13 @@
     }
     
     // 向下，main 下拉刷新
-    if (dy > 0 && target.contentOffset.y <= 0) {
+    if (dy > 0 && target.contentOffset.y < 0) {
         _lastOffsetY = newOffset;
         return;
     }
     
     // 向下，main 上拉加载释放
-    if (dy > 0 && _lastOffsetY > self.headerScrollRange) {
+    if (dy > 0 && gt(_lastOffsetY, [self headerScrollRange])) {
         main.contentOffset = CGPointMake(0, fmax(newOffset, self.headerScrollRange));
         _lastOffsetY = main.contentOffset.y;
         return;
@@ -161,7 +174,7 @@
     }
     
     // 向上，target 可向上，main 保持 sticky
-    if (dy < 0 && newOffset > self.headerScrollRange && target.contentOffset.y + 0.01 < target.contentSize.height - target.frame.size.height) {
+    if (dy < 0 && gt(newOffset, [self headerScrollRange]) && lt(target.contentOffset.y, target.contentSize.height - target.frame.size.height)) {
         main.contentOffset = CGPointMake(0, self.headerScrollRange);
         _lastOffsetY = main.contentOffset.y;
         return;
@@ -189,13 +202,13 @@
     // 向上
     if (dy < 0) {
         // main 可向上，target 归位
-        if (main.contentOffset.y < self.headerScrollRange && target.contentOffset.y > 0) {
+        if (lt(main.contentOffset.y, self.headerScrollRange) && target.contentOffset.y > 0) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, fmax(0, old));
             return;
         }
         
-        if (main.bounces && main.contentOffset.y > self.headerScrollRange && target.contentOffset.y + 0.01 >= target.contentSize.height - target.frame.size.height) {
+        if (main.bounces && gt(main.contentOffset.y, self.headerScrollRange) && gt(target.contentOffset.y, target.contentSize.height - target.frame.size.height)) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0,  target.contentSize.height - target.frame.size.height);
             return;
@@ -211,7 +224,7 @@
             return;
         }
         
-        if (main.bounces && main.contentOffset.y > self.headerScrollRange && old + 0.01 >= target.contentSize.height - target.frame.size.height) {
+        if (main.bounces && gt(main.contentOffset.y, self.headerScrollRange) && gt(old, target.contentSize.height - target.frame.size.height)) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, old);
         }
@@ -279,6 +292,3 @@ static BOOL _CGSizeValid(CGSize size) {
 }
 
 @end
-
-
-

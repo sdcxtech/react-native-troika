@@ -12,7 +12,6 @@ public class PullToRefreshFooterShadowNode extends LayoutShadowNode {
         if (data instanceof PullToRefreshFooterLocalData) {
             PullToRefreshFooterLocalData footerLocalData = (PullToRefreshFooterLocalData) data;
             setStyleHeight(footerLocalData.viewRect.bottom - footerLocalData.viewRect.top);
-            calculateLayout();
         }
     }
 

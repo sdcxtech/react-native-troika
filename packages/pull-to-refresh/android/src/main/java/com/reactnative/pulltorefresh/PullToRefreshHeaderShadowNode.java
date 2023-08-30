@@ -12,7 +12,6 @@ public class PullToRefreshHeaderShadowNode extends LayoutShadowNode {
         if (data instanceof PullToRefreshHeaderLocalData) {
             PullToRefreshHeaderLocalData headerLocalData = (PullToRefreshHeaderLocalData) data;
             setStyleHeight(headerLocalData.viewRect.bottom - headerLocalData.viewRect.top);
-            calculateLayout();
         }
     }
 

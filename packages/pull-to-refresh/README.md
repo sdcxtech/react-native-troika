@@ -2,7 +2,9 @@
 
 `PullToRefresh` 是一个 React Native 原生 UI 组件。
 
-它提供了自定义下拉刷新的能力。
+React Native 内置的下拉刷新组件比较简陋，且 iOS 和 Android 平台的表现很不一致。幸运的是，它提供了一个 `refreshControl` 属性，可以用来自定义下拉刷新组件。
+
+`PullToRefresh` 提供了自定义下拉刷新的能力。
 
 ## 特点
 

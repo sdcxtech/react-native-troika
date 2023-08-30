@@ -1,6 +1,6 @@
 # BottomSheet
 
-`BottomSheet` 是一个 React Native 原生 UI 组件。
+[BottomSheet](https://github.com/sdcxtech/react-native-troika/blob/master/packages/bottom-sheet/README.md) 是一个类似于 Android 原生的 [BottomSheetBehavior](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior) 组件，我们在 API 设计上也尽量和 Android 原生保持一致。
 
 它位于屏幕底部，可拖拽，支持嵌套滚动，可以和可滚动视图（`FlatList`, `FlashList`, `WebView` 等等）一起使用。
 

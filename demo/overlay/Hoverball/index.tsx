@@ -93,11 +93,11 @@ function registerIfNeeded() {
 
 function show() {
   registerIfNeeded()
-  Overlay.show('__overlay_hoverball__', {}, { passThroughTouches: true })
+  Overlay.show('__overlay_hoverball__', { passThroughTouches: true, id: 0 })
 }
 
 function hide() {
-  Overlay.hide('__overlay_hoverball__')
+  Overlay.hide('__overlay_hoverball__', 0)
 }
 
 const Floating = { show, hide }

@@ -6,13 +6,13 @@ import 'react-native-gesture-handler'
 // 设置全局下拉刷新样式
 import './demo/pull-to-refresh/PullToRefresh'
 
-import HoverBall from './demo/overlay/OverlayScreen'
 import ActivityIndicator from './demo/activity-indicator/ActivityIndicatorScreen'
 import { registerNestedScrollComponent } from './demo/nested-scroll'
 import { registerPullToRefreshComponent } from './demo/pull-to-refresh'
 import { registerBottomSheetComponent } from './demo/bottom-sheet'
 import { registerKeyboardComponent } from './demo/keyboard-insets'
 import { registerImageCropComponent } from './demo/image-crop'
+import { registerOverlayComponent } from './demo/overlay'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -34,8 +34,8 @@ registerPullToRefreshComponent()
 registerBottomSheetComponent()
 registerKeyboardComponent()
 registerImageCropComponent()
+registerOverlayComponent()
 
-Navigation.registerComponent('HoverBall', () => HoverBall)
 Navigation.registerComponent('ActivityIndicator', () => ActivityIndicator)
 
 // 重要必须

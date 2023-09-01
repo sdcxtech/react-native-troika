@@ -33,8 +33,8 @@ const data: Array<Item> = [
     routeName: 'Keyboard',
   },
   {
-    title: '悬浮球',
-    routeName: 'HoverBall',
+    title: 'Overlay',
+    routeName: 'Overlay',
   },
   {
     title: 'ImageCrop',

@@ -5,6 +5,11 @@
 #import <React/RCTBridge.h>
 
 
+NSString* genKey(NSString* moduleName, NSNumber* id) {
+    return [NSString stringWithFormat:@"%@-%@", moduleName, id];
+}
+
+
 @interface RNOverlayModule ()
 
 @property(nonatomic, strong) NSMutableDictionary *overlays;
@@ -45,25 +50,27 @@
 RCT_EXPORT_MODULE(OverlayHost)
 
 
-RCT_EXPORT_METHOD(show:(NSString *)moduleName props:(NSDictionary *)props options:(NSDictionary *)options) {
-    RNOverlay *overlay = self.overlays[moduleName];
+RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
+    NSString* key = genKey(moduleName, options[@"id"]);
+    RNOverlay *overlay = self.overlays[key];
     if (overlay != nil) {
         [overlay update];
         return;
     }
     
     overlay = [[RNOverlay alloc] initWithModuleName:moduleName bridge:self.bridge];
-    self.overlays[moduleName] = overlay;
+    self.overlays[key] = overlay;
     
-    [overlay show:props options:options];
+    [overlay show:@{@"id": options[@"id"]} options:options];
 }
 
-RCT_EXPORT_METHOD(hide:(NSString *)moduleName) {
-    RNOverlay *overlay = self.overlays[moduleName];
+RCT_EXPORT_METHOD(hide:(NSString *)moduleName id:(nonnull NSNumber *)id) {
+    NSString* key = genKey(moduleName, id);
+    RNOverlay *overlay = self.overlays[key];
     if (!overlay) {
         return;
     }
-    [self.overlays removeObjectForKey:moduleName];
+    [self.overlays removeObjectForKey:key];
     [overlay hide];
 }
 

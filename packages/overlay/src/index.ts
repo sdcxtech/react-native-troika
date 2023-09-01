@@ -1,25 +1,23 @@
 import { NativeModule, NativeModules } from 'react-native'
 
-interface OverlayOptions {
+export interface OverlayOptions {
+  id: number
   passThroughTouches?: boolean
 }
 
-interface PropsType {
-  [index: string]: any
-}
 interface OverlayInterface extends NativeModule {
-  show<P extends PropsType = {}>(moduleName: string, props?: P, options?: OverlayOptions): void
-  hide(moduleName: string): void
+  show(moduleName: string, options: OverlayOptions): void
+  hide(moduleName: string, id: number): void
 }
 
 const OverlayHost: OverlayInterface = NativeModules.OverlayHost
 
-function show<P extends PropsType = {}>(moduleName: string, props?: P, options: OverlayOptions = {}) {
-  OverlayHost.show(moduleName, props, options)
+function show(moduleName: string, options: OverlayOptions) {
+  OverlayHost.show(moduleName, options)
 }
 
-function hide(moduleName: string) {
-  OverlayHost.hide(moduleName)
+function hide(moduleName: string, id: number) {
+  OverlayHost.hide(moduleName, id)
 }
 
 const Overlay = { show, hide }

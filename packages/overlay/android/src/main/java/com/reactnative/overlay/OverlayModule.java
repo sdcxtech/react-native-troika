@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableMap;
 
 import java.util.HashMap;
 public class OverlayModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
@@ -53,7 +55,7 @@ public class OverlayModule extends ReactContextBaseJavaModule implements Lifecyc
     }
 
     @ReactMethod
-    public void show(final String moduleName, final ReadableMap props, final ReadableMap options) {
+    public void show(final String moduleName, final ReadableMap options) {
         UiThreadUtil.runOnUiThread(() -> {
             final Activity activity = getCurrentActivity();
             if (activity == null || activity.isFinishing()) {
@@ -65,21 +67,24 @@ public class OverlayModule extends ReactContextBaseJavaModule implements Lifecyc
                 overlay.update();
                 return;
             }
-
+            
+            int id = options.getInt("id");
+            WritableMap props = Arguments.createMap();
+            props.putInt("id", id);
             overlay = new Overlay(activity, moduleName, reactNativeHost.getReactInstanceManager());
             overlay.show(props, options);
-            overlays.put(moduleName, overlay);
+            overlays.put(genOverlayKey(moduleName, id), overlay);
         });
     }
 
     @ReactMethod
-    public void hide(String moduleName) {
+    public void hide(String moduleName, int id) {
         UiThreadUtil.runOnUiThread(() -> {
-            Overlay overlay = overlays.get(moduleName);
+            Overlay overlay = overlays.get(genOverlayKey(moduleName, id));
             if (overlay == null) {
                 return;
             }
-            overlays.remove(moduleName);
+            overlays.remove(genOverlayKey(moduleName, id));
             overlay.hide();
         });
     }
@@ -98,5 +103,9 @@ public class OverlayModule extends ReactContextBaseJavaModule implements Lifecyc
     public void onHostDestroy() {
         FLog.i("OverlayModule", "onHostDestroy");
         handleDestroy();
+    }
+    
+    private String genOverlayKey(String moduleName, int id) {
+        return moduleName + "-" + id;
     }
 }

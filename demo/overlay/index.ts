@@ -1,11 +1,11 @@
 import Navigation from 'hybrid-navigation'
 
 import Home from './Home'
-import OverlayScreen from './OverlayScreen'
+import HoverballScreen from './HoverballScreen'
 import ToastScreen from './ToastScreen'
 
 export function registerOverlayComponent() {
   Navigation.registerComponent('Overlay', () => Home)
-  Navigation.registerComponent('Hoverball', () => OverlayScreen)
+  Navigation.registerComponent('Hoverball', () => HoverballScreen)
   Navigation.registerComponent('Toast', () => ToastScreen)
 }

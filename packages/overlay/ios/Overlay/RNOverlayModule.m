@@ -61,7 +61,18 @@ RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
     overlay = [[RNOverlay alloc] initWithModuleName:moduleName bridge:self.bridge];
     self.overlays[key] = overlay;
     
-    [overlay show:@{@"id": options[@"id"]} options:options];
+    UIWindow *window = RCTKeyWindow();
+    UIEdgeInsets safeAreaInsets = window.safeAreaInsets;
+    NSDictionary* insets = @{
+      @"top" : @(safeAreaInsets.top),
+      @"right" : @(safeAreaInsets.right),
+      @"bottom" : @(safeAreaInsets.bottom),
+      @"left" : @(safeAreaInsets.left),
+    };
+    
+    NSMutableDictionary *props = [options mutableCopy];
+    [props setObject:insets forKey:@"insets"];
+    [overlay show:props options:options];
 }
 
 RCT_EXPORT_METHOD(hide:(NSString *)moduleName id:(nonnull NSNumber *)id) {

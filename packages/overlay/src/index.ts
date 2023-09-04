@@ -1,8 +1,12 @@
-import { NativeModule, NativeModules } from 'react-native'
+import { Insets, NativeModule, NativeModules } from 'react-native'
 
 export interface OverlayOptions {
   id: number
   passThroughTouches?: boolean
+}
+
+export interface OverlayProps extends OverlayOptions {
+  insets: Insets
 }
 
 interface OverlayInterface extends NativeModule {

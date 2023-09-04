@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppRegistry, Pressable, StyleSheet, Text, View } from 'react-native'
-import { Overlay, OverlayOptions } from '@sdcx/overlay'
+import { Overlay, OverlayProps } from '@sdcx/overlay'
 
 interface ToastProps {
   message: string
@@ -9,12 +9,12 @@ interface ToastProps {
   onPress: () => void
 }
 
-function ToastView({ id }: OverlayOptions) {
-  console.log('id', id)
+function ToastView({ id, insets, passThroughTouches }: OverlayProps) {
+  console.log('id', id, 'insets', insets)
   const props = propsMap.get(id)
   const { message, onPress } = props || {}
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents={passThroughTouches ? 'box-none' : 'auto'}>
       <Pressable style={styles.box} onPress={onPress}>
         <Text style={styles.message}>{message}</Text>
       </Pressable>

@@ -22,7 +22,7 @@ function ModalBase({ id, passThroughTouches }: OverlayProps) {
   useEffect(() => {
     Animated.timing(opacity.current, {
       useNativeDriver: true,
-      duration: 300,
+      duration: 150,
       toValue: 1,
     }).start()
   }, [])
@@ -43,13 +43,7 @@ function ModalBase({ id, passThroughTouches }: OverlayProps) {
             <Button
               key={index}
               text={button.text}
-              onPress={() => {
-                Animated.timing(opacity.current, {
-                  useNativeDriver: true,
-                  duration: 200,
-                  toValue: 0,
-                }).start(button.onPress)
-              }}
+              onPress={button.onPress}
               style={index !== 0 ? { marginLeft } : undefined}
             />
           ))}

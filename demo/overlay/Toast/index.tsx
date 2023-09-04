@@ -69,7 +69,7 @@ interface ToastConfig {
   onPress?: () => void
 }
 
-export const Toast = {
+const Toast = {
   show: (config: ToastConfig) => {
     const key = showInternal()
     const params = {
@@ -90,3 +90,5 @@ export const Toast = {
     }
   },
 }
+
+export default Toast

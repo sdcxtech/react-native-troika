@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Button } from 'react-native'
 import { withNavigationItem } from 'hybrid-navigation'
-import { Toast } from './Toast'
+import Toast from './Toast'
 
 function ToastScreen() {
   return (

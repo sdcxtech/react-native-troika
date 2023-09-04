@@ -16,6 +16,10 @@ const data: Array<Item> = [
     title: 'Toast',
     routeName: 'Toast',
   },
+  {
+    title: 'Alert',
+    routeName: 'Alert',
+  },
 ]
 
 function Home() {

@@ -32,7 +32,7 @@ BOOL lt(float a, float b) {
 @end
 
 @implementation RNMainScrollView {
-    __weak RCTRootContentView *_cachedRootView;
+    __weak RCTRootContentView *_rootView;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -95,20 +95,20 @@ BOOL lt(float a, float b) {
 - (void)didMoveToWindow {
     [super didMoveToWindow];
     if (self.window) {
-        [self _cacheRootView];
+        [self cacheRootView];
     }
 }
 
-- (void)_cacheRootView {
+- (void)cacheRootView {
   UIView *rootView = self;
   while (rootView.superview && ![rootView isReactRootView]) {
     rootView = rootView.superview;
   }
-  _cachedRootView = rootView;
+  _rootView = rootView;
 }
 
 - (void)cancelRootViewTouches {
-    RCTRootContentView *rootView = (RCTRootContentView *)_cachedRootView;
+    RCTRootContentView *rootView = (RCTRootContentView *)_rootView;
     [rootView.touchHandler cancel];
 }
 

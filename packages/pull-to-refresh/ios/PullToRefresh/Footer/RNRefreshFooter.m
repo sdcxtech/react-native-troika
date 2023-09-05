@@ -4,6 +4,8 @@
 
 #import <React/RCTRefreshableProtocol.h>
 #import <React/UIView+React.h>
+#import <React/RCTRootContentView.h>
+#import <React/RCTTouchHandler.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTLog.h>
 #import <React/RCTAssert.h>
@@ -19,6 +21,7 @@
 
 @implementation RNRefreshFooter {
     BOOL _hasObserver;
+    __weak RCTRootContentView *_rootView;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge {
@@ -83,6 +86,13 @@
     }
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (self.window) {
+        [self cacheRootView];
+    }
+}
+
 - (void)addObserver {
     if (!_hasObserver && self.scrollView) {
         NSKeyValueObservingOptions options = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
@@ -129,6 +139,10 @@
         }
         
         CGFloat offset = self.scrollView.contentOffset.y;
+        
+        if (self.scrollView.isDragging) {
+            [self cancelRootViewTouches];
+        }
         
         if (self.manual) {
             if (offset < minRange) {
@@ -248,6 +262,19 @@
         CGPoint offset = {scrollView.contentOffset.x, range};
         [scrollView setContentOffset:offset animated:NO];
     } completion:NULL];
+}
+
+- (void)cacheRootView {
+  UIView *rootView = self;
+  while (rootView.superview && ![rootView isReactRootView]) {
+    rootView = rootView.superview;
+  }
+  _rootView = rootView;
+}
+
+- (void)cancelRootViewTouches {
+    RCTRootContentView *rootView = (RCTRootContentView *)_rootView;
+    [rootView.touchHandler cancel];
 }
 
 @end

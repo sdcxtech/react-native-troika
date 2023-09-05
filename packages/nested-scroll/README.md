@@ -50,7 +50,12 @@ const App = () => {
 }
 ```
 
-> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的，因此，记得为最里层的可滚动视图设置 `nestedScrollEnabled` 属性。
+> :exclamation: :exclamation: :exclamation:
+> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的。
+>
+> <h3>请记得为你的列表开启 `nestedScrollEnabled` 属性。</h3>
+>
+> :exclamation: :exclamation: :exclamation:
 
 ## API
 

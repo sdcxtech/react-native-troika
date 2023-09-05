@@ -83,7 +83,12 @@ function App() {
 }
 ```
 
-> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的，请记得为你的可滚动列表打开 `nestedScrollEnabled` 属性。
+> :exclamation: :exclamation: :exclamation:
+> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的。
+>
+> <h3>请记得为你的列表开启 `nestedScrollEnabled` 属性。</h3>
+>
+> :exclamation: :exclamation: :exclamation:
 
 这两种使用方式在效果上并无不同。
 

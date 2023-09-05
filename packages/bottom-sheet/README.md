@@ -43,7 +43,12 @@ const App = () => {
 }
 ```
 
-> :white_check_mark: 当和可滚动视图一起使用时，需要设置 `nestedScrollEnabled` 属性。
+> :exclamation: :exclamation: :exclamation:
+> Android 是基于 [NestedScrolling API](https://developer.android.com/reference/androidx/core/view/NestedScrollingChild) 实现的。
+>
+> <h3>请记得为你的列表开启 `nestedScrollEnabled` 属性。</h3>
+>
+> :exclamation: :exclamation: :exclamation:
 
 ## 基本概念和 API
 

@@ -3,8 +3,10 @@
 #import "RNNestedScrollViewLocalData.h"
 
 #import <React/UIView+React.h>
-#import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
+#import <React/RCTRootContentView.h>
+#import <React/RCTTouchHandler.h>
+#import <React/RCTLog.h>
 
 #define FLOAT_EPSILON 0.01
 
@@ -29,15 +31,27 @@ BOOL lt(float a, float b) {
 
 @end
 
-@implementation RNMainScrollView
+@implementation RNMainScrollView {
+    __weak RCTRootContentView *_cachedRootView;
+}
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    
     if (gestureRecognizer == self.panGestureRecognizer && otherGestureRecognizer == self.target.panGestureRecognizer) {
         return YES;
     }
 
     return NO;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        if ([super gestureRecognizerShouldBegin:gestureRecognizer]) {
+            [self cancelRootViewTouches];
+            return YES;
+        }
+        return NO;
+    }
+    return [super gestureRecognizerShouldBegin:gestureRecognizer];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -76,6 +90,26 @@ BOOL lt(float a, float b) {
         [self.target removeObserver:self.superview forKeyPath:@"contentOffset"];
         self.target = nil;
     }
+}
+
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (self.window) {
+        [self _cacheRootView];
+    }
+}
+
+- (void)_cacheRootView {
+  UIView *rootView = self;
+  while (rootView.superview && ![rootView isReactRootView]) {
+    rootView = rootView.superview;
+  }
+  _cachedRootView = rootView;
+}
+
+- (void)cancelRootViewTouches {
+    RCTRootContentView *rootView = (RCTRootContentView *)_cachedRootView;
+    [rootView.touchHandler cancel];
 }
 
 - (BOOL)isHorizontal:(UIScrollView *)scrollView {

@@ -2,6 +2,9 @@
 #import "RNRefreshState.h"
 
 #import <React/RCTRefreshableProtocol.h>
+#import <React/UIView+React.h>
+#import <React/RCTRootContentView.h>
+#import <React/RCTTouchHandler.h>
 #import <React/RCTLog.h>
 
 @interface RNRefreshHeader () <RCTRefreshableProtocol>
@@ -14,6 +17,7 @@
 @implementation RNRefreshHeader {
     BOOL _isInitialRender;
     BOOL _hasObserver;
+    __weak RCTRootContentView *_cachedRootView;
 }
 
 - (instancetype)init {
@@ -55,6 +59,13 @@
     }
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (self.window) {
+        [self _cacheRootView];
+    }
+}
+
 - (void)addObserver {
     if (!_hasObserver && self.scrollView) {
         NSKeyValueObservingOptions options = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
@@ -72,7 +83,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        
         CGFloat offsetY = self.scrollView.contentOffset.y;
         CGFloat insetT = -self.scrollView.contentInset.top;
         
@@ -93,9 +103,9 @@
         CGFloat range = self.scrollView.contentInset.top + self.bounds.size.height;
         
         if (self.scrollView.isDragging) {
+            [self cancelRootViewTouches];
             if (self.state == RNRefreshStateIdle && fabs(offsetY) >= range) {
                 self.state = RNRefreshStateComing;
-                
             } else
             if (self.state == RNRefreshStateComing && fabs(offsetY) <= range) {
                 self.state = RNRefreshStateIdle;
@@ -199,6 +209,19 @@
         CGPoint offset = {scrollView.contentOffset.x, -range};
         [scrollView setContentOffset:offset animated:NO];
     } completion:NULL];
+}
+
+- (void)_cacheRootView {
+  UIView *rootView = self;
+  while (rootView.superview && ![rootView isReactRootView]) {
+    rootView = rootView.superview;
+  }
+  _cachedRootView = rootView;
+}
+
+- (void)cancelRootViewTouches {
+    RCTRootContentView *rootView = (RCTRootContentView *)_cachedRootView;
+    [rootView.touchHandler cancel];
 }
 
 @end

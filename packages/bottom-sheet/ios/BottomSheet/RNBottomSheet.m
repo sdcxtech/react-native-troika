@@ -1,6 +1,8 @@
 #import "RNBottomSheet.h"
 
 #import <React/UIView+React.h>
+#import <React/RCTRootContentView.h>
+#import <React/RCTTouchHandler.h>
 #import <React/RCTLog.h>
 
 @interface RNBottomSheet () <UIGestureRecognizerDelegate>
@@ -18,7 +20,9 @@
 
 @end
 
-@implementation RNBottomSheet
+@implementation RNBottomSheet {
+    __weak RCTRootContentView *_cachedRootView;
+}
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -35,6 +39,17 @@
         return YES;
     }
     return NO;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        if ([super gestureRecognizerShouldBegin:gestureRecognizer]) {
+            [self cancelRootViewTouches];
+            return YES;
+        }
+        return NO;
+    }
+    return [super gestureRecognizerShouldBegin:gestureRecognizer];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -80,6 +95,26 @@
     if (newWindow == nil) {
         [self stopWatchBottomSheetTransition];
     }
+}
+
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    if (self.window) {
+        [self _cacheRootView];
+    }
+}
+
+- (void)_cacheRootView {
+  UIView *rootView = self;
+  while (rootView.superview && ![rootView isReactRootView]) {
+    rootView = rootView.superview;
+  }
+  _cachedRootView = rootView;
+}
+
+- (void)cancelRootViewTouches {
+    RCTRootContentView *rootView = (RCTRootContentView *)_cachedRootView;
+    [rootView.touchHandler cancel];
 }
 
 - (BOOL)isHorizontal:(UIScrollView *)scrollView {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 
 const FLATLIST_DATA = Array(40)
   .fill(Math.random() + '')
@@ -41,13 +41,13 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
 const Item = ({ title }: { title: string }) => {
   const [clickCount, setClickCount] = useState(0)
   return (
-    <TouchableWithoutFeedback onPress={() => setClickCount(v => v + 1)}>
+    <TouchableHighlight onPress={() => setClickCount(v => v + 1)} underlayColor="#DDDDDD">
       <View style={styles.item}>
         <Text style={styles.title}>
           {title} {clickCount}
         </Text>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableHighlight>
   )
 }
 

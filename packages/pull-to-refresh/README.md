@@ -10,7 +10,7 @@ React Native 内置的下拉刷新组件比较简陋，且 iOS 和 Android 平�
 
 - 支持自定义下拉刷新
 - 支持全局设置下拉刷新的样式
-- 支持 `WebView`、[NestedScrollView](https://github.com/sdcxtech/react-native-troika/blob/master/packages/nested-scroll/README.md)
+- 额外支持 `WebView`、`ScrollView`、[NestedScrollView](https://github.com/sdcxtech/react-native-troika/blob/master/packages/nested-scroll/README.md)
 - 支持上拉加载更多
 
 |                                                                                                           |                                                                                                           |
@@ -92,7 +92,7 @@ function App() {
 
 这两种使用方式在效果上并无不同。
 
-此外，`PullToRefresh` 支持上拉加载更多，以及所有可滚动视图，譬如 `WebView`，`NestedScrollView`。
+此外，`PullToRefresh` 支持上拉加载更多，以及所有可滚动视图，譬如 `WebView`, `ScrollView`, `NestedScrollView`。
 
 ### 自定义下拉刷新
 

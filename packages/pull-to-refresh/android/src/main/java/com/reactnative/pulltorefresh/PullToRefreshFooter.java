@@ -179,6 +179,11 @@ public class PullToRefreshFooter extends ReactViewGroup implements RefreshFooter
     }
 
     @Override
+    public boolean autoOpen(int duration, float dragRate, boolean animationOnly) {
+        return false;
+    }
+
+    @Override
     public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
         if (onRefreshChangeListener != null) {
             PullToRefreshState oldPullToRefreshState = convertRefreshStateToPullToRefreshState(oldState);

@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.facebook.common.logging.FLog;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
@@ -40,6 +41,16 @@ public class PullToRefresh extends SmartRefreshLayout {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    protected void moveSpinnerInfinitely(float spinner) {
+        // 如果 ScrollView 没有开启 `nestedScrollEnabled` 属性，就不允许下拉
+        if (!mNestedInProgress) {
+            FLog.w("PullToRefresh", "似乎尚未为可滚动视图开启 `nestedScrollEnabled` 属性。");
+            return;
+        }
+        super.moveSpinnerInfinitely(spinner);
     }
 
     @Override

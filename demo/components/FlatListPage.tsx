@@ -29,12 +29,12 @@ export function FlatListPage({ data = FLATLIST_DATA }: { data?: { id: string; ti
 
   return (
     <FlatList
+      nestedScrollEnabled // for android
       onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
       contentContainerStyle={{ flexGrow: 1 }}
       data={data}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      nestedScrollEnabled
     />
   )
 }

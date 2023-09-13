@@ -45,21 +45,23 @@ export function PullRefreshFlatListNestedScroll() {
   }
 
   return (
-    <PullToRefresh
-      style={{ flex: 1 }}
-      refreshing={refreshing}
-      onRefresh={beginRefresh}
-      footer={<LottiePullToRefreshFooter manual refreshing={loadingMore} onRefresh={loadMore} />}>
-      <NestedScrollView style={styles.coordinator}>
-        <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
-          <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
-          <View style={[styles.text]}>
-            <Text>anchor</Text>
-          </View>
-        </NestedScrollViewHeader>
-        <FlatListPage data={flatlistData} />
-      </NestedScrollView>
-    </PullToRefresh>
+    <NestedScrollView style={styles.coordinator}>
+      <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
+        <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
+        <View style={[styles.text]}>
+          <Text>anchor</Text>
+        </View>
+      </NestedScrollViewHeader>
+      <PullToRefresh
+        style={{ flex: 1 }}
+        refreshing={refreshing}
+        onRefresh={beginRefresh}
+        footer={<LottiePullToRefreshFooter manual refreshing={loadingMore} onRefresh={loadMore} />}>
+        <View style={{ flex: 1, overflow: 'hidden' }}>
+          <FlatListPage data={flatlistData} />
+        </View>
+      </PullToRefresh>
+    </NestedScrollView>
   )
 }
 
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
   text: {
     paddingVertical: 20,
     fontSize: 18,
-    color: '#FFFFFF',
+    backgroundColor: '#FFFFFF',
   },
 })
 

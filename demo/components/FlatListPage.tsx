@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 
-const FLATLIST_DATA = Array(40)
+const FLATLIST_DATA = Array(4)
   .fill(Math.random() + '')
   .map((item, index) => ({
     id: item + index,

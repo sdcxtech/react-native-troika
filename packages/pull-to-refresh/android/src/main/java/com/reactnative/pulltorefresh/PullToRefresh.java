@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.core.view.ViewCompat;
 
@@ -43,9 +42,8 @@ public class PullToRefresh extends SmartRefreshLayout {
         ViewGroup view = (ViewGroup) mRefreshContent.getScrollableView();
         // 数据不足以填满整个页面
         if (!view.canScrollVertically(-1) && !view.canScrollVertically(1)) {
-            final ViewParent parent = getParent();
-            if (parent != null) {
-                parent.requestDisallowInterceptTouchEvent(true);
+            if (shouldInterceptTouchEvent(ev)) {
+                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
             }
             
             final float offsetX = getScrollX() - view.getLeft();
@@ -63,11 +61,39 @@ public class PullToRefresh extends SmartRefreshLayout {
             if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
                 view.stopNestedScroll();
             }
-            
             return true;
         }
 
         return super.dispatchTouchEvent(ev);
+    }
+    
+    private int mLastMotionY;
+    
+    private boolean shouldInterceptTouchEvent(MotionEvent ev) {
+        final int action = ev.getAction();
+        if ((action == MotionEvent.ACTION_MOVE) && (mIsBeingDragged)) {
+            return true;
+        }
+        
+        switch (action & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_MOVE: {
+                final int y = (int) ev.getRawY();
+                final int yDiff = Math.abs(y - mLastMotionY);
+                if (yDiff > mTouchSlop) {
+                    mIsBeingDragged = true;
+                }
+                break;
+            }
+            case MotionEvent.ACTION_DOWN: {
+                mLastMotionY = (int) ev.getRawY();
+                break;
+            }
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                mIsBeingDragged = false;
+        }
+        
+        return mIsBeingDragged;
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {

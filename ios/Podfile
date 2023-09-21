@@ -16,9 +16,13 @@ post_install do |installer|
     installer.pods_project.targets.each do |target|
         case target.name
           when 'RCT-Folly'
+            target.build_configurations.each do |config|
+              config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+            end
             next
           else
             target.build_configurations.each do |config|
+                config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
                 config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
                 if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 12.4
                     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'

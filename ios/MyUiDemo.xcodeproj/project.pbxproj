@@ -266,6 +266,8 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-Wl",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.myuidemo;
 				PRODUCT_NAME = MyUiDemo;
@@ -293,6 +295,8 @@
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
+					"-Wl",
+					"-ld_classic",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.myuidemo;
 				PRODUCT_NAME = MyUiDemo;

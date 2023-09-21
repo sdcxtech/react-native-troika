@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.core.view.ViewCompat;
 
@@ -45,7 +46,7 @@ public class PullToRefresh extends SmartRefreshLayout {
             if (shouldInterceptTouchEvent(ev)) {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
             }
-            
+
             final float offsetX = getScrollX() - view.getLeft();
             final float offsetY = getScrollY() - view.getTop();
             final MotionEvent transformedEvent = MotionEvent.obtain(ev);
@@ -53,11 +54,11 @@ public class PullToRefresh extends SmartRefreshLayout {
             view.onInterceptTouchEvent(transformedEvent);
             view.onTouchEvent(transformedEvent);
             transformedEvent.recycle();
-            
+
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 view.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
             }
-            
+
             if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
                 view.stopNestedScroll();
             }
@@ -79,8 +80,12 @@ public class PullToRefresh extends SmartRefreshLayout {
             case MotionEvent.ACTION_MOVE: {
                 final int y = (int) ev.getRawY();
                 final int yDiff = Math.abs(y - mLastMotionY);
-                if (yDiff > mTouchSlop) {
+                if (yDiff >= mTouchSlop) {
                     mIsBeingDragged = true;
+                    ViewParent parent = getParent();
+                    if (parent != null) {
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
                 }
                 break;
             }

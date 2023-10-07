@@ -80,7 +80,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         CGPoint p = [change[@"new"] CGPointValue];
-        if (self.onScroll && p.y <= [self maxScrollRange]) {
+        if (self.onScroll) {
             self.onScroll(@{
                 @"contentOffset": @{
                     @"y": @(p.y),

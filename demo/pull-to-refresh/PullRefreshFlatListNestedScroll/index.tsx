@@ -1,6 +1,6 @@
 import { withNavigationItem } from 'hybrid-navigation'
 import React, { useRef, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
 import { FlatListPage, useDemoFlatlistData } from '../../components/FlatListPage'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
@@ -52,15 +52,17 @@ export function PullRefreshFlatListNestedScroll() {
           <Text>anchor</Text>
         </View>
       </NestedScrollViewHeader>
-      <PullToRefresh
-        style={{ flex: 1 }}
-        refreshing={refreshing}
-        onRefresh={beginRefresh}
-        footer={<LottiePullToRefreshFooter manual refreshing={loadingMore} onRefresh={loadMore} />}>
-        <View style={{ flex: 1, overflow: 'hidden' }}>
+      <ScrollView horizontal contentContainerStyle={{ flexGrow: 1 }}>
+        <PullToRefresh
+          style={{ flex: 1 }}
+          refreshing={refreshing}
+          onRefresh={beginRefresh}
+          footer={
+            <LottiePullToRefreshFooter manual refreshing={loadingMore} onRefresh={loadMore} />
+          }>
           <FlatListPage data={flatlistData} />
-        </View>
-      </PullToRefresh>
+        </PullToRefresh>
+      </ScrollView>
     </NestedScrollView>
   )
 }

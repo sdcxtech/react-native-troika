@@ -2,8 +2,6 @@
 #import "RNKeyboardAutoHandler.h"
 #import "RNKeyboardManualHandler.h"
 
-#import <objc/runtime.h>
-
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>

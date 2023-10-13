@@ -2,6 +2,8 @@
 #import "RNKeyboardAutoHandler.h"
 #import "RNKeyboardManualHandler.h"
 
+#import <objc/runtime.h>
+
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
@@ -9,9 +11,9 @@
 @implementation RNKeyboardInsetsView {
     UIView *_focusView;
  
-    CADisplayLink *_displayLink;
     UIView *_keyboardView;
     CGFloat _keyboardHeight;
+    dispatch_source_t _timer;
     
     RNKeyboardAutoHandler *_autoHandler;
     RNKeyboardManualHandler *_manualHandler;
@@ -168,15 +170,20 @@
 
 - (void)startWatchKeyboardTransition {
     [self stopWatchKeyboardTransition];
-    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(watchKeyboardTransition)];
-    _displayLink.preferredFramesPerSecond = 120;
-    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, 0), 8 * USEC_PER_SEC, 0);
+    __weak typeof(self) weakSelf = self;
+    dispatch_source_set_event_handler(timer, ^{
+        [weakSelf watchKeyboardTransition];
+    });
+    dispatch_resume(timer);
+    _timer = timer;
 }
 
 - (void)stopWatchKeyboardTransition {
-    if(_displayLink){
-        [_displayLink invalidate];
-        _displayLink = nil;
+    if (_timer) {
+        dispatch_source_cancel(_timer);
+        _timer = nil;
     }
 }
 

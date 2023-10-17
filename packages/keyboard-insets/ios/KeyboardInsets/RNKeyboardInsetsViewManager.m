@@ -6,7 +6,7 @@
 RCT_EXPORT_MODULE(KeyboardInsetsView)
 
 - (UIView *)view {
-    return [[RNKeyboardInsetsView alloc] init];
+    return [[RNKeyboardInsetsView alloc] initWithEventDispatcher:self.bridge.eventDispatcher];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(mode, NSString)

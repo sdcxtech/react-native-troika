@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react'
-import { Animated, NativeSyntheticEvent, ViewProps } from 'react-native'
-import { KeyboardStatus, NativeKeyboardInsetsView } from './native'
+import { Animated, ViewProps } from 'react-native'
+import { KeyboardStatusChangedEvent, NativeKeyboardInsetsView } from './native'
 
 export interface KeyboardState {
   height: number
@@ -39,7 +39,7 @@ export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
   )
 
   const onStatusChanaged = useCallback(
-    (event: NativeSyntheticEvent<KeyboardStatus>) => {
+    (event: KeyboardStatusChangedEvent) => {
       onKeyboard?.({ ...event.nativeEvent, position })
     },
     [position, onKeyboard],

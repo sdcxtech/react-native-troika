@@ -1,4 +1,5 @@
 #import <React/RCTView.h>
+#import <React/RCTEventDispatcher.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, copy) NSString *mode;
 @property(nonatomic, assign) CGFloat extraHeight;
+@property(nonatomic, strong) RCTEventDispatcher *eventDispatcher;
+
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 
 @end
 

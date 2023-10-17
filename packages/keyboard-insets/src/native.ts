@@ -1,20 +1,24 @@
 import { Insets, NativeModule, NativeModules, NativeSyntheticEvent, requireNativeComponent } from 'react-native'
 
-export interface KeyboardStatus {
+export interface KeyboardStatusChangedEventData {
   height: number
   shown: boolean
   transitioning: boolean
 }
 
-interface KeyboardPosition {
+export interface KeyboardPositionChangedEventData {
   position: number
 }
+
+export type KeyboardStatusChangedEvent = NativeSyntheticEvent<KeyboardStatusChangedEventData>
+
+export type KeyboardPositionChangedEvent = NativeSyntheticEvent<KeyboardPositionChangedEventData>
 
 interface NativeKeyboardInsetsViewProps {
   mode?: 'auto' | 'manual'
   extraHeight?: number
-  onStatusChanged?: (event: NativeSyntheticEvent<KeyboardStatus>) => void
-  onPositionChanged?: (event: NativeSyntheticEvent<KeyboardPosition>) => void
+  onStatusChanged?: (event: KeyboardStatusChangedEvent) => void
+  onPositionChanged?: (event: KeyboardPositionChangedEvent) => void
 }
 
 export const NativeKeyboardInsetsView = requireNativeComponent<NativeKeyboardInsetsViewProps>('KeyboardInsetsView')

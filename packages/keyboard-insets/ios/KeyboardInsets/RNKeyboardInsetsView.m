@@ -17,9 +17,10 @@
     RNKeyboardManualHandler *_manualHandler;
 }
 
-- (instancetype)init {
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher {
     if (self = [super init]) {
         _mode = @"auto";
+        _eventDispatcher = eventDispatcher;
     }
     return self;
 }

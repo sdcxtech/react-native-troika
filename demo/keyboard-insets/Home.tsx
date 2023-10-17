@@ -16,6 +16,10 @@ const data: Array<Item> = [
     title: '聊天键盘处理',
     routeName: 'KeyboardChat',
   },
+  {
+    title: '聊天键盘处理(Reanimated)',
+    routeName: 'KeyboardChatReanimated',
+  },
 ]
 
 function Home() {

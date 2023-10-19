@@ -44,7 +44,7 @@ function KeyboardChat() {
       return keyboard.position.value
     }
 
-    // 需要了解 iOS 的隐式动画
+    // 需要了解 iOS 的隐式动画机制
     if (keyboard.shown.value) {
       return keyboard.height.value
     } else {

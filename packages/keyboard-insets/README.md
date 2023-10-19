@@ -115,9 +115,11 @@ function MyComponent() {
 
 `KeyboardInsetsView` 本质上是个 `View`，所以你可以使用 `View` 的所有属性，也可以和 `View` 互相替换。
 
-`KeyboardInsetsView` 有两个额外的属性：
+`KeyboardInsetsView` 仅有少量几个属性：
 
 - `extraHeight`：自动模式下，键盘总是紧贴着输入框的下边缘，这个属性设置输入框距离键盘的额外高度。<u>KeyboardInsetsView 的最大偏移受键盘高度限制，若加入额外高度后，KeyboardInsetsView 偏移距离大于键盘高度，将产生截断，此时 KeyboardInsetsView 偏移距离等于键盘高度，底部将与键盘顶部相贴</u>
+
+- `explicitly`：仅对 iOS 生效，自动模式下，是否显式地跟随键盘位置变化。默认为 `false`，通过隐式动画来处理。
 
 - `onKeyboard`：是个回调函数，一旦设置，就进入手动模式，`KeyboardInsetsView` 不会帮你调整输入框的位置。你需要利用这个回调函数实现自己想要的效果。
 

@@ -13,6 +13,7 @@ const NativeKeyboardInsetsViewAnimated = Animated.createAnimatedComponent(Native
 
 interface KeyboardInsetsViewProps extends Animated.AnimatedProps<ViewProps> {
   extraHeight?: number
+  explicitly?: boolean
   onKeyboard?: (status: KeyboardState) => void
 }
 

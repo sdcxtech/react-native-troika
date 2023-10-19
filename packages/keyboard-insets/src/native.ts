@@ -17,6 +17,7 @@ export type KeyboardPositionChangedEvent = NativeSyntheticEvent<KeyboardPosition
 interface NativeKeyboardInsetsViewProps {
   mode?: 'auto' | 'manual'
   extraHeight?: number
+  explicitly?: boolean
   onStatusChanged?: (event: KeyboardStatusChangedEvent) => void
   onPositionChanged?: (event: KeyboardPositionChangedEvent) => void
 }

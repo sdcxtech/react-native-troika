@@ -74,14 +74,9 @@
 }
 
 - (void)refreshEdgeBottom:(UIView *)focusView {
-    UIView *view = self.view;
-    CGFloat translateY = view.transform.ty;
-    CGRect windowFrame = [view.window convertRect:focusView.frame fromView:focusView.superview];
-    CGFloat dy = CGRectGetMaxY(view.window.bounds) - CGRectGetMaxY(windowFrame);
-    CGFloat newEdgeBottom = MAX(dy + translateY, 0);
-    if (self.edgeBottom == 0 || self.edgeBottom != newEdgeBottom){
-        self.edgeBottom = newEdgeBottom;
-    }
+    UIWindow *window = focusView.window;
+    CGPoint center = [window convertPoint:focusView.center fromView:focusView.superview];
+    self.edgeBottom = window.bounds.size.height - (center.y + focusView.bounds.size.height / 2);
 }
 
 - (void)adjustScrollViewOffsetIfNeeded:(UIView *)focusView {

@@ -18,33 +18,19 @@ RCT_EXPORT_MODULE(KeyboardInsetsModule)
 
 RCT_EXPORT_METHOD(getEdgeInsetsForView:(nonnull NSNumber *)reactTag callback:(RCTResponseSenderBlock)callback) {
     RCTUIManager* uiManager = [self.bridge moduleForClass:[RCTUIManager class]];
-    UIView* view = [uiManager viewForReactTag:reactTag];
-    CGRect windowFrame = [view.window convertRect:view.frame fromView:view.superview];
-    
-    CGAffineTransform t = [self maybeTransform:view];
+    UIView *target = [uiManager viewForReactTag:reactTag];
+    CGRect window = target.window.bounds;
+    CGRect view = target.bounds;
+    CGPoint center = [target.window convertPoint:target.center fromView:target.superview];
     
     callback(@[
         @{
-            @"left":   @(MAX(0, windowFrame.origin.x + t.tx)),
-            @"top":    @(MAX(0, windowFrame.origin.y + t.ty)),
-            @"right":  @(MAX(0, CGRectGetMaxX(view.window.bounds) - CGRectGetMaxX(windowFrame) + t.tx)),
-            @"bottom": @(MAX(0, CGRectGetMaxY(view.window.bounds) - CGRectGetMaxY(windowFrame) + t.ty)),
+            @"left":   @(MAX(0, window.origin.x - (center.x - view.size.width / 2))),
+            @"top":    @(MAX(0, window.origin.y + (center.y - view.size.height / 2))),
+            @"right":  @(MAX(0, window.size.width - (center.x + view.size.width / 2))),
+            @"bottom": @(MAX(0, window.size.height - (center.y + view.size.height/ 2))),
         }
     ]);
 }
-
-
-- (CGAffineTransform)maybeTransform:(UIView *)view {
-    if (view.transform.ty != 0) {
-        return view.transform;
-    }
-    
-    if (!view.superview) {
-        return CGAffineTransformIdentity;
-    }
-    
-    return [self maybeTransform:view.superview];
-}
-
 
 @end

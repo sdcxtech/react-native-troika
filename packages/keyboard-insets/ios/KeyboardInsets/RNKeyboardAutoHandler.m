@@ -32,45 +32,51 @@
     
     [self adjustScrollViewOffsetIfNeeded:focusView];
     [self refreshEdgeBottom:focusView];
+    [self implicitKeyboardTransition:keyboardHeight];
 }
 
 - (void)keyboardDidShow:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
     if (focusView) {
-        [self handleKeyboardTransition:keyboardHeight];
+        [self implicitKeyboardTransition:keyboardHeight];
     } else {
         self.forceUpdated = YES;
-        [self handleKeyboardTransition:0];
+        [self implicitKeyboardTransition:0];
     }
 }
 
 - (void)keyboardWillHide:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
     self.shown = NO;
+    [self implicitKeyboardTransition:0];
 }
 
 - (void)keyboardDidHide:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
-    [self handleKeyboardTransition:0];
+    [self implicitKeyboardTransition:0];
     self.edgeBottom = 0;
 }
 
-- (void)handleKeyboardTransition:(CGFloat)position {
+- (void)implicitKeyboardTransition:(CGFloat)position {
     RNKeyboardInsetsView *view = self.view;
-    
+
     CGFloat translationY = 0;
     if (position > 0) {
         CGFloat edgeBottom = MAX(self.edgeBottom - view.extraHeight, 0);
         translationY = -MAX(position - edgeBottom, 0);
     }
-    
+
     if (self.forceUpdated) {
         self.forceUpdated = NO;
         view.transform = CGAffineTransformMakeTranslation(0, translationY);
     }
-    
+
     if (self.shown && view.transform.ty < translationY) {
         return;
     }
-    
+
     view.transform = CGAffineTransformMakeTranslation(0, translationY);
+}
+
+- (void)handleKeyboardTransition:(CGFloat)position {
+    
 }
 
 - (void)refreshEdgeBottom:(UIView *)focusView {

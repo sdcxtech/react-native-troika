@@ -319,7 +319,7 @@ PODS:
   - RNImageCrop (0.2.0):
     - React-Core
     - TOCropViewController
-  - RNKeyboardInsets (0.2.0):
+  - RNKeyboardInsets (0.3.0):
     - React-Core
   - RNNestedScrollView (0.11.0):
     - React-Core
@@ -579,7 +579,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCrop: e0f88d4e36e0045ae83e507876fe89135503b821
-  RNKeyboardInsets: 180d7433c4689b57306d6c2ceaaa4cc8bd24d1ab
+  RNKeyboardInsets: 0ebbd8f1957b3c4e8d620d13e798e9b2f3cf6c56
   RNNestedScrollView: 341bb897d1ec8e464b05039500229be72b9b0770
   RNOverlay: 52c6a0d66084062a783105d4c396d786e42c350c
   RNPullToRefresh: d5dbf60751ebe39fc2a23e0cac4e7700a2b16a70
@@ -592,6 +592,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
 
-PODFILE CHECKSUM: e8e6b1ef0e310463764a662f480f4a6e8cd90b30
+PODFILE CHECKSUM: 66414e79e5a41461e6c10b4e9be09082a2314690
 
 COCOAPODS: 1.13.0

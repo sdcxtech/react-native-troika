@@ -10,7 +10,7 @@ function KeyboardAdvoiding() {
       <KeyboardInsetsView extraHeight={16} style={styles.flex1}>
         <ScrollView contentContainerStyle={styles.container}>
           <SubmitToNextInputFragment />
-          <KeyboardInsetsView extraHeight={16} style={styles.keyboard}>
+          <KeyboardInsetsView explicitly extraHeight={16} style={styles.keyboard}>
             <TextInput
               style={styles.input}
               placeholder={'test keyboard instes'}

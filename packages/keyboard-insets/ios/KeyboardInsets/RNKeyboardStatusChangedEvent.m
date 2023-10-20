@@ -17,14 +17,13 @@ static uint16_t _coalescingKey = 0;
     return @"onStatusChanged";
 }
 
-- (instancetype)initWithReactTag:(NSNumber *)reactTag height:(CGFloat)height shown:(BOOL)shown transitioning:(BOOL)transitioning {
+- (instancetype)initWithReactTag:(NSNumber *)reactTag shown:(BOOL)shown transitioning:(BOOL)transitioning height:(CGFloat)height {
     RCTAssertParam(reactTag);
-    
     if ((self = [super init])) {
         _viewTag = reactTag;
-        _height = height;
         _shown = shown;
         _transitioning = transitioning;
+        _height = height;
     }
     return self;
 }
@@ -44,9 +43,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 
 - (NSArray *)arguments {
     return @[self.viewTag, RCTNormalizeInputEventName(self.eventName), @{
-                @"height": @(_height),
                 @"shown": @(_shown),
-                @"transitioning": @(_transitioning)
+                @"transitioning": @(_transitioning),
+                @"height": @(_height)
             }];
 }
 

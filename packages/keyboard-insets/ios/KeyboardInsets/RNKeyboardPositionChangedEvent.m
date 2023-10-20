@@ -15,7 +15,6 @@
 - (instancetype) initWithReactTag:(NSNumber *)reactTag
                          position:(NSNumber *)position {
     RCTAssertParam(reactTag);
-    
     if ((self = [super init])) {
         _viewTag = reactTag;
         _position = position;

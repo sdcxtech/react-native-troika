@@ -5,9 +5,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RNKeyboardStatusChangedEvent : NSObject <RCTEvent>
 
 - (instancetype) initWithReactTag:(NSNumber *)reactTag
-                           height:(CGFloat)height
                             shown:(BOOL)shown
-                    transitioning:(BOOL)transitioning;
+                    transitioning:(BOOL)transitioning
+                           height:(CGFloat)height;
 
 @end
 

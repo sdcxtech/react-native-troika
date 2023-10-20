@@ -22,26 +22,26 @@
 }
 
 - (void)keyboardWillShow:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
-    [self handleKeyboardStatus:YES transitioning:YES height:keyboardHeight];
+    [self handleKeyboardShown:YES transitioning:YES height:keyboardHeight];
 }
 
 - (void)keyboardDidShow:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
     [self handleKeyboardTransition:keyboardHeight];
-    [self handleKeyboardStatus:YES transitioning:NO height:keyboardHeight];
+    [self handleKeyboardShown:YES transitioning:NO height:keyboardHeight];
 }
 
 - (void)keyboardWillHide:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
-    [self handleKeyboardStatus:NO transitioning:YES height:keyboardHeight];
+    [self handleKeyboardShown:NO transitioning:YES height:keyboardHeight];
 }
 
 - (void)keyboardDidHide:(UIView *)focusView keyboardHeight:(CGFloat)keyboardHeight {
     [self handleKeyboardTransition:0];
-    [self handleKeyboardStatus:NO transitioning:NO height:keyboardHeight];
+    [self handleKeyboardShown:NO transitioning:NO height:keyboardHeight];
 }
 
-- (void)handleKeyboardStatus:(BOOL)shown transitioning:(BOOL)transitioning height:(CGFloat)height {
+- (void)handleKeyboardShown:(BOOL)shown transitioning:(BOOL)transitioning height:(CGFloat)height {
     RNKeyboardInsetsView *view = self.view;
-    [view.eventDispatcher sendEvent:[[RNKeyboardStatusChangedEvent alloc] initWithReactTag:view.reactTag height:height shown:shown transitioning:transitioning]];
+    [view.eventDispatcher sendEvent:[[RNKeyboardStatusChangedEvent alloc] initWithReactTag:view.reactTag shown:shown transitioning:transitioning height:height]];
 }
 
 - (void)handleKeyboardTransition:(CGFloat)position {

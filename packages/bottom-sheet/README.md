@@ -72,6 +72,8 @@ const App = () => {
 
 - `fitToContents`，是指 BottomSheet 在展开时，是否适应内容的高度，默认是 `false`。当和可滚动列表，譬如 ScrollView 一起使用时，请保持默认值。
 
+- `contentContainerStyle`，用来设置内层视图的样式。
+
 ### 回调
 
 - `onStateChanged`, 是指 BottomSheet 状态变化时的回调，它和 `state` 属性是一对，用来实现受控模式。

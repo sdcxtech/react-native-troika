@@ -20,6 +20,7 @@ interface NativeBottomSheetProps extends ViewProps {
   onStateChanged?: (event: NativeSyntheticEvent<StateChangedEventData>) => void
   peekHeight?: number
   state?: BottomSheetState
+  contentContainerStyle?: ViewProps['style']
 }
 
 type BottomSheetProps = NativeBottomSheetProps & {
@@ -31,7 +32,15 @@ const NativeBottomSheet = requireNativeComponent<NativeBottomSheetProps>('Bottom
 type NativeBottomSheetInstance = InstanceType<typeof NativeBottomSheet>
 
 const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps>((props, ref) => {
-  const { style, children, peekHeight = 200, state = 'collapsed', fitToContents, ...rest } = props
+  const {
+    style,
+    contentContainerStyle,
+    children,
+    peekHeight = 200,
+    state = 'collapsed',
+    fitToContents,
+    ...rest
+  } = props
   const { outer, inner } = splitLayoutProps(StyleSheet.flatten(style))
   return (
     <NativeBottomSheet
@@ -40,7 +49,9 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
       state={state}
       {...rest}
       ref={ref}>
-      <View style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]} collapsable={false}>
+      <View
+        style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner, contentContainerStyle]}
+        collapsable={false}>
         {children}
       </View>
     </NativeBottomSheet>

@@ -317,7 +317,7 @@
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
 //    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.5 options:NULL animations:^{
+    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:NULL animations:^{
         self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;

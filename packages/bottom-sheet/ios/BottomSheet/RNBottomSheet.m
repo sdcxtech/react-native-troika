@@ -218,7 +218,7 @@
     if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
         // RCTLogInfo(@"velocity:%f", [pan velocityInView:self.contentView].y);
         CGFloat velocity = [pan velocityInView:self.contentView].y;
-        if (velocity > 300) {
+        if (velocity > 400) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed];
@@ -228,7 +228,7 @@
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed];
             }
-        } else if (velocity < -300) {
+        } else if (velocity < -400) {
             //如果是类似轻扫的那种
             [self settleToState:RNBottomSheetStateExpanded];
         } else {
@@ -316,8 +316,8 @@
     [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
-    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.5 options:NULL animations:^{
+//    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
+    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.5 options:NULL animations:^{
         self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;

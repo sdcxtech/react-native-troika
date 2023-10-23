@@ -7,6 +7,8 @@
 
 @interface RNBottomSheet () <UIGestureRecognizerDelegate>
 
+@property(nonatomic, strong) UIView *contentView;
+
 @property(nonatomic, strong) UIScrollView *target;
 @property(nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
@@ -23,12 +25,26 @@
     __weak RCTRootContentView *_rootView;
 }
 
+- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
+    [super insertReactSubview:subview atIndex:atIndex];
+    if (atIndex == 0) {
+        self.contentView = subview;
+        [subview addGestureRecognizer:_panGestureRecognizer];
+    }
+}
+
+- (void)removeReactSubview:(UIView *)subview {
+    [super removeReactSubview:subview];
+    if (self.contentView == subview) {
+        [subview removeGestureRecognizer:_panGestureRecognizer];
+    }
+}
+
 - (instancetype)init {
     if (self = [super init]) {
         _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         _panGestureRecognizer.delegate = self;
         _state = RNBottomSheetStateCollapsed;
-        [self addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
 }
@@ -123,36 +139,39 @@
 
 - (void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
-    if (!CGRectEqualToRect(self.frame, CGRectZero)) {
-        [self calculateOffset];
-        if (self.state == RNBottomSheetStateCollapsed) {
-            self.frame = CGRectOffset(self.frame, 0, self.frame.size.height - self.peekHeight);
-            [self dispatchOnSlide:self.frame.origin.y];
-        } else if (self.state == RNBottomSheetStateHidden) {
-            self.frame = CGRectOffset(self.frame, 0, self.frame.size.height);
-            [self dispatchOnSlide:self.frame.origin.y];
-        }
-    }
+    
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    [self calculateOffset];
-    [self dispatchOnSlide:self.frame.origin.y];
+    if (!self.contentView) {
+        return;
+    }
+    
+    if (!CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
+        [self calculateOffset];
+        if (self.state == RNBottomSheetStateCollapsed) {
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, self.maxY - self.contentView.frame.origin.y);
+        } else if (self.state == RNBottomSheetStateExpanded) {
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, self.minY - self.contentView.frame.origin.y);
+        } else if (self.state == RNBottomSheetStateHidden) {
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, self.frame.size.height - self.contentView.frame.origin.y);
+        }
+        [self dispatchOnSlide:self.contentView.frame.origin.y];
+    }
 }
 
 - (void)calculateOffset {
-    CGFloat parentHeight = self.superview.frame.size.height;
-    self.minY = fmax(0, parentHeight - self.frame.size.height);
+    CGFloat parentHeight = self.frame.size.height;
+    self.minY = fmax(0, parentHeight - self.contentView.frame.size.height);
     self.maxY = fmax(self.minY, parentHeight - self.peekHeight);
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
+    CGFloat translationY = [pan translationInView:self.contentView].y;
+    [pan setTranslation:CGPointZero inView:self.contentView];
     
-    CGFloat translationY = [pan translationInView:self].y;
-    [pan setTranslation:CGPointZero inView:self];
-    
-    CGFloat top = self.frame.origin.y;
+    CGFloat top = self.contentView.frame.origin.y;
     
     if (pan.state == UIGestureRecognizerStateChanged) {
         [self setStateInternal:RNBottomSheetStateDragging];
@@ -163,15 +182,15 @@
         if(translationY > 0 && top < self.maxY && self.target.contentOffset.y <= 0) {
             //向下拖
             CGFloat y = fmin(top + translationY, self.maxY);
-            self.frame = CGRectOffset(self.frame, 0, y - top);
-            [self dispatchOnSlide:self.frame.origin.y];
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
+            [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
         
         if (translationY < 0 && top > self.minY) {
             //向上拖
             CGFloat y = fmax(top + translationY, self.minY);
-            self.frame = CGRectOffset(self.frame, 0, y - top);
-            [self dispatchOnSlide:self.frame.origin.y];
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
+            [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
     }
     
@@ -180,24 +199,21 @@
         if(translationY > 0 && top < self.maxY) {
             //向下拖
             CGFloat y = fmin(top + translationY, self.maxY);
-            self.frame = CGRectOffset(self.frame, 0, y - top);
-            [self dispatchOnSlide:self.frame.origin.y];
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
+            [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
         
         if (translationY < 0 && top > self.minY) {
             //向上拖
             CGFloat y = fmax(top + translationY, self.minY);
-            self.frame = CGRectOffset(self.frame, 0, y - top);
-            [self dispatchOnSlide:self.frame.origin.y];
+            self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
+            [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
     }
     
     if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
-        
-        RCTLogInfo(@"velocity:%f", [pan velocityInView:self].y);
-        
-        CGFloat velocity = [pan velocityInView:self].y;
- 
+        // RCTLogInfo(@"velocity:%f", [pan velocityInView:self.contentView].y);
+        CGFloat velocity = [pan velocityInView:self.contentView].y;
         if (velocity > 300) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
@@ -213,7 +229,7 @@
             [self settleToState:RNBottomSheetStateExpanded];
         } else {
             //如果是普通拖拽
-            if(fabs(self.frame.origin.y - self.minY) > fabs(self.frame.origin.y - self.maxY)) {
+            if(fabs(self.contentView.frame.origin.y - self.minY) > fabs(self.contentView.frame.origin.y - self.maxY)) {
                 [self settleToState:RNBottomSheetStateCollapsed];
             } else {
                 [self settleToState:RNBottomSheetStateExpanded];
@@ -251,7 +267,7 @@
     
     if (dy < 0) {
         //向上
-        if (self.frame.origin.y > self.minY) {
+        if (self.contentView.frame.origin.y > self.minY) {
             _nextReturn = true;
             target.contentOffset = CGPointMake(0, old);
         }
@@ -260,7 +276,7 @@
 
 - (void)setPeekHeight:(CGFloat)peekHeight {
     _peekHeight = peekHeight;
-    if (!CGRectEqualToRect(self.frame, CGRectZero)) {
+    if (!CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
         [self calculateOffset];
         if (self.state == RNBottomSheetStateCollapsed) {
             [self settleToState:RNBottomSheetStateCollapsed];
@@ -273,7 +289,7 @@
         return;
     }
 
-    if (CGRectEqualToRect(self.frame, CGRectZero)) {
+    if (CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
         [self setStateInternal:state];
         return;
     }
@@ -287,7 +303,7 @@
     } else if (state == RNBottomSheetStateExpanded) {
         [self startSettlingToState:state top:self.minY];
     } else if (state == RNBottomSheetStateHidden) {
-        [self startSettlingToState:state top:self.superview.frame.size.height];
+        [self startSettlingToState:state top:self.frame.size.height];
     }
 }
 
@@ -296,9 +312,9 @@
     [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
-    CGFloat duration = fmin(fabs(self.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
+    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
     [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.5 options:NULL animations:^{
-        self.frame = CGRectOffset(self.frame, 0, top - self.frame.origin.y);
+        self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;
         [self stopWatchBottomSheetTransition];
@@ -356,7 +372,7 @@
 }
 
 - (void)watchBottomSheetTransition {
-    CGFloat top = [self.layer presentationLayer].frame.origin.y;
+    CGFloat top = [self.contentView.layer presentationLayer].frame.origin.y;
     [self dispatchOnSlide:top];
 }
     

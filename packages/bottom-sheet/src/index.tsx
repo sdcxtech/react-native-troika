@@ -1,5 +1,5 @@
 import React from 'react'
-import { NativeSyntheticEvent, Platform, requireNativeComponent, StyleSheet, View, ViewProps } from 'react-native'
+import { NativeSyntheticEvent, requireNativeComponent, StyleSheet, View, ViewProps } from 'react-native'
 import splitLayoutProps from './splitLayoutProps'
 
 export interface OffsetChangedEventData {
@@ -33,34 +33,18 @@ type NativeBottomSheetInstance = InstanceType<typeof NativeBottomSheet>
 const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps>((props, ref) => {
   const { style, children, peekHeight = 200, state = 'collapsed', fitToContents, ...rest } = props
   const { outer, inner } = splitLayoutProps(StyleSheet.flatten(style))
-
-  if (Platform.OS === 'android') {
-    return (
-      <NativeBottomSheet
-        style={[StyleSheet.absoluteFill, outer]}
-        peekHeight={peekHeight}
-        state={state}
-        {...rest}
-        ref={ref}>
-        <View style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]} collapsable={false}>
-          {children}
-        </View>
-      </NativeBottomSheet>
-    )
-  } else {
-    return (
-      <View style={[StyleSheet.absoluteFill, outer]} pointerEvents="box-none">
-        <NativeBottomSheet
-          style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]}
-          peekHeight={peekHeight}
-          state={state}
-          {...rest}
-          ref={ref}>
-          {children}
-        </NativeBottomSheet>
+  return (
+    <NativeBottomSheet
+      style={[StyleSheet.absoluteFill, outer]}
+      peekHeight={peekHeight}
+      state={state}
+      {...rest}
+      ref={ref}>
+      <View style={[fitToContents ? styles.fitToContents : StyleSheet.absoluteFill, inner]} collapsable={false}>
+        {children}
       </View>
-    )
-  }
+    </NativeBottomSheet>
+  )
 })
 
 const styles = StyleSheet.create({

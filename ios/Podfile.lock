@@ -319,7 +319,7 @@ PODS:
   - RNImageCrop (0.2.0):
     - React-Core
     - TOCropViewController
-  - RNKeyboardInsets (0.3.0):
+  - RNKeyboardInsets (0.4.0):
     - React-Core
   - RNNestedScrollView (0.11.0):
     - React-Core
@@ -579,7 +579,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCrop: e0f88d4e36e0045ae83e507876fe89135503b821
-  RNKeyboardInsets: 0ebbd8f1957b3c4e8d620d13e798e9b2f3cf6c56
+  RNKeyboardInsets: 0e5e2e157f4d61df710116b2e1c89288b6c527d5
   RNNestedScrollView: 341bb897d1ec8e464b05039500229be72b9b0770
   RNOverlay: 52c6a0d66084062a783105d4c396d786e42c350c
   RNPullToRefresh: d5dbf60751ebe39fc2a23e0cac4e7700a2b16a70

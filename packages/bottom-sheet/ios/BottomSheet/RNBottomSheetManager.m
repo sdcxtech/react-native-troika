@@ -7,7 +7,9 @@
 RCT_EXPORT_MODULE(BottomSheet)
 
 - (UIView *)view {
-    return [RNBottomSheet new];
+    RNBottomSheet *bottomSheet = [RNBottomSheet new];
+    bottomSheet.pointerEvents = RCTPointerEventsBoxNone;
+    return bottomSheet;
 }
 
 RCT_EXPORT_VIEW_PROPERTY(onSlide, RCTDirectEventBlock)

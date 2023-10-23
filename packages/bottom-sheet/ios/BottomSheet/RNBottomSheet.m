@@ -28,7 +28,7 @@
     if (self = [super init]) {
         _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         _panGestureRecognizer.delegate = self;
-        _state = @"collapsed";
+        _state = RNBottomSheetStateCollapsed;
         [self addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
@@ -126,10 +126,10 @@
     [super reactSetFrame:frame];
     if (!CGRectEqualToRect(self.frame, CGRectZero)) {
         [self calculateOffset];
-        if ([self.state isEqualToString:@"collapsed"]) {
+        if (self.state == RNBottomSheetStateCollapsed) {
             self.frame = CGRectOffset(self.frame, 0, self.frame.size.height - self.peekHeight);
             [self dispatchOnSlide:self.frame.origin.y];
-        } else if ([self.state isEqualToString:@"hidden"]) {
+        } else if (self.state == RNBottomSheetStateHidden) {
             self.frame = CGRectOffset(self.frame, 0, self.frame.size.height);
             [self dispatchOnSlide:self.frame.origin.y];
         }
@@ -156,7 +156,7 @@
     CGFloat top = self.frame.origin.y;
     
     if (pan.state == UIGestureRecognizerStateChanged) {
-        [self setStateInternal:@"dragging"];
+        [self setStateInternal:RNBottomSheetStateDragging];
     }
     
     // 如果有嵌套滚动
@@ -197,22 +197,22 @@
         if (self.lastDragDistance > 0) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
-                [self settleToState:@"collapsed"];
+                [self settleToState:RNBottomSheetStateCollapsed];
             }
             
             if (!self.target) {
                 //如果是类似轻扫的那种
-                [self settleToState:@"collapsed"];
+                [self settleToState:RNBottomSheetStateCollapsed];
             }
         } else if (self.lastDragDistance < 0) {
             //如果是类似轻扫的那种
-            [self settleToState:@"expanded"];
+            [self settleToState:RNBottomSheetStateExpanded];
         } else {
             //如果是普通拖拽
             if(fabs(self.frame.origin.y - self.minY) > fabs(self.frame.origin.y - self.maxY)) {
-                [self settleToState:@"collapsed"];
+                [self settleToState:RNBottomSheetStateCollapsed];
             } else {
-                [self settleToState:@"expanded"];
+                [self settleToState:RNBottomSheetStateExpanded];
             }
         }
     }
@@ -260,14 +260,14 @@
     _peekHeight = peekHeight;
     if (!CGRectEqualToRect(self.frame, CGRectZero)) {
         [self calculateOffset];
-        if ([self.state isEqualToString:@"collapsed"]) {
-            [self settleToState:@"collapsed"];
+        if (self.state == RNBottomSheetStateCollapsed) {
+            [self settleToState:RNBottomSheetStateCollapsed];
         }
     }
 }
 
-- (void)setState:(NSString *)state {
-    if ([_state isEqualToString:state]) {
+- (void)setState:(RNBottomSheetState)state {
+    if (_state == state) {
         return;
     }
 
@@ -279,19 +279,19 @@
     [self settleToState:state];
 }
 
-- (void)settleToState:(NSString *)state {
-    if ([state isEqualToString:@"collapsed"]) {
+- (void)settleToState:(RNBottomSheetState)state {
+    if (state == RNBottomSheetStateCollapsed) {
         [self startSettlingToState:state top:self.maxY];
-    } else if ([state isEqualToString:@"expanded"]) {
+    } else if (state == RNBottomSheetStateExpanded) {
         [self startSettlingToState:state top:self.minY];
-    } else if ([state isEqualToString:@"hidden"]) {
-        [self startSettlingToState:@"hidden" top:self.superview.frame.size.height];
+    } else if (state == RNBottomSheetStateHidden) {
+        [self startSettlingToState:state top:self.superview.frame.size.height];
     }
 }
 
-- (void)startSettlingToState:(NSString *)state top:(CGFloat)top {
+- (void)startSettlingToState:(RNBottomSheetState)state top:(CGFloat)top {
     self.target.pagingEnabled = YES;
-    [self setStateInternal:@"settling"];
+    [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
     CGFloat duration = fmin(fabs(self.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
@@ -304,16 +304,16 @@
     }];
 }
 
-- (void)setStateInternal:(NSString *)state {
-    if ([_state isEqualToString:state]) {
+- (void)setStateInternal:(RNBottomSheetState)state {
+    if (_state == state) {
         return;
     }
     _state = state;
     
     if (self.onStateChanged) {
-        if ([state isEqualToString:@"collapsed"] || [state isEqualToString:@"expanded"] || [state isEqualToString:@"hidden"]) {
+        if (state == RNBottomSheetStateCollapsed || state == RNBottomSheetStateExpanded || state == RNBottomSheetStateHidden) {
             self.onStateChanged(@{
-                @"state": state,
+                @"state": RNBottomSheetStateToString(state),
             });
         }
     }
@@ -342,9 +342,9 @@
 }
 
 - (void)stopWatchBottomSheetTransition {
-    if ([self.state isEqualToString:@"collapsed"]) {
+    if (self.state == RNBottomSheetStateCollapsed) {
         [self dispatchOnSlide:self.maxY];
-    } else if ([self.state isEqualToString:@"expanded"]) {
+    } else if (self.state == RNBottomSheetStateExpanded) {
         [self dispatchOnSlide:self.minY];
     }
     if(_displayLink){

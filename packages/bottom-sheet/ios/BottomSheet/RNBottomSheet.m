@@ -1,4 +1,6 @@
 #import "RNBottomSheet.h"
+#import "RNBottomSheetStateChangedEvent.h"
+#import "RNBottomSheetOffsetChangedEvent.h"
 
 #import <React/UIView+React.h>
 #import <React/RCTRootContentView.h>
@@ -18,11 +20,22 @@
 @property(nonatomic, assign) BOOL nextReturn;
 
 @property(nonatomic, strong) CADisplayLink *displayLink;
+@property(nonatomic, strong) RCTEventDispatcher *eventDispatcher;
 
 @end
 
 @implementation RNBottomSheet {
     __weak RCTRootContentView *_rootView;
+}
+
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher {
+    if (self = [super init]) {
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        _panGestureRecognizer.delegate = self;
+        _state = RNBottomSheetStateCollapsed;
+        _eventDispatcher = eventDispatcher;
+    }
+    return self;
 }
 
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
@@ -38,15 +51,6 @@
     if (self.contentView == subview) {
         [subview removeGestureRecognizer:_panGestureRecognizer];
     }
-}
-
-- (instancetype)init {
-    if (self = [super init]) {
-        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-        _panGestureRecognizer.delegate = self;
-        _state = RNBottomSheetStateCollapsed;
-    }
-    return self;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -328,12 +332,8 @@
     }
     _state = state;
     
-    if (self.onStateChanged) {
-        if (state == RNBottomSheetStateCollapsed || state == RNBottomSheetStateExpanded || state == RNBottomSheetStateHidden) {
-            self.onStateChanged(@{
-                @"state": RNBottomSheetStateToString(state),
-            });
-        }
+    if (state == RNBottomSheetStateCollapsed || state == RNBottomSheetStateExpanded || state == RNBottomSheetStateHidden) {
+        [self.eventDispatcher sendEvent:[[RNBottomSheetStateChangedEvent alloc] initWithViewTag:self.reactTag state:state]];
     }
 }
 
@@ -341,15 +341,8 @@
     if (top < 0 || self.maxY == 0) {
         return;
     }
-    if (self.onSlide) {
-        CGFloat progress = fmin((top - self.minY) * 1.0f / (self.maxY - self.minY), 1);
-        self.onSlide(@{
-            @"progress": @(progress),
-            @"offset": @(top),
-            @"collapsedOffset": @(self.maxY),
-            @"expandedOffset": @(self.minY)
-        });
-    }
+    CGFloat progress = fmin((top - self.minY) * 1.0f / (self.maxY - self.minY), 1);
+    [self.eventDispatcher sendEvent:[[RNBottomSheetOffsetChangedEvent alloc] initWithViewTag:self.reactTag progress:progress offset:top minY:self.minY maxY:self.maxY]];
 }
 
 - (void)startWatchBottomSheetTransition {

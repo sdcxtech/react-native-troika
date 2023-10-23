@@ -7,7 +7,7 @@
 RCT_EXPORT_MODULE(BottomSheet)
 
 - (UIView *)view {
-    RNBottomSheet *bottomSheet = [RNBottomSheet new];
+    RNBottomSheet *bottomSheet = [[RNBottomSheet alloc] initWithEventDispatcher:self.bridge.eventDispatcher];
     bottomSheet.pointerEvents = RCTPointerEventsBoxNone;
     return bottomSheet;
 }
@@ -19,6 +19,5 @@ RCT_EXPORT_VIEW_PROPERTY(peekHeight, CGFloat)
 RCT_CUSTOM_VIEW_PROPERTY(state, NSString, RNBottomSheet) {
     view.state = RNBottomSheetStateFromString([RCTConvert NSString:json]);
 }
-
 
 @end

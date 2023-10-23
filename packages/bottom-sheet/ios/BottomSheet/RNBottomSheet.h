@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTView.h>
+#import <React/RCTEventDispatcher.h>
 
 #import "RNBottomSheetState.h"
 
@@ -11,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy) RCTDirectEventBlock onStateChanged;
 @property(nonatomic, assign) CGFloat peekHeight;
 @property(nonatomic, assign) RNBottomSheetState state;
+
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 
 @end
 

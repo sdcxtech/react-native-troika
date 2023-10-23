@@ -14,7 +14,6 @@
 @property(nonatomic, assign) CGFloat maxY;
 
 @property(nonatomic, assign) BOOL nextReturn;
-@property(nonatomic, assign) CGFloat lastDragDistance;
 
 @property(nonatomic, strong) CADisplayLink *displayLink;
 
@@ -194,7 +193,12 @@
     }
     
     if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
-        if (self.lastDragDistance > 0) {
+        
+        RCTLogInfo(@"velocity:%f", [pan velocityInView:self].y);
+        
+        CGFloat velocity = [pan velocityInView:self].y;
+ 
+        if (velocity > 300) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed];
@@ -204,7 +208,7 @@
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed];
             }
-        } else if (self.lastDragDistance < 0) {
+        } else if (velocity < -300) {
             //如果是类似轻扫的那种
             [self settleToState:RNBottomSheetStateExpanded];
         } else {
@@ -216,8 +220,6 @@
             }
         }
     }
-    
-    self.lastDragDistance = translationY;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(UIScrollView *)target change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
@@ -295,7 +297,7 @@
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
     CGFloat duration = fmin(fabs(self.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0.5 options:NULL animations:^{
         self.frame = CGRectOffset(self.frame, 0, top - self.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;

@@ -4,12 +4,21 @@
 #import <React/UIView+React.h>
 #import <React/RCTAssert.h>
 
+static const CGFloat InvalidStickyHeight = -1;
+
 @implementation RNNestedScrollViewHeader {
     BOOL _hasObserver;
 }
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _stickyHeight = InvalidStickyHeight;
+    }
+    return self;
+}
+
 - (CGFloat)maxScrollRange {
-    if (self.stickyHeight > 0) {
+    if (self.stickyHeight >= 0) {
         return fmax(self.frame.size.height - self.stickyHeight, 0);
     }
     

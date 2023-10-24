@@ -19,7 +19,15 @@ RCT_CUSTOM_VIEW_PROPERTY(stickyHeight, CGFloat, RNNestedScrollViewHeader) {
     }
 }
 
-RCT_EXPORT_VIEW_PROPERTY(stickyHeaderBeginIndex, NSUInteger)
+RCT_CUSTOM_VIEW_PROPERTY(stickyHeaderBeginIndex, NSUInteger, RNNestedScrollViewHeader) {
+    if (json) {
+        [view setStickyHeaderBeginIndex:[RCTConvert NSUInteger:json]];
+    } else {
+        [view setStickyHeaderBeginIndex:NSUIntegerMax];
+    }
+}
+
+
 RCT_EXPORT_VIEW_PROPERTY(onScroll, RCTDirectEventBlock)
 
 @end

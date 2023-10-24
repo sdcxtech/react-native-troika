@@ -5,6 +5,7 @@
 #import <React/RCTAssert.h>
 
 static const CGFloat InvalidStickyHeight = -1;
+static const NSUInteger InvalidStickyBeginIndex = NSUIntegerMax;
 
 @implementation RNNestedScrollViewHeader {
     BOOL _hasObserver;
@@ -13,6 +14,7 @@ static const CGFloat InvalidStickyHeight = -1;
 - (instancetype)init {
     if (self = [super init]) {
         _stickyHeight = InvalidStickyHeight;
+        _stickyHeaderBeginIndex = InvalidStickyBeginIndex;
     }
     return self;
 }
@@ -22,7 +24,7 @@ static const CGFloat InvalidStickyHeight = -1;
         return fmax(self.frame.size.height - self.stickyHeight, 0);
     }
     
-    if (self.stickyHeaderBeginIndex > 0 && self.stickyHeaderBeginIndex < self.subviews.count) {
+    if (self.stickyHeaderBeginIndex != InvalidStickyBeginIndex) {
         CGFloat range = 0.0;
         for (NSUInteger i = 0; i < self.subviews.count; i++) {
             if (i == self.stickyHeaderBeginIndex) {

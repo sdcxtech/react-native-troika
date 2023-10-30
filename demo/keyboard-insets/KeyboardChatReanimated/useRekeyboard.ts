@@ -5,7 +5,7 @@ import {
   KeyboardStatusChangedEventData,
 } from '@sdcx/keyboard-insets'
 
-export function useKeyboard() {
+export function useRekeyboard() {
   const position = useSharedValue(0)
   const height = useSharedValue(0)
   const shown = useSharedValue(false)

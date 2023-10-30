@@ -17,8 +17,8 @@ import Message from './Message'
 import { history } from './Message/data'
 import styles from './styles'
 
-import { KeyboardInsetsView } from './KeyboardInsetsView'
-import { useKeyboard } from './useKeyboard'
+import { RekeyboardInsetsView } from './RekeyboardInsetsView'
+import { useRekeyboard } from './useRekeyboard'
 import { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
 
 function KeyboardChat() {
@@ -37,7 +37,7 @@ function KeyboardChat() {
     })
   }, [])
 
-  const { onPositionChanged, onStatusChanged, keyboard } = useKeyboard()
+  const { onPositionChanged, onStatusChanged, keyboard } = useRekeyboard()
 
   const position = useDerivedValue(() => {
     if (Platform.OS === 'android') {
@@ -71,7 +71,7 @@ function KeyboardChat() {
 
   return (
     <SafeAreaProvider style={styles.provider}>
-      <KeyboardInsetsView
+      <RekeyboardInsetsView
         style={[styles.fill, mainStyle]}
         onPositionChanged={onPositionChanged}
         onStatusChanged={onStatusChanged}>
@@ -91,7 +91,7 @@ function KeyboardChat() {
             <Image source={require('./icon/plus.png')} />
           </Pressable>
         </View>
-      </KeyboardInsetsView>
+      </RekeyboardInsetsView>
       <SafeAreaView edges={['bottom']} />
     </SafeAreaProvider>
   )

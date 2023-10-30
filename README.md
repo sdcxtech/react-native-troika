@@ -6,7 +6,7 @@
 
 用于实现嵌套滚动，使用简单。可以和 PagerView，TabView 等组合使用。
 
-![README-2023-10-30-15-06-11](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-10-30-15-06-11.png)
+<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-10-30-15-06-11.png">
 
 ### [PullToRefresh](./packages/pull-to-refresh/README.md)
 

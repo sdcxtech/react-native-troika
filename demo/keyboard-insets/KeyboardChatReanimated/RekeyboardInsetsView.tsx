@@ -24,7 +24,7 @@ interface KeyboardInsetsViewProps extends Reanimated.AnimateProps<any> {
   onStatusChanged: (e: KeyboardStatusChangedEventData) => void
 }
 
-export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
+export function RekeyboardInsetsView(props: KeyboardInsetsViewProps) {
   const { children, onPositionChanged, onStatusChanged, ...rest } = props
 
   const handlePositionChanged = useKeyboardPositionChangedHandler(

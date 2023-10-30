@@ -4,7 +4,7 @@
 
 主要用来实现如下结构的视图：
 
-![README-2023-04-18-17-43-21](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-04-18-17-43-21.svg)
+![README-2023-10-30-14-58-21](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-10-30-14-58-21.png)
 
 最外层是一个可纵向滚动的视图， 也就是我们的 `NestedScrollView`， 它的子组件往往由一个头部和一个可横向滚动的视图组成。
 

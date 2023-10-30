@@ -82,7 +82,7 @@
     
     _focusView = focusView;
     _keyboardView = [RNKeyboardInsetsView findKeyboardView];
-    
+        
     NSDictionary *userInfo = [notification userInfo];
     CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardHeight = keyboardRect.size.height;
@@ -124,6 +124,13 @@
 
 - (void)keyboardWillHide:(NSNotification *)notification {
     if (![self shouldHandleKeyboardTransition:_focusView]) {
+        return;
+    }
+    
+    UIViewController *vc = [self reactViewController];
+    if (vc.navigationController.transitionCoordinator) {
+        // 防止回弹时键盘闪烁
+        [_focusView reactBlur];
         return;
     }
     

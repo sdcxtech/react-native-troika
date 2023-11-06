@@ -4,7 +4,7 @@
 
 主要用来实现如下结构的视图：
 
-![README-2023-10-30-15-06-11](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-10-30-15-06-11.png)
+![README-2023-10-30-15-06-11](./docs/assets/struct.png)
 
 最外层是一个可纵向滚动的视图， 也就是我们的 `NestedScrollView`， 它的子组件往往由一个头部和一个可横向滚动的视图组成。
 
@@ -14,9 +14,9 @@
 
 `NestedScrollView` 的作用是协调最里层和最外层可滚动视图之间的（纵向）滚动，使得滚动体验更加流畅。
 
-|                                                                                                           |                                                                                                           |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-26-09.gif" width="320"> | <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-31-00.gif" width="320"> |
+|                                                  |                                                    |
+| ------------------------------------------------ | -------------------------------------------------- |
+| <img src="./docs/assets/sticky.gif" width="320"> | <img src="./docs/assets/parallax.gif" width="320"> |
 
 ## Installation
 

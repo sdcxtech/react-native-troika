@@ -13,9 +13,9 @@ React Native 内置的下拉刷新组件比较简陋，且 iOS 和 Android 平�
 - 额外支持 `WebView`、`ScrollView`、[NestedScrollView](https://github.com/sdcxtech/react-native-troika/blob/master/packages/nested-scroll/README.md)
 - 支持上拉加载更多
 
-|                                                                                                           |                                                                                                           |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-37-09.gif" width="320"> | <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-37-20.gif" width="320"> |
+|                                                     |                                                  |
+| --------------------------------------------------- | ------------------------------------------------ |
+| <img src="./docs/assets/separated.gif" width="320"> | <img src="./docs/assets/shared.gif" width="320"> |
 
 ## Installation
 

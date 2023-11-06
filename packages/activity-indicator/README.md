@@ -2,7 +2,7 @@
 
 `ActivityIndicator` 是一个 React Native 原生 UI 组件，是一个菊花转圈的动画。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-05-26-16-46-28.png" width="320">
+<img src="./docs/assets/activity.png" width="320">
 
 ## Installation
 

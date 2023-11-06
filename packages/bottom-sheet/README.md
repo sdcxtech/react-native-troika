@@ -4,9 +4,9 @@
 
 它位于屏幕底部，可拖拽，支持嵌套滚动，可以和可滚动视图（`FlatList`, `FlashList`, `WebView` 等等）一起使用。
 
-|                                                                                                           |                                                                                                           |
-| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-47-39.gif" width="320"> | <img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-48-40.gif" width="320"> |
+|                                                      |                                                     |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| <img src="./docs/assets/scrollview.gif" width="320"> | <img src="./docs/assets/pagerview.gif" width="320"> |
 
 ## Installation
 

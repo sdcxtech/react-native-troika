@@ -4,9 +4,9 @@
 
 `KeyboardInsetsView` 使用简单，自动模式下不需要额外代码来处理键盘。
 
-| 自动模式                                                                                                         | 手动模式                                                                                                         |
-| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| ![README-2023-02-02-15-56-36](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-02-02-15-56-36.gif) | ![README-2023-02-18-21-36-20](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-02-18-21-36-20.gif) |
+| 自动模式                                                  | 手动模式                                              |
+| --------------------------------------------------------- | ----------------------------------------------------- |
+| ![README-2023-02-02-15-56-36](./docs/assets/avoiding.gif) | ![README-2023-02-18-21-36-20](./docs/assets/chat.gif) |
 
 本库主要依据 Android 官方指南 [Synchronize animation with the software keyboard](https://developer.android.com/develop/ui/views/layout/sw-keyboard#synchronize-animation) 来实现，同时参考了 [react-native-keyboard-controller](https://github.com/kirillzyusko/react-native-keyboard-controller)。因为该库不是很符合我的需求，所以我自己写了一个。
 

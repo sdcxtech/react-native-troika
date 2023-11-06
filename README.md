@@ -6,25 +6,25 @@
 
 用于实现嵌套滚动，使用简单。可以和 PagerView，TabView 等组合使用。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-10-30-15-06-11.png">
+<img src="./packages/nested-scroll/docs/assets/struct.png">
 
 ### [PullToRefresh](./packages/pull-to-refresh/README.md)
 
 提供了在 React 层自定义下拉刷新的能力。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-37-09.gif" width="320">
+<img src="./packages/pull-to-refresh/docs/assets/separated.gif" width="320">
 
 ### [BottomSheet](./packages/bottom-sheet/README.md)
 
 将 Android 的 [BottomSheetBehavior](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior) 迁移到了 React Native 中，在 API 设计上也尽量和 Android 保持一致，同时支持 iOS。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/troika-2023-04-27-14-48-40.gif" width="320">
+<img src="./packages/bottom-sheet/docs/assets/pagerview.gif" width="320">
 
 ### [ActivityIndicator](./packages/activity-indicator/README.md)
 
 在 Android 上实现了和 iOS 类似的菊花组件。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-05-26-16-46-28.png" width="320">
+<img src="./packages/activity-indicator/docs/assets/activity.png" width="320">
 
 ### [ImageCropView](./packages/image-crop/README.md)
 
@@ -38,7 +38,7 @@ KeyboardInsetsView 是一个 React Native 原生 UI 组件，用于处理软键�
 
 如果想要实现类似聊天界面那样的效果，也不在话下。
 
-<img src="https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-02-18-21-36-20.gif" width="320">
+<img src="./packages/keyboard-insets/docs/assets/chat.gif" width="320">
 
 ### [Overlay](./packages/overlay/README.md)
 

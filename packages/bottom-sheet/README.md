@@ -54,7 +54,7 @@ const App = () => {
 
 `BottomSheet` 由内外两层视图组成，外层是绝对定位，默认填满父组件，除非设置了 `top` 样式属性，内层也是绝对定位，默认填满外层视图。外层的位置固定不变，内层则可拖动。
 
-![README-2023-04-18-16-17-39](https://todoit.oss-cn-shanghai.aliyuncs.com/assets/README-2023-04-18-16-17-39.png)
+![README-2023-04-18-16-17-39](./docs/assets/struct.png)
 
 `BottomSheet` 拥有 3 个属性和两个回调。
 

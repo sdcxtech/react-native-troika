@@ -221,22 +221,22 @@
         if (velocity > 400) {
             if (self.target && self.target.contentOffset.y <= 0) {
                 //如果是类似轻扫的那种
-                [self settleToState:RNBottomSheetStateCollapsed];
+                [self settleToState:RNBottomSheetStateCollapsed withFling:YES];
             }
             
             if (!self.target) {
                 //如果是类似轻扫的那种
-                [self settleToState:RNBottomSheetStateCollapsed];
+                [self settleToState:RNBottomSheetStateCollapsed withFling:YES];
             }
         } else if (velocity < -400) {
             //如果是类似轻扫的那种
-            [self settleToState:RNBottomSheetStateExpanded];
+            [self settleToState:RNBottomSheetStateExpanded withFling:YES];
         } else {
             //如果是普通拖拽
             if(fabs(self.contentView.frame.origin.y - self.minY) > fabs(self.contentView.frame.origin.y - self.maxY)) {
-                [self settleToState:RNBottomSheetStateCollapsed];
+                [self settleToState:RNBottomSheetStateCollapsed withFling:NO];
             } else {
-                [self settleToState:RNBottomSheetStateExpanded];
+                [self settleToState:RNBottomSheetStateExpanded withFling:NO];
             }
         }
     }
@@ -283,7 +283,7 @@
     if (!CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
         [self calculateOffset];
         if (self.state == RNBottomSheetStateCollapsed) {
-            [self settleToState:RNBottomSheetStateCollapsed];
+            [self settleToState:RNBottomSheetStateCollapsed withFling:NO];
         }
     }
 }
@@ -298,26 +298,26 @@
         return;
     }
     
-    [self settleToState:state];
+    [self settleToState:state withFling:NO];
 }
 
-- (void)settleToState:(RNBottomSheetState)state {
+- (void)settleToState:(RNBottomSheetState)state withFling:(BOOL)fling {
     if (state == RNBottomSheetStateCollapsed) {
-        [self startSettlingToState:state top:self.maxY];
+        [self startSettlingToState:state top:self.maxY withFling:fling];
     } else if (state == RNBottomSheetStateExpanded) {
-        [self startSettlingToState:state top:self.minY];
+        [self startSettlingToState:state top:self.minY withFling:fling];
     } else if (state == RNBottomSheetStateHidden) {
-        [self startSettlingToState:state top:self.frame.size.height];
+        [self startSettlingToState:state top:self.frame.size.height withFling:fling];
     }
 }
 
-- (void)startSettlingToState:(RNBottomSheetState)state top:(CGFloat)top {
+- (void)startSettlingToState:(RNBottomSheetState)state top:(CGFloat)top withFling:(BOOL)fling {
     self.target.pagingEnabled = YES;
     [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
 //    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:NULL animations:^{
+    [UIView animateWithDuration:fling ? 0.5 : 0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:NULL animations:^{
         self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;

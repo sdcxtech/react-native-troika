@@ -8,7 +8,7 @@
 RCT_EXPORT_MODULE(NestedScrollViewHeader)
 
 - (UIView *)view {
-    return [[RNNestedScrollViewHeader alloc] init];
+    return [[RNNestedScrollViewHeader alloc] initWithEventDispatcher:self.bridge.eventDispatcher];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(stickyHeight, CGFloat, RNNestedScrollViewHeader) {

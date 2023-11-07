@@ -1,4 +1,5 @@
 #import <React/RCTView.h>
+#import <React/RCTEventDispatcher.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -7,6 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) CGFloat stickyHeight;
 @property(nonatomic, assign) NSUInteger stickyHeaderBeginIndex;
 @property(nonatomic, copy) RCTDirectEventBlock onScroll;
+@property(nonatomic, strong) RCTEventDispatcher *eventDispatcher;
+
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 
 - (CGFloat)maxScrollRange;
 

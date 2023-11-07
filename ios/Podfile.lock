@@ -304,7 +304,7 @@ PODS:
     - React-jsi (= 0.67.5)
     - React-logger (= 0.67.5)
     - React-perflogger (= 0.67.5)
-  - RNBottomSheet (0.9.0):
+  - RNBottomSheet (0.10.0):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -319,9 +319,9 @@ PODS:
   - RNImageCrop (0.2.0):
     - React-Core
     - TOCropViewController
-  - RNKeyboardInsets (0.4.0):
+  - RNKeyboardInsets (0.5.0):
     - React-Core
-  - RNNestedScrollView (0.11.0):
+  - RNNestedScrollView (0.12.0):
     - React-Core
   - RNOverlay (0.5.0):
     - React-Core
@@ -573,14 +573,14 @@ SPEC CHECKSUMS:
   React-RCTVibration: c3b8a3245267a3849b0c7cb91a37606bf5f3aa65
   React-runtimeexecutor: 434efc9e5b6d0f14f49867f130b39376c971c1aa
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
-  RNBottomSheet: abc10fdf471dc6299579c3791b1f4e41651176bd
+  RNBottomSheet: cade7def306ea32fab8300643103a1ae5ae3e99d
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCrop: e0f88d4e36e0045ae83e507876fe89135503b821
-  RNKeyboardInsets: 0e5e2e157f4d61df710116b2e1c89288b6c527d5
-  RNNestedScrollView: 341bb897d1ec8e464b05039500229be72b9b0770
+  RNKeyboardInsets: 30e7b7492c1f3993e3602f27953ceb7e85ac5cbf
+  RNNestedScrollView: 7c255f336ec92543cf46639ced3e3a98503b724d
   RNOverlay: 52c6a0d66084062a783105d4c396d786e42c350c
   RNPullToRefresh: d5dbf60751ebe39fc2a23e0cac4e7700a2b16a70
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
@@ -592,6 +592,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
 
-PODFILE CHECKSUM: 66414e79e5a41461e6c10b4e9be09082a2314690
+PODFILE CHECKSUM: 4f14a8214184512a49242860498de2691b63676a
 
 COCOAPODS: 1.13.0

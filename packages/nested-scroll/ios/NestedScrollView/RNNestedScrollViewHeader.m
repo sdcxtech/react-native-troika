@@ -1,5 +1,6 @@
 #import "RNNestedScrollViewHeader.h"
 #import "RNNestedScrollView.h"
+#import "RNNestedScrollEvent.h"
 
 #import <React/UIView+React.h>
 #import <React/RCTAssert.h>
@@ -11,10 +12,11 @@ static const NSUInteger InvalidStickyBeginIndex = NSUIntegerMax;
     BOOL _hasObserver;
 }
 
-- (instancetype)init {
+- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher {
     if (self = [super init]) {
         _stickyHeight = InvalidStickyHeight;
         _stickyHeaderBeginIndex = InvalidStickyBeginIndex;
+        _eventDispatcher = eventDispatcher;
     }
     return self;
 }
@@ -90,15 +92,8 @@ static const NSUInteger InvalidStickyBeginIndex = NSUIntegerMax;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
-        CGPoint p = [change[@"new"] CGPointValue];
-        if (self.onScroll) {
-            self.onScroll(@{
-                @"contentOffset": @{
-                    @"y": @(p.y),
-                    @"x": @(p.x)
-                }
-            });
-        }
+        CGPoint offset = [change[@"new"] CGPointValue];
+        [self.eventDispatcher sendEvent:[[RNNestedScrollEvent alloc] initWithReactTag:self.reactTag offset:offset]];
     }
 }
 

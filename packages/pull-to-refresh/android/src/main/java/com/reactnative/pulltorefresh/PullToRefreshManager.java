@@ -3,9 +3,11 @@ package com.reactnative.pulltorefresh;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 
@@ -76,6 +78,11 @@ public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
             }
         }
         reactChildMap.remove(index);
+    }
+
+    @ReactProp(name = "overflow")
+    public void setOverflow(PullToRefresh view, @Nullable String overflow) {
+        view.setOverflow(overflow);
     }
 
     @Override

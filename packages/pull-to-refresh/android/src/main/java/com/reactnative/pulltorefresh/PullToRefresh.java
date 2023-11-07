@@ -1,28 +1,42 @@
 package com.reactnative.pulltorefresh;
 
 import android.content.Context;
-import android.util.AttributeSet;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
+import com.facebook.react.uimanager.ReactOverflowView;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshKernel;
 
-public class PullToRefresh extends SmartRefreshLayout {
+public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowView {
+
+    private final Rect mRect;
+    private String mOverflow = "hidden";
 
     public PullToRefresh(Context context) {
         super(context);
+        mRect = new Rect();
     }
 
-    public PullToRefresh(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public void setOverflow(String overflow) {
+        mOverflow = overflow;
+        invalidate();
+    }
+
+    @Nullable
+    @Override
+    public String getOverflow() {
+        return mOverflow;
     }
 
     private final Runnable measureAndLayout = () -> {
@@ -67,15 +81,15 @@ public class PullToRefresh extends SmartRefreshLayout {
 
         return super.dispatchTouchEvent(ev);
     }
-    
+
     private int mLastMotionY;
-    
+
     private boolean shouldInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         if ((action == MotionEvent.ACTION_MOVE) && (mIsBeingDragged)) {
             return true;
         }
-        
+
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_MOVE: {
                 final int y = (int) ev.getRawY();
@@ -97,7 +111,7 @@ public class PullToRefresh extends SmartRefreshLayout {
             case MotionEvent.ACTION_UP:
                 mIsBeingDragged = false;
         }
-        
+
         return mIsBeingDragged;
     }
 
@@ -124,6 +138,15 @@ public class PullToRefresh extends SmartRefreshLayout {
             int footerHeight = footer.getView().getMeasuredHeight();
             setFooterMaxDragRate(height / footerHeight);
         }
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        getDrawingRect(mRect);
+        if (!"visible".equals(mOverflow)) {
+            canvas.clipRect(mRect);
+        }
+        super.dispatchDraw(canvas);
     }
 
     public RefreshKernel getRefreshKernel() {

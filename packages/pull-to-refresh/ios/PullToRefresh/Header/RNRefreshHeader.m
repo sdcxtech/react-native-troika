@@ -1,5 +1,8 @@
 #import "RNRefreshHeader.h"
 #import "RNRefreshState.h"
+#import "RNRefreshingEvent.h"
+#import "RNRefreshOffsetChangedEvent.h"
+#import "RNRefreshStateChangedEvent.h"
 
 #import <React/RCTRefreshableProtocol.h>
 #import <React/UIView+React.h>
@@ -11,6 +14,7 @@
 
 @property(nonatomic, assign) RNRefreshState state;
 @property(nonatomic, assign) CGFloat topInset;
+@property(nonatomic, weak) RCTBridge *bridge;
 
 @end
 
@@ -20,11 +24,12 @@
     __weak RCTRootContentView *_rootView;
 }
 
-- (instancetype)init {
+- (instancetype)initWithBridge:(RCTBridge *)bridge {
     if (self = [super init]) {
         _isInitialRender = YES;
         _hasObserver = NO;
         _state = RNRefreshStateIdle;
+        _bridge = bridge;
     }
     return self;
 }
@@ -86,10 +91,8 @@
         CGFloat offsetY = self.scrollView.contentOffset.y;
         CGFloat insetT = -self.scrollView.contentInset.top;
         
-        if (self.onOffsetChanged && offsetY <= 0) {
-            self.onOffsetChanged(@{
-                @"offset": @(fabs(offsetY))
-            });
+        if (offsetY <= 0) {
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshOffsetChangedEvent alloc] initWithViewTag:self.reactTag offset:fabs(offsetY)]];
         }
         
         if (self.state == RNRefreshStateRefreshing) {
@@ -155,12 +158,8 @@
     
     RNRefreshState old = _state;
     _state = state;
-    
-    if (self.onStateChanged) {
-        self.onStateChanged(@{
-            @"state": @(state)
-        });
-    }
+
+    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:state]];
     
     if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
         [self animateToIdleState];
@@ -169,26 +168,17 @@
     
     if (state == RNRefreshStateRefreshing) {
         [self animateToRefreshingState];
-        
-        if (self.onRefresh) {
-            self.onRefresh(nil);
-        }
+        [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
         return;
     }
 }
 
 - (void)settleToRefreshing {
-    if (self.onStateChanged) {
-        self.onStateChanged(@{
-            @"state": @(RNRefreshStateRefreshing)
-        });
-    }
+    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
     
     [self animateToRefreshingState];
     
-    if (self.onRefresh) {
-        self.onRefresh(nil);
-    }
+    [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
 }
 
 - (void)animateToIdleState {

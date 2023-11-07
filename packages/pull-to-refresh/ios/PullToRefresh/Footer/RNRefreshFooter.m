@@ -1,6 +1,9 @@
 #import "RNRefreshFooter.h"
 #import "RNRefreshFooterLocalData.h"
 #import "RNRefreshState.h"
+#import "RNRefreshingEvent.h"
+#import "RNRefreshOffsetChangedEvent.h"
+#import "RNRefreshStateChangedEvent.h"
 
 #import <React/RCTRefreshableProtocol.h>
 #import <React/UIView+React.h>
@@ -120,10 +123,9 @@
         // 马上可看见 footer
         CGFloat minRange = self.scrollView.contentSize.height - self.scrollView.frame.size.height;
         
-        if (self.onOffsetChanged && self.scrollView.contentOffset.y >= minRange) {
-            self.onOffsetChanged(@{
-                @"offset": @(self.scrollView.contentOffset.y - minRange)
-            });
+        if (self.scrollView.contentOffset.y >= minRange) {
+            CGFloat offset = self.scrollView.contentOffset.y - minRange;
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshOffsetChangedEvent alloc] initWithViewTag:self.reactTag offset:offset]];
         }
         
         if (self.hidden || self.noMoreData) {
@@ -220,11 +222,7 @@
     RNRefreshState old = _state;
     _state = state;
 
-    if (self.onStateChanged) {
-        self.onStateChanged(@{
-            @"state": @(state)
-        });
-    }
+    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:state]];
     
     if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
         if (self.manual) {
@@ -237,9 +235,7 @@
         if (self.manual) {
             [self animateToRefreshingState];
         }
-        if (self.onRefresh) {
-            self.onRefresh(nil);
-        }
+        [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
         return;
     }
 }

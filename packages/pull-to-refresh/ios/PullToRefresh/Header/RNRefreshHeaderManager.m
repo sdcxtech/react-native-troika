@@ -10,7 +10,7 @@
 RCT_EXPORT_MODULE(RefreshHeader)
 
 - (UIView *)view {
-    return [RNRefreshHeader new];
+    return [[RNRefreshHeader alloc] initWithBridge:self.bridge];
 }
 
 - (RCTShadowView *)shadowView {

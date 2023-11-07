@@ -28,7 +28,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 
     public void setOverflow(String overflow) {
         mOverflow = overflow;
-        this.invalidate();
+        invalidate();
     }
 
     @Nullable
@@ -129,7 +129,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 
     @Override
     public void draw(Canvas canvas) {
-        this.getDrawingRect(mRect);
+        getDrawingRect(mRect);
         if (!"visible".equals(mOverflow)) {
             canvas.clipRect(mRect);
         }

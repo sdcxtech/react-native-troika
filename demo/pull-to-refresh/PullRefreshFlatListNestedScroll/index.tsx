@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
   text: {
     paddingVertical: 20,
     fontSize: 18,
-    backgroundColor: '#FFFFFF',
   },
 })
 

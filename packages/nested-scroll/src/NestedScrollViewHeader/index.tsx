@@ -1,5 +1,5 @@
 import React from 'react'
-import { NativeScrollPoint, NativeSyntheticEvent, requireNativeComponent, StyleSheet, ViewProps } from 'react-native'
+import { NativeScrollPoint, NativeSyntheticEvent, requireNativeComponent, ViewProps } from 'react-native'
 
 interface NestedScrollEventData {
   contentOffset: NativeScrollPoint
@@ -19,15 +19,8 @@ type NativeNestedScrollViewHeaderInstance = InstanceType<typeof NativeNestedScro
 
 const NestedScrollViewHeader = React.forwardRef<NativeNestedScrollViewHeaderInstance, NestedScrollViewHeaderProps>(
   (props, ref) => {
-    const { style, ...rest } = props
-    return <NativeNestedScrollViewHeader style={[styles.zIndex, style]} {...rest} ref={ref} />
+    return <NativeNestedScrollViewHeader {...props} ref={ref} />
   },
 )
 
 export { NestedScrollViewHeader }
-
-const styles = StyleSheet.create({
-  zIndex: {
-    zIndex: 10,
-  },
-})

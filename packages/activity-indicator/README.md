@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-yarn install @sdcx/activity-indicator
+yarn add @sdcx/activity-indicator
 ```
 
 ## Usage

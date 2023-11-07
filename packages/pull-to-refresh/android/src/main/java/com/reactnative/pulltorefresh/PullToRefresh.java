@@ -126,13 +126,14 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         float height = (float) (getMeasuredHeight() * 0.3);
+        
         RefreshHeader header = getRefreshHeader();
         if (header != null) {
             int headerHeight = header.getView().getMeasuredHeight();
             setHeaderMaxDragRate(height / headerHeight);
         }
+        
         RefreshFooter footer = getRefreshFooter();
         if (footer != null) {
             int footerHeight = footer.getView().getMeasuredHeight();

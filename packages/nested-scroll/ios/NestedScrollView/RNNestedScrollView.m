@@ -275,6 +275,7 @@ BOOL lt(float a, float b) {
     }
     
     [self.main addSubview:subview];
+    [self updateContentSizeIfNeeded];
 }
 
 - (void)removeReactSubview:(UIView *)subview {

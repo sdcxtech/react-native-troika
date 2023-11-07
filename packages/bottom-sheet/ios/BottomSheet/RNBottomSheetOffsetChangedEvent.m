@@ -3,7 +3,7 @@
 @interface RNBottomSheetOffsetChangedEvent ()
 
 @property (nonatomic, assign) CGFloat progress;
-@property (nonatomic, assign) CGFloat offest;
+@property (nonatomic, assign) CGFloat offset;
 @property (nonatomic, assign) CGFloat minY;
 @property (nonatomic, assign) CGFloat maxY;
 
@@ -22,7 +22,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
     if (self = [super init]) {
         _viewTag = viewTag;
         _progress = progress;
-        _offest = offset;
+        _offset = offset;
         _minY = minY;
         _maxY = maxY;
     }
@@ -44,7 +44,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 - (NSArray *)arguments {
     return @[self.viewTag, RCTNormalizeInputEventName(self.eventName), @{
                 @"progress": @(self.progress),
-                @"offset": @(self.offest),
+                @"offset": @(self.offset),
                 @"expandedOffset": @(self.minY),
                 @"collapsedOffset": @(self.maxY)
             }];

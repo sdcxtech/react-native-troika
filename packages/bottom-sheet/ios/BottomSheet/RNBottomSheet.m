@@ -143,7 +143,6 @@
 
 - (void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
-    
 }
 
 - (void)layoutSubviews {
@@ -298,7 +297,7 @@
         return;
     }
     
-    [self settleToState:state withFling:NO];
+    [self settleToState:state withFling:YES];
 }
 
 - (void)settleToState:(RNBottomSheetState)state withFling:(BOOL)fling {

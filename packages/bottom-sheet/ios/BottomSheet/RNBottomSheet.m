@@ -302,15 +302,15 @@
 
 - (void)settleToState:(RNBottomSheetState)state withFling:(BOOL)fling {
     if (state == RNBottomSheetStateCollapsed) {
-        [self startSettlingToState:state top:self.maxY withFling:fling];
+        [self settleToState:state top:self.maxY withFling:fling];
     } else if (state == RNBottomSheetStateExpanded) {
-        [self startSettlingToState:state top:self.minY withFling:fling];
+        [self settleToState:state top:self.minY withFling:fling];
     } else if (state == RNBottomSheetStateHidden) {
-        [self startSettlingToState:state top:self.frame.size.height withFling:fling];
+        [self settleToState:state top:self.frame.size.height withFling:fling];
     }
 }
 
-- (void)startSettlingToState:(RNBottomSheetState)state top:(CGFloat)top withFling:(BOOL)fling {
+- (void)settleToState:(RNBottomSheetState)state top:(CGFloat)top withFling:(BOOL)fling {
     self.target.pagingEnabled = YES;
     [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];

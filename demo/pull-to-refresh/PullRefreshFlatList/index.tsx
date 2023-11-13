@@ -47,7 +47,7 @@ function PullRefreshFlatList() {
 
   return (
     <PullToRefresh
-      style={{ height: '100%', overflow: 'hidden' }}
+      style={{ height: '100%' }}
       header={<SpinnerPullToRefreshHeader refreshing={refreshing} onRefresh={beginRefresh} />}
       loadingMore={loadingMore}
       noMoreData={noMoreData}

@@ -18,11 +18,6 @@ export function ScrollViewPage() {
       </Text>
       <Image style={styles.image} source={require('assets/book.jpg')} />
       <Text style={styles.paragraph}>
-        Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one
-        of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through
-        the cites of the word in classical literature, discovered the undoubtable source.
-      </Text>
-      <Text style={styles.paragraph}>
         Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &quot;de Finibus Bonorum et
         Malorum&quot; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a
         treatise on the theory of ethics, very popular during the Renaissance. The first line of

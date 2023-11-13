@@ -13,6 +13,10 @@ const data: Array<Item> = [
     routeName: 'PullRefreshFlatList',
   },
   {
+    title: 'PullRefresh + ScrollView',
+    routeName: 'PullRefreshScrollView',
+  },
+  {
     title: 'PullRefresh + NestedScroll + FlatList',
     routeName: 'PullRefreshFlatListNestedScroll',
   },

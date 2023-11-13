@@ -28,10 +28,7 @@ function PullRefreshScrollView() {
   }
 
   return (
-    <PullToRefresh
-      style={{ height: '100%', overflow: 'hidden' }}
-      refreshing={refreshing}
-      onRefresh={beginRefresh}>
+    <PullToRefresh refreshing={refreshing} onRefresh={beginRefresh}>
       <ScrollViewPage />
     </PullToRefresh>
   )

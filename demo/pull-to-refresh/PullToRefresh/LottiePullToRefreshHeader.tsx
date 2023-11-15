@@ -29,8 +29,8 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
       const state = event.nativeEvent.state
       stateRef.current = state
       if (state === PullToRefreshStateIdle) {
-        lottieRef.current?.reset()
-        setProgress(0)
+        lottieRef.current?.pause()
+        setTimeout(() => setProgress(0), 500)
       } else if (state === PullToRefreshStateRefreshing) {
         lottieRef.current?.play(progress)
       } else {

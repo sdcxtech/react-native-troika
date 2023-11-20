@@ -57,10 +57,6 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
         ViewGroup view = (ViewGroup) mRefreshContent.getScrollableView();
         // 数据不足以填满整个页面
         if (!view.canScrollVertically(-1) && !view.canScrollVertically(1)) {
-            if (shouldInterceptTouchEvent(ev)) {
-                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
-            }
-
             final float offsetX = getScrollX() - view.getLeft();
             final float offsetY = getScrollY() - view.getTop();
             final MotionEvent transformedEvent = MotionEvent.obtain(ev);
@@ -68,7 +64,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
             view.onInterceptTouchEvent(transformedEvent);
             view.onTouchEvent(transformedEvent);
             transformedEvent.recycle();
-
+            
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 view.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
             }
@@ -76,7 +72,15 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
             if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
                 view.stopNestedScroll();
             }
-            return true;
+            
+            if (shouldInterceptTouchEvent(ev)) {
+                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+                ViewParent parent = getParent();
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(true);
+                }
+                return true;
+            }
         }
 
         return super.dispatchTouchEvent(ev);
@@ -96,10 +100,6 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
                 final int yDiff = Math.abs(y - mLastMotionY);
                 if (yDiff >= mTouchSlop) {
                     mIsBeingDragged = true;
-                    ViewParent parent = getParent();
-                    if (parent != null) {
-                        parent.requestDisallowInterceptTouchEvent(true);
-                    }
                 }
                 break;
             }

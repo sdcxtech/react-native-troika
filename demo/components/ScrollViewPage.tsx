@@ -1,9 +1,22 @@
-import React from 'react'
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 
 export function ScrollViewPage() {
+  const [on, setOn] = useState(false)
   return (
-    <ScrollView nestedScrollEnabled contentContainerStyle={styles.content}>
+    <ScrollView nestedScrollEnabled>
+      <View style={styles.item}>
+        <TouchableOpacity onPress={() => console.log('按压标题')}>
+          <Text style={styles.label}>标题</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('switch')
+            setOn(!on)
+          }}>
+          <Switch value={on} onValueChange={setOn} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.author}>
         <Image style={styles.avatar} source={require('assets/avatar-1.png')} />
         <View style={styles.meta}>
@@ -12,16 +25,10 @@ export function ScrollViewPage() {
         </View>
       </View>
       <Text style={styles.title}>Lorem Ipsum</Text>
+      <Image style={styles.image} source={require('assets/book.jpg')} />
       <Text style={styles.paragraph}>
         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
         of classical Latin literature from 45 BC, making it over 2000 years old.
-      </Text>
-      <Image style={styles.image} source={require('assets/book.jpg')} />
-      <Text style={styles.paragraph}>
-        Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of &quot;de Finibus Bonorum et
-        Malorum&quot; (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a
-        treatise on the theory of ethics, very popular during the Renaissance. The first line of
-        Lorem Ipsum, &quot;Lorem ipsum dolor sit amet..&quot;, comes from a line in section 1.10.32.
       </Text>
     </ScrollView>
   )
@@ -30,9 +37,6 @@ export function ScrollViewPage() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-  },
-  content: {
-    paddingVertical: 16,
   },
   author: {
     flexDirection: 'row',
@@ -78,5 +82,18 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: 'cover',
     marginVertical: 8,
+  },
+  item: {
+    paddingRight: 20,
+    paddingLeft: 16,
+    backgroundColor: '#f9c2ff',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 60,
+  },
+  label: {
+    color: '#1D2023',
+    fontSize: 18,
   },
 })

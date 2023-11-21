@@ -57,13 +57,8 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
         ViewGroup view = (ViewGroup) mRefreshContent.getScrollableView();
         // 数据不足以填满整个页面
         if (!view.canScrollVertically(-1) && !view.canScrollVertically(1)) {
-            final float offsetX = getScrollX() - view.getLeft();
-            final float offsetY = getScrollY() - view.getTop();
-            final MotionEvent transformedEvent = MotionEvent.obtain(ev);
-            transformedEvent.offsetLocation(offsetX, offsetY);
-            view.onInterceptTouchEvent(transformedEvent);
-            view.onTouchEvent(transformedEvent);
-            transformedEvent.recycle();
+            view.onInterceptTouchEvent(ev);
+            view.onTouchEvent(ev);
             
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 view.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);

@@ -3,11 +3,13 @@
 #import "RNRefreshingEvent.h"
 #import "RNRefreshOffsetChangedEvent.h"
 #import "RNRefreshStateChangedEvent.h"
+#import "RNRefreshHeaderLocalData.h"
 
 #import <React/RCTRefreshableProtocol.h>
 #import <React/UIView+React.h>
 #import <React/RCTRootContentView.h>
 #import <React/RCTTouchHandler.h>
+#import <React/RCTUIManager.h>
 #import <React/RCTLog.h>
 
 @interface RNRefreshHeader () <RCTRefreshableProtocol>
@@ -47,6 +49,20 @@
         }
         _isInitialRender = false;
     });
+}
+
+- (void)reactSetFrame:(CGRect)frame {
+    [super reactSetFrame:frame];
+    [self setLocalData];
+}
+
+- (void)setLocalData {
+    if (self.scrollView) {
+        if (self.frame.origin.y != -self.frame.size.height) {
+            RNRefreshHeaderLocalData *localData = [[RNRefreshHeaderLocalData alloc] initWithHeaderHeight:self.frame.size.height];
+            [self.bridge.uiManager setLocalData:localData forView:self];
+        }
+    }
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {

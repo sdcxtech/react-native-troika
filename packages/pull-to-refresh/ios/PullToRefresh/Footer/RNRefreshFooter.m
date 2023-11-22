@@ -53,6 +53,7 @@
         // 和下拉刷新有冲突
         [self setScrollViewContentInset];
     }
+    [self setLocalData];
 }
 
 - (void)setScrollViewContentInset {

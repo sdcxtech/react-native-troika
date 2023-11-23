@@ -40,6 +40,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self setLocalData];
     
     if (self.backgroundColor == nil) {
         self.backgroundColor = [UIColor clearColor];
@@ -66,7 +67,7 @@
 }
 
 - (void)setLocalData {
-    if (self.scrollView) {
+    if (self.scrollView && self.frame.size.height != 0) {
         CGSize contentSize = self.scrollView.contentSize;
         if (self.frame.origin.y != contentSize.height) {
             RNRefreshFooterLocalData *localData = [[RNRefreshFooterLocalData alloc] initWithScrollViewContentSize:contentSize];

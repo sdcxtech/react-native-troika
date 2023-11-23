@@ -38,6 +38,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    [self setLocalData];
     
     if (self.backgroundColor == nil) {
         self.backgroundColor = [UIColor clearColor];
@@ -57,7 +58,7 @@
 }
 
 - (void)setLocalData {
-    if (self.scrollView) {
+    if (self.scrollView && self.frame.size.height != 0) {
         if (self.frame.origin.y != -self.frame.size.height) {
             RNRefreshHeaderLocalData *localData = [[RNRefreshHeaderLocalData alloc] initWithHeaderHeight:self.frame.size.height];
             [self.bridge.uiManager setLocalData:localData forView:self];
@@ -91,7 +92,6 @@
     if (!_hasObserver && self.scrollView) {
         NSKeyValueObservingOptions options = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
         [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:options context:nil];
-        [self.scrollView addObserver:self forKeyPath:@"contentSize" options:options context:nil];
         _hasObserver = YES;
     }
 }
@@ -99,16 +99,11 @@
 - (void)removeObserver {
     if (_hasObserver && self.scrollView) {
         [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
-        [self.scrollView removeObserver:self forKeyPath:@"contentSize" context:nil];
         _hasObserver = NO;
     }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"contentSize"]) {
-        [self setLocalData];
-    }
-    
     if ([keyPath isEqualToString:@"contentOffset"]) {
         CGFloat offsetY = self.scrollView.contentOffset.y;
         CGFloat insetT = -self.scrollView.contentInset.top;

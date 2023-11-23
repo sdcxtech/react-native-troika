@@ -8,7 +8,7 @@ export function NestedScrollTabView() {
   const [height, setHeight] = useState(0)
 
   useEffect(() => {
-    setHeight(Math.random() * 1000)
+    setHeight(Math.random() * 300)
   }, [])
 
   const [visible, setVisible] = useState(false)

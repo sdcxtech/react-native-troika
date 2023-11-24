@@ -20,10 +20,13 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
     private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
     private String mOverflow = "hidden";
     private final Rect mRect;
+    
+    private final NestedScrollFlingHelper mFlingHelper;
 
     public NestedScrollView(@NonNull Context context) {
         super(context);
         mRect = new Rect();
+        mFlingHelper = new NestedScrollFlingHelper(this);
     }
 
     public void setOverflow(String overflow) {
@@ -52,13 +55,24 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
     @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
         boolean consumed = super.onNestedPreFling(target, velocityX, velocityY);
-        if (!consumed && velocityY > 0 && canScrollVertically(1)) {
-            fling((int) velocityY);
-            return true;
+        if (!consumed) {
+            consumed = mFlingHelper.onNestedPreFling(target, velocityY);
         }
         return consumed;
     }
+    
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        mFlingHelper.computeScroll();
+    }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        mFlingHelper.dispatchTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
+    
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (super.onInterceptTouchEvent(ev)) {

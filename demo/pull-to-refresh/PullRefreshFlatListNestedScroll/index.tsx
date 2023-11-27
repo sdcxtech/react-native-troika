@@ -52,7 +52,10 @@ export function PullRefreshFlatListNestedScroll() {
           <Text>anchor</Text>
         </View>
       </NestedScrollViewHeader>
-      <ScrollView horizontal contentContainerStyle={{ width: '100%' }}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={{ width: '100%' }}
+        alwaysBounceHorizontal={false}>
         <PullToRefresh
           style={{ flex: 1 }}
           refreshing={refreshing}

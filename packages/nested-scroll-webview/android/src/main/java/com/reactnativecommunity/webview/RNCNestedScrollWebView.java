@@ -40,6 +40,7 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
     private OverScroller mScroller;
     private int mMinimumVelocity;
     private int mMaximumVelocity;
+    int mLastScrollerY = 0;
 
     private void initScrollView() {
         mScroller = new OverScroller(getContext(), null);
@@ -62,14 +63,14 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
         switch (actionMasked) {
             case MotionEvent.ACTION_DOWN: {
                 initOrResetVelocityTracker();
-                if (mIsBeingDragged = !mScroller.isFinished()) {
+                mIsBeingDragged = !mScroller.isFinished();
+                if (mIsBeingDragged) {
                     mScroller.abortAnimation();
                     final ViewParent parent = getParent();
                     if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
                 }
-                mNestedYOffset = 0;
                 mLastMotionY = (int) ev.getY();
                 mActivePointerId = ev.getPointerId(0);
                 if (hasNestedScrollingParent(ViewCompat.TYPE_NON_TOUCH)) {
@@ -97,7 +98,6 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
                 }
 
                 if (mIsBeingDragged) {
-                    startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH);
                     mScrollConsumed[1] = 0;
                     if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
                         deltaY -= mScrollConsumed[1];
@@ -185,10 +185,6 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
         return computeVerticalScrollRange();
     }
 
-    public void scrollToBottom() {
-        onOverScrolled(getScrollX(), getScrollRange(), false, false);
-    }
-
     private void endDrag() {
         mIsBeingDragged = false;
         recycleVelocityTracker();
@@ -197,7 +193,7 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
 
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = (ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+            >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
         final int pointerId = ev.getPointerId(pointerIndex);
         if (pointerId == mActivePointerId) {
             final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
@@ -231,14 +227,26 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
     }
 
     private void flingWithNestedDispatch(int velocityY) {
+        final int scrollY = getScrollY();
+        final boolean canFling = (scrollY > 0 || velocityY > 0)
+            && (scrollY < getScrollRange() || velocityY < 0);
         if (!dispatchNestedPreFling(0, velocityY)) {
-            dispatchNestedFling(0, velocityY, true);
-            startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
-            mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
-            ViewCompat.postInvalidateOnAnimation(this);
+            dispatchNestedFling(0, velocityY, canFling);
+            fling(velocityY);
         }
     }
 
+    public void fling(int velocityY) {
+        startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_NON_TOUCH);
+        mScroller.fling(getScrollX(), getScrollY(), // start
+            0, velocityY, // velocities
+            0, 0, // x
+            Integer.MIN_VALUE, Integer.MAX_VALUE, // y
+            0, 0); // overscroll 
+        mLastScrollerY = getScrollY();
+        ViewCompat.postInvalidateOnAnimation(this);
+    }
+    
     @Override
     public void computeScroll() {
         if (nestedScrollEnabled) {
@@ -251,7 +259,9 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
         }
 
         if (mScroller.computeScrollOffset()) {
-            int unconsumed = mScroller.getCurrY() - getScrollY();
+            final int y = mScroller.getCurrY();
+            int unconsumed = y - mLastScrollerY;
+            mLastScrollerY = y;
             if (unconsumed != 0) {
                 mScrollConsumed[1] = 0;
                 dispatchNestedPreScroll(0, unconsumed, mScrollConsumed, mScrollOffset, ViewCompat.TYPE_NON_TOUCH);

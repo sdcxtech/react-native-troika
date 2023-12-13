@@ -45,16 +45,24 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.state == RNRefreshStateRefreshing && _isInitialRender) {
+        if (self.state == RNRefreshStateRefreshing && self->_isInitialRender) {
             [self settleToRefreshing];
         }
-        _isInitialRender = false;
+        self->_isInitialRender = false;
     });
 }
 
 - (void)reactSetFrame:(CGRect)frame {
     [super reactSetFrame:frame];
     [self setLocalData];
+}
+
+- (void)setFrame:(CGRect)frame {
+    if (frame.origin.y != frame.size.height) {
+        [self setLocalData];
+        return;
+    }
+    [super setFrame:frame];
 }
 
 - (void)setLocalData {
@@ -223,7 +231,7 @@
   while (rootView.superview && ![rootView isReactRootView]) {
     rootView = rootView.superview;
   }
-  _rootView = rootView;
+  _rootView = (RCTRootContentView *)rootView;
 }
 
 - (void)cancelRootViewTouches {

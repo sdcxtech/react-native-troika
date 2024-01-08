@@ -185,3 +185,16 @@ function MyComponent() {
     )
   }
   ```
+## Caution
+如果你在项目中同时使用了[react-native-bars](https://github.com/zoontek/react-native-bars)，那么在初始化它的时候，需要把它内置的键盘处理逻辑关闭：
+```java
+// in MainActivity.java
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    // ...other code
+    super.onCreate(savedInstanceState);
+    RNBars.init(this, "dark-content", false); // <- 第三个参数必须要设置为false
+    // ...other code
+  }
+```

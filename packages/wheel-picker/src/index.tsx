@@ -1,6 +1,5 @@
 import { PickerItem } from './typing'
-// @ts-ignore
-import WheelPicker from './Picker'
+import WheelPicker from './WheelPicker'
 
 export { PickerItem }
 

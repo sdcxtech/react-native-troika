@@ -22,7 +22,9 @@ RCT_EXPORT_MODULE(WheelPicker)
 RCT_EXPORT_VIEW_PROPERTY(items, NSArray<NSString *>)
 RCT_EXPORT_VIEW_PROPERTY(selectedIndex, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onItemSelected, RCTBubblingEventBlock)
-RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(itemHeight, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(textColorCenter, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(textColorOut, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(textAlign, NSTextAlignment)
 RCT_CUSTOM_VIEW_PROPERTY(fontSize, NSNumber, RNWheelPicker) {
     view.font = [RCTFont updateFont:view.font withSize:json ?: @(defaultView.font.pointSize)];

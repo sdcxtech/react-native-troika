@@ -17,11 +17,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
-        _color = [UIColor blackColor];
-        _font = [UIFont systemFontOfSize:21]; // TODO: selected title default should be 23.5
-        _selectedIndex = NSNotFound;
+        _font = [UIFont systemFontOfSize:14];
         _textAlign = NSTextAlignmentCenter;
-        _itemHeight = 32;
+        _itemHeight = 36;
+        _textColorOut = [UIColor blackColor];
+        _textColorCenter = [UIColor blackColor];
         self.delegate = self;
         self.dataSource = self;
         // Workaround for missing selection indicator lines (see https://stackoverflow.com/questions/39564660/uipickerview-selection-indicator-not-visible-in-ios10)
@@ -34,6 +34,16 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)setItems:(NSArray<NSDictionary *> *)items {
     _items = [items copy];
+    [self setNeedsLayout];
+}
+
+- (void)setItemHeight:(CGFloat)itemHeight {
+    _itemHeight = itemHeight;
+    [self setNeedsLayout];
+}
+
+- (void)setFont:(UIFont *)font {
+    _font = font;
     [self setNeedsLayout];
 }
 
@@ -85,10 +95,15 @@ numberOfRowsInComponent:(__unused NSInteger)component {
     }
 
     label.font = _font;
-    // label.textColor =
+    label.textColor = _textColorOut;
     label.textAlignment = _textAlign;
     label.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UILabel *label = (UILabel *)[pickerView viewForRow:row forComponent:component];
+            label.textColor = _textColorCenter;
+        });
+
     return label;
 }
 

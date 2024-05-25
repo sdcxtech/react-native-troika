@@ -104,8 +104,7 @@ public class WheelView extends View {
     private int drawCenterContentStart = 0;//中间选中文字开始绘制位置
     private int drawOutContentStart = 0;//非中间文字开始绘制位置
     private static final float SCALE_CONTENT = 0.8F;//非中间文字则用此控制高度，压扁形成3d错觉
-    private float CENTER_CONTENT_OFFSET;//偏移量
-
+    
     private final float DEFAULT_TEXT_TARGET_SKEW_X = 0.5f;
 
     public WheelView(Context context) {
@@ -114,20 +113,7 @@ public class WheelView extends View {
 
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        float density = dm.density; // 屏幕密度比（0.75/1.0/1.5/2.0/3.0）
-
-        if (density < 1) {//根据密度不同进行适配
-            CENTER_CONTENT_OFFSET = 2.4F;
-        } else if (1 <= density && density < 2) {
-            CENTER_CONTENT_OFFSET = 3.6F;
-        } else if (2 <= density && density < 3) {
-            CENTER_CONTENT_OFFSET = 6.0F;
-        } else if (density >= 3) {
-            CENTER_CONTENT_OFFSET = density * 2.5F;
-        }
-
+        
         textColorOut = 0xFFa8a8a8;
         textColorCenter = 0xFF2a2a2a;
         textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 21, context.getResources().getDisplayMetrics());
@@ -194,7 +180,7 @@ public class WheelView extends View {
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
-        centerY = secondLineY - (itemHeight - maxTextHeight) / 2.0f - CENTER_CONTENT_OFFSET;
+        centerY = secondLineY - (itemHeight - maxTextHeight) / 2.0f;
 
         //初始化显示的item的position
         if (initPosition == -1) {
@@ -220,7 +206,7 @@ public class WheelView extends View {
                 maxTextWidth = textWidth;
             }
         }
-        maxTextHeight = (int) (rect.height() + (itemHeight - rect.height()) * 0.4);
+        maxTextHeight = rect.height();
     }
 
     public void smoothScroll(ACTION action) {//平滑滚动的实现
@@ -380,7 +366,7 @@ public class WheelView extends View {
         if (!TextUtils.isEmpty(label) && isCenterLabel) {
             //绘制文字，靠右并留出空隙
             int drawRightContentStart = measuredWidth - getTextWidth(paintCenterText, label);
-            canvas.drawText(label, drawRightContentStart - CENTER_CONTENT_OFFSET, centerY, paintCenterText);
+            canvas.drawText(label, drawRightContentStart, centerY, paintCenterText);
         }
 
         counter = 0;
@@ -427,14 +413,14 @@ public class WheelView extends View {
                     canvas.save();
                     canvas.clipRect(0, firstLineY - translateY, measuredWidth, (int) (itemHeight));
                     canvas.scale(1.0F, (float) Math.sin(radian));
-                    canvas.drawText(contentText, drawCenterContentStart, maxTextHeight - CENTER_CONTENT_OFFSET, paintCenterText);
+                    canvas.drawText(contentText, drawCenterContentStart, maxTextHeight, paintCenterText);
                     canvas.restore();
                 } else if (translateY <= secondLineY && maxTextHeight + translateY >= secondLineY) {
                     // 条目经过第二条线
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, secondLineY - translateY);
                     canvas.scale(1.0F, (float) Math.sin(radian));
-                    canvas.drawText(contentText, drawCenterContentStart, maxTextHeight - CENTER_CONTENT_OFFSET, paintCenterText);
+                    canvas.drawText(contentText, drawCenterContentStart, maxTextHeight, paintCenterText);
                     canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, secondLineY - translateY, measuredWidth, (int) (itemHeight));
@@ -445,7 +431,7 @@ public class WheelView extends View {
                     // 中间条目
                     // canvas.clipRect(0, 0, measuredWidth, maxTextHeight);
                     //让文字居中
-                    float Y = maxTextHeight - CENTER_CONTENT_OFFSET;//因为圆弧角换算的向下取值，导致角度稍微有点偏差，加上画笔的基线会偏上，因此需要偏移量修正一下
+                    float Y = maxTextHeight;//因为圆弧角换算的向下取值，导致角度稍微有点偏差，加上画笔的基线会偏上，因此需要偏移量修正一下
                     canvas.drawText(contentText, drawCenterContentStart, Y, paintCenterText);
 
                     //设置选中项
@@ -542,7 +528,7 @@ public class WheelView extends View {
                 drawCenterContentStart = 0;
                 break;
             case Gravity.RIGHT://添加偏移量
-                drawCenterContentStart = measuredWidth - rect.width() - (int) CENTER_CONTENT_OFFSET;
+                drawCenterContentStart = measuredWidth - rect.width();
                 break;
         }
     }
@@ -562,7 +548,7 @@ public class WheelView extends View {
                 drawOutContentStart = 0;
                 break;
             case Gravity.RIGHT:
-                drawOutContentStart = measuredWidth - rect.width() - (int) CENTER_CONTENT_OFFSET;
+                drawOutContentStart = measuredWidth - rect.width();
                 break;
         }
     }

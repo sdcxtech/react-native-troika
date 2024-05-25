@@ -28,7 +28,7 @@ interface WheelPickerProps<T> {
   itemStyle?: StyleProp<TextStyle>
 }
 
-function PickerIOS<T>({ selectedValue, onValueChange, items = [], style, itemStyle = {} }: WheelPickerProps<T>) {
+function WheelPicker<T>({ selectedValue, onValueChange, items = [], style, itemStyle = {} }: WheelPickerProps<T>) {
   const handleItemSelected = useCallback(
     (event: Event) => {
       const selectedIndex = event.nativeEvent.selectedIndex
@@ -41,21 +41,23 @@ function PickerIOS<T>({ selectedValue, onValueChange, items = [], style, itemSty
 
   const selectedIndex = items.findIndex(v => v.value === selectedValue)
   const s = StyleSheet.flatten(itemStyle)
-  const itemHeight = s.height && typeof s.height === 'number' ? s.height : 32
+  const lineHeight = s.lineHeight || 36
+  const itemHeight = s.height && typeof s.height === 'number' ? s.height : lineHeight
   const fontSize = s.fontSize ?? 14
-  const color = s.color && typeof s.color === 'string' ? s.color : undefined
+  const fontColor = s.color && typeof s.color === 'string' ? s.color : undefined
+  const height = (itemHeight * 16) / Math.PI
 
   return (
     <WheelPickerNative
-      style={style}
+      style={[{ height }, style]}
       onItemSelected={handleItemSelected}
       selectedIndex={selectedIndex === -1 ? 0 : selectedIndex}
       items={items.map(item => item.label)}
-      itemHeight={itemHeight}
+      itemHeight={Math.max(itemHeight, lineHeight)}
       fontSize={fontSize}
-      textColorCenter={color}
+      textColorCenter={fontColor}
     />
   )
 }
 
-export default PickerIOS
+export default WheelPicker

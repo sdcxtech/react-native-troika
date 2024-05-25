@@ -30,6 +30,7 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
         wheelView.setTextXOffset(1);
         wheelView.setAdapter(this);
         wheelView.setOnItemSelectedListener(this);
+        wheelView.setCyclic(false);
 
         setClipChildren(true);
     }

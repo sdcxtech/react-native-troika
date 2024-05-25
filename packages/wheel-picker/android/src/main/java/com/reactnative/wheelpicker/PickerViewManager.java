@@ -63,7 +63,7 @@ public class PickerViewManager extends SimpleViewManager<PickerView> {
         pickerView.setTextSize(size);
     }
 
-    @ReactProp(name = "itemHeight", defaultInt = 40)
+    @ReactProp(name = "itemHeight", defaultInt = 36)
     public void setItemHeight(PickerView pickerView, int height) {
         pickerView.setItemHeight(PixelUtil.toPixelFromDIP(height));
     }
@@ -82,11 +82,6 @@ public class PickerViewManager extends SimpleViewManager<PickerView> {
         }
     }
     
-    @ReactProp(name = "cyclic")
-    public void cyclic(PickerView pickerView, boolean cyclic) {
-        pickerView.setCyclic(cyclic);
-    }
-
     @ReactProp(name = "items")
     public void items(PickerView pickerView, ReadableArray items) {
         if (items == null) {

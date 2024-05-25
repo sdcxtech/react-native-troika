@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     color: '#1A9EFF',
-    fontSize: 18,
-    height: 36,
+    fontSize: 17,
   },
 })

@@ -20,7 +20,7 @@ export default withNavigationItem({
 })(WheelPicker)
 
 function WheelPicker() {
-  const [selectedValue, setSelectedValue] = useState('龙华区')
+  const [selectedValue, setSelectedValue] = useState('3')
 
   const handleValueChange = (itemValue: string) => {
     console.log('handleValueChange', itemValue)
@@ -33,6 +33,7 @@ function WheelPicker() {
       <Picker
         style={styles.picker}
         items={items}
+        itemStyle={{ height: 40 }}
         selectedValue={selectedValue}
         onValueChange={handleValueChange}
       />

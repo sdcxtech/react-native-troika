@@ -2,6 +2,7 @@ package com.reactnative.wheelpicker;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,12 +15,12 @@ public class WheelPickerPackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-        return Collections.singletonList(new WheelPickerModule(reactContext));
+        return Collections.emptyList();
     }
 
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        return  Collections.singletonList(new PickerViewManager());
     }
 }

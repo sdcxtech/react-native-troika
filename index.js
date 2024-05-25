@@ -13,6 +13,7 @@ import { registerBottomSheetComponent } from './demo/bottom-sheet'
 import { registerKeyboardComponent } from './demo/keyboard-insets'
 import { registerImageCropComponent } from './demo/image-crop'
 import { registerOverlayComponent } from './demo/overlay'
+import { registerWheelPicker } from './demo/wheel-picker'
 
 // 配置全局样式
 Navigation.setDefaultOptions({
@@ -35,6 +36,7 @@ registerBottomSheetComponent()
 registerKeyboardComponent()
 registerImageCropComponent()
 registerOverlayComponent()
+registerWheelPicker()
 
 Navigation.registerComponent('ActivityIndicator', () => ActivityIndicator)
 

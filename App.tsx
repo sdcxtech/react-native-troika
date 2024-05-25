@@ -44,6 +44,10 @@ const data: Array<Item> = [
     title: '菊花 Loading',
     routeName: 'ActivityIndicator',
   },
+  {
+    title: 'WheelPicker',
+    routeName: 'WheelPicker',
+  },
 ]
 
 function App() {

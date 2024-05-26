@@ -24,7 +24,6 @@ interface TimePickerProps {
 }
 
 export default function TimePicker(props: TimePickerProps) {
-  const height = (36 * 16) / Math.PI
   const { hour = 0, minute = 0, onValueChanged, style } = props
 
   const onHourChanged = (value: number) => {
@@ -41,14 +40,14 @@ export default function TimePicker(props: TimePickerProps) {
       <Picker
         selectedValue={hour}
         onValueChange={onHourChanged}
-        style={[styles.picker, { height }]}
+        style={styles.picker}
         itemStyle={styles.itemStyle}
         items={hours}
       />
       <Picker
         selectedValue={minute}
         onValueChange={onMinuteChanged}
-        style={[styles.picker, { height }]}
+        style={styles.picker}
         itemStyle={styles.itemStyle}
         items={minutes}
       />

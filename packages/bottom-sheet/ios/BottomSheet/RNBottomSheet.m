@@ -171,6 +171,10 @@
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
+    if (!self.draggable) {
+        return;
+    }
+    
     CGFloat translationY = [pan translationInView:self.contentView].y;
     [pan setTranslation:CGPointZero inView:self.contentView];
     

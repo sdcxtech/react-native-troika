@@ -42,4 +42,9 @@ public class BottomSheetManager extends ViewGroupManager<BottomSheet> {
         view.setState(BottomSheetState.valueOf(state.toUpperCase()));
     }
 
+    @ReactProp(name = "draggable")
+    public void setDraggable(BottomSheet view, boolean draggable) {
+        view.setDraggable(draggable);
+    }
+
 }

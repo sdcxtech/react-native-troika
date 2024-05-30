@@ -55,6 +55,8 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
 
     private SettleRunnable settleRunnable = null;
 
+    private boolean draggable;
+
     private int peekHeight;
 
     private int expandedOffset;
@@ -156,6 +158,10 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
         }
     }
 
+    public void setDraggable(boolean draggable) {
+        this.draggable = draggable;
+    }
+
     public void setState(BottomSheetState state) {
         if (state == this.state) {
             return;
@@ -211,6 +217,9 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     }
 
     private boolean shouldInterceptTouchEvent(MotionEvent event) {
+        if (!draggable) {
+            return false;
+        }
         int action = event.getActionMasked();
         // Record the velocity
         if (action == MotionEvent.ACTION_DOWN) {
@@ -270,6 +279,10 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!draggable) {
+            return false;
+        }
+        
         int action = event.getActionMasked();
         if (state == DRAGGING && action == MotionEvent.ACTION_DOWN) {
             return true;

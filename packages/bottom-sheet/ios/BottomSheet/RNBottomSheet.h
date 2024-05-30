@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy) RCTDirectEventBlock onStateChanged;
 @property(nonatomic, assign) CGFloat peekHeight;
 @property(nonatomic, assign) RNBottomSheetState state;
+@property(nonatomic, assign) BOOL draggable;
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 

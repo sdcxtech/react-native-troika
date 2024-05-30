@@ -19,6 +19,7 @@ interface NativeBottomSheetProps extends ViewProps {
   onSlide?: (event: NativeSyntheticEvent<OffsetChangedEventData>) => void
   onStateChanged?: (event: NativeSyntheticEvent<StateChangedEventData>) => void
   peekHeight?: number
+  draggable?: boolean
   state?: BottomSheetState
   contentContainerStyle?: ViewProps['style']
 }
@@ -37,6 +38,7 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
     contentContainerStyle,
     children,
     peekHeight = 200,
+    draggable = true,
     state = 'collapsed',
     fitToContents,
     ...rest
@@ -46,6 +48,7 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
     <NativeBottomSheet
       style={[StyleSheet.absoluteFill, outer]}
       peekHeight={peekHeight}
+      draggable={draggable}
       state={state}
       {...rest}
       ref={ref}>

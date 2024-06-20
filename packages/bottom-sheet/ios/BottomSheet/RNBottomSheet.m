@@ -296,6 +296,11 @@
         return;
     }
 
+    if (self.state == RNBottomSheetStateSettling) {
+        [self.layer removeAllAnimations];
+        return;
+    }
+    
     if (CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
         [self setStateInternal:state];
         return;
@@ -320,7 +325,7 @@
     [self startWatchBottomSheetTransition];
     [self.layer removeAllAnimations];
 //    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:fling ? 0.5 : 0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:NULL animations:^{
+    [UIView animateWithDuration:fling ? 0.5 : 0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionTransitionNone animations:^{
         self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
     } completion:^(BOOL finished) {
         self.target.pagingEnabled = NO;
@@ -334,6 +339,18 @@
         return;
     }
     _state = state;
+    
+    if (state == RNBottomSheetStateExpanded) {
+        [self dispatchOnSlide:self.minY];
+    }
+    
+    if (state == RNBottomSheetStateHidden) {
+        [self dispatchOnSlide:self.frame.size.height];
+    }
+    
+    if (state == RNBottomSheetStateCollapsed) {
+        [self dispatchOnSlide:self.maxY];
+    }
     
     if (state == RNBottomSheetStateCollapsed || state == RNBottomSheetStateExpanded || state == RNBottomSheetStateHidden) {
         [self.eventDispatcher sendEvent:[[RNBottomSheetStateChangedEvent alloc] initWithViewTag:self.reactTag state:state]];
@@ -356,11 +373,6 @@
 }
 
 - (void)stopWatchBottomSheetTransition {
-    if (self.state == RNBottomSheetStateCollapsed) {
-        [self dispatchOnSlide:self.maxY];
-    } else if (self.state == RNBottomSheetStateExpanded) {
-        [self dispatchOnSlide:self.minY];
-    }
     if(_displayLink){
         [_displayLink invalidate];
         _displayLink = nil;

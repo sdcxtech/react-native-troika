@@ -1,7 +1,7 @@
 {
   "name": "@sdcx/wheel-picker",
   "description": "A React Native Wheel Picker ui component.",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "react-native": "src/index",
@@ -17,7 +17,7 @@
     "!ios/build",
     "!**/__tests__"
   ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
+  "repository": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/wheel-picker",
   "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/wheel-picker#readme",
   "author": "sdcx",
   "license": "MIT",

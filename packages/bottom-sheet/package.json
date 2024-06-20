@@ -1,7 +1,7 @@
 {
   "name": "@sdcx/bottom-sheet",
   "description": "A react-native BottomSheet component.",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "react-native": "src/index",
@@ -11,6 +11,7 @@
     "lib",
     "android",
     "ios",
+    "docs",
     "RNBottomSheet.podspec",
     "!android/build",
     "!ios/build",

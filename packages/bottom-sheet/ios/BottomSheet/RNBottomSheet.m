@@ -22,10 +22,13 @@
 @property(nonatomic, strong) CADisplayLink *displayLink;
 @property(nonatomic, strong) RCTEventDispatcher *eventDispatcher;
 
+@property(nonatomic, assign) RNBottomSheetState finalState;
+
 @end
 
 @implementation RNBottomSheet {
     __weak RCTRootContentView *_rootView;
+    BOOL _isInitialRender;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher {
@@ -33,7 +36,9 @@
         _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         _panGestureRecognizer.delegate = self;
         _state = RNBottomSheetStateCollapsed;
+        _finalState = RNBottomSheetStateCollapsed;
         _eventDispatcher = eventDispatcher;
+        _isInitialRender = YES;
     }
     return self;
 }
@@ -162,6 +167,14 @@
         }
         [self dispatchOnSlide:self.contentView.frame.origin.y];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.finalState == RNBottomSheetStateExpanded && self->_isInitialRender) {
+            [self settleToState:self.finalState withFling:YES];
+        }
+        
+        self->_isInitialRender = NO;
+    });
 }
 
 - (void)calculateOffset {
@@ -171,7 +184,7 @@
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)pan {
-    if (!self.draggable) {
+    if (!self.draggable || self.state == RNBottomSheetStateSettling) {
         return;
     }
     
@@ -292,20 +305,17 @@
 }
 
 - (void)setState:(RNBottomSheetState)state {
-    if (_state == state) {
+    if (_isInitialRender) {
+        self.finalState = state;
         return;
     }
+    
+    if (self.finalState == state) {
+        return;
+    }
+    
+    self.finalState = state;
 
-    if (self.state == RNBottomSheetStateSettling) {
-        [self.layer removeAllAnimations];
-        return;
-    }
-    
-    if (CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
-        [self setStateInternal:state];
-        return;
-    }
-    
     [self settleToState:state withFling:YES];
 }
 

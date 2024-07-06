@@ -32,7 +32,7 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
     modalContentStyle,
     children,
   } = props
-  const [bottomSheetState, setBottomSheetState] = useState<BottomSheetState>('hidden')
+  const [bottomSheetState, setBottomSheetState] = useState<BottomSheetState>('collapsed')
   const progressRef = useRef(0)
 
   useEffect(() => {

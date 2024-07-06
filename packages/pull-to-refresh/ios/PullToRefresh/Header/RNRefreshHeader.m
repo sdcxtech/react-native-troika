@@ -48,7 +48,7 @@
         if (self.state == RNRefreshStateRefreshing && self->_isInitialRender) {
             [self settleToRefreshing];
         }
-        self->_isInitialRender = false;
+        self->_isInitialRender = NO;
     });
 }
 

@@ -20,6 +20,8 @@ import com.scwang.smart.refresh.layout.api.RefreshKernel;
 
 public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowView {
 
+    private final static String TAG = "PullToRefresh";
+
     private final Rect mRect;
     private String mOverflow = "hidden";
 
@@ -55,11 +57,27 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         ViewGroup view = (ViewGroup) mRefreshContent.getScrollableView();
+        String viewName = view.getClass().getCanonicalName();
+
+        if (viewName != null && viewName.contains("ViewPager2")) {
+            if (mIsBeingDragged) {
+                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+
+        if (view.canScrollHorizontally(-1) || view.canScrollHorizontally(1)) {
+            if (mIsBeingDragged) {
+                NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+
         // 数据不足以填满整个页面
         if (!view.canScrollVertically(-1) && !view.canScrollVertically(1)) {
             view.onInterceptTouchEvent(ev);
             view.onTouchEvent(ev);
-            
+
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 view.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
             }
@@ -67,7 +85,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
             if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
                 view.stopNestedScroll();
             }
-            
+
             if (shouldInterceptTouchEvent(ev)) {
                 NativeGestureUtil.notifyNativeGestureStarted(this, ev);
                 ViewParent parent = getParent();
@@ -122,13 +140,13 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         float height = (float) (getMeasuredHeight() * 0.3);
-        
+
         RefreshHeader header = getRefreshHeader();
         if (header != null) {
             int headerHeight = header.getView().getMeasuredHeight();
             setHeaderMaxDragRate(height / headerHeight);
         }
-        
+
         RefreshFooter footer = getRefreshFooter();
         if (footer != null) {
             int footerHeight = footer.getView().getMeasuredHeight();

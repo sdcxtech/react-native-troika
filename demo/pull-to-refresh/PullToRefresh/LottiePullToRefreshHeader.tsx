@@ -51,7 +51,7 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
         style={{ height: 50 }}
         source={require('./square-loading.json')}
         autoPlay={false}
-        speed={1}
+        speed={1.2}
         cacheStrategy={'strong'}
         loop
         progress={progress}

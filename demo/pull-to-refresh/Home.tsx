@@ -17,6 +17,10 @@ const data: Array<Item> = [
     routeName: 'PullRefreshScrollView',
   },
   {
+    title: 'PullRefresh Without ScrollView',
+    routeName: 'PullRefreshWithoutScrollView',
+  },
+  {
     title: 'PullRefresh + WebView',
     routeName: 'PullRefreshWebView',
   },

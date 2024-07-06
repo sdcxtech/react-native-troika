@@ -5,6 +5,7 @@ import { useNavigator, withNavigationItem } from 'hybrid-navigation'
 interface Item {
   title: string
   routeName: string
+  action?: string
 }
 
 const data: Array<Item> = [
@@ -24,13 +25,34 @@ const data: Array<Item> = [
     title: 'BottomSheet + Backdrop + Shadow',
     routeName: 'BottomSheetBackdropShadow',
   },
+  {
+    title: 'BottomModal + TextInput',
+    routeName: 'BottomModalTextInput',
+    action: 'modal',
+  },
+  {
+    title: 'BottomModal + FlatList',
+    routeName: 'BottomModalFlatList',
+    action: 'modal',
+  },
 ]
 
 function Home() {
   const navigator = useNavigator()
 
   const renderListItem: ListRenderItem<Item> = ({ item }) => {
-    return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />
+    return (
+      <ListItem
+        {...item}
+        onPress={() => {
+          if (item.action === 'modal') {
+            navigator.showModal(item.routeName)
+          } else {
+            navigator.push(item.routeName)
+          }
+        }}
+      />
+    )
   }
 
   return <FlatList data={data} keyExtractor={item => item.title} renderItem={renderListItem} />

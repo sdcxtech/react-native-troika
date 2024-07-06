@@ -24,8 +24,6 @@
         _textColorCenter = [UIColor blackColor];
         self.delegate = self;
         self.dataSource = self;
-        // Workaround for missing selection indicator lines (see https://stackoverflow.com/questions/39564660/uipickerview-selection-indicator-not-visible-in-ios10)
-        [self selectRow:0 inComponent:0 animated:YES];
     }
     return self;
 }
@@ -49,10 +47,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
     if (_selectedIndex != selectedIndex) {
-        BOOL animated = _selectedIndex != NSNotFound; // Don't animate the initial value
         _selectedIndex = selectedIndex;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self selectRow:selectedIndex inComponent:0 animated:animated];
+            [self selectRow:selectedIndex inComponent:0 animated:NO];
         });
     }
 }

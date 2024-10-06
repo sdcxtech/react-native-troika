@@ -20,7 +20,7 @@ function BottomModalTextInput() {
 
   return (
     <BottomModal fitToContents visible={visible} onClose={onClose}>
-      <KeyboardInsetsView style={styles.keyboard} extraHeight={80}>
+      <KeyboardInsetsView extraHeight={80}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>BottomModal</Text>
@@ -29,7 +29,7 @@ function BottomModalTextInput() {
             </Pressable>
           </View>
           <TextInput style={styles.input} value={text} onChangeText={setText} autoFocus />
-          <PrimaryButton style={styles.button} text="保存" />
+          <PrimaryButton style={styles.button} text="保存" onPress={closeModal} />
         </View>
       </KeyboardInsetsView>
     </BottomModal>
@@ -37,11 +37,7 @@ function BottomModalTextInput() {
 }
 
 const styles = StyleSheet.create({
-  keyboard: {
-    flex: 1,
-  },
   content: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,

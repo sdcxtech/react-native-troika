@@ -40,9 +40,13 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
       Keyboard.dismiss()
     }
     // 保证动画
-    setTimeout(() => {
-      setBottomSheetState(visible ? 'expanded' : 'collapsed')
-    }, 0)
+    if (visible) {
+      setTimeout(() => {
+        setBottomSheetState('expanded')
+      }, 0)
+    } else {
+      setBottomSheetState('collapsed')
+    }
   }, [visible])
 
   useEffect(() => {
@@ -74,7 +78,7 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.overlay} onPress={onOutsidePress} />
+      {!fitToContents && <Pressable style={StyleSheet.absoluteFill} onPress={onOutsidePress} />}
       <BottomSheet
         fitToContents={fitToContents}
         peekHeight={0}
@@ -83,7 +87,11 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
         onStateChanged={onStateChanged}
         onSlide={onSlide}
         style={style}
-        contentContainerStyle={modalContentStyle}>
+        contentContainerStyle={[
+          fitToContents ? styles.fitToContents : undefined,
+          modalContentStyle,
+        ]}>
+        {fitToContents && <Pressable style={StyleSheet.absoluteFill} onPress={onOutsidePress} />}
         {children}
       </BottomSheet>
     </View>
@@ -94,11 +102,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  overlay: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+  fitToContents: {
+    position: 'relative',
+    flex: 1,
+    justifyContent: 'flex-end',
   },
 })

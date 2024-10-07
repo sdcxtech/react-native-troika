@@ -34,7 +34,7 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
       } else if (state === PullToRefreshStateRefreshing) {
         lottieRef.current?.play(progress)
       } else {
-        HapticFeedback.trigger('impactLight')
+        HapticFeedback.trigger('effectClick')
       }
     },
     [progress],

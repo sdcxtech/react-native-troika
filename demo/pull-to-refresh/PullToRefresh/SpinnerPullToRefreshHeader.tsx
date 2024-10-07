@@ -23,7 +23,7 @@ function SpinnerPullToRefreshHeader(props: PullToRefreshHeaderProps) {
     } else if (state === PullToRefreshStateRefreshing) {
       setAnimating(true)
     } else {
-      HapticFeedback.trigger('impactLight')
+      HapticFeedback.trigger('effectClick')
     }
   }, [])
 

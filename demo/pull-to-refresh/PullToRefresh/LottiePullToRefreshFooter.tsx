@@ -23,7 +23,7 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
       } else if (state === PullToRefreshStateRefreshing) {
         lottieRef.current?.play()
       } else {
-        !!manual && HapticFeedback.trigger('impactLight')
+        !!manual && HapticFeedback.trigger('effectClick')
       }
     },
     [manual],

@@ -40,9 +40,13 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
       Keyboard.dismiss()
     }
     // 保证动画
-    setTimeout(() => {
-      setBottomSheetState(visible ? 'expanded' : 'collapsed')
-    }, 0)
+    if (visible) {
+      setTimeout(() => {
+        setBottomSheetState('expanded')
+      }, 0)
+    } else {
+      setBottomSheetState('collapsed')
+    }
   }, [visible])
 
   useEffect(() => {

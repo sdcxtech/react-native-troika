@@ -19,8 +19,9 @@ function BottomModalTextInput() {
   }
 
   return (
-    <BottomModal fitToContents visible={visible} onClose={onClose}>
-      <KeyboardInsetsView style={styles.keyboard} extraHeight={80}>
+    <BottomModal fitToContents visible={visible} onClose={onClose} modalContentStyle={styles.modal}>
+      <Pressable style={StyleSheet.absoluteFill} onPress={closeModal} />
+      <KeyboardInsetsView extraHeight={80}>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>BottomModal</Text>
@@ -37,11 +38,12 @@ function BottomModalTextInput() {
 }
 
 const styles = StyleSheet.create({
-  keyboard: {
+  modal: {
+    position: 'relative',
     flex: 1,
+    justifyContent: 'flex-end',
   },
   content: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,

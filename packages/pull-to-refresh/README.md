@@ -171,7 +171,7 @@ function App() {
   return (
     <PullToRefresh
       header={
-        <LocalPullToRefreshHeader
+        <CustomPullToRefreshHeader
           refreshing={refreshing}
           onRefresh={() => {
             setRefreshing(true)
@@ -200,15 +200,15 @@ function App() {
 import { RefreshControlProps } from 'react-native'
 import { PullToRefresh } from '@sdcx/pull-to-refresh'
 
-export function LocalRefreshControl(props: RefreshControlProps) {
+export function CustomRefreshControl(props: RefreshControlProps) {
   if (Platform.OS === 'android') {
-    return <PullToRefresh header={<LocalPullToRefreshHeader {...props} />} />
+    return <PullToRefresh header={<CustomPullToRefreshHeader {...props} />} />
   }
-  return <LocalPullToRefreshHeader {...props} />
+  return <CustomPullToRefreshHeader {...props} />
 }
 ```
 
-然后使用自定义的 `LocalRefreshControl` 即可：
+然后使用自定义的 `CustomRefreshControl` 即可：
 
 ```tsx
 function App() {
@@ -218,7 +218,7 @@ function App() {
     <FlatList
       nestedScrollEnabled
       refreshControl={
-        <LocalRefreshControl
+        <CustomRefreshControl
           refreshing={refreshing}
           onRefresh={() => {
             setRefreshing(true)

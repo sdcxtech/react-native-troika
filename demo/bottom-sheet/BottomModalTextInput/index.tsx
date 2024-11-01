@@ -21,17 +21,15 @@ function BottomModalTextInput() {
   return (
     <BottomModal fitToContents visible={visible} onClose={onClose} modalContentStyle={styles.modal}>
       <Pressable style={StyleSheet.absoluteFill} onPress={closeModal} />
-      <KeyboardInsetsView extraHeight={80}>
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <Text style={styles.title}>BottomModal</Text>
-            <Pressable style={styles.close} onPress={closeModal}>
-              <Image source={require('../../assets/window_closed.png')} />
-            </Pressable>
-          </View>
-          <TextInput style={styles.input} value={text} onChangeText={setText} autoFocus />
-          <PrimaryButton style={styles.button} text="保存" />
+      <KeyboardInsetsView style={styles.content} extraHeight={80}>
+        <View style={styles.header}>
+          <Text style={styles.title}>BottomModal</Text>
+          <Pressable style={styles.close} onPress={closeModal}>
+            <Image source={require('../../assets/window_closed.png')} />
+          </Pressable>
         </View>
+        <TextInput style={styles.input} value={text} onChangeText={setText} autoFocus />
+        <PrimaryButton style={styles.button} text="保存" />
       </KeyboardInsetsView>
     </BottomModal>
   )

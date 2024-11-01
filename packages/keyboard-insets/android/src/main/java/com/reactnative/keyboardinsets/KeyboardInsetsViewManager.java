@@ -6,12 +6,13 @@ import androidx.core.view.ViewCompat;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.views.view.ReactViewGroup;
+import com.facebook.react.views.view.ReactViewManager;
 
 import java.util.Map;
 
-public class KeyboardInsetsViewManager extends ViewGroupManager<KeyboardInsetsView> {
+public class KeyboardInsetsViewManager extends ReactViewManager {
 
     public static final String REACT_CLASS = "KeyboardInsetsView";
 
@@ -20,17 +21,17 @@ public class KeyboardInsetsViewManager extends ViewGroupManager<KeyboardInsetsVi
     public String getName() {
         return REACT_CLASS;
     }
-
+    
     @NonNull
     @Override
-    protected KeyboardInsetsView createViewInstance(@NonNull ThemedReactContext themedReactContext) {
-        KeyboardInsetsView view = new KeyboardInsetsView(themedReactContext);
-        KeyboardInsetsCallback callback = new KeyboardInsetsCallback(view, themedReactContext);
+    public ReactViewGroup createViewInstance(ThemedReactContext context) {
+        KeyboardInsetsView view = new KeyboardInsetsView(context);
+        KeyboardInsetsCallback callback = new KeyboardInsetsCallback(view, context);
         ViewCompat.setWindowInsetsAnimationCallback(view, callback);
         ViewCompat.setOnApplyWindowInsetsListener(view, callback);
         return view;
     }
-    
+
     @ReactProp(name = "mode")
     public void setMode(KeyboardInsetsView view, String mode) {
         view.setMode(mode);

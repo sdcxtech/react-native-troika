@@ -43,3 +43,11 @@ KeyboardInsetsView 是一个 React Native 原生 UI 组件，用于处理软键�
 ### [Overlay](./packages/overlay/README.md)
 
 `Overlay` 是一个 React Native 原生 UI 基础设施，它漂浮在你的 React Native 应用之上，可用于实现 Modal, Alert, Toast, Popover, Notification, Hoverball 等顶层 UI。
+
+### [WheelPicker](./packages/wheel-picker/README.md)
+
+一个非常简单的 WheelPicker
+
+一个非常帅的 WheelPicker
+
+<img src="./packages/wheel-picker/docs/assets/wheelpicker.png" width="320">

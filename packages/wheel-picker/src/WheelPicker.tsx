@@ -40,22 +40,25 @@ function WheelPicker<T>({ selectedValue, onValueChange, items = [], style, itemS
   )
 
   const selectedIndex = items.findIndex(v => v.value === selectedValue)
-  const s = StyleSheet.flatten(itemStyle)
-  const lineHeight = s.lineHeight || 36
-  const itemHeight = s.height && typeof s.height === 'number' ? s.height : lineHeight
-  const fontSize = s.fontSize ?? 14
-  const fontColor = s.color && typeof s.color === 'string' ? s.color : undefined
+  const _style = StyleSheet.flatten(style)
+  const _itemStyle = StyleSheet.flatten(itemStyle)
+  const lineHeight = _itemStyle.lineHeight || 36
+  const itemHeight = _itemStyle.height && typeof _itemStyle.height === 'number' ? _itemStyle.height : lineHeight
+  const fontSize = _itemStyle.fontSize ?? 14
+  const colorCenter = _itemStyle.color && typeof _itemStyle.color === 'string' ? _itemStyle.color : undefined
+  const colorOut = _style.color && typeof _style.color === 'string' ? _style.color : colorCenter
   const height = (itemHeight * 16) / Math.PI
 
   return (
     <WheelPickerNative
-      style={[{ height }, style]}
+      style={[{ height }, _style]}
       onItemSelected={handleItemSelected}
       selectedIndex={selectedIndex === -1 ? 0 : selectedIndex}
       items={items.map(item => item.label)}
       itemHeight={Math.max(itemHeight, lineHeight)}
       fontSize={fontSize}
-      textColorCenter={fontColor}
+      textColorCenter={colorCenter}
+      textColorOut={colorOut}
     />
   )
 }

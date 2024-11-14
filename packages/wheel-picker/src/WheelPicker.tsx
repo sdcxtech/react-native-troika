@@ -45,8 +45,8 @@ function WheelPicker<T>({ selectedValue, onValueChange, items = [], style, itemS
   const lineHeight = _itemStyle.lineHeight || 36
   const itemHeight = _itemStyle.height && typeof _itemStyle.height === 'number' ? _itemStyle.height : lineHeight
   const fontSize = _itemStyle.fontSize ?? 14
-  const colorCenter = _itemStyle.color && typeof _itemStyle.color === 'string' ? _itemStyle.color : undefined
-  const colorOut = _style.color && typeof _style.color === 'string' ? _style.color : colorCenter
+  const colorCenter = _itemStyle?.color && typeof _itemStyle.color === 'string' ? _itemStyle.color : undefined
+  const colorOut = _style?.color && typeof _style.color === 'string' ? _style.color : colorCenter
   const height = (itemHeight * 16) / Math.PI
 
   return (

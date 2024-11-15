@@ -205,8 +205,11 @@ public class WheelView extends View {
             if (textWidth > maxTextWidth) {
                 maxTextWidth = textWidth;
             }
+            int textHeight = rect.height();
+            if (textHeight > maxTextHeight) {
+                maxTextHeight = rect.height();
+            }
         }
-        maxTextHeight = rect.height();
     }
 
     public void smoothScroll(ACTION action) {//平滑滚动的实现

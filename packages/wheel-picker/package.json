@@ -1,7 +1,7 @@
 {
   "name": "@sdcx/wheel-picker",
   "description": "A React Native Wheel Picker ui component.",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "react-native": "src/index",

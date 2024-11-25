@@ -6,6 +6,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import androidx.annotation.NonNull;
 
 public class SystemUI {
 
@@ -45,4 +46,38 @@ public class SystemUI {
         }
         decorView.setSystemUiVisibility(systemUi);
     }
+    
+    public static void setStatusBarStyle(@NonNull Window window, boolean dark) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            SystemUI30.setStatusBarStyle(window, dark);
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return;
+        }
+
+        View decorView = window.getDecorView();
+        int systemUi = decorView.getSystemUiVisibility();
+        if (dark) {
+            systemUi |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        } else {
+            systemUi &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        decorView.setSystemUiVisibility(systemUi);
+    }
+
+    public static boolean isStatusBarStyleDark(@NonNull Window window) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return SystemUI30.isStatusBarStyleDark(window);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
+
+        return (window.getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) != 0;
+    }
+
+
 }

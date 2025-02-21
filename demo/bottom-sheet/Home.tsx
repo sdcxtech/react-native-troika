@@ -25,16 +25,6 @@ const data: Array<Item> = [
     title: 'BottomSheet + Backdrop + Shadow',
     routeName: 'BottomSheetBackdropShadow',
   },
-  {
-    title: 'BottomModal + TextInput',
-    routeName: 'BottomModalTextInput',
-    action: 'modal',
-  },
-  {
-    title: 'BottomModal + FlatList',
-    routeName: 'BottomModalFlatList',
-    action: 'modal',
-  },
 ]
 
 function Home() {

@@ -184,37 +184,40 @@
     RNRefreshState old = _state;
     _state = state;
 
-    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:state]];
-    
     if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
-        [self animateToIdleState];
+        [self animateToIdleState:^(BOOL finished) {
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateIdle]];
+        }];
         return;
     }
     
     if (state == RNRefreshStateRefreshing) {
-        [self animateToRefreshingState];
-        [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+        [self animateToRefreshingState:^(BOOL finished) {
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+        }];
         return;
     }
+    
+    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:state]];
 }
 
 - (void)settleToRefreshing {
-    [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
-    
-    [self animateToRefreshingState];
-    
-    [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+    [self animateToRefreshingState:^(BOOL finished) {
+        [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
+        [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+    }];
 }
 
-- (void)animateToIdleState {
+- (void)animateToIdleState:(void (^ __nullable)(BOOL finished))completion {
     [UIView animateWithDuration:0.2 animations:^{
         UIScrollView *scrollView = self.scrollView;
         UIEdgeInsets insets = scrollView.contentInset;
         scrollView.contentInset = UIEdgeInsetsMake(self.topInset, insets.left, insets.bottom, insets.right);
-    } completion:NULL];
+    } completion:completion];
 }
 
-- (void)animateToRefreshingState {
+- (void)animateToRefreshingState:(void (^ __nullable)(BOOL finished))completion {
     [UIView animateWithDuration:0.2 animations:^{
         UIScrollView *scrollView = self.scrollView;
         CGFloat range = scrollView.contentInset.top + self.bounds.size.height;
@@ -223,7 +226,7 @@
         [scrollView setContentInset:UIEdgeInsetsMake(range, insets.left, insets.bottom, insets.right)];
         CGPoint offset = {scrollView.contentOffset.x, -range};
         [scrollView setContentOffset:offset animated:NO];
-    } completion:NULL];
+    } completion:completion];
 }
 
 - (void)cacheRootView {

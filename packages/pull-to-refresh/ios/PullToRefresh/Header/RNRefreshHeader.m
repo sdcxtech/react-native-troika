@@ -185,32 +185,42 @@
     _state = state;
 
     if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
-        [self animateToIdleState:^(BOOL finished) {
-            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateIdle]];
-        }];
+        [self settleToIdle];
         return;
     }
     
     if (state == RNRefreshStateRefreshing) {
-        [self animateToRefreshingState:^(BOOL finished) {
-            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
-            [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
-        }];
+        [self settleToRefreshing];
         return;
     }
     
+    RCTLogInfo(@"[pull-to-refresh] publish comming event");
     [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:state]];
 }
 
 - (void)settleToRefreshing {
+    RCTLogInfo(@"[pull-to-refresh] settleToRefreshing");
     [self animateToRefreshingState:^(BOOL finished) {
-        [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
-        [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+        if (self.state == RNRefreshStateRefreshing) {
+            RCTLogInfo(@"[pull-to-refresh] publish refresh event");
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateRefreshing]];
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshingEvent alloc] initWithViewTag:self.reactTag]];
+        }
+    }];
+}
+
+- (void)settleToIdle {
+    RCTLogInfo(@"[pull-to-refresh] settleToIdle");
+    [self animateToIdleState:^(BOOL finished) {
+        if (self.state == RNRefreshStateIdle) {
+            RCTLogInfo(@"[pull-to-refresh] publish idle event");
+            [self.bridge.eventDispatcher sendEvent:[[RNRefreshStateChangedEvent alloc] initWithViewTag:self.reactTag refreshState:RNRefreshStateIdle]];
+        }
     }];
 }
 
 - (void)animateToIdleState:(void (^ __nullable)(BOOL finished))completion {
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         UIScrollView *scrollView = self.scrollView;
         UIEdgeInsets insets = scrollView.contentInset;
         scrollView.contentInset = UIEdgeInsetsMake(self.topInset, insets.left, insets.bottom, insets.right);

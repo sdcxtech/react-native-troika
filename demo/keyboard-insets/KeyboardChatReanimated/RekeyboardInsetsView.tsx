@@ -37,7 +37,7 @@ export function RekeyboardInsetsView(props: KeyboardInsetsViewProps) {
     [onPositionChanged],
   )
 
-  const handleStatusChanaged = useKeyboardStatusChangedHandler(
+  const handleStatusChanged = useKeyboardStatusChangedHandler(
     {
       onStatusChanged: e => {
         'worklet'
@@ -50,7 +50,7 @@ export function RekeyboardInsetsView(props: KeyboardInsetsViewProps) {
   return (
     <NativeKeyboardInsetsViewReanimated
       mode="manual"
-      onStatusChanged={handleStatusChanaged}
+      onStatusChanged={handleStatusChanged}
       onPositionChanged={handlePositionChanged}
       {...rest}>
       {children}

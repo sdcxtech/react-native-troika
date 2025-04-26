@@ -39,7 +39,7 @@ export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
     [position],
   )
 
-  const onStatusChanaged = useCallback(
+  const onStatusChanged = useCallback(
     (event: KeyboardStatusChangedEvent) => {
       onKeyboard?.({ ...event.nativeEvent, position })
     },
@@ -50,7 +50,7 @@ export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
     return (
       <NativeKeyboardInsetsViewAnimated
         mode="manual"
-        onStatusChanged={onStatusChanaged}
+        onStatusChanged={onStatusChanged}
         onPositionChanged={onPositionChanged}
         {...rest}>
         {children}

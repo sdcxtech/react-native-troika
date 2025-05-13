@@ -24,7 +24,7 @@ function PullRefreshWithoutScrollView() {
 
   return (
     <PullToRefresh style={styles.pull} onRefresh={onRefresh} refreshing={refreshing}>
-      <Scrollable>
+      <Scrollable key="scrollable">
         <AnimatedPagerView style={styles.pager} initialPage={0} onPageScroll={onPageScroll}>
           {data.map(d => (
             <Page key={d} />
@@ -46,7 +46,7 @@ function Scrollable(props: PropsWithChildren<any>) {
   const { children } = props
   if (Platform.OS === 'ios') {
     return (
-      <ScrollView style={styles.content} contentContainerStyle={styles.scroll}>
+      <ScrollView style={styles.content} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>
     )

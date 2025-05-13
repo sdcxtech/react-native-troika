@@ -8,7 +8,8 @@
     "start": "export NODE_OPTIONS=--openssl-legacy-provider && watchman watch-del-all && react-native start --reset-cache",
     "test": "jest",
     "tsc": "tsc --noEmit",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "postinstall": "patch-package"
   },
   "workspaces": [
     "packages/*"
@@ -37,7 +38,7 @@
     "react-native-gesture-handler": "^2.9.0",
     "react-native-haptic-feedback": "^2.0.3",
     "react-native-image-picker": "^5.3.1",
-    "react-native-pager-view": "^6.1.4",
+    "react-native-pager-view": "^6.7.1",
     "react-native-reanimated": "^2.17.0",
     "react-native-safe-area-context": "4.5.0",
     "react-native-svg": "^13.9.0",
@@ -58,6 +59,8 @@
     "eslint": "^7.32.0",
     "jest": "^27.0.6",
     "metro-react-native-babel-preset": "^0.66.2",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react-native-testing-library": "^6.0.0",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.5.4"

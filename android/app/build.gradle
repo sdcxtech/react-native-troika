@@ -3,7 +3,8 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 react {
-	
+    /* Autolinking */
+    autolinkLibrariesWithApp()
 }
 
 def enableProguardInReleaseBuilds = false
@@ -56,5 +57,3 @@ dependencies {
         implementation jscFlavor
     }
 }
-
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

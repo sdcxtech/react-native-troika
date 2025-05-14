@@ -6,7 +6,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.reactnative.modalx.ModalHostManager;
 import com.reactnativecommunity.webview.RNCNestedScrollWebViewManager;
 
 import java.util.Arrays;
@@ -24,8 +23,7 @@ public class MyUiPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
         return Arrays.asList(
-            new RNCNestedScrollWebViewManager(),
-            new ModalHostManager()
+            new RNCNestedScrollWebViewManager()
         );
     }
 }

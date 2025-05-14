@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
+import React, {useState} from 'react';
+import {Image, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
 
 export function ScrollViewPage() {
-  const [on, setOn] = useState(false)
+  const [on, setOn] = useState(false);
   return (
     <ScrollView nestedScrollEnabled>
       <View style={styles.item}>
@@ -11,8 +11,8 @@ export function ScrollViewPage() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            console.log('switch')
-            setOn(!on)
+            console.log('switch');
+            setOn(!on);
           }}>
           <Switch value={on} onValueChange={setOn} />
         </TouchableOpacity>
@@ -31,7 +31,7 @@ export function ScrollViewPage() {
         of classical Latin literature from 45 BC, making it over 2000 years old.
       </Text>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
     color: '#1D2023',
     fontSize: 18,
   },
-})
+});

@@ -1,11 +1,11 @@
-import React from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { LoremIpsum } from '../../components/LoremIpsum'
-import BottomSheet from '@sdcx/bottom-sheet'
-import { withNavigationItem } from 'hybrid-navigation'
-import Contacts from '../../components/contacts/Contacts'
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {LoremIpsum} from '../../components/LoremIpsum';
+import BottomSheet from '@sdcx/bottom-sheet';
+import {withNavigationItem} from 'hybrid-navigation';
+import Contacts from '../../components/contacts/Contacts';
 
-const HEADER_HEIGHT = 50
+const HEADER_HEIGHT = 50;
 
 function BottomSheetFlashList() {
   return (
@@ -20,7 +20,7 @@ function BottomSheetFlashList() {
         <Contacts />
       </BottomSheet>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     top: 80,
     backgroundColor: '#ff9f7A',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'BottomSheet + FlashList',
   },
-})(BottomSheetFlashList)
+})(BottomSheetFlashList);

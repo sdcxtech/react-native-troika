@@ -1,8 +1,13 @@
-import * as React from 'react'
-import { View, Image, Text, TextInput, ScrollView, StyleSheet } from 'react-native'
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
+import * as React from 'react';
+import {View, Image, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
+import {KeyboardInsetsView} from '@sdcx/keyboard-insets';
 
-const MESSAGES = ['okay', 'sudo make me a sandwich', 'what? make it yourself', 'make me a sandwich']
+const MESSAGES = [
+  'okay',
+  'sudo make me a sandwich',
+  'what? make it yourself',
+  'make me a sandwich',
+];
 
 const Chat = () => {
   return (
@@ -12,7 +17,7 @@ const Chat = () => {
         style={styles.inverted}
         contentContainerStyle={styles.content}>
         {MESSAGES.map((text, i) => {
-          const odd = i % 2
+          const odd = i % 2;
 
           return (
             <View key={i} style={[odd ? styles.odd : styles.even, styles.inverted]}>
@@ -24,7 +29,7 @@ const Chat = () => {
                 <Text style={odd ? styles.receivedText : styles.sentText}>{text}</Text>
               </View>
             </View>
-          )
+          );
         })}
       </ScrollView>
       <TextInput
@@ -33,10 +38,10 @@ const Chat = () => {
         underlineColorAndroid="transparent"
       />
     </KeyboardInsetsView>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -89,4 +94,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: 'white',
   },
-})
+});

@@ -1,10 +1,10 @@
-import { ViewStyle } from 'react-native'
+import {ViewStyle} from 'react-native';
 
-type StyleKey = keyof ViewStyle
+type StyleKey = keyof ViewStyle;
 
 export default function splitLayoutProps(props?: ViewStyle) {
-  let outer: { [key: string]: ViewStyle[StyleKey] } = {}
-  let inner: { [key: string]: ViewStyle[StyleKey] } = {}
+  let outer: {[key: string]: ViewStyle[StyleKey]} = {};
+  let inner: {[key: string]: ViewStyle[StyleKey]} = {};
 
   if (props != null) {
     for (const prop of Object.keys(props) as StyleKey[]) {
@@ -34,14 +34,14 @@ export default function splitLayoutProps(props?: ViewStyle) {
         case 'top':
         case 'transform':
         case 'zIndex':
-          outer[prop] = props[prop]
-          break
+          outer[prop] = props[prop];
+          break;
         default:
-          inner[prop] = props[prop]
-          break
+          inner[prop] = props[prop];
+          break;
       }
     }
   }
 
-  return { outer, inner }
+  return {outer, inner};
 }

@@ -1,17 +1,17 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { Animated, Image, StyleSheet } from 'react-native'
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
-import PagerView from 'react-native-pager-view'
-import TabBar from '../../components/TabBar'
-import usePagerView from '../../components/usePagerView'
-import PullRefreshScrollView from '../PullRefreshScrollView'
-import PullRefreshWebView from '../PullRefreshWebView'
-import { Twitter, TwitterFlatList } from '../../components/twitter'
+import {withNavigationItem} from 'hybrid-navigation';
+import React from 'react';
+import {Animated, Image, StyleSheet} from 'react-native';
+import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import PagerView from 'react-native-pager-view';
+import TabBar from '../../components/TabBar';
+import usePagerView from '../../components/usePagerView';
+import PullRefreshScrollView from '../PullRefreshScrollView';
+import PullRefreshWebView from '../PullRefreshWebView';
+import {Twitter, TwitterFlatList} from '../../components/twitter';
 
-const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
+const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView);
 
-const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView'];
 
 export function PullRefreshPagerViewNestedScroll() {
   const {
@@ -24,7 +24,7 @@ export function PullRefreshPagerViewNestedScroll() {
     onPageScroll,
     onPageSelected,
     onPageScrollStateChanged,
-  } = usePagerView()
+  } = usePagerView();
 
   return (
     <NestedScrollView style={styles.coordinator}>
@@ -53,7 +53,7 @@ export function PullRefreshPagerViewNestedScroll() {
         <PullRefreshWebView />
       </AnimatedPagerView>
     </NestedScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
   pager: {
     height: '100%',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'NestedScroll + PagerView + PullRefresh',
   },
-})(PullRefreshPagerViewNestedScroll)
+})(PullRefreshPagerViewNestedScroll);

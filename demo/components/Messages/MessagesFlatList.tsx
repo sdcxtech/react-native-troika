@@ -1,16 +1,16 @@
-import { StyleSheet, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import {StyleSheet, FlatList} from 'react-native';
+import React, {useState} from 'react';
 
-import MessageType from './models/MessageType'
-import initialMessages from './data/messages'
-import TextInputBar from './TextInputBar'
-import userName from './userName'
-import MessageItem from './MessageItem'
-import Message from './models/Message'
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
+import MessageType from './models/MessageType';
+import initialMessages from './data/messages';
+import TextInputBar from './TextInputBar';
+import userName from './userName';
+import MessageItem from './MessageItem';
+import Message from './models/Message';
+import {KeyboardInsetsView} from '@sdcx/keyboard-insets';
 
 const MessagesFlatList = () => {
-  const [messages, setMessages] = useState(initialMessages)
+  const [messages, setMessages] = useState(initialMessages);
 
   const appendMessage = (text: string) => {
     const message = {
@@ -18,10 +18,10 @@ const MessagesFlatList = () => {
       text,
       sender: userName,
       type: MessageType.Text,
-    } as Message
+    } as Message;
 
-    setMessages([message, ...messages])
-  }
+    setMessages([message, ...messages]);
+  };
 
   return (
     <KeyboardInsetsView style={styles.keyboardAvoidingViewStyles} extraHeight={8}>
@@ -31,17 +31,17 @@ const MessagesFlatList = () => {
         data={messages}
         style={styles.list}
         keyExtractor={item => {
-          return item.id
+          return item.id;
         }}
       />
       <TextInputBar
         onSend={text => {
-          appendMessage(text)
+          appendMessage(text);
         }}
       />
     </KeyboardInsetsView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   keyboardAvoidingViewStyles: {
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-})
+});
 
-export default MessagesFlatList
+export default MessagesFlatList;

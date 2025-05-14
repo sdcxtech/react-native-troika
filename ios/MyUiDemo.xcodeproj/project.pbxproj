@@ -10,6 +10,7 @@
 		047B8517EA7B5047F0A2DD5B /* libPods-MyUiDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E122DC6660A2FD7515F28ED7 /* libPods-MyUiDemo.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1DF55615C180D0EC02ED2821 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4F138FC854528B7C2A1E9420 /* PrivacyInfo.xcprivacy */; };
 		91459E512605ACD000EFBE6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91459E502605ACD000EFBE6E /* Assets.xcassets */; };
 		91459E552605ACE600EFBE6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91459E532605ACE600EFBE6E /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -21,6 +22,7 @@
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = MyUiDemo/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MyUiDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MyUiDemo/main.m; sourceTree = "<group>"; };
+		4F138FC854528B7C2A1E9420 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MyUiDemo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		514699031AF404FCBE8E8782 /* Pods-MyUiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyUiDemo.debug.xcconfig"; path = "Target Support Files/Pods-MyUiDemo/Pods-MyUiDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		91459E502605ACD000EFBE6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MyUiDemo/Assets.xcassets; sourceTree = "<group>"; };
 		91459E542605ACE600EFBE6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MyUiDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				4F138FC854528B7C2A1E9420 /* PrivacyInfo.xcprivacy */,
 			);
 			name = MyUiDemo;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			files = (
 				91459E512605ACD000EFBE6E /* Assets.xcassets in Resources */,
 				91459E552605ACE600EFBE6E /* LaunchScreen.storyboard in Resources */,
+				1DF55615C180D0EC02ED2821 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +314,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -366,7 +370,15 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = false;
 			};
 			name = Debug;
 		};
@@ -375,7 +387,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -423,7 +435,15 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = false;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

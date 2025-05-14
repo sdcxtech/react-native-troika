@@ -1,18 +1,18 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { Animated, Image, StyleSheet } from 'react-native'
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
-import PagerView from 'react-native-pager-view'
-import { ScrollViewPage } from '../../components/ScrollViewPage'
-import { WebViewPage } from '../../components/WebViewPage'
-import TabBar from '../../components/TabBar'
-import usePagerView from '../../components/usePagerView'
-import Contacts from '../../components/contacts/Contacts'
-import ContactsSectionList from '../../components/contacts/ContactsSectionList'
+import {withNavigationItem} from 'hybrid-navigation';
+import React from 'react';
+import {Animated, Image, StyleSheet} from 'react-native';
+import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import PagerView from 'react-native-pager-view';
+import {ScrollViewPage} from '../../components/ScrollViewPage';
+import {WebViewPage} from '../../components/WebViewPage';
+import TabBar from '../../components/TabBar';
+import usePagerView from '../../components/usePagerView';
+import Contacts from '../../components/contacts/Contacts';
+import ContactsSectionList from '../../components/contacts/ContactsSectionList';
 
-const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
+const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView);
 
-const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView']
+const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView'];
 
 export function NestedScrollPagerViewStickyHeader() {
   const {
@@ -25,7 +25,7 @@ export function NestedScrollPagerViewStickyHeader() {
     onPageScroll,
     onPageSelected,
     onPageScrollStateChanged,
-  } = usePagerView()
+  } = usePagerView();
 
   return (
     <NestedScrollView style={styles.nestedscroll}>
@@ -54,7 +54,7 @@ export function NestedScrollPagerViewStickyHeader() {
         <WebViewPage url="https://wangdoc.com" />
       </AnimatedPagerView>
     </NestedScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -68,10 +68,10 @@ const styles = StyleSheet.create({
   pager: {
     height: '100%',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'NestedScroll + PagerView + StickyHeader',
   },
-})(NestedScrollPagerViewStickyHeader)
+})(NestedScrollPagerViewStickyHeader);

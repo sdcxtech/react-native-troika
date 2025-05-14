@@ -1,4 +1,4 @@
 export interface PickerItem<T> {
-  value: T
-  label: string
+  value: T;
+  label: string;
 }

@@ -1,6 +1,6 @@
-import * as React from 'react'
-import type { SvgProps } from 'react-native-svg'
-import Svg, { Path } from 'react-native-svg'
+import * as React from 'react';
+import type {SvgProps} from 'react-native-svg';
+import Svg, {Path} from 'react-native-svg';
 
 export const Share = (props: SvgProps) => (
   <Svg width={16} height={16} fill="none" viewBox="0 0 24 24" {...props}>
@@ -12,4 +12,4 @@ export const Share = (props: SvgProps) => (
       fill="#525252"
     />
   </Svg>
-)
+);

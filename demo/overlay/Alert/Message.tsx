@@ -1,16 +1,16 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 
 interface MessageProps {
-  message: string
+  message: string;
 }
 
-export default function Message({ message }: MessageProps) {
+export default function Message({message}: MessageProps) {
   return (
     <View style={styles.box}>
       <Text style={styles.message}>{message}</Text>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     marginVertical: 6,
   },
-})
+});

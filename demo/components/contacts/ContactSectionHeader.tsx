@@ -1,19 +1,19 @@
-import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import React from 'react';
+import {StyleSheet, View, Text} from 'react-native';
 
 interface ContactSectionHeaderProps {
-  title: string
+  title: string;
 }
 
-const ContactSectionHeader = ({ title }: ContactSectionHeaderProps) => {
+const ContactSectionHeader = ({title}: ContactSectionHeaderProps) => {
   return (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>{title}</Text>
     </View>
-  )
-}
+  );
+};
 
-export default ContactSectionHeader
+export default ContactSectionHeader;
 
 const styles = StyleSheet.create({
   headerTitle: {
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FAFAFA',
   },
-})
+});

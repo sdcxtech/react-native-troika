@@ -1,7 +1,7 @@
-import Navigation from 'hybrid-navigation'
+import Navigation from 'hybrid-navigation';
 
-import WheelPicker from './WheelPickerDemo'
+import WheelPicker from './WheelPickerDemo';
 
 export function registerWheelPicker() {
-  Navigation.registerComponent('WheelPicker', () => WheelPicker)
+  Navigation.registerComponent('WheelPicker', () => WheelPicker);
 }

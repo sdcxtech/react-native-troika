@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet} from 'react-native';
 
 const container = {
   borderRadius: 10,
   padding: 10,
   margin: 10,
   marginVertical: 5,
-}
+};
 export default StyleSheet.create({
   senderContainer: {
     alignSelf: 'flex-end',
@@ -20,4 +20,4 @@ export default StyleSheet.create({
   message: {
     color: '#000000',
   },
-})
+});

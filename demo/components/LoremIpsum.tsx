@@ -1,27 +1,27 @@
-import React from 'react'
-import { Text, StyleSheet, ViewStyle, StyleProp } from 'react-native'
+import React from 'react';
+import {Text, StyleSheet, ViewStyle, StyleProp} from 'react-native';
 
 const styles = StyleSheet.create({
   lipsum: {
     padding: 10,
   },
-})
+});
 
 type Props = {
-  words: number
-  style: StyleProp<ViewStyle>
-}
+  words: number;
+  style: StyleProp<ViewStyle>;
+};
 
 export class LoremIpsum extends React.Component<Props> {
   static defaultProps = {
     words: 1000,
     style: styles.lipsum,
-  }
+  };
   loremIpsum() {
-    return LOREM_IPSUM.split(' ').slice(0, this.props.words).join(' ')
+    return LOREM_IPSUM.split(' ').slice(0, this.props.words).join(' ');
   }
   render() {
-    return <Text style={this.props.style}>{this.loremIpsum()}</Text>
+    return <Text style={this.props.style}>{this.loremIpsum()}</Text>;
   }
 }
 
@@ -35,4 +35,4 @@ Nam posuere at mi ut porttitor. Vivamus dapibus vehicula mauris, commodo pretium
 Praesent ac risus nec augue commodo semper eu eget quam. Donec aliquam sodales convallis. Etiam interdum eu nulla at tempor. Duis nec porttitor odio, consectetur tempor turpis. Sed consequat varius lorem vel fermentum. Maecenas dictum sapien vitae lobortis tempus. Aliquam iaculis vehicula velit, non tempus est varius nec. Nunc congue dolor nec sem gravida, nec tincidunt mi luctus. Nam ut porttitor diam.
 
 Fusce interdum nisi a risus aliquet, non dictum metus cursus. Praesent imperdiet sapien orci, quis sodales metus aliquet id. Aliquam convallis pharetra erat. Fusce gravida diam ut tellus elementum sodales. Fusce varius congue neque, quis laoreet sapien blandit vestibulum. Donec congue libero sapien, nec varius risus viverra ut. Quisque eu maximus magna. Phasellus tortor nisi, tincidunt vitae dignissim nec, interdum vel mi. Ut accumsan urna finibus posuere mattis.
-`
+`;

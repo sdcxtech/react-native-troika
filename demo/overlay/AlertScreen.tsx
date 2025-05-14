@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Button, Text } from 'react-native'
-import { withNavigationItem } from 'hybrid-navigation'
-import Alert from './Alert'
+import React, {useState} from 'react';
+import {View, StyleSheet, Button, Text} from 'react-native';
+import {withNavigationItem} from 'hybrid-navigation';
+import Alert from './Alert';
 
 function AlertScreen() {
-  const [result, setResult] = useState('')
+  const [result, setResult] = useState('');
 
   return (
     <View style={styles.container}>
@@ -15,28 +15,28 @@ function AlertScreen() {
             {
               text: 'Cancel',
               onPress: () => {
-                setResult('Cancel')
+                setResult('Cancel');
               },
             },
             {
               text: 'OK',
               onPress: () => {
-                setResult('OK')
+                setResult('OK');
               },
             },
-          ])
+          ]);
         }}
       />
       <Text style={styles.result}>{result}</Text>
     </View>
-  )
+  );
 }
 
 export default withNavigationItem({
   titleItem: {
     title: 'Alert',
   },
-})(AlertScreen)
+})(AlertScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginTop: 16,
   },
-})
+});

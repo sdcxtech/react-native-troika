@@ -1,12 +1,12 @@
-import React from 'react'
-import { StyleSheet, View, Image, Text, ViewStyle } from 'react-native'
-import FastImage from 'react-native-fast-image'
+import React from 'react';
+import {StyleSheet, View, Image, Text, ViewStyle} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-import Author from './models/Author'
-import Tweet from './models/Tweet'
+import Author from './models/Author';
+import Tweet from './models/Tweet';
 
 export interface TweetContentProps {
-  tweet: Tweet
+  tweet: Tweet;
 }
 
 const tweetActions = (
@@ -30,28 +30,28 @@ const tweetActions = (
       </View>
       <Image style={styles.actionButton} source={require('assets/share.png')} />
     </View>
-  )
-}
+  );
+};
 
 const avatar = (author: Author) => {
-  const imageUrl = author.avatar.replace('_normal', '')
-  return <FastImage style={styles.avatar} source={{ uri: imageUrl }} />
-}
+  const imageUrl = author.avatar.replace('_normal', '');
+  return <FastImage style={styles.avatar} source={{uri: imageUrl}} />;
+};
 interface GrayTextProps {
-  children: React.ReactNode
-  numberOfLines?: number
-  style?: ViewStyle
+  children: React.ReactNode;
+  numberOfLines?: number;
+  style?: ViewStyle;
 }
 
-const GrayText = ({ children, numberOfLines, style }: GrayTextProps) => {
+const GrayText = ({children, numberOfLines, style}: GrayTextProps) => {
   return (
     <Text style={[style, styles.gray]} numberOfLines={numberOfLines}>
       {children}
     </Text>
-  )
-}
+  );
+};
 
-const TweetContent = ({ tweet }: TweetContentProps) => {
+const TweetContent = ({tweet}: TweetContentProps) => {
   return (
     <View style={styles.singleItem}>
       <View style={styles.row}>
@@ -74,8 +74,8 @@ const TweetContent = ({ tweet }: TweetContentProps) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   author: {
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexGrow: 1,
   },
-})
+});
 
-export default TweetContent
+export default TweetContent;

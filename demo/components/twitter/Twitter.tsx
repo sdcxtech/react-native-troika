@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react'
-import { View, Text, StyleSheet, ActivityIndicator, ViewabilityConfig } from 'react-native'
-import { BlankAreaEventHandler, FlashList } from '@shopify/flash-list'
+import React, {useRef, useState} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator, ViewabilityConfig} from 'react-native';
+import {BlankAreaEventHandler, FlashList} from '@shopify/flash-list';
 
-import TweetCell from './TweetCell'
-import { tweets as tweetsData } from './data/tweets'
-import Tweet from './models/Tweet'
-import { RefreshControl } from '@sdcx/pull-to-refresh'
+import TweetCell from './TweetCell';
+import {tweets as tweetsData} from './data/tweets';
+import Tweet from './models/Tweet';
+import {RefreshControl} from '@sdcx/pull-to-refresh';
 
 export interface TwitterProps {
-  instance?: React.RefObject<FlashList<Tweet>>
-  blankAreaTracker?: BlankAreaEventHandler
-  CellRendererComponent?: React.ComponentType<any>
-  disableAutoLayout?: boolean
+  instance?: React.RefObject<FlashList<Tweet>>;
+  blankAreaTracker?: BlankAreaEventHandler;
+  CellRendererComponent?: React.ComponentType<any>;
+  disableAutoLayout?: boolean;
 }
 
 const Twitter = ({
@@ -20,17 +20,17 @@ const Twitter = ({
   CellRendererComponent,
   disableAutoLayout,
 }: TwitterProps) => {
-  const emptyListEnabled = false
+  const emptyListEnabled = false;
 
-  const [refreshing, setRefreshing] = useState(false)
-  const [noMoreData, setNoMoreData] = useState(false)
-  const remainingTweets = useRef([...tweetsData].splice(10, tweetsData.length))
-  const [tweets, setTweets] = useState([...tweetsData].splice(0, 10))
+  const [refreshing, setRefreshing] = useState(false);
+  const [noMoreData, setNoMoreData] = useState(false);
+  const remainingTweets = useRef([...tweetsData].splice(10, tweetsData.length));
+  const [tweets, setTweets] = useState([...tweetsData].splice(0, 10));
   const viewabilityConfig = useRef<ViewabilityConfig>({
     waitForInteraction: true,
     itemVisiblePercentThreshold: 50,
     minimumViewTime: 1000,
-  }).current
+  }).current;
 
   return (
     <FlashList
@@ -39,35 +39,35 @@ const Twitter = ({
       onBlankArea={blankAreaTracker}
       testID="FlashList"
       keyExtractor={item => {
-        return item.id
+        return item.id;
       }}
-      renderItem={({ item }) => {
-        return <TweetCell tweet={item} />
+      renderItem={({item}) => {
+        return <TweetCell tweet={item} />;
       }}
       CellRendererComponent={CellRendererComponent}
       ListHeaderComponent={Header}
-      ListHeaderComponentStyle={{ backgroundColor: '#ccc' }}
+      ListHeaderComponentStyle={{backgroundColor: '#ccc'}}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
-            setRefreshing(true)
+            setRefreshing(true);
             setTimeout(() => {
-              setRefreshing(false)
-              const reversedTweets = [...tweets]
-              reversedTweets.reverse()
-              setTweets(reversedTweets)
-            }, 500)
+              setRefreshing(false);
+              const reversedTweets = [...tweets];
+              reversedTweets.reverse();
+              setTweets(reversedTweets);
+            }, 500);
           }}
         />
       }
       onEndReached={() => {
         setTimeout(() => {
-          setTweets([...tweets, ...remainingTweets.current.splice(0, 10)])
+          setTweets([...tweets, ...remainingTweets.current.splice(0, 10)]);
           if (remainingTweets.current.length === 0) {
-            setNoMoreData(true)
+            setNoMoreData(true);
           }
-        }, 1000)
+        }, 1000);
       }}
       ListFooterComponent={
         <Footer isLoading={tweets.length !== tweetsData.length} isPagingEnabled={!noMoreData} />
@@ -78,31 +78,31 @@ const Twitter = ({
       data={emptyListEnabled ? [] : tweets}
       viewabilityConfig={viewabilityConfig}
       onViewableItemsChanged={info => {
-        console.log(info)
+        console.log(info);
       }}
       disableAutoLayout={disableAutoLayout}
     />
-  )
-}
+  );
+};
 
 export const Divider = () => {
-  return <View style={styles.divider} />
-}
+  return <View style={styles.divider} />;
+};
 
 export const Header = () => {
   return (
     <View style={styles.header}>
       <Text style={styles.headerTitle}>New tweets available</Text>
     </View>
-  )
-}
+  );
+};
 
 interface FooterProps {
-  isLoading: boolean
-  isPagingEnabled: boolean
+  isLoading: boolean;
+  isPagingEnabled: boolean;
 }
 
-export const Footer = ({ isLoading, isPagingEnabled }: FooterProps) => {
+export const Footer = ({isLoading, isPagingEnabled}: FooterProps) => {
   return (
     <View style={styles.footer}>
       {isLoading && isPagingEnabled ? (
@@ -111,20 +111,20 @@ export const Footer = ({ isLoading, isPagingEnabled }: FooterProps) => {
         <Text style={styles.footerTitle}>No more tweets</Text>
       )}
     </View>
-  )
-}
+  );
+};
 
 export const Empty = () => {
-  const title = 'Welcome to your timeline'
+  const title = 'Welcome to your timeline';
   const subTitle =
-    "It's empty now but it won't be for long. Start following peopled you'll see Tweets show up here"
+    "It's empty now but it won't be for long. Start following peopled you'll see Tweets show up here";
   return (
     <View style={styles.emptyComponent} testID="EmptyComponent">
       <Text style={styles.emptyComponentTitle}>{title}</Text>
       <Text style={styles.emptyComponentSubtitle}>{subTitle}</Text>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   divider: {
@@ -170,6 +170,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-})
+});
 
-export default Twitter
+export default Twitter;

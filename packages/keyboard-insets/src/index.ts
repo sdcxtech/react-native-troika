@@ -1,4 +1,4 @@
-import { KeyboardInsetsView, KeyboardState } from './KeyboardInsetsView'
+import {KeyboardInsetsView, KeyboardState} from './KeyboardInsetsView';
 import {
   getEdgeInsetsForView,
   NativeKeyboardInsetsView,
@@ -6,14 +6,14 @@ import {
   KeyboardStatusChangedEvent,
   KeyboardPositionChangedEventData,
   KeyboardPositionChangedEvent,
-} from './native'
-import { useKeyboard } from './hook'
+} from './native';
+import {useKeyboard} from './hook';
 
-export { KeyboardInsetsView, NativeKeyboardInsetsView, useKeyboard, getEdgeInsetsForView }
+export {KeyboardInsetsView, NativeKeyboardInsetsView, useKeyboard, getEdgeInsetsForView};
 export type {
   KeyboardState,
   KeyboardStatusChangedEventData,
   KeyboardStatusChangedEvent,
   KeyboardPositionChangedEventData,
   KeyboardPositionChangedEvent,
-}
+};

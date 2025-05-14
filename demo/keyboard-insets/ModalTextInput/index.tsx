@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import { useNavigator, withNavigationItem } from 'hybrid-navigation'
-import { StyleSheet, Text, View } from 'react-native'
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
-import { Modal } from '../../components/Modal'
-import CodeInput from '../../components/CondeInput'
-import { ModalToolbar } from '../../components/ModalToolbar'
+import React, {useState} from 'react';
+import {useNavigator, withNavigationItem} from 'hybrid-navigation';
+import {StyleSheet, Text, View} from 'react-native';
+import {KeyboardInsetsView} from '@sdcx/keyboard-insets';
+import {Modal} from '../../components/Modal';
+import CodeInput from '../../components/CondeInput';
+import {ModalToolbar} from '../../components/ModalToolbar';
 
 function ModalTextInput() {
-  const [text, setText] = useState('')
-  const navigator = useNavigator()
+  const [text, setText] = useState('');
+  const navigator = useNavigator();
 
   const onConfirm = () => {
-    navigator.hideModal()
-  }
+    navigator.hideModal();
+  };
 
   return (
     <KeyboardInsetsView style={styles.container} extraHeight={100}>
@@ -24,7 +24,7 @@ function ModalTextInput() {
         <ModalToolbar onCancel={() => navigator.hideModal()} onConfirm={onConfirm} />
       </Modal>
     </KeyboardInsetsView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-})
+});
 
 export default withNavigationItem({
   //
-})(ModalTextInput)
+})(ModalTextInput);

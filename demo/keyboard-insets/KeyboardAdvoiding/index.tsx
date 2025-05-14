@@ -1,8 +1,8 @@
-import React, { Fragment, useRef } from 'react'
-import { withNavigationItem } from 'hybrid-navigation'
-import { StyleSheet, TextInput, ScrollView } from 'react-native'
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import React, {Fragment, useRef} from 'react';
+import {withNavigationItem} from 'hybrid-navigation';
+import {StyleSheet, TextInput, ScrollView} from 'react-native';
+import {KeyboardInsetsView} from '@sdcx/keyboard-insets';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 function KeyboardAdvoiding() {
   return (
@@ -17,7 +17,7 @@ function KeyboardAdvoiding() {
               textAlignVertical="center"
             />
           </KeyboardInsetsView>
-          {Array.from({ length: 10 }).map((item, index) => (
+          {Array.from({length: 10}).map((item, index) => (
             <TextInput
               key={index + 10}
               style={styles.input}
@@ -37,20 +37,20 @@ function KeyboardAdvoiding() {
         </KeyboardInsetsView>
       </KeyboardInsetsView>
     </SafeAreaProvider>
-  )
+  );
 }
 
-const inputLength = 9
+const inputLength = 9;
 function SubmitToNextInputFragment() {
-  const inputRef = useRef<(TextInput | null)[]>([...Array(inputLength)])
+  const inputRef = useRef<(TextInput | null)[]>([...Array(inputLength)]);
   const goNextInput = (index: number) => {
     if (index !== inputLength - 1) {
-      inputRef.current[index + 1]?.focus()
+      inputRef.current[index + 1]?.focus();
     }
-  }
+  };
   return (
     <Fragment>
-      {Array.from({ length: inputLength }).map((_, index) => (
+      {Array.from({length: inputLength}).map((_, index) => (
         <TextInput
           ref={ref => (inputRef.current[index] = ref)}
           key={index}
@@ -64,14 +64,14 @@ function SubmitToNextInputFragment() {
         />
       ))}
     </Fragment>
-  )
+  );
 }
 
 export default withNavigationItem({
   titleItem: {
     title: 'Keyboard Advoiding',
   },
-})(KeyboardAdvoiding)
+})(KeyboardAdvoiding);
 
 const styles = StyleSheet.create({
   flex1: {
@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: 'bisque',
   },
-})
+});

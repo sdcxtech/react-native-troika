@@ -1,5 +1,5 @@
-import { requireNativeComponent } from 'react-native'
+import {requireNativeComponent} from 'react-native';
 
-const ActivityIndicatorAndroid = requireNativeComponent('ActivityIndicatorAndroid')
+const ActivityIndicatorAndroid = requireNativeComponent('ActivityIndicatorAndroid');
 
-export default ActivityIndicatorAndroid
+export default ActivityIndicatorAndroid;

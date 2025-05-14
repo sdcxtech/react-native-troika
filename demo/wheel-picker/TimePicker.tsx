@@ -1,38 +1,38 @@
-import React from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import Picker, { PickerItem } from '@sdcx/wheel-picker'
+import React from 'react';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import Picker, {PickerItem} from '@sdcx/wheel-picker';
 
 function genItems(len: number) {
-  const items: PickerItem<number>[] = []
+  const items: PickerItem<number>[] = [];
   for (let i = 0; i < len; i++) {
     items.push({
       label: i < 10 ? '0' + i : '' + i,
       value: i,
-    })
+    });
   }
-  return items
+  return items;
 }
 
-const hours = genItems(24)
-const minutes = genItems(60)
+const hours = genItems(24);
+const minutes = genItems(60);
 
 interface TimePickerProps {
-  hour?: number
-  minute?: number
-  onValueChanged?: (hour: number, minute: number) => void
-  style?: StyleProp<ViewStyle>
+  hour?: number;
+  minute?: number;
+  onValueChanged?: (hour: number, minute: number) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function TimePicker(props: TimePickerProps) {
-  const { hour = 0, minute = 0, onValueChanged, style } = props
+  const {hour = 0, minute = 0, onValueChanged, style} = props;
 
   const onHourChanged = (value: number) => {
-    onValueChanged?.(value, minute)
-  }
+    onValueChanged?.(value, minute);
+  };
 
   const onMinuteChanged = (value: number) => {
-    onValueChanged?.(hour, value)
-  }
+    onValueChanged?.(hour, value);
+  };
 
   return (
     <View style={[styles.compose, style]}>
@@ -52,7 +52,7 @@ export default function TimePicker(props: TimePickerProps) {
         items={minutes}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
     color: '#1A9EFF',
     fontSize: 17,
   },
-})
+});

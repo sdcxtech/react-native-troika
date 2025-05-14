@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native'
+import * as React from 'react';
+import {View, Text, Image, ScrollView, StyleSheet} from 'react-native';
 
 const Profile = () => {
   return (
@@ -29,10 +29,10 @@ const Profile = () => {
         Lorem Ipsum, &quot;Lorem ipsum dolor sit amet..&quot;, comes from a line in section 1.10.32.
       </Text>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
 
 const styles = StyleSheet.create({
   container: {
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     marginVertical: 8,
   },
-})
+});

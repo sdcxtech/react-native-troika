@@ -1,37 +1,43 @@
-import { PropsWithChildren } from 'react'
-import { Insets, NativeModule, NativeModules, NativeSyntheticEvent, requireNativeComponent } from 'react-native'
+import {PropsWithChildren} from 'react';
+import {
+  Insets,
+  NativeModule,
+  NativeModules,
+  NativeSyntheticEvent,
+  requireNativeComponent,
+} from 'react-native';
 
 export interface KeyboardStatusChangedEventData {
-  height: number
-  shown: boolean
-  transitioning: boolean
+  height: number;
+  shown: boolean;
+  transitioning: boolean;
 }
 
 export interface KeyboardPositionChangedEventData {
-  position: number
+  position: number;
 }
 
-export type KeyboardStatusChangedEvent = NativeSyntheticEvent<KeyboardStatusChangedEventData>
+export type KeyboardStatusChangedEvent = NativeSyntheticEvent<KeyboardStatusChangedEventData>;
 
-export type KeyboardPositionChangedEvent = NativeSyntheticEvent<KeyboardPositionChangedEventData>
+export type KeyboardPositionChangedEvent = NativeSyntheticEvent<KeyboardPositionChangedEventData>;
 
 interface NativeKeyboardInsetsViewProps {
-  mode?: 'auto' | 'manual'
-  extraHeight?: number
-  explicitly?: boolean
-  onStatusChanged?: (event: KeyboardStatusChangedEvent) => void
-  onPositionChanged?: (event: KeyboardPositionChangedEvent) => void
+  mode?: 'auto' | 'manual';
+  extraHeight?: number;
+  explicitly?: boolean;
+  onStatusChanged?: (event: KeyboardStatusChangedEvent) => void;
+  onPositionChanged?: (event: KeyboardPositionChangedEvent) => void;
 }
 
 export const NativeKeyboardInsetsView =
-  requireNativeComponent<PropsWithChildren<NativeKeyboardInsetsViewProps>>('KeyboardInsetsView')
+  requireNativeComponent<PropsWithChildren<NativeKeyboardInsetsViewProps>>('KeyboardInsetsView');
 
 interface KeyboardInsetsModuleInterface extends NativeModule {
-  getEdgeInsetsForView(viewTag: number, callback: (insets: Insets) => void): void
+  getEdgeInsetsForView(viewTag: number, callback: (insets: Insets) => void): void;
 }
 
-const KeyboardInsetsModule: KeyboardInsetsModuleInterface = NativeModules.KeyboardInsetsModule
+const KeyboardInsetsModule: KeyboardInsetsModuleInterface = NativeModules.KeyboardInsetsModule;
 
 export function getEdgeInsetsForView(viewTag: number, callback: (insets: Insets) => void) {
-  KeyboardInsetsModule.getEdgeInsetsForView(viewTag, callback)
+  KeyboardInsetsModule.getEdgeInsetsForView(viewTag, callback);
 }

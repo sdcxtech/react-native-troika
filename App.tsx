@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   Image,
   View,
-} from 'react-native'
-import { useNavigator, withNavigationItem } from 'hybrid-navigation'
-import Lottie from 'lottie-react-native'
+} from 'react-native';
+import {useNavigator, withNavigationItem} from 'hybrid-navigation';
+import Lottie from 'lottie-react-native';
 interface Item {
-  title: string
-  routeName: string
+  title: string;
+  routeName: string;
 }
 
 const data: Array<Item> = [
@@ -48,14 +48,14 @@ const data: Array<Item> = [
     title: 'WheelPicker',
     routeName: 'WheelPicker',
   },
-]
+];
 
 function App() {
-  const navigator = useNavigator()
+  const navigator = useNavigator();
 
-  const renderListItem: ListRenderItem<Item> = ({ item }) => {
-    return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />
-  }
+  const renderListItem: ListRenderItem<Item> = ({item}) => {
+    return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />;
+  };
 
   return (
     <FlatList
@@ -64,7 +64,7 @@ function App() {
       keyExtractor={item => item.title}
       renderItem={renderListItem}
     />
-  )
+  );
 }
 
 function Header() {
@@ -92,28 +92,28 @@ function Header() {
         speed={1}
       />
     </View>
-  )
+  );
 }
 
 interface ListItemProps {
-  title: string
-  onPress?: () => void
+  title: string;
+  onPress?: () => void;
 }
 
-function ListItem({ title, onPress }: ListItemProps) {
+function ListItem({title, onPress}: ListItemProps) {
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
       <Image source={require('assets/indicator.png')} />
     </TouchableOpacity>
-  )
+  );
 }
 
 export default withNavigationItem({
   titleItem: {
     title: 'MyUiDemo',
   },
-})(App)
+})(App);
 
 const styles = StyleSheet.create({
   header: {
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
     color: '#222222',
     fontSize: 17,
   },
-})
+});

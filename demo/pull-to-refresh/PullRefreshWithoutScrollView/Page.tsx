@@ -1,18 +1,18 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import PrimaryButton from '../../components/PrimaryButton'
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import PrimaryButton from '../../components/PrimaryButton';
 
 export default function Page() {
   const onPress = () => {
-    console.log('click test')
-  }
+    console.log('click test');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <PrimaryButton style={styles.button} onPress={onPress} text="测试" />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: 32,
   },
-})
+});

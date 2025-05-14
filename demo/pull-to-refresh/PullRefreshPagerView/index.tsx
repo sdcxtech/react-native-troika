@@ -1,16 +1,16 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
-import PagerView from 'react-native-pager-view'
-import TabBar from '../../components/TabBar'
-import usePagerView from '../../components/usePagerView'
-import PullRefreshScrollView from '../PullRefreshScrollView'
-import PullRefreshWebView from '../PullRefreshWebView'
-import { Twitter, TwitterFlatList } from '../../components/twitter'
+import {withNavigationItem} from 'hybrid-navigation';
+import React from 'react';
+import {Animated, StyleSheet, View} from 'react-native';
+import PagerView from 'react-native-pager-view';
+import TabBar from '../../components/TabBar';
+import usePagerView from '../../components/usePagerView';
+import PullRefreshScrollView from '../PullRefreshScrollView';
+import PullRefreshWebView from '../PullRefreshWebView';
+import {Twitter, TwitterFlatList} from '../../components/twitter';
 
-const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
+const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView);
 
-const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView']
+const pages = ['FlatList', 'FlashList', 'ScrollView', 'WebView'];
 
 export function PullRefreshPagerView() {
   const {
@@ -23,7 +23,7 @@ export function PullRefreshPagerView() {
     onPageScroll,
     onPageSelected,
     onPageScrollStateChanged,
-  } = usePagerView()
+  } = usePagerView();
 
   return (
     <View style={styles.container}>
@@ -49,7 +49,7 @@ export function PullRefreshPagerView() {
         <PullRefreshWebView />
       </AnimatedPagerView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   pager: {
     flex: 1,
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'PagerView + PullRefresh',
   },
-})(PullRefreshPagerView)
+})(PullRefreshPagerView);

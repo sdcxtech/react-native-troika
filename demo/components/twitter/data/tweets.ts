@@ -1,6 +1,4 @@
-/* eslint-disable max-len */
-
-import Tweet from '../models/Tweet'
+import Tweet from '../models/Tweet';
 
 export const tweets: Tweet[] = [
   {
@@ -2009,4 +2007,4 @@ export const tweets: Tweet[] = [
     replyCount: 1,
     favoriteCount: 0,
   },
-]
+];

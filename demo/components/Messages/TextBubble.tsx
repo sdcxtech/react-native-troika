@@ -1,16 +1,16 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import React from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
-import Avatar from './Avatar'
+import Avatar from './Avatar';
 
 interface TextBubbleProps {
-  text: string
-  avatar?: string
-  mine: boolean
-  name: string
+  text: string;
+  avatar?: string;
+  mine: boolean;
+  name: string;
 }
 
-const TextBubble = ({ text, mine, avatar, name }: TextBubbleProps) => {
+const TextBubble = ({text, mine, avatar, name}: TextBubbleProps) => {
   return (
     <View style={mine ? {} : styles.otherBubbleWrapper}>
       <Avatar avatar={mine ? undefined : avatar} />
@@ -23,8 +23,8 @@ const TextBubble = ({ text, mine, avatar, name }: TextBubbleProps) => {
         source={mine ? require('assets/arrow.png') : require('assets/arrowOther.png')}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   otherBubbleWrapper: {
@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
     width: 21,
     height: 16,
   },
-})
+});
 
-export default TextBubble
+export default TextBubble;

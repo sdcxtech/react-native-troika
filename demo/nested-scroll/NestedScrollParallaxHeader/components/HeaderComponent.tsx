@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 
 export const HeaderComponent = () => (
   <View style={styles.container}>
@@ -7,7 +7,7 @@ export const HeaderComponent = () => (
       <Text>Foreground component</Text>
     </View>
   </View>
-)
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   titleContainer: {
     backgroundColor: 'red',
   },
-})
+});

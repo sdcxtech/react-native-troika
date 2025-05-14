@@ -1,29 +1,29 @@
-import React, { PropsWithChildren } from 'react'
-import { useNavigator } from 'hybrid-navigation'
-import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import React, {PropsWithChildren} from 'react';
+import {useNavigator} from 'hybrid-navigation';
+import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 interface ModalProps {
-  cancelable?: boolean
-  style?: StyleProp<ViewStyle>
+  cancelable?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Modal(props: PropsWithChildren<ModalProps>) {
-  const { cancelable = true, style, children } = props
+  const {cancelable = true, style, children} = props;
 
-  const navigator = useNavigator()
+  const navigator = useNavigator();
 
   const onPress = () => {
     if (cancelable) {
-      navigator.hideModal()
+      navigator.hideModal();
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Pressable style={styles.overlay} onPress={onPress} />
       <View style={[styles.box, style]}>{children}</View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
     minHeight: 160,
     overflow: 'hidden',
   },
-})
+});

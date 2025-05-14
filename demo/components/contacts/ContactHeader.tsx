@@ -1,11 +1,11 @@
-import React from 'react'
-import { Text, StyleSheet } from 'react-native'
+import React from 'react';
+import {Text, StyleSheet} from 'react-native';
 
 const ContactHeader = () => {
-  return <Text style={styles.headerTitle}>My contacts</Text>
-}
+  return <Text style={styles.headerTitle}>My contacts</Text>;
+};
 
-export default ContactHeader
+export default ContactHeader;
 
 const styles = StyleSheet.create({
   headerTitle: {
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
-})
+});

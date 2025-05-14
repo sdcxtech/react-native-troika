@@ -1,25 +1,25 @@
-import React from 'react'
-import { AppRegistry, Pressable, StyleSheet, Text, View } from 'react-native'
-import { Overlay, OverlayProps } from '@sdcx/overlay'
+import React from 'react';
+import {AppRegistry, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Overlay, OverlayProps} from '@sdcx/overlay';
 
 interface ToastProps {
-  message: string
-  duration?: number
-  position?: 'top' | 'center' | 'bottom'
-  onPress: () => void
+  message: string;
+  duration?: number;
+  position?: 'top' | 'center' | 'bottom';
+  onPress: () => void;
 }
 
-function ToastView({ id, insets, passThroughTouches }: OverlayProps) {
-  console.log('id', id, 'insets', insets)
-  const props = propsMap.get(id)
-  const { message, onPress } = props || {}
+function ToastView({id, insets, passThroughTouches}: OverlayProps) {
+  console.log('id', id, 'insets', insets);
+  const props = propsMap.get(id);
+  const {message, onPress} = props || {};
   return (
     <View style={styles.container} pointerEvents={passThroughTouches ? 'box-none' : 'auto'}>
       <Pressable style={styles.box} onPress={onPress}>
         <Text style={styles.message}>{message}</Text>
       </Pressable>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -37,58 +37,58 @@ const styles = StyleSheet.create({
   message: {
     color: 'white',
   },
-})
+});
 
 function registerIfNeeded() {
   if (AppRegistry.getAppKeys().includes('__overlay_toast__')) {
-    return
+    return;
   }
-  AppRegistry.registerComponent('__overlay_toast__', () => ToastView)
+  AppRegistry.registerComponent('__overlay_toast__', () => ToastView);
 }
 
-let key = 0
+let key = 0;
 
 function showInternal() {
-  registerIfNeeded()
-  key += 1
-  Overlay.show('__overlay_toast__', { passThroughTouches: true, id: key })
-  return key
+  registerIfNeeded();
+  key += 1;
+  Overlay.show('__overlay_toast__', {passThroughTouches: true, id: key});
+  return key;
 }
 
 function hideInternal(key: number) {
-  propsMap.delete(key)
-  Overlay.hide('__overlay_toast__', key)
+  propsMap.delete(key);
+  Overlay.hide('__overlay_toast__', key);
 }
 
-const propsMap = new Map<number, ToastProps>()
+const propsMap = new Map<number, ToastProps>();
 
 interface ToastConfig {
-  message: string
-  duration?: number
-  position?: 'top' | 'center' | 'bottom'
-  onPress?: () => void
+  message: string;
+  duration?: number;
+  position?: 'top' | 'center' | 'bottom';
+  onPress?: () => void;
 }
 
 const Toast = {
   show: (config: ToastConfig) => {
-    const key = showInternal()
+    const key = showInternal();
     const params = {
       ...config,
       onPress: () => {
         if (config.onPress) {
-          hideInternal(key)
-          config.onPress()
+          hideInternal(key);
+          config.onPress();
         }
       },
-    }
-    propsMap.set(key, params)
+    };
+    propsMap.set(key, params);
 
     if (config.duration) {
       setTimeout(() => {
-        hideInternal(key)
-      }, config.duration)
+        hideInternal(key);
+      }, config.duration);
     }
   },
-}
+};
 
-export default Toast
+export default Toast;

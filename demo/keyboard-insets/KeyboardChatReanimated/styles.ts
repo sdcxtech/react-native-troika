@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   provider: {
@@ -71,4 +71,4 @@ export default StyleSheet.create({
     fontSize: 48,
     color: 'darkgray',
   },
-})
+});

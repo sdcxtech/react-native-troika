@@ -1,13 +1,13 @@
-import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import React from 'react';
+import {StyleSheet, View, Text} from 'react-native';
 
-import Contact from './models/Contact'
+import Contact from './models/Contact';
 
 interface ContactCellProps {
-  contact: Contact
+  contact: Contact;
 }
 
-const ContactCell = ({ contact }: ContactCellProps) => {
+const ContactCell = ({contact}: ContactCellProps) => {
   return (
     <View style={styles.rowContainer}>
       <Text>
@@ -15,10 +15,10 @@ const ContactCell = ({ contact }: ContactCellProps) => {
         <Text style={styles.lastName}>{contact.lastName}</Text>
       </Text>
     </View>
-  )
-}
+  );
+};
 
-export default ContactCell
+export default ContactCell;
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-})
+});

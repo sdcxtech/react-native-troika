@@ -1,3 +1,3 @@
 export interface ImageCropViewRef {
-  crop: () => void
+  crop: () => void;
 }

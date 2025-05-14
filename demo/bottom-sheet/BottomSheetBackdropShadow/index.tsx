@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, {useMemo, useRef} from 'react';
 import {
   Animated,
   NativeSyntheticEvent,
@@ -6,25 +6,25 @@ import {
   ScrollView,
   StyleSheet,
   View,
-} from 'react-native'
-import { LoremIpsum } from '../../components/LoremIpsum'
-import BottomSheet, { OffsetChangedEventData } from '@sdcx/bottom-sheet'
-import { withNavigationItem } from 'hybrid-navigation'
-import DropShadow from 'react-native-drop-shadow'
+} from 'react-native';
+import {LoremIpsum} from '../../components/LoremIpsum';
+import BottomSheet, {OffsetChangedEventData} from '@sdcx/bottom-sheet';
+import {withNavigationItem} from 'hybrid-navigation';
+import DropShadow from 'react-native-drop-shadow';
 
-const HEADER_HEIGHT = 50
+const HEADER_HEIGHT = 50;
 
-const AnimatedBottomSheet = Animated.createAnimatedComponent(BottomSheet)
+const AnimatedBottomSheet = Animated.createAnimatedComponent(BottomSheet);
 
 function BottomSheetBackdropShadow() {
-  const offset = useRef(new Animated.Value(0)).current
+  const offset = useRef(new Animated.Value(0)).current;
 
   const backdropStyle = {
     opacity: offset.interpolate({
       inputRange: [0, 1],
       outputRange: [1, 0],
     }),
-  }
+  };
 
   const onSlide = useMemo(
     () =>
@@ -36,10 +36,15 @@ function BottomSheetBackdropShadow() {
             },
           },
         ],
-        { useNativeDriver: true },
+        {
+          useNativeDriver: true,
+          listener(event) {
+            console.info('onSlide', event.nativeEvent);
+          },
+        },
       ),
     [offset],
-  )
+  );
 
   return (
     <View style={styles.container}>
@@ -61,7 +66,7 @@ function BottomSheetBackdropShadow() {
         </View>
       </AnimatedBottomSheet>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -90,10 +95,10 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: '#ff9f7A',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'BottomSheet + Backdrop + Shadow',
   },
-})(BottomSheetBackdropShadow)
+})(BottomSheetBackdropShadow);

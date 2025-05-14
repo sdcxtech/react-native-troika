@@ -1,14 +1,14 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import ModalButton from './ModalButton'
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import ModalButton from './ModalButton';
 
 interface ModalToolbarProps {
-  onCancel?: () => void
-  onConfirm?: () => void
+  onCancel?: () => void;
+  onConfirm?: () => void;
 }
 
 export function ModalToolbar(props: ModalToolbarProps) {
-  const { onCancel, onConfirm } = props
+  const {onCancel, onConfirm} = props;
   return (
     <View style={styles.buttons}>
       <ModalButton key="cancel" text="Cancel" textStyle={styles.textCancel} onPress={onCancel} />
@@ -20,7 +20,7 @@ export function ModalToolbar(props: ModalToolbarProps) {
         buttonStyle={styles.divider}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 48,
   },
-})
+});

@@ -1,31 +1,31 @@
-import React, { useRef, useState } from 'react'
-import { AppRegistry, Pressable, StyleSheet, Text } from 'react-native'
-import { statusBarHeight } from 'hybrid-navigation'
-import { Overlay } from '@sdcx/overlay'
+import React, {useRef, useState} from 'react';
+import {AppRegistry, Pressable, StyleSheet, Text} from 'react-native';
+import {statusBarHeight} from 'hybrid-navigation';
+import {Overlay} from '@sdcx/overlay';
 
-import Ball from './Ball'
-import Menu from './Menu'
+import Ball from './Ball';
+import Menu from './Menu';
 
-const menus = ['菜单1', '菜单2', '菜单3']
+const menus = ['菜单1', '菜单2', '菜单3'];
 
 function Hoverball() {
-  const [menuVisible, setMenuVisible] = useState(false)
+  const [menuVisible, setMenuVisible] = useState(false);
 
-  const left = useRef(8)
-  const top = useRef(statusBarHeight())
+  const left = useRef(8);
+  const top = useRef(statusBarHeight());
 
   const anchor = {
     x: left.current,
     y: top.current,
     size: 64,
-  }
+  };
 
   function renderAnchor() {
     return (
       <Pressable style={styles.ball} onPress={() => setMenuVisible(true)}>
         <Text>Menu</Text>
       </Pressable>
-    )
+    );
   }
 
   function renderMenuItem(text: string, collapse: () => void) {
@@ -33,12 +33,12 @@ function Hoverball() {
       <Pressable style={styles.item} key={text} onPress={collapse}>
         <Text style={styles.text}>{text}</Text>
       </Pressable>
-    )
+    );
   }
 
   const renderMenuContent = (collapse: () => void) => {
-    return <>{menus.map(text => renderMenuItem(text, collapse))}</>
-  }
+    return <>{menus.map(text => renderMenuItem(text, collapse))}</>;
+  };
 
   if (menuVisible) {
     return (
@@ -49,19 +49,19 @@ function Hoverball() {
         renderMenuContent={renderMenuContent}
         onClose={() => setMenuVisible(false)}
       />
-    )
+    );
   }
 
   return (
     <Ball
       anchor={anchor}
       onOffsetChanged={(x, y) => {
-        left.current = x
-        top.current = y
+        left.current = x;
+        top.current = y;
       }}>
       {renderAnchor()}
     </Ball>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -82,24 +82,24 @@ const styles = StyleSheet.create({
     color: '#222222',
     fontSize: 17,
   },
-})
+});
 
 function registerIfNeeded() {
   if (AppRegistry.getAppKeys().includes('__overlay_hoverball__')) {
-    return
+    return;
   }
-  AppRegistry.registerComponent('__overlay_hoverball__', () => Hoverball)
+  AppRegistry.registerComponent('__overlay_hoverball__', () => Hoverball);
 }
 
 function show() {
-  registerIfNeeded()
-  Overlay.show('__overlay_hoverball__', { passThroughTouches: true, id: 0 })
+  registerIfNeeded();
+  Overlay.show('__overlay_hoverball__', {passThroughTouches: true, id: 0});
 }
 
 function hide() {
-  Overlay.hide('__overlay_hoverball__', 0)
+  Overlay.hide('__overlay_hoverball__', 0);
 }
 
-const Floating = { show, hide }
+const Floating = {show, hide};
 
-export default Floating
+export default Floating;

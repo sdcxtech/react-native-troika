@@ -1,29 +1,29 @@
-import { Insets, NativeModule, NativeModules } from 'react-native'
+import {Insets, NativeModule, NativeModules} from 'react-native';
 
 export interface OverlayOptions {
-  id: number
-  passThroughTouches?: boolean
+  id: number;
+  passThroughTouches?: boolean;
 }
 
 export interface OverlayProps extends OverlayOptions {
-  insets: Insets
+  insets: Insets;
 }
 
 interface OverlayInterface extends NativeModule {
-  show(moduleName: string, options: OverlayOptions): void
-  hide(moduleName: string, id: number): void
+  show(moduleName: string, options: OverlayOptions): void;
+  hide(moduleName: string, id: number): void;
 }
 
-const OverlayHost: OverlayInterface = NativeModules.OverlayHost
+const OverlayHost: OverlayInterface = NativeModules.OverlayHost;
 
 function show(moduleName: string, options: OverlayOptions) {
-  OverlayHost.show(moduleName, options)
+  OverlayHost.show(moduleName, options);
 }
 
 function hide(moduleName: string, id: number) {
-  OverlayHost.hide(moduleName, id)
+  OverlayHost.hide(moduleName, id);
 }
 
-const Overlay = { show, hide }
+const Overlay = {show, hide};
 
-export { Overlay }
+export {Overlay};

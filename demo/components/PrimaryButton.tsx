@@ -1,23 +1,23 @@
-import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native'
+import React, {useState} from 'react';
+import {Pressable, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
 
 interface PrimayButtonProps {
-  style?: ViewStyle
-  textStyle?: TextStyle
-  onPress?: () => void
-  text: string
+  style?: ViewStyle;
+  textStyle?: TextStyle;
+  onPress?: () => void;
+  text: string;
 }
 
 export default function PrimaryButton(props: PrimayButtonProps) {
-  const { text, onPress, style, textStyle } = props
-  const [pressed, setPressed] = useState(false)
+  const {text, onPress, style, textStyle} = props;
+  const [pressed, setPressed] = useState(false);
   const onPressIn = () => {
-    setPressed(true)
-  }
+    setPressed(true);
+  };
 
   const onPressOut = () => {
-    setPressed(false)
-  }
+    setPressed(false);
+  };
   return (
     <Pressable
       style={[styles.button, pressed ? styles.pressIn : styles.pressOut, style]}
@@ -26,7 +26,7 @@ export default function PrimaryButton(props: PrimayButtonProps) {
       onPressOut={onPressOut}>
       <Text style={[styles.title, textStyle]}>{text}</Text>
     </Pressable>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
   },
-})
+});

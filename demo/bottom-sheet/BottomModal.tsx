@@ -2,8 +2,8 @@ import BottomSheet, {
   BottomSheetState,
   OffsetChangedEventData,
   StateChangedEventData,
-} from '@sdcx/bottom-sheet'
-import React, { PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react'
+} from '@sdcx/bottom-sheet';
+import React, {PropsWithChildren, useCallback, useEffect, useRef, useState} from 'react';
 import {
   BackHandler,
   Keyboard,
@@ -13,14 +13,14 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-} from 'react-native'
+} from 'react-native';
 
 interface BottomModalProps {
-  style?: StyleProp<ViewStyle>
-  modalContentStyle?: StyleProp<ViewStyle>
-  fitToContents?: boolean
-  visible: boolean
-  onClose?: () => void
+  style?: StyleProp<ViewStyle>;
+  modalContentStyle?: StyleProp<ViewStyle>;
+  fitToContents?: boolean;
+  visible: boolean;
+  onClose?: () => void;
 }
 
 export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
@@ -31,50 +31,50 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
     style,
     modalContentStyle,
     children,
-  } = props
-  const [bottomSheetState, setBottomSheetState] = useState<BottomSheetState>('collapsed')
-  const progressRef = useRef(0)
+  } = props;
+  const [bottomSheetState, setBottomSheetState] = useState<BottomSheetState>('collapsed');
+  const progressRef = useRef(0);
 
   useEffect(() => {
     if (!visible) {
-      Keyboard.dismiss()
+      Keyboard.dismiss();
     }
     // 保证动画
     if (visible) {
       setTimeout(() => {
-        setBottomSheetState('expanded')
-      }, 0)
+        setBottomSheetState('expanded');
+      }, 0);
     } else {
-      setBottomSheetState('collapsed')
+      setBottomSheetState('collapsed');
     }
-  }, [visible])
+  }, [visible]);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      setBottomSheetState('collapsed')
-      return true
-    })
+      setBottomSheetState('collapsed');
+      return true;
+    });
 
-    return () => subscription.remove()
-  }, [])
+    return () => subscription.remove();
+  }, []);
 
   const onOutsidePress = () => {
-    Keyboard.dismiss()
-    setBottomSheetState('collapsed')
-  }
+    Keyboard.dismiss();
+    setBottomSheetState('collapsed');
+  };
 
   const onStateChanged = (event: NativeSyntheticEvent<StateChangedEventData>) => {
-    const { state } = event.nativeEvent
-    setBottomSheetState(state)
+    const {state} = event.nativeEvent;
+    setBottomSheetState(state);
     if (state === 'collapsed' && progressRef.current === 1) {
-      onClose?.()
+      onClose?.();
     }
-  }
+  };
 
   const onSlide = useCallback((event: NativeSyntheticEvent<OffsetChangedEventData>) => {
-    const { progress } = event.nativeEvent
-    progressRef.current = progress
-  }, [])
+    const {progress} = event.nativeEvent;
+    progressRef.current = progress;
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -91,7 +91,7 @@ export function BottomModal(props: PropsWithChildren<BottomModalProps>) {
         {children}
       </BottomSheet>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
   },
-})
+});

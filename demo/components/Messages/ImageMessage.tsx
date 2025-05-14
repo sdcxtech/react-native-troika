@@ -1,20 +1,20 @@
-import React from 'react'
-import { View, StyleSheet, Image } from 'react-native'
+import React from 'react';
+import {View, StyleSheet, Image} from 'react-native';
 
 interface ImageMessageProps {
-  image: string
-  mine: boolean
+  image: string;
+  mine: boolean;
 }
 
-const ImageMessage = ({ image, mine }: ImageMessageProps) => {
+const ImageMessage = ({image, mine}: ImageMessageProps) => {
   return (
     <View style={mine ? styles.mineImageWrapper : styles.otherImageWrapper}>
-      <Image style={styles.image} source={{ uri: image }} />
+      <Image style={styles.image} source={{uri: image}} />
     </View>
-  )
-}
+  );
+};
 
-export default ImageMessage
+export default ImageMessage;
 
 const styles = StyleSheet.create({
   otherImageWrapper: {
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 8,
   },
-})
+});

@@ -1,33 +1,33 @@
-import React, { useCallback, useRef } from 'react'
-import Lottie from 'lottie-react-native'
-import { StyleSheet, Text } from 'react-native'
-import HapticFeedback from 'react-native-haptic-feedback'
+import React, {useCallback, useRef} from 'react';
+import Lottie from 'lottie-react-native';
+import {StyleSheet, Text} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
 import {
   PullToRefreshFooter,
   PullToRefreshFooterProps,
   PullToRefreshStateChangedEvent,
   PullToRefreshStateIdle,
   PullToRefreshStateRefreshing,
-} from '@sdcx/pull-to-refresh'
+} from '@sdcx/pull-to-refresh';
 
 function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
-  const { onRefresh, refreshing, noMoreData, manual } = props
-  const lottieRef = useRef<Lottie>(null)
+  const {onRefresh, refreshing, noMoreData, manual} = props;
+  const lottieRef = useRef<Lottie>(null);
 
   const onStateChanged = useCallback(
     (event: PullToRefreshStateChangedEvent) => {
-      const state = event.nativeEvent.state
+      const state = event.nativeEvent.state;
       if (state === PullToRefreshStateIdle) {
-        lottieRef.current?.pause()
-        lottieRef.current?.reset()
+        lottieRef.current?.pause();
+        lottieRef.current?.reset();
       } else if (state === PullToRefreshStateRefreshing) {
-        lottieRef.current?.play()
+        lottieRef.current?.play();
       } else {
-        !!manual && HapticFeedback.trigger('effectClick')
+        !!manual && HapticFeedback.trigger('effectClick');
       }
     },
     [manual],
-  )
+  );
 
   return (
     <PullToRefreshFooter
@@ -42,7 +42,7 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
       ) : (
         <Lottie
           ref={lottieRef}
-          style={{ height: 44 }}
+          style={{height: 44}}
           source={require('./google-loading.json')}
           autoPlay={false}
           speed={1.5}
@@ -51,7 +51,7 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
         />
       )}
     </PullToRefreshFooter>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#999999',
   },
-})
+});
 
-export { LottiePullToRefreshFooter }
+export {LottiePullToRefreshFooter};

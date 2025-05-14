@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react'
-import { Animated } from 'react-native'
+import {useCallback, useState} from 'react';
+import {Animated} from 'react-native';
 
 interface KeyboardState {
-  height: number
-  shown: boolean
-  transitioning: boolean
-  position: Animated.Value
+  height: number;
+  shown: boolean;
+  transitioning: boolean;
+  position: Animated.Value;
 }
 
 export function useKeyboard() {
@@ -14,11 +14,11 @@ export function useKeyboard() {
     shown: false,
     transitioning: false,
     position: new Animated.Value(0),
-  })
+  });
 
   const onKeyboard = useCallback((state: KeyboardState) => {
-    setKeyboard(state)
-  }, [])
+    setKeyboard(state);
+  }, []);
 
-  return { keyboard, onKeyboard }
+  return {keyboard, onKeyboard};
 }

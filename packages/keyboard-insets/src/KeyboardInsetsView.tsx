@@ -1,26 +1,26 @@
-import React, { useCallback, useMemo, useRef } from 'react'
-import { Animated, ViewProps } from 'react-native'
-import { KeyboardStatusChangedEvent, NativeKeyboardInsetsView } from './native'
+import React, {PropsWithChildren, useCallback, useMemo, useRef} from 'react';
+import {Animated, ViewProps} from 'react-native';
+import {KeyboardStatusChangedEvent, NativeKeyboardInsetsView} from './native';
 
 export interface KeyboardState {
-  height: number
-  shown: boolean
-  transitioning: boolean
-  position: Animated.Value
+  height: number;
+  shown: boolean;
+  transitioning: boolean;
+  position: Animated.Value;
 }
 
-const NativeKeyboardInsetsViewAnimated = Animated.createAnimatedComponent(NativeKeyboardInsetsView)
+const NativeKeyboardInsetsViewAnimated = Animated.createAnimatedComponent(NativeKeyboardInsetsView);
 
 interface KeyboardInsetsViewProps extends Animated.AnimatedProps<ViewProps> {
-  extraHeight?: number
-  explicitly?: boolean
-  onKeyboard?: (status: KeyboardState) => void
+  extraHeight?: number;
+  explicitly?: boolean;
+  onKeyboard?: (status: KeyboardState) => void;
 }
 
-export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
-  const { children, onKeyboard, ...rest } = props
+export function KeyboardInsetsView(props: PropsWithChildren<KeyboardInsetsViewProps>) {
+  const {children, onKeyboard, ...rest} = props;
 
-  const position = useRef(new Animated.Value(0)).current
+  const position = useRef(new Animated.Value(0)).current;
 
   const onPositionChanged = useMemo(
     () =>
@@ -37,14 +37,14 @@ export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
         },
       ),
     [position],
-  )
+  );
 
   const onStatusChanged = useCallback(
     (event: KeyboardStatusChangedEvent) => {
-      onKeyboard?.({ ...event.nativeEvent, position })
+      onKeyboard?.({...event.nativeEvent, position});
     },
     [position, onKeyboard],
-  )
+  );
 
   if (onKeyboard) {
     return (
@@ -55,8 +55,8 @@ export function KeyboardInsetsView(props: KeyboardInsetsViewProps) {
         {...rest}>
         {children}
       </NativeKeyboardInsetsViewAnimated>
-    )
+    );
   }
 
-  return <NativeKeyboardInsetsView {...rest}>{children}</NativeKeyboardInsetsView>
+  return <NativeKeyboardInsetsView {...rest}>{children}</NativeKeyboardInsetsView>;
 }

@@ -2,4 +2,4 @@ enum MessageType {
   Text,
   Image,
 }
-export default MessageType
+export default MessageType;

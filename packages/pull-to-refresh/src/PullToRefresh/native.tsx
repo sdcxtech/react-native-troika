@@ -1,5 +1,6 @@
-import { requireNativeComponent, ViewProps } from 'react-native'
+import {requireNativeComponent, ViewProps} from 'react-native';
 
 interface NativePullToRefreshProps extends ViewProps {}
 
-export const NativePullToRefresh = requireNativeComponent<NativePullToRefreshProps>('PullToRefresh')
+export const NativePullToRefresh =
+  requireNativeComponent<NativePullToRefreshProps>('PullToRefresh');

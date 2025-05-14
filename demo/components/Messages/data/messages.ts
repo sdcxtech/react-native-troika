@@ -1,5 +1,5 @@
-import Message from '../models/Message'
-import MessageType from '../models/MessageType'
+import Message from '../models/Message';
+import MessageType from '../models/MessageType';
 
 const messages: Message[] = [
   {
@@ -85,7 +85,7 @@ const messages: Message[] = [
     text: 'I like it!',
     type: MessageType.Text,
   },
-]
+];
 
-const reversedMessages = messages.reverse()
-export default reversedMessages
+const reversedMessages = messages.reverse();
+export default reversedMessages;

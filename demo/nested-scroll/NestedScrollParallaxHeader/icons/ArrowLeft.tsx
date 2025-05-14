@@ -1,6 +1,6 @@
-import * as React from 'react'
-import Svg, { Path } from 'react-native-svg'
-import { StyleSheet } from 'react-native'
+import * as React from 'react';
+import Svg, {Path} from 'react-native-svg';
+import {StyleSheet} from 'react-native';
 
 const ArrowLeft = (props: any) => (
   <Svg
@@ -8,7 +8,7 @@ const ArrowLeft = (props: any) => (
     {...props}
     width={18}
     height={18}
-    style={StyleSheet.flatten([{ transform: [{ scaleX: 1 }] }])}>
+    style={StyleSheet.flatten([{transform: [{scaleX: 1}]}])}>
     <Path
       fill="none"
       stroke="#000000"
@@ -18,6 +18,6 @@ const ArrowLeft = (props: any) => (
       d="M328 112 184 256l144 144"
     />
   </Svg>
-)
+);
 
-export default ArrowLeft
+export default ArrowLeft;

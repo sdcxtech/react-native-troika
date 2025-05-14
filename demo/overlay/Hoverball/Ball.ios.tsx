@@ -1,28 +1,28 @@
-import { statusBarHeight } from 'hybrid-navigation'
-import React, { PropsWithChildren, useMemo } from 'react'
-import { StyleProp, StyleSheet, useWindowDimensions, View, ViewStyle } from 'react-native'
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
+import {statusBarHeight} from 'hybrid-navigation';
+import React, {PropsWithChildren, useMemo} from 'react';
+import {StyleProp, StyleSheet, useWindowDimensions, View, ViewStyle} from 'react-native';
+import {Gesture, GestureDetector, GestureHandlerRootView} from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-} from 'react-native-reanimated'
-import { BallProps } from './types'
+} from 'react-native-reanimated';
+import {BallProps} from './types';
 
 export default function Ball({
   anchor,
   children,
   onOffsetChanged = () => {},
 }: PropsWithChildren<BallProps>) {
-  const barHeight = statusBarHeight()
+  const barHeight = statusBarHeight();
 
-  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const {width: windowWidth, height: windowHeight} = useWindowDimensions();
 
-  const gap = 8
+  const gap = 8;
 
-  const x = useSharedValue(anchor.x)
-  const y = useSharedValue(anchor.y)
+  const x = useSharedValue(anchor.x);
+  const y = useSharedValue(anchor.y);
 
   const ballStyles: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -32,38 +32,38 @@ export default function Ball({
       overflow: 'hidden',
     }),
     [anchor.size],
-  )
+  );
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
       position: 'absolute',
       left: x.value,
       top: y.value,
-    }
-  }, [])
+    };
+  }, []);
 
   const dragGesture = Gesture.Pan()
     .onChange(e => {
-      x.value = x.value + e.changeX
-      y.value = y.value + e.changeY
+      x.value = x.value + e.changeX;
+      y.value = y.value + e.changeY;
     })
     .onEnd(e => {
-      x.value = e.absoluteX - e.x
+      x.value = e.absoluteX - e.x;
       const finalX =
-        x.value > (windowWidth - anchor.size) / 2 ? windowWidth - anchor.size - gap : gap
+        x.value > (windowWidth - anchor.size) / 2 ? windowWidth - anchor.size - gap : gap;
       x.value = withSpring(finalX, {
         stiffness: 500,
         overshootClamping: true,
-      })
-      y.value = e.absoluteY - e.y
-      const finalY = Math.min(Math.max(barHeight, y.value), windowHeight - anchor.size - gap)
+      });
+      y.value = e.absoluteY - e.y;
+      const finalY = Math.min(Math.max(barHeight, y.value), windowHeight - anchor.size - gap);
       y.value = withSpring(finalY, {
         stiffness: 500,
         overshootClamping: true,
-      })
+      });
 
-      runOnJS(onOffsetChanged)(finalX, finalY)
-    })
+      runOnJS(onOffsetChanged)(finalX, finalY);
+    });
 
   return (
     <Animated.View style={[animatedStyles, styles.shadow]}>
@@ -73,7 +73,7 @@ export default function Ball({
         </GestureDetector>
       </GestureHandlerRootView>
     </Animated.View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
       height: 2,
     },
   },
-})
+});

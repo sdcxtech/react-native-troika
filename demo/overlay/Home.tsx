@@ -1,10 +1,10 @@
-import React from 'react'
-import { StyleSheet, FlatList, ListRenderItem, Text, TouchableOpacity, Image } from 'react-native'
-import { useNavigator, withNavigationItem } from 'hybrid-navigation'
+import React from 'react';
+import {StyleSheet, FlatList, ListRenderItem, Text, TouchableOpacity, Image} from 'react-native';
+import {useNavigator, withNavigationItem} from 'hybrid-navigation';
 
 interface Item {
-  title: string
-  routeName: string
+  title: string;
+  routeName: string;
 }
 
 const data: Array<Item> = [
@@ -20,37 +20,37 @@ const data: Array<Item> = [
     title: 'Alert',
     routeName: 'Alert',
   },
-]
+];
 
 function Home() {
-  const navigator = useNavigator()
+  const navigator = useNavigator();
 
-  const renderListItem: ListRenderItem<Item> = ({ item }) => {
-    return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />
-  }
+  const renderListItem: ListRenderItem<Item> = ({item}) => {
+    return <ListItem {...item} onPress={() => navigator.push(item.routeName)} />;
+  };
 
-  return <FlatList data={data} keyExtractor={item => item.title} renderItem={renderListItem} />
+  return <FlatList data={data} keyExtractor={item => item.title} renderItem={renderListItem} />;
 }
 
 interface ListItemProps {
-  title: string
-  onPress?: () => void
+  title: string;
+  onPress?: () => void;
 }
 
-function ListItem({ title, onPress }: ListItemProps) {
+function ListItem({title, onPress}: ListItemProps) {
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
       <Image source={require('assets/indicator.png')} />
     </TouchableOpacity>
-  )
+  );
 }
 
 export default withNavigationItem({
   titleItem: {
     title: 'Overlay',
   },
-})(Home)
+})(Home);
 
 const styles = StyleSheet.create({
   item: {
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
     color: '#222222',
     fontSize: 17,
   },
-})
+});

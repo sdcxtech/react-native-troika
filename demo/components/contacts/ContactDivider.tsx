@@ -1,25 +1,25 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import Contact from './models/Contact'
+import Contact from './models/Contact';
 
 interface ContactDividerProps {
-  leadingItem: Contact | string
-  trailingItem: Contact | string
+  leadingItem: Contact | string;
+  trailingItem: Contact | string;
 }
 
-const ContactDivider = ({ leadingItem, trailingItem }: ContactDividerProps) => {
+const ContactDivider = ({leadingItem, trailingItem}: ContactDividerProps) => {
   if (typeof leadingItem === 'string' || typeof trailingItem === 'string') {
-    return null
+    return null;
   }
   return (
     <View style={styles.dividerContainer}>
       <View style={styles.divider} />
     </View>
-  )
-}
+  );
+};
 
-export default ContactDivider
+export default ContactDivider;
 
 const styles = StyleSheet.create({
   divider: {
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: 'white',
   },
-})
+});

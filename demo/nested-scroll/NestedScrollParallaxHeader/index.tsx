@@ -1,24 +1,24 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { statusBarHeight, topBarHeight, withNavigationItem } from 'hybrid-navigation'
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {statusBarHeight, topBarHeight, withNavigationItem} from 'hybrid-navigation';
 
-import { NestedScrollView } from '@sdcx/nested-scroll'
+import {NestedScrollView} from '@sdcx/nested-scroll';
 
-import { FlatListPage } from '../../components/FlatListPage'
-import { ParallaxHeader } from './ParallaxHeader'
-import { useAnimateScrollView } from './hooks/useAnimatedScrollView'
-import AnimatedNavbar from './AnimatedNavbar'
-import { TopNavBar } from './components/TopNavBar'
-import { HeaderNavBar } from './components/HeaderNavBar'
-import { HeaderComponent } from './components/HeaderComponent'
+import {FlatListPage} from '../../components/FlatListPage';
+import {ParallaxHeader} from './ParallaxHeader';
+import {useAnimateScrollView} from './hooks/useAnimatedScrollView';
+import AnimatedNavbar from './AnimatedNavbar';
+import {TopNavBar} from './components/TopNavBar';
+import {HeaderNavBar} from './components/HeaderNavBar';
+import {HeaderComponent} from './components/HeaderComponent';
 
 export function NestedScrollParallaxHeader() {
-  const imageHeight = 220
+  const imageHeight = 220;
 
   const [scroll, onScroll, scale, translateYDown, translateYUp] = useAnimateScrollView(
     imageHeight,
     false,
-  )
+  );
 
   return (
     <View style={styles.fill}>
@@ -44,7 +44,7 @@ export function NestedScrollParallaxHeader() {
         TopNavbarComponent={<TopNavBar />}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
     height: 160,
     width: '100%',
   },
-})
+});
 
 export default withNavigationItem({
   topBarHidden: true,
   titleItem: {
     title: '',
   },
-})(NestedScrollParallaxHeader)
+})(NestedScrollParallaxHeader);

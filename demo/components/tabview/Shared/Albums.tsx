@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { Image, Dimensions, ScrollView, StyleSheet } from 'react-native'
+import * as React from 'react';
+import {Image, Dimensions, ScrollView, StyleSheet} from 'react-native';
 
 const COVERS = [
   require('assets/album-art-1.jpg'),
@@ -10,7 +10,7 @@ const COVERS = [
   require('assets/album-art-6.jpg'),
   require('assets/album-art-7.jpg'),
   require('assets/album-art-8.jpg'),
-]
+];
 
 const Albums = () => {
   return (
@@ -19,10 +19,10 @@ const Albums = () => {
         <Image key={i} source={source} style={styles.cover} />
       ))}
     </ScrollView>
-  )
-}
+  );
+};
 
-export default Albums
+export default Albums;
 
 const styles = StyleSheet.create({
   container: {
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
     width: '50%',
     height: Dimensions.get('window').width / 2,
   },
-})
+});

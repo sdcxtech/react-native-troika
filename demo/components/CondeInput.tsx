@@ -1,13 +1,13 @@
-import { useLayout } from '@react-native-community/hooks'
-import React from 'react'
-import { ViewStyle, StyleProp, StyleSheet, Text, View, TextInput } from 'react-native'
+import {useLayout} from '@react-native-community/hooks';
+import React from 'react';
+import {ViewStyle, StyleProp, StyleSheet, Text, View, TextInput} from 'react-native';
 
 interface CodeInputProps {
-  value: string
-  onValueChange: (value: string) => void
-  style?: StyleProp<ViewStyle>
-  length?: number
-  spacing?: number
+  value: string;
+  onValueChange: (value: string) => void;
+  style?: StyleProp<ViewStyle>;
+  length?: number;
+  spacing?: number;
 }
 
 export default function CodeInput({
@@ -17,10 +17,10 @@ export default function CodeInput({
   length = 4,
   spacing = 8,
 }: CodeInputProps) {
-  const { onLayout, height } = useLayout()
-  const size = height
+  const {onLayout, height} = useLayout();
+  const size = height;
 
-  const cells = value.split('').concat(Array(length - value.length).fill(''))
+  const cells = value.split('').concat(Array(length - value.length).fill(''));
 
   return (
     <View style={[styles.container, style]} onLayout={onLayout}>
@@ -35,11 +35,10 @@ export default function CodeInput({
       />
       <View style={[styles.cover, StyleSheet.absoluteFillObject]} pointerEvents="none">
         {cells.map((text: string, index: number) => (
-          // eslint-disable-next-line react-native/no-inline-styles
           <View
             style={[
               styles.cell,
-              { width: size, height: size, marginLeft: index === 0 ? 0 : spacing },
+              {width: size, height: size, marginLeft: index === 0 ? 0 : spacing},
             ]}
             key={index}>
             <Text style={styles.text}>{text}</Text>
@@ -47,7 +46,7 @@ export default function CodeInput({
         ))}
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -76,4 +75,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
-})
+});

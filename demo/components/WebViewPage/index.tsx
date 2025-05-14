@@ -1,29 +1,29 @@
-import React, { useRef, useState } from 'react'
-import { WebView } from 'react-native-webview'
-import Lottie from 'lottie-react-native'
-import { StyleSheet, View } from 'react-native'
+import React, {useRef, useState} from 'react';
+import {WebView} from 'react-native-webview';
+import Lottie from 'lottie-react-native';
+import {StyleSheet, View} from 'react-native';
 
-export function WebViewPage({ url }: { url: string }) {
-  const lottieRef = useRef<Lottie>(null)
-  const [loading, setLoading] = useState(false)
+export function WebViewPage({url}: {url: string}) {
+  const lottieRef = useRef<Lottie>(null);
+  const [loading, setLoading] = useState(false);
 
   const onLoadStart = () => {
-    setLoading(true)
-  }
+    setLoading(true);
+  };
 
   const onLoadEnd = () => {
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <View collapsable={false} style={styles.fill}>
       <WebView
-        style={{ flex: 1 }}
-        containerStyle={{ flex: 1, overflow: 'visible' }}
+        style={{flex: 1}}
+        containerStyle={{flex: 1, overflow: 'visible'}}
         originWhitelist={['*']}
-        source={{ uri: url }}
-        onLoadProgress={({ nativeEvent: { progress } }) => {
-          console.log('progress', progress)
+        source={{uri: url}}
+        onLoadProgress={({nativeEvent: {progress}}) => {
+          console.log('progress', progress);
         }}
         onLoadStart={onLoadStart}
         onLoadEnd={onLoadEnd}
@@ -41,7 +41,7 @@ export function WebViewPage({ url }: { url: string }) {
         />
       ) : null}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
     top: '20%',
     alignSelf: 'center',
   },
-})
+});

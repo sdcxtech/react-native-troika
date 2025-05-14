@@ -1,56 +1,56 @@
-import React, { useEffect, useState } from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import Picker, { PickerItem } from '@sdcx/wheel-picker'
+import React, {useEffect, useState} from 'react';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import Picker, {PickerItem} from '@sdcx/wheel-picker';
 
 interface Province {
-  code: string
-  name: string
-  children: City[]
+  code: string;
+  name: string;
+  children: City[];
 }
 
 interface City {
-  code: string
-  name: string
+  code: string;
+  name: string;
 }
 
-const data: Province[] = require('./pc-code.json')
-const provinces = genItems(data)
+const data: Province[] = require('./pc-code.json');
+const provinces = genItems(data);
 
 function genItems(data: Province[] | City[]): PickerItem<string>[] {
-  return data.map(p => ({ label: p.name, value: p.code }))
+  return data.map(p => ({label: p.name, value: p.code}));
 }
 
 function genCitiesItem(pcode: string) {
   for (let i = 0; i < data.length; i++) {
-    const p = data[i]
+    const p = data[i];
     if (p.code === pcode) {
-      return genItems(p.children)
+      return genItems(p.children);
     }
   }
-  return []
+  return [];
 }
 
 interface CityPickerProps {
-  citycode?: string
-  onCitycodeChange?: (citycode: string) => void
-  style?: StyleProp<ViewStyle>
+  citycode?: string;
+  onCitycodeChange?: (citycode: string) => void;
+  style?: StyleProp<ViewStyle>;
 }
 
-export default function CityPicker({ citycode = '11', onCitycodeChange, style }: CityPickerProps) {
-  const pcode = citycode.substring(0, 2)
-  const [cities, setCities] = useState(genCitiesItem(pcode))
+export default function CityPicker({citycode = '11', onCitycodeChange, style}: CityPickerProps) {
+  const pcode = citycode.substring(0, 2);
+  const [cities, setCities] = useState(genCitiesItem(pcode));
 
   useEffect(() => {
-    setCities(genCitiesItem(pcode))
-  }, [pcode])
+    setCities(genCitiesItem(pcode));
+  }, [pcode]);
 
   const _onProvinceChange = (code: string) => {
-    setCities(genCitiesItem(code))
-  }
+    setCities(genCitiesItem(code));
+  };
 
   const _onCityChange = (code: string) => {
-    onCitycodeChange?.(code)
-  }
+    onCitycodeChange?.(code);
+  };
 
   return (
     <View style={[styles.compose, style]}>
@@ -70,7 +70,7 @@ export default function CityPicker({ citycode = '11', onCitycodeChange, style }:
         items={cities}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
     color: '#9A9EFF',
     fontSize: 15,
   },
-})
+});

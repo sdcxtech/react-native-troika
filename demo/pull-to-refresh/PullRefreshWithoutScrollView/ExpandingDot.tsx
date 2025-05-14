@@ -1,14 +1,14 @@
-import React from 'react'
-import { Animated, StyleSheet, useWindowDimensions, View, ViewStyle } from 'react-native'
+import React from 'react';
+import {Animated, StyleSheet, useWindowDimensions, View, ViewStyle} from 'react-native';
 export interface ExpandingDotProps {
-  data: Array<Object>
-  scrollX: Animated.Value | Animated.AnimatedInterpolation
-  containerStyle?: ViewStyle
-  dotStyle?: ViewStyle
-  inActiveDotOpacity?: number
-  inActiveDotColor?: string
-  expandingDotWidth?: number
-  activeDotColor?: string
+  data: Array<Object>;
+  scrollX: Animated.Value | Animated.AnimatedInterpolation;
+  containerStyle?: ViewStyle;
+  dotStyle?: ViewStyle;
+  inActiveDotOpacity?: number;
+  inActiveDotColor?: string;
+  expandingDotWidth?: number;
+  activeDotColor?: string;
 }
 
 const ExpandingDot = ({
@@ -21,7 +21,7 @@ const ExpandingDot = ({
   expandingDotWidth,
   activeDotColor,
 }: ExpandingDotProps) => {
-  const { width } = useWindowDimensions()
+  const {width} = useWindowDimensions();
 
   const defaultProps = {
     inActiveDotColor: inActiveDotColor || '#2A3080',
@@ -29,12 +29,12 @@ const ExpandingDot = ({
     expandingDotWidth: expandingDotWidth || 12,
     dotWidth: (dotStyle?.width as number) || 4,
     activeDotColor: activeDotColor || '#2A3080',
-  }
+  };
 
   return (
     <View pointerEvents={'none'} style={[styles.containerStyle, containerStyle]}>
       {data.map((_, index) => {
-        const inputRange = [(index - 1) * width, index * width, (index + 1) * width]
+        const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
 
         const colour = scrollX.interpolate({
           inputRange,
@@ -44,12 +44,12 @@ const ExpandingDot = ({
             defaultProps.inActiveDotColor,
           ],
           extrapolate: 'clamp',
-        })
+        });
         const opacity = scrollX.interpolate({
           inputRange,
           outputRange: [defaultProps.inActiveDotOpacity, 1, defaultProps.inActiveDotOpacity],
           extrapolate: 'clamp',
-        })
+        });
         const expand = scrollX.interpolate({
           inputRange,
           outputRange: [
@@ -58,7 +58,7 @@ const ExpandingDot = ({
             defaultProps.dotWidth,
           ],
           extrapolate: 'clamp',
-        })
+        });
 
         return (
           <Animated.View
@@ -66,16 +66,16 @@ const ExpandingDot = ({
             style={[
               styles.dotStyle,
               dotStyle,
-              { width: expand },
-              { opacity },
-              { backgroundColor: colour },
+              {width: expand},
+              {opacity},
+              {backgroundColor: colour},
             ]}
           />
-        )
+        );
       })}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     marginHorizontal: 4,
   },
-})
+});
 
-export default ExpandingDot
+export default ExpandingDot;

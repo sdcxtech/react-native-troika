@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Animated,
   Pressable,
@@ -7,30 +7,24 @@ import {
   TextStyle,
   ViewProps,
   ViewStyle,
-} from 'react-native'
+} from 'react-native';
 
 interface TabBarItemProps {
-  title: string
-  onPress?: () => void
-  onLayout: ViewProps['onLayout']
-  style?: StyleProp<ViewStyle>
+  title: string;
+  onPress?: () => void;
+  onLayout: ViewProps['onLayout'];
+  style?: StyleProp<ViewStyle>;
   labelStyle?:
     | Animated.WithAnimatedObject<TextStyle>
-    | Animated.WithAnimatedArray<StyleProp<TextStyle>>
+    | Animated.WithAnimatedArray<StyleProp<TextStyle>>;
 }
 
-export default function TabBarItem({
-  title,
-  style,
-  labelStyle,
-  onPress,
-  onLayout,
-}: TabBarItemProps) {
+export default function TabBarItem({title, style, labelStyle, onPress, onLayout}: TabBarItemProps) {
   return (
     <Pressable style={[styles.tab, style]} onPress={onPress} onLayout={onLayout}>
       <Animated.Text style={[styles.label, labelStyle]}>{title}</Animated.Text>
     </Pressable>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -44,4 +38,4 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontSize: 16,
   },
-})
+});

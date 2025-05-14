@@ -1,12 +1,12 @@
-import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import React from 'react';
+import {StyleSheet, Text} from 'react-native';
 
 interface TitleProps {
-  title: string
+  title: string;
 }
 
-export default function Title({ title }: TitleProps) {
-  return <Text style={styles.title}>{title}</Text>
+export default function Title({title}: TitleProps) {
+  return <Text style={styles.title}>{title}</Text>;
 }
 
 const styles = StyleSheet.create({
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 6,
   },
-})
+});

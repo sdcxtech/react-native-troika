@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Image, TextInput, Pressable } from 'react-native'
+import React, {useState} from 'react';
+import {View, StyleSheet, Image, TextInput, Pressable} from 'react-native';
 
 interface TextInputBarProps {
-  onSend: (text: string) => void
+  onSend: (text: string) => void;
 }
 
-const TextInputBar = ({ onSend }: TextInputBarProps) => {
-  const [text, setText] = useState('')
+const TextInputBar = ({onSend}: TextInputBarProps) => {
+  const [text, setText] = useState('');
 
   return (
     <View style={styles.textInputBar}>
@@ -21,19 +21,19 @@ const TextInputBar = ({ onSend }: TextInputBarProps) => {
         style={styles.sendButtonWrapper}
         onPress={() => {
           if (text.length < 1) {
-            return
+            return;
           }
-          onSend(text)
-          setText('')
+          onSend(text);
+          setText('');
         }}>
         <Image
-          style={[styles.sendButton, text.length < 1 ? { opacity: 0.3 } : { opacity: 1 }]}
+          style={[styles.sendButton, text.length < 1 ? {opacity: 0.3} : {opacity: 1}]}
           source={require('assets/send.png')}
         />
       </Pressable>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   textInputBar: {
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
   },
-})
+});
 
-export default TextInputBar
+export default TextInputBar;

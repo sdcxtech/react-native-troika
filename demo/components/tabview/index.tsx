@@ -1,34 +1,34 @@
-import * as React from 'react'
-import { StyleSheet } from 'react-native'
+import * as React from 'react';
+import {StyleSheet} from 'react-native';
 import {
   TabView,
   TabBar,
   SceneMap,
   NavigationState,
   SceneRendererProps,
-} from 'react-native-tab-view'
-import Article from './Shared/Article'
-import Albums from './Shared/Albums'
-import Chat from './Shared/Chat'
-import Contacts from './Shared/Contacts'
+} from 'react-native-tab-view';
+import Article from './Shared/Article';
+import Albums from './Shared/Albums';
+import Chat from './Shared/Chat';
+import Contacts from './Shared/Contacts';
 
 type State = NavigationState<{
-  key: string
-  title: string
-}>
+  key: string;
+  title: string;
+}>;
 
 const AutoWidthTabBarExample = () => {
-  const [index, onIndexChange] = React.useState(1)
+  const [index, onIndexChange] = React.useState(1);
   const [routes] = React.useState([
-    { key: 'article', title: 'Article' },
-    { key: 'contacts', title: 'Contacts' },
-    { key: 'albums', title: 'Albums' },
-    { key: 'chat', title: 'Chat' },
-    { key: 'long', title: 'long long long title' },
-    { key: 'medium', title: 'medium title' },
-  ])
+    {key: 'article', title: 'Article'},
+    {key: 'contacts', title: 'Contacts'},
+    {key: 'albums', title: 'Albums'},
+    {key: 'chat', title: 'Chat'},
+    {key: 'long', title: 'long long long title'},
+    {key: 'medium', title: 'medium title'},
+  ]);
 
-  const renderTabBar = (props: SceneRendererProps & { navigationState: State }) => (
+  const renderTabBar = (props: SceneRendererProps & {navigationState: State}) => (
     <TabBar
       {...props}
       scrollEnabled
@@ -37,7 +37,7 @@ const AutoWidthTabBarExample = () => {
       labelStyle={styles.label}
       tabStyle={styles.tabStyle}
     />
-  )
+  );
 
   const renderScene = SceneMap({
     albums: Albums,
@@ -46,7 +46,7 @@ const AutoWidthTabBarExample = () => {
     chat: Chat,
     long: Article,
     medium: Article,
-  })
+  });
 
   return (
     <TabView
@@ -58,14 +58,14 @@ const AutoWidthTabBarExample = () => {
       renderTabBar={renderTabBar}
       onIndexChange={onIndexChange}
     />
-  )
-}
+  );
+};
 
-AutoWidthTabBarExample.title = 'Scrollable tab bar (auto width)'
-AutoWidthTabBarExample.backgroundColor = '#3f51b5'
-AutoWidthTabBarExample.appbarElevation = 0
+AutoWidthTabBarExample.title = 'Scrollable tab bar (auto width)';
+AutoWidthTabBarExample.backgroundColor = '#3f51b5';
+AutoWidthTabBarExample.appbarElevation = 0;
 
-export default AutoWidthTabBarExample
+export default AutoWidthTabBarExample;
 
 const styles = StyleSheet.create({
   tabbar: {
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   tabStyle: {
     width: 'auto',
   },
-})
+});

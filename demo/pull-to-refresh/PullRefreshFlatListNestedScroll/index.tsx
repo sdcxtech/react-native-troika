@@ -1,48 +1,48 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React, { useRef, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
-import { FlatListPage, useDemoFlatlistData } from '../../components/FlatListPage'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
-import { LottiePullToRefreshFooter } from '../PullToRefresh/LottiePullToRefreshFooter'
+import {withNavigationItem} from 'hybrid-navigation';
+import React, {useRef, useState} from 'react';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import {FlatListPage, useDemoFlatlistData} from '../../components/FlatListPage';
+import {PullToRefresh} from '@sdcx/pull-to-refresh';
+import {LottiePullToRefreshFooter} from '../PullToRefresh/LottiePullToRefreshFooter';
 
 export function PullRefreshFlatListNestedScroll() {
-  const [refreshing, setRefreshing] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData()
-  const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const {flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem} = useDemoFlatlistData();
+  const pendingAction = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearPendingAction = () => {
     if (pendingAction.current) {
-      clearTimeout(pendingAction.current)
+      clearTimeout(pendingAction.current);
     }
-  }
+  };
 
   const beginRefresh = async () => {
-    setRefreshing(true)
+    setRefreshing(true);
     pendingAction.current = setTimeout(() => {
-      addFlatlistRefreshItem()
-      endRefresh()
-    }, 1500)
-  }
+      addFlatlistRefreshItem();
+      endRefresh();
+    }, 1500);
+  };
 
   const endRefresh = () => {
-    clearPendingAction()
-    setRefreshing(false)
-  }
+    clearPendingAction();
+    setRefreshing(false);
+  };
 
   const loadMore = () => {
-    setLoadingMore(true)
+    setLoadingMore(true);
     pendingAction.current = setTimeout(() => {
-      addFlatlistLoadMoreItem()
-      endLoadMore()
-    }, 1500)
-  }
+      addFlatlistLoadMoreItem();
+      endLoadMore();
+    }, 1500);
+  };
 
   const endLoadMore = () => {
-    clearPendingAction()
-    setLoadingMore(false)
-  }
+    clearPendingAction();
+    setLoadingMore(false);
+  };
 
   return (
     <NestedScrollView style={styles.coordinator}>
@@ -52,12 +52,9 @@ export function PullRefreshFlatListNestedScroll() {
           <Text>anchor</Text>
         </View>
       </NestedScrollViewHeader>
-      <ScrollView
-        horizontal
-        contentContainerStyle={{ width: '100%' }}
-        alwaysBounceHorizontal={false}>
+      <ScrollView horizontal contentContainerStyle={{width: '100%'}} alwaysBounceHorizontal={false}>
         <PullToRefresh
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           refreshing={refreshing}
           onRefresh={beginRefresh}
           footer={
@@ -67,7 +64,7 @@ export function PullRefreshFlatListNestedScroll() {
         </PullToRefresh>
       </ScrollView>
     </NestedScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -92,10 +89,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     fontSize: 18,
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'PullRefresh + NestedScroll + FlatList',
   },
-})(PullRefreshFlatListNestedScroll)
+})(PullRefreshFlatListNestedScroll);

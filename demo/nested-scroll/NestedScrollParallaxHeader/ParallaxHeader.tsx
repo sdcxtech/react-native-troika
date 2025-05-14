@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, {PropsWithChildren} from 'react';
 import {
   Animated,
   ImageBackground,
@@ -7,23 +7,23 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
-} from 'react-native'
+} from 'react-native';
 
-import { NestedScrollViewHeader } from '@sdcx/nested-scroll'
+import {NestedScrollViewHeader} from '@sdcx/nested-scroll';
 
-const NestedScrollViewHeaderAnimated = Animated.createAnimatedComponent(NestedScrollViewHeader)
-const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground)
+const NestedScrollViewHeaderAnimated = Animated.createAnimatedComponent(NestedScrollViewHeader);
+const AnimatedImageBackground = Animated.createAnimatedComponent(ImageBackground);
 
 export type ParallaxHeaderProps = {
-  imageHeight: number
-  topBarHeight: number
-  onScroll?: (event: any) => void
-  translateYUp: Animated.AnimatedInterpolation | 0
-  translateYDown: Animated.AnimatedInterpolation | 0
-  scale: Animated.AnimatedInterpolation | 1
-  imageStyle?: StyleProp<ImageStyle>
-  imageSource: any
-}
+  imageHeight: number;
+  topBarHeight: number;
+  onScroll?: (event: any) => void;
+  translateYUp: Animated.AnimatedInterpolation | 0;
+  translateYDown: Animated.AnimatedInterpolation | 0;
+  scale: Animated.AnimatedInterpolation | 1;
+  imageStyle?: StyleProp<ImageStyle>;
+  imageSource: any;
+};
 
 export function ParallaxHeader(props: PropsWithChildren<ParallaxHeaderProps>) {
   const {
@@ -36,9 +36,9 @@ export function ParallaxHeader(props: PropsWithChildren<ParallaxHeaderProps>) {
     imageSource,
     onScroll,
     children,
-  } = props
+  } = props;
 
-  const width = useWindowDimensions().width
+  const width = useWindowDimensions().width;
 
   return (
     <NestedScrollViewHeaderAnimated stickyHeight={topBarHeight} onScroll={onScroll}>
@@ -53,13 +53,9 @@ export function ParallaxHeader(props: PropsWithChildren<ParallaxHeaderProps>) {
         <AnimatedImageBackground
           source={imageSource}
           style={[
-            { height: imageHeight, width: width * 1.2, justifyContent: 'center' },
+            {height: imageHeight, width: width * 1.2, justifyContent: 'center'},
             {
-              transform: [
-                { scale: scale },
-                { translateY: translateYUp },
-                { translateY: translateYDown },
-              ],
+              transform: [{scale: scale}, {translateY: translateYUp}, {translateY: translateYDown}],
             },
             imageStyle,
           ]}>
@@ -67,7 +63,7 @@ export function ParallaxHeader(props: PropsWithChildren<ParallaxHeaderProps>) {
         </AnimatedImageBackground>
       </View>
     </NestedScrollViewHeaderAnimated>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -75,4 +71,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-})
+});

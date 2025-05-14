@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, {useCallback, useRef, useState} from 'react';
 import {
   findNodeHandle,
   Image,
@@ -7,54 +7,54 @@ import {
   ScrollView,
   TextInput,
   View,
-} from 'react-native'
+} from 'react-native';
 
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { getEdgeInsetsForView } from '@sdcx/keyboard-insets'
-import { withNavigationItem } from 'hybrid-navigation'
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {getEdgeInsetsForView} from '@sdcx/keyboard-insets';
+import {withNavigationItem} from 'hybrid-navigation';
 
-import Message from './Message'
-import { history } from './Message/data'
-import styles from './styles'
+import Message from './Message';
+import {history} from './Message/data';
+import styles from './styles';
 
-import { RekeyboardInsetsView } from './RekeyboardInsetsView'
-import { useRekeyboard } from './useRekeyboard'
-import { interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
+import {RekeyboardInsetsView} from './RekeyboardInsetsView';
+import {useRekeyboard} from './useRekeyboard';
+import {interpolate, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated';
 
 function KeyboardChat() {
-  const inputRef = useRef<TextInput>(null)
-  const senderRef = useRef<View>(null)
-  const [bottom, setBottom] = useState(0)
+  const inputRef = useRef<TextInput>(null);
+  const senderRef = useRef<View>(null);
+  const [bottom, setBottom] = useState(0);
 
   const onLayout = useCallback(() => {
-    const viewTag = findNodeHandle(senderRef.current)
+    const viewTag = findNodeHandle(senderRef.current);
     if (viewTag === null) {
-      return
+      return;
     }
 
     getEdgeInsetsForView(viewTag, insets => {
-      setBottom(insets.bottom!)
-    })
-  }, [])
+      setBottom(insets.bottom!);
+    });
+  }, []);
 
-  const { onPositionChanged, onStatusChanged, keyboard } = useRekeyboard()
+  const {onPositionChanged, onStatusChanged, keyboard} = useRekeyboard();
 
   const position = useDerivedValue(() => {
     if (Platform.OS === 'android') {
-      return keyboard.position.value
+      return keyboard.position.value;
     }
 
     // 需要了解 iOS 的隐式动画机制
     if (keyboard.shown.value) {
-      return keyboard.height.value
+      return keyboard.height.value;
     } else {
-      return 0
+      return 0;
     }
-  }, [])
+  }, []);
 
   const mainStyle = useAnimatedStyle(() => {
     // keyboardHeight 只有在初始化时为 0，后续尽管隐藏都是有值的
-    const keyboardHeight = keyboard.height.value
+    const keyboardHeight = keyboard.height.value;
     return {
       transform: [
         {
@@ -66,8 +66,8 @@ function KeyboardChat() {
           ),
         },
       ],
-    }
-  }, [bottom])
+    };
+  }, [bottom]);
 
   return (
     <SafeAreaProvider style={styles.provider}>
@@ -94,7 +94,7 @@ function KeyboardChat() {
       </RekeyboardInsetsView>
       <SafeAreaView edges={['bottom']} />
     </SafeAreaProvider>
-  )
+  );
 }
 
 export default withNavigationItem({
@@ -102,4 +102,4 @@ export default withNavigationItem({
   titleItem: {
     title: '聊天键盘处理(Reanimated)',
   },
-})(KeyboardChat)
+})(KeyboardChat);

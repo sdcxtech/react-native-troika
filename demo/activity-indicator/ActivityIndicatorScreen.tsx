@@ -1,8 +1,8 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 
-import ActivityIndicator from '@sdcx/activity-indicator'
-import { withNavigationItem } from 'hybrid-navigation'
+import ActivityIndicator from '@sdcx/activity-indicator';
+import {withNavigationItem} from 'hybrid-navigation';
 
 function ActivityIndicatorScreen() {
   return (
@@ -12,14 +12,14 @@ function ActivityIndicatorScreen() {
       <ActivityIndicator size="small" color="#0000ff" />
       <ActivityIndicator size="large" color="#00ff00" animating={false} />
     </View>
-  )
+  );
 }
 
 export default withNavigationItem({
   titleItem: {
     title: '菊花 Loading',
   },
-})(ActivityIndicatorScreen)
+})(ActivityIndicatorScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 80,
   },
-})
+});

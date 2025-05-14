@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropsWithChildren} from 'react';
 
 import {
   KeyboardPositionChangedEvent,
@@ -6,46 +6,49 @@ import {
   KeyboardStatusChangedEvent,
   KeyboardStatusChangedEventData,
   NativeKeyboardInsetsView,
-} from '@sdcx/keyboard-insets'
+} from '@sdcx/keyboard-insets';
 
-import Reanimated, { useEvent, useHandler } from 'react-native-reanimated'
+import Reanimated, {AnimatedProps, useEvent, useHandler} from 'react-native-reanimated';
+import {ViewProps} from 'react-native';
 
 export interface KeyboardState {
-  height: number
-  shown: boolean
-  transitioning: boolean
+  height: number;
+  shown: boolean;
+  transitioning: boolean;
+}
+
+interface KeyboardInsetsViewProps
+  extends AnimatedProps<typeof NativeKeyboardInsetsView>,
+    PropsWithChildren<ViewProps> {
+  onPositionChanged: (e: KeyboardPositionChangedEventData) => void;
+  onStatusChanged: (e: KeyboardStatusChangedEventData) => void;
 }
 
 const NativeKeyboardInsetsViewReanimated =
-  Reanimated.createAnimatedComponent(NativeKeyboardInsetsView)
-
-interface KeyboardInsetsViewProps extends Reanimated.AnimateProps<any> {
-  onPositionChanged: (e: KeyboardPositionChangedEventData) => void
-  onStatusChanged: (e: KeyboardStatusChangedEventData) => void
-}
+  Reanimated.createAnimatedComponent(NativeKeyboardInsetsView);
 
 export function RekeyboardInsetsView(props: KeyboardInsetsViewProps) {
-  const { children, onPositionChanged, onStatusChanged, ...rest } = props
+  const {children, onPositionChanged, onStatusChanged, ...rest} = props;
 
   const handlePositionChanged = useKeyboardPositionChangedHandler(
     {
       onPositionChanged: e => {
-        'worklet'
-        onPositionChanged?.(e)
+        'worklet';
+        onPositionChanged?.(e);
       },
     },
     [onPositionChanged],
-  )
+  );
 
   const handleStatusChanged = useKeyboardStatusChangedHandler(
     {
       onStatusChanged: e => {
-        'worklet'
-        onStatusChanged?.(e)
+        'worklet';
+        onStatusChanged?.(e);
       },
     },
     [onStatusChanged],
-  )
+  );
 
   return (
     <NativeKeyboardInsetsViewReanimated
@@ -55,59 +58,61 @@ export function RekeyboardInsetsView(props: KeyboardInsetsViewProps) {
       {...rest}>
       {children}
     </NativeKeyboardInsetsViewReanimated>
-  )
+  );
 }
 
 interface CustomKeyboardPositionChangedEventData extends KeyboardPositionChangedEventData {
-  eventName: string
+  eventName: string;
 }
 
 function useKeyboardPositionChangedHandler<TContext extends Record<string, unknown>>(
   handlers: {
-    onPositionChanged: (e: KeyboardPositionChangedEventData, ctx: TContext) => void
+    onPositionChanged: (e: KeyboardPositionChangedEventData, ctx: TContext) => void;
   },
-  dependencies?: ReadonlyArray<unknown>,
-): (e: KeyboardPositionChangedEvent) => void {
-  const { context, doDependenciesDiffer } = useHandler(handlers, dependencies)
-  return useEvent<KeyboardPositionChangedEventData>(
+  dependencies?: Array<unknown>,
+) {
+  const {context, doDependenciesDiffer} = useHandler(handlers, dependencies);
+
+  return useEvent<KeyboardPositionChangedEvent>(
     event => {
-      'worklet'
-      const { onPositionChanged } = handlers
+      'worklet';
+      const {onPositionChanged} = handlers;
       if (
         onPositionChanged &&
         (event as CustomKeyboardPositionChangedEventData).eventName.endsWith('onPositionChanged')
       ) {
-        onPositionChanged(event, context)
+        onPositionChanged(event, context);
       }
     },
     ['onPositionChanged'],
     doDependenciesDiffer,
-  )
+  );
 }
 
 interface CustomKeyboardStatusChangedEventData extends KeyboardStatusChangedEventData {
-  eventName: string
+  eventName: string;
 }
 
 function useKeyboardStatusChangedHandler<TContext extends Record<string, unknown>>(
   handlers: {
-    onStatusChanged: (e: KeyboardStatusChangedEventData, ctx: TContext) => void
+    onStatusChanged: (e: KeyboardStatusChangedEventData, ctx: TContext) => void;
   },
-  dependencies?: ReadonlyArray<unknown>,
-): (e: KeyboardStatusChangedEvent) => void {
-  const { context, doDependenciesDiffer } = useHandler(handlers, dependencies)
-  return useEvent<KeyboardStatusChangedEventData>(
+  dependencies?: Array<unknown>,
+) {
+  const {context, doDependenciesDiffer} = useHandler(handlers, dependencies);
+
+  return useEvent<KeyboardStatusChangedEvent>(
     event => {
-      'worklet'
-      const { onStatusChanged } = handlers
+      'worklet';
+      const {onStatusChanged} = handlers;
       if (
         onStatusChanged &&
         (event as CustomKeyboardStatusChangedEventData).eventName.endsWith('onStatusChanged')
       ) {
-        onStatusChanged(event, context)
+        onStatusChanged(event, context);
       }
     },
     ['onStatusChanged'],
     doDependenciesDiffer,
-  )
+  );
 }

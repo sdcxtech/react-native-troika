@@ -1,14 +1,14 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import ScrollBar from './ScrollBar'
-import TabBar, { TabBarProps } from './TabBar'
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import ScrollBar from './ScrollBar';
+import TabBar, {TabBarProps} from './TabBar';
 
 export default function (props: TabBarProps) {
   return (
-    <ScrollBar page={props.page} style={styles.scrollbar} contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollBar page={props.page} style={styles.scrollbar} contentContainerStyle={{flexGrow: 1}}>
       <TabBar style={styles.tabbar} tabStyle={styles.tab} {...props} />
     </ScrollBar>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
   tab: {
     paddingHorizontal: 16,
   },
-})
+});

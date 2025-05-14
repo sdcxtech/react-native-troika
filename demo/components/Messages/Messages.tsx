@@ -1,17 +1,17 @@
-import { StyleSheet } from 'react-native'
-import { FlashList } from '@shopify/flash-list'
-import React, { useState } from 'react'
+import {StyleSheet} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
+import React, {useState} from 'react';
 
-import MessageType from './models/MessageType'
-import initialMessages from './data/messages'
-import TextInputBar from './TextInputBar'
-import userName from './userName'
-import MessageItem from './MessageItem'
-import Message from './models/Message'
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
+import MessageType from './models/MessageType';
+import initialMessages from './data/messages';
+import TextInputBar from './TextInputBar';
+import userName from './userName';
+import MessageItem from './MessageItem';
+import Message from './models/Message';
+import {KeyboardInsetsView} from '@sdcx/keyboard-insets';
 
 const Messages = () => {
-  const [messages, setMessages] = useState(initialMessages)
+  const [messages, setMessages] = useState(initialMessages);
 
   const appendMessage = (text: string) => {
     const message = {
@@ -19,9 +19,9 @@ const Messages = () => {
       text,
       sender: userName,
       type: MessageType.Text,
-    } as Message
-    setMessages([message, ...messages])
-  }
+    } as Message;
+    setMessages([message, ...messages]);
+  };
 
   return (
     <KeyboardInsetsView style={styles.keyboardAvoidingViewStyles} extraHeight={8}>
@@ -31,34 +31,34 @@ const Messages = () => {
         inverted
         estimatedItemSize={100}
         keyExtractor={item => {
-          return item.id
+          return item.id;
         }}
         overrideItemLayout={(layout, item) => {
           switch (item.type) {
             case MessageType.Image:
-              layout.size = 200
-              break
+              layout.size = 200;
+              break;
           }
         }}
         getItemType={item => {
-          return item.type
+          return item.type;
         }}
         data={messages}
       />
       <TextInputBar
         onSend={text => {
-          appendMessage(text)
+          appendMessage(text);
         }}
       />
     </KeyboardInsetsView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   keyboardAvoidingViewStyles: {
     flex: 1,
     backgroundColor: 'white',
   },
-})
+});
 
-export default Messages
+export default Messages;

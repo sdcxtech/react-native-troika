@@ -1,17 +1,17 @@
-import * as React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import * as React from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 type Props = {
-  icon: JSX.Element
-  onPress: () => void
-}
-export const RoundButton = ({ icon, onPress }: Props) => {
+  icon: JSX.Element;
+  onPress: () => void;
+};
+export const RoundButton = ({icon, onPress}: Props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {icon}
     </TouchableOpacity>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-})
+});

@@ -1,9 +1,9 @@
-import { NativeModules } from 'react-native'
+import {NativeModules} from 'react-native';
 
-const { RNNestedScrollWebView } = NativeModules
+const {RNNestedScrollWebView} = NativeModules;
 
-export default RNNestedScrollWebView
+export default RNNestedScrollWebView;
 
 export function lib(a: number, b: number) {
-  return a + b + 2
+  return a + b + 2;
 }

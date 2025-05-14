@@ -1,15 +1,15 @@
-import { RoundButton } from './RoundButton'
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
-import * as React from 'react'
-import ArrowLeft from '../icons/ArrowLeft'
-import { useNavigator } from 'hybrid-navigation'
+import {RoundButton} from './RoundButton';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import * as React from 'react';
+import ArrowLeft from '../icons/ArrowLeft';
+import {useNavigator} from 'hybrid-navigation';
 
 export const TopNavBar = () => {
-  const { width } = useWindowDimensions()
-  const navigator = useNavigator()
+  const {width} = useWindowDimensions();
+  const navigator = useNavigator();
   return (
     <View style={styles.container}>
-      <View style={{ width: width / 3 }}>
+      <View style={{width: width / 3}}>
         <RoundButton icon={<ArrowLeft />} onPress={navigator.pop} />
       </View>
       <View
@@ -21,10 +21,10 @@ export const TopNavBar = () => {
         ]}>
         <Text style={styles.title}>Header</Text>
       </View>
-      <View style={{ width: width / 3 }} />
+      <View style={{width: width / 3}} />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
   },
-})
+});

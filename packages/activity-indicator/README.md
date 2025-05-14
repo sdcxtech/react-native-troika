@@ -13,14 +13,14 @@ yarn add @sdcx/activity-indicator
 ## Usage
 
 ```tsx
-import ActivityIndicator from '@sdcx/activity-indicator'
+import ActivityIndicator from '@sdcx/activity-indicator';
 
 function App() {
-  return (
-    <View style={styles.container}>
-      <ActivityIndicator />
-    </View>
-  )
+    return (
+        <View style={styles.container}>
+            <ActivityIndicator />
+        </View>
+    );
 }
 ```
 

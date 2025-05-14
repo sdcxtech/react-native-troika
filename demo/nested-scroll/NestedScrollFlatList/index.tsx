@@ -1,8 +1,8 @@
-import { withNavigationItem } from 'hybrid-navigation'
-import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
-import { FlatListPage } from '../../components/FlatListPage'
+import {withNavigationItem} from 'hybrid-navigation';
+import React from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import {FlatListPage} from '../../components/FlatListPage';
 
 export function NestedScrollFlatList() {
   return (
@@ -15,7 +15,7 @@ export function NestedScrollFlatList() {
       </NestedScrollViewHeader>
       <FlatListPage />
     </NestedScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'NestedScroll + FlatList',
   },
-})(NestedScrollFlatList)
+})(NestedScrollFlatList);

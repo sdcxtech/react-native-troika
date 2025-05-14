@@ -1,23 +1,23 @@
-import { NativeModules, Platform } from 'react-native'
+import {NativeModules, Platform} from 'react-native';
 
-const EdgeToEdgeModule: SystemUIType = NativeModules.EdgeToEdgeModule
+const EdgeToEdgeModule: SystemUIType = NativeModules.EdgeToEdgeModule;
 
 interface SystemUIType {
-  setNavigationBarColor(color: string): void
-  setNavigationBarStyle(style: 'dark' | 'light'): void
+  setNavigationBarColor(color: string): void;
+  setNavigationBarStyle(style: 'dark' | 'light'): void;
 }
 
 const SystemUI: SystemUIType = {
   setNavigationBarStyle: (style: 'dark' | 'light') => {
     if (Platform.OS === 'android') {
-      EdgeToEdgeModule.setNavigationBarStyle(style)
+      EdgeToEdgeModule.setNavigationBarStyle(style);
     }
   },
   setNavigationBarColor: (color: string) => {
     if (Platform.OS === 'android') {
-      EdgeToEdgeModule.setNavigationBarColor(color)
+      EdgeToEdgeModule.setNavigationBarColor(color);
     }
   },
-}
+};
 
-export default SystemUI
+export default SystemUI;

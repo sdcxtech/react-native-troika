@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
-import { Animated, Image, StyleSheet } from 'react-native'
-import { withNavigationItem } from 'hybrid-navigation'
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
-import PagerView from 'react-native-pager-view'
-import TabBar from '../../components/TabBar'
-import usePagerView from '../../components/usePagerView'
-import { ScrollViewPage } from '../../components/ScrollViewPage'
-import { WebViewPage } from '../../components/WebViewPage'
-import Contacts from '../../components/contacts/Contacts'
-import ContactsSectionList from '../../components/contacts/ContactsSectionList'
+import React, {useState} from 'react';
+import {Animated, Image, StyleSheet} from 'react-native';
+import {withNavigationItem} from 'hybrid-navigation';
+import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import {PullToRefresh} from '@sdcx/pull-to-refresh';
+import PagerView from 'react-native-pager-view';
+import TabBar from '../../components/TabBar';
+import usePagerView from '../../components/usePagerView';
+import {ScrollViewPage} from '../../components/ScrollViewPage';
+import {WebViewPage} from '../../components/WebViewPage';
+import Contacts from '../../components/contacts/Contacts';
+import ContactsSectionList from '../../components/contacts/ContactsSectionList';
 
-const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView)
+const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(PagerView);
 
-const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView']
+const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView'];
 
 export function PullRefreshNestedScrollPagerView() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     pagerRef,
@@ -28,17 +28,17 @@ export function PullRefreshNestedScrollPagerView() {
     onPageScroll,
     onPageSelected,
     onPageScrollStateChanged,
-  } = usePagerView()
+  } = usePagerView();
 
   const beginRefresh = async () => {
-    setRefreshing(true)
+    setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false)
-    }, 2000)
-  }
+      setRefreshing(false);
+    }, 2000);
+  };
 
   return (
-    <PullToRefresh style={{ flex: 1 }} refreshing={refreshing} onRefresh={beginRefresh}>
+    <PullToRefresh style={{flex: 1}} refreshing={refreshing} onRefresh={beginRefresh}>
       <NestedScrollView style={styles.coordinator}>
         <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
           <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
@@ -66,7 +66,7 @@ export function PullRefreshNestedScrollPagerView() {
         </AnimatedPagerView>
       </NestedScrollView>
     </PullToRefresh>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'PullRefresh + NestedScroll + PagerView',
   },
-})(PullRefreshNestedScrollPagerView)
+})(PullRefreshNestedScrollPagerView);

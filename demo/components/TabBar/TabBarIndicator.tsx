@@ -1,18 +1,18 @@
-import React from 'react'
-import { Animated, StyleProp, StyleSheet, ViewStyle } from 'react-native'
+import React from 'react';
+import {Animated, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 
 interface TabBarIndicatorProps {
-  style?: StyleProp<ViewStyle>
-  scrollX: Animated.AnimatedInterpolation
+  style?: StyleProp<ViewStyle>;
+  scrollX: Animated.AnimatedInterpolation;
 }
 
-export default function TabBarIndicator({ style, scrollX }: TabBarIndicatorProps) {
+export default function TabBarIndicator({style, scrollX}: TabBarIndicatorProps) {
   return (
     <Animated.View
       key={'indicator'}
-      style={[styles.indicator, style, { transform: [{ translateX: scrollX }] }]}
+      style={[styles.indicator, style, {transform: [{translateX: scrollX}]}]}
     />
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#448AFF',
     borderRadius: 2,
   },
-})
+});

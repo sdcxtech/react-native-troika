@@ -1,13 +1,13 @@
-import { RoundButton } from './RoundButton'
-import { StyleSheet, View } from 'react-native'
-import * as React from 'react'
-import ArrowLeft from '../icons/ArrowLeft'
-import ArrowRight from '../icons/ArrowRight'
-import { Share } from '../icons/Share'
-import { useNavigator } from 'hybrid-navigation'
+import {RoundButton} from './RoundButton';
+import {StyleSheet, View} from 'react-native';
+import * as React from 'react';
+import ArrowLeft from '../icons/ArrowLeft';
+import ArrowRight from '../icons/ArrowRight';
+import {Share} from '../icons/Share';
+import {useNavigator} from 'hybrid-navigation';
 
 export const HeaderNavBar = () => {
-  const navigator = useNavigator()
+  const navigator = useNavigator();
   return (
     <View style={styles.container}>
       <RoundButton icon={<ArrowLeft />} onPress={navigator.pop} />
@@ -18,8 +18,8 @@ export const HeaderNavBar = () => {
         <RoundButton icon={<Share />} onPress={() => null} />
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   btnRight: {
     marginRight: 8,
   },
-})
+});

@@ -1,26 +1,26 @@
-import React, { PropsWithChildren, useState } from 'react'
-import { withNavigationItem } from 'hybrid-navigation'
-import { Animated, Platform, ScrollView, StyleSheet, View } from 'react-native'
-import PagerView from 'react-native-pager-view'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
-import Page from './Page'
-import ExpandingDot from './ExpandingDot'
-import usePagerView from './usePagerView'
+import React, {PropsWithChildren, useState} from 'react';
+import {withNavigationItem} from 'hybrid-navigation';
+import {Animated, Platform, ScrollView, StyleSheet, View} from 'react-native';
+import PagerView from 'react-native-pager-view';
+import {PullToRefresh} from '@sdcx/pull-to-refresh';
+import Page from './Page';
+import ExpandingDot from './ExpandingDot';
+import usePagerView from './usePagerView';
 
-const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
+const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
-const data = ['1', '2', '3', '4']
+const data = ['1', '2', '3', '4'];
 
 function PullRefreshWithoutScrollView() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
-    setRefreshing(true)
+    setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false)
-    }, 2000)
-  }
+      setRefreshing(false);
+    }, 2000);
+  };
 
-  const { onPageScroll, scrollX } = usePagerView(data.length)
+  const {onPageScroll, scrollX} = usePagerView(data.length);
 
   return (
     <PullToRefresh style={styles.pull} onRefresh={onRefresh} refreshing={refreshing}>
@@ -39,23 +39,26 @@ function PullRefreshWithoutScrollView() {
         />
       </Scrollable>
     </PullToRefresh>
-  )
+  );
 }
 
 function Scrollable(props: PropsWithChildren<any>) {
-  const { children } = props
+  const {children} = props;
   if (Platform.OS === 'ios') {
     return (
-      <ScrollView style={styles.content} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>
-    )
+    );
   } else {
     return (
       <View style={[styles.content]} collapsable={false}>
         {children}
       </View>
-    )
+    );
   }
 }
 
@@ -85,10 +88,10 @@ const styles = StyleSheet.create({
     height: 36,
     alignItems: 'center',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'PullToRefresh Without ScrollView',
   },
-})(PullRefreshWithoutScrollView)
+})(PullRefreshWithoutScrollView);

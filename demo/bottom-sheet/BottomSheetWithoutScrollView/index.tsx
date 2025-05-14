@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import { NativeSyntheticEvent, ScrollView, StyleSheet, View } from 'react-native'
-import { LoremIpsum } from '../../components/LoremIpsum'
-import BottomSheet, { BottomSheetState, StateChangedEventData } from '@sdcx/bottom-sheet'
-import { withNavigationItem } from 'hybrid-navigation'
+import React, {useState} from 'react';
+import {NativeSyntheticEvent, ScrollView, StyleSheet, View} from 'react-native';
+import {LoremIpsum} from '../../components/LoremIpsum';
+import BottomSheet, {BottomSheetState, StateChangedEventData} from '@sdcx/bottom-sheet';
+import {withNavigationItem} from 'hybrid-navigation';
 
-import Button from './Button'
+import Button from './Button';
 
-const HEADER_HEIGHT = 50
+const HEADER_HEIGHT = 50;
 
 function BottomSheetWithoutScrollView() {
-  const [state, setBottomSheetState] = useState<BottomSheetState>('collapsed')
+  const [state, setBottomSheetState] = useState<BottomSheetState>('collapsed');
 
   const onStateChanged = (e: NativeSyntheticEvent<StateChangedEventData>) => {
-    console.log(e.nativeEvent)
-    setBottomSheetState(e.nativeEvent.state)
-  }
+    console.log(e.nativeEvent);
+    setBottomSheetState(e.nativeEvent.state);
+  };
 
   return (
     <View style={styles.container}>
@@ -23,7 +23,7 @@ function BottomSheetWithoutScrollView() {
           <Button
             text="expand"
             onPress={() => {
-              setBottomSheetState('expanded')
+              setBottomSheetState('expanded');
             }}
           />
         </View>
@@ -42,27 +42,27 @@ function BottomSheetWithoutScrollView() {
           <Button
             text="collapse"
             onPress={() => {
-              setBottomSheetState('collapsed')
+              setBottomSheetState('collapsed');
             }}
           />
           <Button
             text="expand"
             onPress={() => {
-              setBottomSheetState('expanded')
+              setBottomSheetState('expanded');
             }}
           />
 
           <Button
             text="hide"
             onPress={() => {
-              setBottomSheetState('hidden')
+              setBottomSheetState('hidden');
             }}
           />
         </View>
         <LoremIpsum words={200} />
       </BottomSheet>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -85,10 +85,10 @@ const styles = StyleSheet.create({
   bottomSheet: {
     backgroundColor: '#ff9f7A',
   },
-})
+});
 
 export default withNavigationItem({
   titleItem: {
     title: 'BottomSheet without ScrollView',
   },
-})(BottomSheetWithoutScrollView)
+})(BottomSheetWithoutScrollView);

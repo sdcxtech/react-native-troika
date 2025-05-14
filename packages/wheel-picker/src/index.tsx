@@ -1,6 +1,6 @@
-import { PickerItem } from './typing'
-import WheelPicker from './WheelPicker'
+import {PickerItem} from './typing';
+import WheelPicker from './WheelPicker';
 
-export { PickerItem }
+export {PickerItem};
 
-export default WheelPicker
+export default WheelPicker;

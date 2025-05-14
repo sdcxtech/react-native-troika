@@ -1,4 +1,4 @@
 export default interface Contact {
-  firstName: string
-  lastName: string
+  firstName: string;
+  lastName: string;
 }

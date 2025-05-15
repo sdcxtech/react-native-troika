@@ -16,7 +16,7 @@
 | 0.74(2024.04)                     | arm64 设置                          | minSdkVersion 23<br>`onCatalystInstanceDestroy`弃用 | react-native-safe-area-context@^5.4.0                                                                     |
 | 0.75(2024.08)                     |                                     | 用 **kotlin** 实现<br>仅支持 androidx               |                                                                                                           |
 | 0.76(2024.10)<br>支持 `boxShadow` | 最低支持 iOS 15.1<br>支持 Xcode16.3 | minSdkVersion 24                                    | react-native-reanimated@^3.17.5                                                                           |
-| 0.77(2025.01)                     | Swift 模版                          | 支持 Android 15<br>16 KB pages                      | react-native-gesture-handler@^2.25.0                                                                      |
+| 0.77(2025.01)                     | Swift 模版                          | 支持 Android 15<br>16 KB pages                      | react-native-gesture-handler@^2.25.0 <br>react-native-drop-shadow@^1.0.3                                  |
 
 ## 库
 

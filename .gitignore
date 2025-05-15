@@ -39,7 +39,6 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-lib/
 
 # fastlane
 #
@@ -73,3 +72,7 @@ lib/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# packages
+lib/
+dist/

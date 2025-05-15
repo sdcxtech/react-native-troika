@@ -49,8 +49,7 @@ android {
 dependencies {
 	implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation("com.facebook.react:react-android")
-	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
+    
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

@@ -22,7 +22,7 @@
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = MyUiDemo/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MyUiDemo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MyUiDemo/main.m; sourceTree = "<group>"; };
-		4F138FC854528B7C2A1E9420 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = MyUiDemo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4F138FC854528B7C2A1E9420 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MyUiDemo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		514699031AF404FCBE8E8782 /* Pods-MyUiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyUiDemo.debug.xcconfig"; path = "Target Support Files/Pods-MyUiDemo/Pods-MyUiDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		91459E502605ACD000EFBE6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MyUiDemo/Assets.xcassets; sourceTree = "<group>"; };
 		91459E542605ACE600EFBE6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MyUiDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };

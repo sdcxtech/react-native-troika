@@ -5872,10 +5872,10 @@ react-native-tab-view@^3.5.1:
   dependencies:
     use-latest-callback "^0.1.5"
 
-react-native-toast-hybrid@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-toast-hybrid/-/react-native-toast-hybrid-2.5.0.tgz#06a61016f4b8bfbeafac2a74ad315d0b64fe7055"
-  integrity sha512-qQpKNtTfTTsjIQzi5ebOae3aNZrmwNaM8bfPtXwxNVAWSX66YJxPcXWBffng80CNJ7oYpaqZdYbnjhWcvbkB/g==
+react-native-toast-hybrid@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-toast-hybrid/-/react-native-toast-hybrid-2.6.0.tgz#65f0a05b6464cec8d7523e02dcb03e385cdc087c"
+  integrity sha512-iaMiodDJQrVPaaYFX+7rFceAJc9LGTbWWNN+eT1GiDRlPhEkOM/m8cwV9nmKIV1aNRYWxHOe7R4vp5DDa1kLfQ==
 
 react-native-webview@11.26.1:
   version "11.26.1"

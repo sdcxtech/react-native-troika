@@ -2,10 +2,11 @@
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "./lib",
-    "noEmit": true,
+    "outDir": "./dist",
+    "noEmit": false,
     "strict": true,
     "noImplicitAny": true,
+    "allowImportingTsExtensions": false,
     "baseUrl": "./"
   },
   "include": ["./src/**/*"]

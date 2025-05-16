@@ -2,13 +2,13 @@
   "name": "@sdcx/image-crop",
   "description": "A React Native ui component for image crop.",
   "version": "0.2.0",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "react-native": "src/index",
   "nativePackage": true,
   "files": [
     "src",
-    "lib",
+    "dist",
     "android",
     "ios",
     "RNImageCrop.podspec",
@@ -25,7 +25,7 @@
     "image-crop"
   ],
   "scripts": {
-    "build": "rm -rf ./lib && tsc -p tsconfig.json",
+    "build": "rm -rf ./dist && tsc -p tsconfig.json",
     "prepare": "npm run build",
     "tsc": "tsc",
     "test": "jest",

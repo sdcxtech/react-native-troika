@@ -2,13 +2,13 @@
   "name": "@sdcx/activity-indicator",
   "description": "A native activity indicator for React Native",
   "version": "0.2.0",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "react-native": "src/index",
   "nativePackage": true,
   "files": [
     "src",
-    "lib",
+    "dist",
     "android",
     "!android/build",
     "!**/__tests__"
@@ -22,7 +22,7 @@
     "activity-indicator"
   ],
   "scripts": {
-    "build": "rm -rf ./lib && tsc -p tsconfig.json",
+    "build": "rm -rf ./dist && tsc -p tsconfig.json",
     "prepare": "npm run build"
   },
   "peerDependencies": {

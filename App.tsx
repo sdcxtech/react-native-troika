@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   },
   lottie: {
     height: 100,
+    width: 100,
   },
   item: {
     height: 60,

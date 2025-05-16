@@ -37,7 +37,6 @@ export function WebViewPage({url}: {url: string}) {
           autoPlay
           loop
           speed={1}
-          cacheStrategy={'strong'}
         />
       ) : null}
     </View>

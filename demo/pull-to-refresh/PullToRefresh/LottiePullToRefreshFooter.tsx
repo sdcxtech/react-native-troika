@@ -42,11 +42,10 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
       ) : (
         <Lottie
           ref={lottieRef}
-          style={{height: 44}}
+          style={styles.spinner}
           source={require('./google-loading.json')}
           autoPlay={false}
           speed={1.5}
-          cacheStrategy={'strong'}
           loop
         />
       )}
@@ -57,6 +56,10 @@ function LottiePullToRefreshFooter(props: PullToRefreshFooterProps) {
 const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
+  },
+  spinner: {
+    height: 44,
+    width: 44,
   },
   text: {
     paddingVertical: 8,

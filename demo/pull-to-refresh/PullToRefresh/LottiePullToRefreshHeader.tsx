@@ -48,11 +48,10 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
       onStateChanged={onStateChanged}>
       <Lottie
         ref={lottieRef}
-        style={{height: 50}}
+        style={styles.spinner}
         source={require('./square-loading.json')}
         autoPlay={false}
         speed={1.2}
-        cacheStrategy={'strong'}
         loop
         progress={progress}
       />
@@ -63,6 +62,9 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
+  },
+  spinner: {
+    height: 50, width: 50,
   },
 });
 

@@ -2,14 +2,13 @@ package com.reactnative.nestedscrollwebview;
 
 import androidx.annotation.NonNull;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.reactnativecommunity.webview.RNCNestedScrollWebViewManager;
+
+import java.util.Collections;
+import java.util.List;
 
 public class NestedScrollWebViewPackage implements ReactPackage {
     @NonNull

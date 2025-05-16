@@ -6,6 +6,13 @@
 
 本库修补了这个缺陷。
 
+## 版本兼容
+
+| @sdcx/nested-scroll-webview | react-native-webview | 架构 |
+| --------------------------- | -------------------- | ---- |
+| 0.3                         | 11                   | 旧   |
+| 0.4                         | 13                   | 旧   |
+
 ## Installation
 
 ```sh
@@ -19,39 +26,39 @@ yarn add @sdcx/nested-scroll-webview
 
 1. 在 java 代码中，新建一个 `Package` 类，也可以使用项目现成的。
 
-   在该类中，实现 `ReactPackage` 接口，返回 `RNCNestedScrollWebViewManager`。
+    在该类中，实现 `ReactPackage` 接口，返回 `RNCNestedScrollWebViewManager`。
 
-   ```java
-   package com.example.myuidemo;
+    ```java
+    package com.example.myuidemo;
 
-   import com.reactnativecommunity.webview.RNCNestedScrollWebViewManager;
-   import java.util.Arrays;
+    import com.reactnativecommunity.webview.RNCNestedScrollWebViewManager;
+    import java.util.Arrays;
 
-   public class MyUiPackage implements ReactPackage {
-       @NonNull
-       @Override
-       public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-           return Collections.emptyList();
-       }
+    public class MyUiPackage implements ReactPackage {
+        @NonNull
+        @Override
+        public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
+            return Collections.emptyList();
+        }
 
-       @NonNull
-       @Override
-       public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-           return Arrays.asList(
-                   new RNCNestedScrollWebViewManager()
-           );
-       }
-   }
-   ```
+        @NonNull
+        @Override
+        public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
+            return Arrays.asList(
+                    new RNCNestedScrollWebViewManager()
+            );
+        }
+    }
+    ```
 
 2. 在 `MainApplication.java` 中，将该 `Package` 添加到 `getPackages()` 方法中。
 
-   ```java
-    @Override
-    protected List<ReactPackage> getPackages() {
-        @SuppressWarnings("UnnecessaryLocalVariable")
-        List<ReactPackage> packages = new PackageList(this).getPackages();
-        packages.add(new MyUiPackage());
-        return packages;
-    }
-   ```
+    ```java
+     @Override
+     protected List<ReactPackage> getPackages() {
+         @SuppressWarnings("UnnecessaryLocalVariable")
+         List<ReactPackage> packages = new PackageList(this).getPackages();
+         packages.add(new MyUiPackage());
+         return packages;
+     }
+    ```

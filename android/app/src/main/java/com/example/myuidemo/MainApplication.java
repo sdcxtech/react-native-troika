@@ -24,7 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
         public List<ReactPackage> getPackages() {
             List<ReactPackage> packages = new PackageList(this).getPackages();
             // Packages that cannot be autolinked yet can be added manually here, for example:
-            // packages.add(new MyReactNativePackage());
+            packages.add(new MyUiPackage());
             return packages;
         }
 
@@ -42,7 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
         public boolean isNewArchEnabled() {
             return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
         }
-        
+
         @Override
         public Boolean isHermesEnabled() {
             return BuildConfig.IS_HERMES_ENABLED;

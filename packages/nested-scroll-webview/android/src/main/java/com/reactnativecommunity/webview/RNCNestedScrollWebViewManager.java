@@ -1,15 +1,17 @@
 package com.reactnativecommunity.webview;
 
-import static com.reactnativecommunity.webview.RNCWebViewManager.REACT_CLASS;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 
-@ReactModule(name = REACT_CLASS)
+@ReactModule(name = RNCWebViewManagerImpl.NAME)
 public class RNCNestedScrollWebViewManager extends RNCWebViewManager {
+
+    @NonNull
     @Override
-    protected RNCWebView createRNCWebViewInstance(ThemedReactContext reactContext) {
-        return new RNCNestedScrollWebView(reactContext);
+    public RNCWebViewWrapper createViewInstance(ThemedReactContext context) {
+        return createViewInstance(context, new RNCNestedScrollWebView(context));
     }
 
     @Override

@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat;
 
 import com.facebook.react.uimanager.ThemedReactContext;
 
-public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView implements NestedScrollingChild3 {
+public class RNCNestedScrollWebView extends RNCWebView implements NestedScrollingChild3 {
     public RNCNestedScrollWebView(ThemedReactContext reactContext) {
         super(reactContext);
         mChildHelper = new NestedScrollingChildHelper(this);
@@ -246,7 +246,7 @@ public class RNCNestedScrollWebView extends RNCWebViewManager.RNCWebView impleme
         mLastScrollerY = getScrollY();
         ViewCompat.postInvalidateOnAnimation(this);
     }
-    
+
     @Override
     public void computeScroll() {
         if (nestedScrollEnabled) {

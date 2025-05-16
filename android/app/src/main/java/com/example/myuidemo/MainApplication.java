@@ -1,6 +1,9 @@
 package com.example.myuidemo;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
+
 import com.facebook.common.logging.FLog;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
@@ -49,6 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
         }
     };
 
+    @NonNull
     @Override
     public ReactNativeHost getReactNativeHost() {
         return reactNativeHost;

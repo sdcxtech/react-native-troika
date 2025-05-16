@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   loading: {
     height: 80,
+    width: 100,
     position: 'absolute',
     top: '20%',
     alignSelf: 'center',

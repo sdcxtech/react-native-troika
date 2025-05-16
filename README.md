@@ -9,14 +9,14 @@
 | 0.x        | >= 0.67 | 旧架构   |
 | 1.x（WIP） | >= 0.76 | 新架构   |
 
-| RN 版本                           | iOS                                 | Android                                       | 三方库版本                                                                                                |
-| --------------------------------- | ----------------------------------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| 0.72(2023.06)                     | 最低支持 iOS 12.4                   |                                               |                                                                                                           |
-| 0.73(2023.11)                     | 最低支持 iOS 13.4                   | 支持 Android 14<br>必须 Java 17<br>Fresco 3.0 | react-native-gesture-handler@2.14.0,<br>react-native-reanimated@3.15.0,<br>react-native-drop-shadow@1.0.0 |
-| 0.74(2024.04)                     | arm64 设置                          | minSdkVersion 23                              | react-native-safe-area-context@^5.4.0                                                                     |
-| 0.75(2024.08)                     |                                     | 用 **kotlin** 实现<br>仅支持 androidx         |                                                                                                           |
-| 0.76(2024.10)<br>支持 `boxShadow` | 最低支持 iOS 15.1<br>支持 Xcode16.3 | minSdkVersion 24                              | react-native-reanimated@^3.17.5                                                                           |
-| 0.77(2025.01)                     | Swift 模版                          | 支持 Android 15<br>16 KB pages                | react-native-gesture-handler@^2.25.0 <br>react-native-drop-shadow@^1.0.3                                  |
+| RN 版本                           | iOS                                 | Android                               | 三方库版本                                                                                                |
+| --------------------------------- | ----------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 0.72(2023.06)                     | 最低支持 iOS 12.4                   |                                       |                                                                                                           |
+| 0.73(2023.11)                     | 最低支持 iOS 13.4                   | 支持 Android 14<br>必须 Java 17       | react-native-gesture-handler@2.14.0,<br>react-native-reanimated@3.15.0,<br>react-native-drop-shadow@1.0.0 |
+| 0.74(2024.04)                     | arm64 设置                          | minSdkVersion 23                      | react-native-safe-area-context@^5.4.0                                                                     |
+| 0.75(2024.08)                     |                                     | 用 **kotlin** 实现<br>仅支持 androidx |                                                                                                           |
+| 0.76(2024.10)<br>支持 `boxShadow` | 最低支持 iOS 15.1<br>支持 Xcode16.3 | minSdkVersion 24                      | react-native-reanimated@^3.17.5                                                                           |
+| 0.77(2025.01)                     | Swift 模版                          | 支持 Android 15<br>16 KB pages        | react-native-gesture-handler@^2.25.0 <br>react-native-drop-shadow@^1.0.3                                  |
 
 ## 库
 

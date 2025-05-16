@@ -1,6 +1,5 @@
 import App from './App';
 import Navigation from 'hybrid-navigation';
-import {Platform} from 'react-native';
 import 'react-native-gesture-handler';
 
 // 设置全局下拉刷新样式
@@ -18,7 +17,6 @@ import {registerWheelPicker} from './demo/wheel-picker';
 // 配置全局样式
 Navigation.setDefaultOptions({
   topBarStyle: 'dark-content',
-  statusBarColorAndroid: Platform.Version > 21 ? undefined : '#4A4A4A',
   scrimAlphaAndroid: 50,
   fitsOpaqueNavigationBarAndroid: true,
   swipeBackEnabledAndroid: true,

@@ -25,7 +25,7 @@
     "@sdcx/overlay": "*",
     "@sdcx/pull-to-refresh": "*",
     "@sdcx/wheel-picker": "*",
-    "@shopify/flash-list": "^1.4.2",
+    "@shopify/flash-list": "^1.8.0",
     "hybrid-navigation": "^2.18.3",
     "lottie-react-native": "^5.1.5",
     "qs": "^6.10.3",

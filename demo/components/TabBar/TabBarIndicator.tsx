@@ -3,7 +3,7 @@ import {Animated, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 
 interface TabBarIndicatorProps {
   style?: StyleProp<ViewStyle>;
-  scrollX: Animated.AnimatedInterpolation;
+  scrollX: Animated.AnimatedInterpolation<number>;
 }
 
 export default function TabBarIndicator({style, scrollX}: TabBarIndicatorProps) {

@@ -2,7 +2,7 @@ import React from 'react';
 import {Animated, StyleSheet, useWindowDimensions, View, ViewStyle} from 'react-native';
 export interface ExpandingDotProps {
   data: Array<Object>;
-  scrollX: Animated.Value | Animated.AnimatedInterpolation;
+  scrollX: Animated.Value | Animated.AnimatedInterpolation<number>;
   containerStyle?: ViewStyle;
   dotStyle?: ViewStyle;
   inActiveDotOpacity?: number;

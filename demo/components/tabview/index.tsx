@@ -34,7 +34,6 @@ const AutoWidthTabBarExample = () => {
       scrollEnabled
       indicatorStyle={styles.indicator}
       style={styles.tabbar}
-      labelStyle={styles.label}
       tabStyle={styles.tabStyle}
     />
   );

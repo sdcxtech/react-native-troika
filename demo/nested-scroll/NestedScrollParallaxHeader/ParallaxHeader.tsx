@@ -18,9 +18,9 @@ export type ParallaxHeaderProps = {
   imageHeight: number;
   topBarHeight: number;
   onScroll?: (event: any) => void;
-  translateYUp: Animated.AnimatedInterpolation | 0;
-  translateYDown: Animated.AnimatedInterpolation | 0;
-  scale: Animated.AnimatedInterpolation | 1;
+  translateYUp: Animated.AnimatedInterpolation<number> | 0;
+  translateYDown: Animated.AnimatedInterpolation<number> | 0;
+  scale: Animated.AnimatedInterpolation<number> | 1;
   imageStyle?: StyleProp<ImageStyle>;
   imageSource: any;
 };

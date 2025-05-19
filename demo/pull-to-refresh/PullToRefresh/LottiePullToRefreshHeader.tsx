@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   spinner: {
-    height: 50, width: 50,
+    height: 50,
+    width: 50,
   },
 });
 

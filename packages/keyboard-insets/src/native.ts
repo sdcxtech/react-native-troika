@@ -29,8 +29,8 @@ interface NativeKeyboardInsetsViewProps {
   onPositionChanged?: (event: KeyboardPositionChangedEvent) => void;
 }
 
-export const NativeKeyboardInsetsView =
-  requireNativeComponent<PropsWithChildren<NativeKeyboardInsetsViewProps>>('KeyboardInsetsView');
+// export const NativeKeyboardInsetsView =
+//   requireNativeComponent<PropsWithChildren<NativeKeyboardInsetsViewProps>>('KeyboardInsetsView');
 
 interface KeyboardInsetsModuleInterface extends NativeModule {
   getEdgeInsetsForView(viewTag: number, callback: (insets: Insets) => void): void;

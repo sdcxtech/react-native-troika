@@ -6,6 +6,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
 
+using namespace facebook::react;
 @interface RNKeyboardManualHandler ()
 
 @property (nonatomic, weak) RNKeyboardInsetsView *view;
@@ -41,13 +42,33 @@
 
 - (void)handleKeyboardShown:(BOOL)shown transitioning:(BOOL)transitioning height:(CGFloat)height {
     RNKeyboardInsetsView *view = self.view;
-    [view.eventDispatcher sendEvent:[[RNKeyboardStatusChangedEvent alloc] initWithReactTag:view.reactTag shown:shown transitioning:transitioning height:height]];
+    #ifdef RCT_NEW_ARCH_ENABLED
+        if (view.eventEmitter != nullptr) {
+            std::dynamic_pointer_cast<const facebook::react::RNCKeyboardInsetsViewEventEmitter>(view.eventEmitter)
+            ->onStatusChanged(facebook::react::RNCKeyboardInsetsViewEventEmitter::OnStatusChanged{
+                .shown = shown,
+                .height = height,
+                .transitioning = transitioning
+            });
+        }
+    #else
+        [view.eventDispatcher sendEvent:[[RNKeyboardStatusChangedEvent alloc] initWithReactTag:view.reactTag shown:shown transitioning:transitioning height:height]];
+    #endif
 }
 
 - (void)handleKeyboardTransition:(CGFloat)position {
     RCTLogInfo(@"[KeyboardInsetsView] keyboard position: %f", position);
     RNKeyboardInsetsView *view = self.view;
-    [view.eventDispatcher sendEvent:[[RNKeyboardPositionChangedEvent alloc] initWithReactTag:view.reactTag position:@(position)]];
+    #ifdef RCT_NEW_ARCH_ENABLED
+    if (view.eventEmitter != nullptr) {
+        std::dynamic_pointer_cast<const facebook::react::RNCKeyboardInsetsViewEventEmitter>(view.eventEmitter)
+        ->onPositionChanged(facebook::react::RNCKeyboardInsetsViewEventEmitter::OnPositionChanged{
+            .position = position,
+        });
+    }
+    #else
+        [view.eventDispatcher sendEvent:[[RNKeyboardPositionChangedEvent alloc] initWithReactTag:view.reactTag position:@(position)]];
+    #endif
 }
 
 @end

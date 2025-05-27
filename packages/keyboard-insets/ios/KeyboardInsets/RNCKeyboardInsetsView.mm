@@ -68,7 +68,6 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
     [childComponentView removeFromSuperview];
-    
 }
 
 - (void)prepareForRecycle

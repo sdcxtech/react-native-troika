@@ -19,12 +19,7 @@ export interface NativeProps extends ViewProps {
   onStatusChanged?: BubblingEventHandler<KeyboardStatusChangedEvent> | null;
   onPositionChanged?:  BubblingEventHandler<KeyboardPositionChangedEvent> | null;
 }
-/**
- * "componentProvider": {
-                "RNCKeyboardInsetsView": "RNCKeyboardInsetsView"
-            }
- *这个和package.json的codegenConfig字段挂钩,componentProvider的key是ts定义的名字即RNCKeyboardInsetsView,value是原生类的class名字
- */
+
 export default codegenNativeComponent<NativeProps>(
     'RNCKeyboardInsetsView',
 ) as HostComponent<NativeProps>

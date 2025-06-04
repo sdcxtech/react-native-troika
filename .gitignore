@@ -27,13 +27,13 @@ DerivedData
 build/
 .idea
 .gradle
-.kotlin
 local.properties
 *.iml
 *.hprof
 .cxx/
 *.keystore
 !debug.keystore
+.kotlin
 
 # node.js
 #

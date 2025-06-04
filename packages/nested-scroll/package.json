@@ -2,13 +2,13 @@
   "name": "@sdcx/nested-scroll",
   "description": "A react-native NestedScrollView component.",
   "version": "0.14.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "react-native": "src/index",
   "nativePackage": true,
   "files": [
     "src",
-    "dist",
+    "lib",
     "android",
     "ios",
     "RNNestedScrollView.podspec",
@@ -25,7 +25,7 @@
     "nested-scroll"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
+    "build": "rm -rf ./lib && tsc -p tsconfig.build.json",
     "prepare": "npm run build",
     "tsc": "tsc",
     "test": "jest",
@@ -34,5 +34,47 @@
   "peerDependencies": {
     "react": ">=16.8",
     "react-native": ">=0.60"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
+    "@react-native-community/eslint-config": "^3.0.0",
+    "@types/jest": "^27.0.1",
+    "@types/react": "^17.0.2",
+    "@types/react-native": "^0.67.0",
+    "@types/react-test-renderer": "17.0.2",
+    "babel-jest": "^27.0.6",
+    "jest": "^27.0.6",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react": "17.0.2",
+    "react-native": "^0.67.4",
+    "react-test-renderer": "17.0.2",
+    "eslint": "^7.32.0",
+    "typescript": "^4.6.4"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "codegenConfig": {
+      "name": "RNCNestedScrollSpec",
+      "type": "components",
+      "jsSrcsDir": "./src",
+      "android": {
+          "javaPackageName": "com.reactnative.nestedscroll"
+      },
+      "ios": {
+          "componentProvider": {
+              "RNCNestedScroll": "RNCNestedScroll",
+              "RNCNestedScrollHeader": "RNCNestedScrollHeader"
+          }
+      }
   }
 }

@@ -1,5 +1,6 @@
 #import "RNNestedScrollView.h"
-#import "RNNestedScrollViewHeader.h"
+//#import "RNNestedScrollViewHeader.h"
+#import "RNCNestedScrollHeader.h"
 #import "RNNestedScrollViewLocalData.h"
 
 #import <React/UIView+React.h>
@@ -109,7 +110,7 @@ BOOL lt(float a, float b) {
 
 - (void)cancelRootViewTouches {
     RCTRootContentView *rootView = (RCTRootContentView *)_rootView;
-    [rootView.touchHandler cancel];
+//    [rootView.touchHandler cancel];
 }
 
 - (BOOL)isHorizontal:(UIScrollView *)scrollView {
@@ -123,7 +124,7 @@ BOOL lt(float a, float b) {
 @interface RNNestedScrollView () <UIScrollViewDelegate>
 
 @property(nonatomic, strong) RNMainScrollView *main;
-@property(nonatomic, strong) RNNestedScrollViewHeader *header;
+@property(nonatomic, strong) RNCNestedScrollHeader *header;
 
 @property(nonatomic, assign) CGFloat lastOffsetY;
 @property(nonatomic, assign) BOOL nextReturn;
@@ -153,6 +154,23 @@ BOOL lt(float a, float b) {
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame: frame]) {
+        _main = [[RNMainScrollView alloc] initWithFrame:frame];
+        _main.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _main.delegate = self;
+        _main.showsVerticalScrollIndicator = NO;
+        _main.showsHorizontalScrollIndicator = NO;
+        _main.scrollsToTop = NO;
+        _main.delaysContentTouches = NO;
+        _main.bounces = NO;
+        if (@available(iOS 11.0, *)) {
+            _main.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+        [self addSubview:_main];
+    }
+    return self;
+}
 - (void)dealloc {
     _main.delegate = nil;
     RCTLogInfo(@"RNNestedScrollView dealloc");
@@ -229,9 +247,9 @@ BOOL lt(float a, float b) {
     }
     
     UIScrollView *main = self.main;
-    CGFloat new = [change[@"new"] CGPointValue].y;
+    CGFloat newValue = [change[@"new"] CGPointValue].y;
     CGFloat old = [change[@"old"] CGPointValue].y;
-    CGFloat dy = old - new;
+    CGFloat dy = old - newValue;
     
     // 向上
     if (dy < 0) {
@@ -268,8 +286,8 @@ BOOL lt(float a, float b) {
 - (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
     [super insertReactSubview:subview atIndex:atIndex];
 
-    if ([subview isKindOfClass:[RNNestedScrollViewHeader class]]) {
-        self.header = (RNNestedScrollViewHeader *)subview;
+    if ([subview isKindOfClass:[RNCNestedScrollHeader class]]) {
+        self.header = (RNCNestedScrollHeader *)subview;
     } else {
         self.main.scrollingChild = subview;
     }
@@ -315,11 +333,21 @@ BOOL lt(float a, float b) {
     }
     
     CGSize scrollingChildSize = CGSizeMake(self.frame.size.width, self.frame.size.height - (self.header.frame.size.height -  [self headerScrollRange]));
-    
+#ifdef RCT_NEW_ARCH_ENABLED
+    if (_eventEmitter != nullptr) {
+        std::dynamic_pointer_cast<const facebook::react::RNCNestedScrollEventEmitter>(_eventEmitter)->onScrollingChildSizeChange(facebook::react::RNCNestedScrollEventEmitter::OnScrollingChildSizeChange{
+            .childSize.width = scrollingChildSize.width,
+            .childSize.height = scrollingChildSize.height
+        });
+    }
+#else
     if (_CGSizeValid(scrollingChildSize)) {
         RNNestedScrollViewLocalData *localData = [[RNNestedScrollViewLocalData alloc] initWithSize:scrollingChildSize];
         [_bridge.uiManager setLocalData:localData forView:self];
     }
+#endif
+
+   
 }
 
 static BOOL _CGSizeValid(CGSize size) {

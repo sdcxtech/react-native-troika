@@ -5,7 +5,6 @@
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollView.h>
-
 @implementation RNKeyboardInsetsView {
     UIView *_focusView;
  
@@ -15,6 +14,13 @@
     
     RNKeyboardAutoHandler *_autoHandler;
     RNKeyboardManualHandler *_manualHandler;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame: frame]) {
+        _mode = @"manual";
+    }
+    return self;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher {
@@ -80,7 +86,7 @@
         return;
     }
     
-    _focusView = focusView;
+    _focusView = self;
     _keyboardView = [RNKeyboardInsetsView findKeyboardView];
         
     NSDictionary *userInfo = [notification userInfo];
@@ -90,9 +96,9 @@
     _keyboardHeight = keyboardHeight;
     
     if ([self isAutoMode]) {
-        [[self autoHandler] keyboardWillShow:focusView keyboardHeight:keyboardHeight];
+        [[self autoHandler] keyboardWillShow:self keyboardHeight:keyboardHeight];
     } else {
-        [[self manualHandler] keyboardWillShow:focusView keyboardHeight:keyboardHeight];
+        [[self manualHandler] keyboardWillShow:self keyboardHeight:keyboardHeight];
     }
 
     RCTLogInfo(@"[KeyboardInsetsView] keyboardWillShow startWatchKeyboardTransition");
@@ -245,6 +251,20 @@
     }
     
     return nil;
+}
+
++ (id)findFirstResponder:(UIView *)parent
+{
+  if (parent.isFirstResponder) {
+    return parent;
+  }
+  for (UIView *subView in parent.subviews) {
+    id responder = [self findFirstResponder:subView];
+    if (responder != nil) {
+      return responder;
+    }
+  }
+  return nil;
 }
 
 + (RNKeyboardInsetsView *)findClosetKeyboardInsetsView:(UIView *)view {

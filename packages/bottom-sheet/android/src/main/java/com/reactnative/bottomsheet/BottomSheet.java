@@ -163,7 +163,11 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     }
 
     public void setState(BottomSheetState state) {
-        if (state == this.state) {
+        if (this.state == state) {
+            return;
+        }
+
+        if (this.state == SETTLING) {
             return;
         }
 
@@ -282,7 +286,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
         if (!draggable) {
             return false;
         }
-        
+
         int action = event.getActionMasked();
         if (state == DRAGGING && action == MotionEvent.ACTION_DOWN) {
             return true;

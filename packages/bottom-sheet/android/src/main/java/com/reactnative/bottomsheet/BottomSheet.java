@@ -167,10 +167,6 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
             return;
         }
 
-        if (this.state == SETTLING) {
-            return;
-        }
-
         if (contentView == null) {
             // The view is not laid out yet; modify mState and let onLayoutChild handle it later
             if (state == COLLAPSED || state == EXPANDED || state == HIDDEN) {
@@ -186,7 +182,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     View findScrollingChild(View view) {
         if (ViewCompat.isNestedScrollingEnabled(view)) {
             if (!view.canScrollHorizontally(1) && !view.canScrollHorizontally(-1) &&
-                    (view.canScrollVertically(-1) || view.canScrollVertically(1))) {
+                (view.canScrollVertically(-1) || view.canScrollVertically(1))) {
                 return view;
             }
         }
@@ -259,7 +255,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
                 }
 
                 ignoreEvents = activePointerId == MotionEvent.INVALID_POINTER_ID
-                        && !isPointInChildBounds(contentView, initialX, initialY);
+                    && !isPointInChildBounds(contentView, initialX, initialY);
                 break;
             default: // fall out
         }
@@ -273,12 +269,12 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
         // happening over the scrolling content as nested scrolling logic handles that case.
         View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
         return action == MotionEvent.ACTION_MOVE
-                && scroll != null
-                && !ignoreEvents
-                && state != DRAGGING
-                && !isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY())
-                && viewDragHelper != null
-                && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
+            && scroll != null
+            && !ignoreEvents
+            && state != DRAGGING
+            && !isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY())
+            && viewDragHelper != null
+            && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
     }
 
     @Override
@@ -551,10 +547,10 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
 
     void startSettlingAnimation(View child, BottomSheetState state, int top, boolean settleFromViewDragHelper) {
         boolean startedSettling =
-                viewDragHelper != null
-                        && (settleFromViewDragHelper
-                        ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
-                        : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top));
+            viewDragHelper != null
+                && (settleFromViewDragHelper
+                ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
+                : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top));
         if (startedSettling) {
             setStateInternal(SETTLING);
             // STATE_SETTLING won't animate the material shape, so do that here with the target state.

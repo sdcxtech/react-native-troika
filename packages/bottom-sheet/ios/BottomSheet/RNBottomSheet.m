@@ -24,10 +24,12 @@
 
 @property(nonatomic, assign) RNBottomSheetState finalState;
 
+@property(nonatomic, strong) UIViewPropertyAnimator *animator;
+
 @end
 
 @implementation RNBottomSheet {
-    __weak RCTRootContentView *_rootView;
+    __weak UIView *_rootView;
     BOOL _isInitialRender;
 }
 
@@ -80,14 +82,14 @@
     if (gestureRecognizer != self.panGestureRecognizer) {
         return YES;
     }
-
+    
     if (self.target) {
         [self.target removeObserver:self forKeyPath:@"contentOffset"];
     }
     self.target = nil;
-
+    
     UIView *touchView = touch.view;
-
+   
     while (touchView != nil && [touchView isDescendantOfView:self]) {
         if ([touchView isKindOfClass:[UIScrollView class]]) {
             UIScrollView *scrollView = (UIScrollView *)touchView;
@@ -155,7 +157,7 @@
     if (!self.contentView) {
         return;
     }
-
+    
     if (!CGRectEqualToRect(self.contentView.frame, CGRectZero)) {
         [self calculateOffset];
         if (self.state == RNBottomSheetStateCollapsed) {
@@ -167,12 +169,12 @@
         }
         [self dispatchOnSlide:self.contentView.frame.origin.y];
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.finalState == RNBottomSheetStateExpanded && self->_isInitialRender) {
             [self settleToState:self.finalState withFling:YES];
         }
-
+        
         self->_isInitialRender = NO;
     });
 }
@@ -187,16 +189,16 @@
     if (!self.draggable || self.state == RNBottomSheetStateSettling) {
         return;
     }
-
+    
     CGFloat translationY = [pan translationInView:self.contentView].y;
     [pan setTranslation:CGPointZero inView:self.contentView];
-
+    
     CGFloat top = self.contentView.frame.origin.y;
-
+    
     if (pan.state == UIGestureRecognizerStateChanged) {
         [self setStateInternal:RNBottomSheetStateDragging];
     }
-
+    
     // 如果有嵌套滚动
     if (self.target) {
         if(translationY > 0 && top < self.maxY && self.target.contentOffset.y <= 0) {
@@ -205,7 +207,7 @@
             self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
             [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
-
+        
         if (translationY < 0 && top > self.minY) {
             //向上拖
             CGFloat y = fmax(top + translationY, self.minY);
@@ -213,7 +215,7 @@
             [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
     }
-
+    
     // 没有嵌套滚动
     if (!self.target) {
         if(translationY > 0 && top < self.maxY) {
@@ -222,7 +224,7 @@
             self.contentView.frame = CGRectOffset(self.contentView.frame, 0, y - top);
             [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
-
+        
         if (translationY < 0 && top > self.minY) {
             //向上拖
             CGFloat y = fmax(top + translationY, self.minY);
@@ -230,7 +232,7 @@
             [self dispatchOnSlide:self.contentView.frame.origin.y];
         }
     }
-
+    
     if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled) {
         // RCTLogInfo(@"velocity:%f", [pan velocityInView:self.contentView].y);
         CGFloat velocity = [pan velocityInView:self.contentView].y;
@@ -239,7 +241,7 @@
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed withFling:YES];
             }
-
+            
             if (!self.target) {
                 //如果是类似轻扫的那种
                 [self settleToState:RNBottomSheetStateCollapsed withFling:YES];
@@ -263,18 +265,18 @@
         _nextReturn = false;
         return;
     }
-
+    
     if (![keyPath isEqualToString:@"contentOffset"]) {
         return;
     }
-
+    
     CGFloat new = [change[@"new"] CGPointValue].y;
     CGFloat old = [change[@"old"] CGPointValue].y;
 
     if (new == old) {
         return;
     }
-
+    
     CGFloat dy = old - new;
 
     if (dy > 0) {
@@ -284,7 +286,7 @@
             target.contentOffset = CGPointMake(0, 0);
         }
     }
-
+    
     if (dy < 0) {
         //向上
         if (self.contentView.frame.origin.y > self.minY) {
@@ -309,17 +311,13 @@
         self.finalState = state;
         return;
     }
-
+    
     if (self.finalState == state) {
         return;
     }
-
-    if (_state == RNBottomSheetStateSettling) {
-        return;
-    }
-
+    
     self.finalState = state;
-
+    
     [self settleToState:state withFling:YES];
 }
 
@@ -337,14 +335,22 @@
     self.target.pagingEnabled = YES;
     [self setStateInternal:RNBottomSheetStateSettling];
     [self startWatchBottomSheetTransition];
-    [self.layer removeAllAnimations];
-//    CGFloat duration = fmin(fabs(self.contentView.frame.origin.y - top) / (self.maxY - self.minY) * 0.3, 0.3);
-    [UIView animateWithDuration:fling ? 0.5 : 0.25 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionTransitionNone animations:^{
+    
+    if (self.animator) {
+        [self.animator stopAnimation:YES];
+    }
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut;
+    
+    self.animator = [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:0.3 delay:0 options:options animations:^{
         self.contentView.frame = CGRectOffset(self.contentView.frame, 0, top - self.contentView.frame.origin.y);
-    } completion:^(BOOL finished) {
+    } completion:^(UIViewAnimatingPosition finalPosition) {
         self.target.pagingEnabled = NO;
+        self.animator = nil;
         [self stopWatchBottomSheetTransition];
-        [self setStateInternal:state];
+        if (self.finalState == state) {
+            [self setStateInternal:state];
+        }
     }];
 }
 
@@ -353,19 +359,19 @@
         return;
     }
     _state = state;
-
+    
     if (state == RNBottomSheetStateExpanded) {
         [self dispatchOnSlide:self.minY];
     }
-
+    
     if (state == RNBottomSheetStateHidden) {
         [self dispatchOnSlide:self.frame.size.height];
     }
-
+    
     if (state == RNBottomSheetStateCollapsed) {
         [self dispatchOnSlide:self.maxY];
     }
-
+    
     if (state == RNBottomSheetStateCollapsed || state == RNBottomSheetStateExpanded || state == RNBottomSheetStateHidden) {
         [self.eventDispatcher sendEvent:[[RNBottomSheetStateChangedEvent alloc] initWithViewTag:self.reactTag state:state]];
     }
@@ -397,5 +403,5 @@
     CGFloat top = [self.contentView.layer presentationLayer].frame.origin.y;
     [self dispatchOnSlide:top];
 }
-
+    
 @end

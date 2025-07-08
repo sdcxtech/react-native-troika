@@ -12,13 +12,17 @@ public class SystemUI {
 
     public static boolean isImeVisible(@NonNull View view) {
         WindowInsetsCompat insetsCompat = ViewCompat.getRootWindowInsets(view);
-        assert insetsCompat != null;
+        if (insetsCompat == null) {
+            return false;
+        }
         return insetsCompat.isVisible(WindowInsetsCompat.Type.ime());
     }
 
     public static int imeHeight(@NonNull View view) {
         WindowInsetsCompat insetsCompat = ViewCompat.getRootWindowInsets(view);
-        assert insetsCompat != null;
+        if (insetsCompat == null) {
+            return 0;
+        }
         return insetsCompat.getInsets(WindowInsetsCompat.Type.ime()).bottom;
     }
 

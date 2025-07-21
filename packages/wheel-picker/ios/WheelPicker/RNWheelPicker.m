@@ -97,9 +97,9 @@ numberOfRowsInComponent:(__unused NSInteger)component {
     label.text = [self pickerView:pickerView titleForRow:row forComponent:component];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            UILabel *label = (UILabel *)[pickerView viewForRow:row forComponent:component];
-            label.textColor = _textColorCenter;
-        });
+        UILabel *label = (UILabel *)[pickerView viewForRow:row forComponent:component];
+        label.textColor = self->_textColorCenter;
+    });
 
     return label;
 }

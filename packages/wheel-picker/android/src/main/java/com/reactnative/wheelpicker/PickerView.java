@@ -51,13 +51,14 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
         selectedIndex = index;
         if (items.size() > index) {
             wheelView.setCurrentItem(index);
+            setContentDescription(wheelView.getContentText(getItem(index)));
         }
     }
 
     public void setCyclic(boolean cyclic) {
         wheelView.setCyclic(cyclic);
     }
-    
+
     public void setTextSize(int size) {
         wheelView.setTextSize(size);
     }
@@ -73,7 +74,7 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
     public void setTextColorCenter(int textColorCenter) {
         wheelView.setTextColorCenter(textColorCenter);
     }
-    
+
     @Override
     public int getItemsCount() {
         return items.size();
@@ -89,10 +90,10 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
         return items.indexOf(o);
     }
 
-
     @Override
     public void onItemSelected(int index) {
         if (getItemsCount() > index) {
+            setContentDescription(wheelView.getContentText(getItem(index)));
             WritableMap event = Arguments.createMap();
             event.putInt("selectedIndex", index);
             ReactContext reactContext = (ReactContext) getContext();

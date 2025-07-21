@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -104,7 +103,7 @@ public class WheelView extends View {
     private int drawCenterContentStart = 0;//中间选中文字开始绘制位置
     private int drawOutContentStart = 0;//非中间文字开始绘制位置
     private static final float SCALE_CONTENT = 0.8F;//非中间文字则用此控制高度，压扁形成3d错觉
-    
+
     private final float DEFAULT_TEXT_TARGET_SKEW_X = 0.5f;
 
     public WheelView(Context context) {
@@ -113,7 +112,7 @@ public class WheelView extends View {
 
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
+
         textColorOut = 0xFFa8a8a8;
         textColorCenter = 0xFF2a2a2a;
         textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 21, context.getResources().getDisplayMetrics());
@@ -500,7 +499,7 @@ public class WheelView extends View {
      * @param item data resource
      * @return 对应显示的字符串
      */
-    private String getContentText(Object item) {
+    public String getContentText(Object item) {
         if (item == null) {
             return "";
         } else if (item instanceof IPickerViewData) {
@@ -691,6 +690,7 @@ public class WheelView extends View {
     public boolean isLoop() {
         return isLoop;
     }
+
     public float getTotalScrollY() {
         return totalScrollY;
     }

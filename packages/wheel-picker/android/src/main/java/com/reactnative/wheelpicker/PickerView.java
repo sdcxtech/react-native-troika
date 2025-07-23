@@ -51,7 +51,6 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
         selectedIndex = index;
         if (items.size() > index) {
             wheelView.setCurrentItem(index);
-            setContentDescription(wheelView.getContentText(getItem(index)));
         }
     }
 
@@ -93,7 +92,6 @@ public class PickerView extends FrameLayout implements WheelAdapter, OnItemSelec
     @Override
     public void onItemSelected(int index) {
         if (getItemsCount() > index) {
-            setContentDescription(wheelView.getContentText(getItem(index)));
             WritableMap event = Arguments.createMap();
             event.putInt("selectedIndex", index);
             ReactContext reactContext = (ReactContext) getContext();

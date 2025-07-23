@@ -27,8 +27,7 @@ interface Event {
     };
 }
 
-interface WheelPickerProps<T> {
-    testID?: string;
+interface WheelPickerProps<T> extends ViewProps {
     onValueChange?: (value: T, index: number) => void;
     selectedValue: T;
     items: PickerItem<T>[];
@@ -36,14 +35,16 @@ interface WheelPickerProps<T> {
     itemStyle?: StyleProp<TextStyle>;
 }
 
-function WheelPicker<T>({
-    testID,
-    selectedValue,
-    onValueChange,
-    items = [],
-    style,
-    itemStyle = {},
-}: WheelPickerProps<T>) {
+function WheelPicker<T>(props: WheelPickerProps<T>) {
+    const {
+        selectedValue,
+        onValueChange,
+        items = [],
+        itemStyle = {},
+        style,
+        ...rest
+    } = props;
+
     const handleItemSelected = useCallback(
         (event: Event) => {
             const selectedIndex = event.nativeEvent.selectedIndex;
@@ -75,7 +76,7 @@ function WheelPicker<T>({
 
     return (
         <WheelPickerNative
-            testID={testID}
+            {...rest}
             style={[{height}, _style]}
             onItemSelected={handleItemSelected}
             selectedIndex={selectedIndex === -1 ? 0 : selectedIndex}

@@ -1,38 +1,13 @@
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
 charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
+indent_style = tab
+indent_size = 4
+max_line_length = 100
 end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-[*.{js,jsx,ts,tsx}]
-indent_size = 4
-
-[*.{json,yml,yaml}]
-indent_size = 2
-
-[*.md]
-trim_trailing_whitespace = false
-
-# Gradle files
-[*.gradle]
-indent_size = 4
-
-# Podfile and Ruby files
-[{Podfile,*.rb}]
-indent_size = 2
-
-# XML files (Android layouts, manifests)
-[*.xml]
-indent_size = 4
-
-# Properties files
-[*.properties]
-indent_size = 4
-
-# Windows files
-[*.bat]
-end_of_line = crlf
+[*.yml]
+indent_style = space

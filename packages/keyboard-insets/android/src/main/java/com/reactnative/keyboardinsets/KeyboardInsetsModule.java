@@ -5,14 +5,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.UIManager;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.PixelUtil;
-import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.UIManagerHelper;
 
 public class KeyboardInsetsModule extends ReactContextBaseJavaModule {
 
@@ -29,8 +30,9 @@ public class KeyboardInsetsModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getEdgeInsetsForView(int viewTag, Callback callback) {
         UiThreadUtil.runOnUiThread(() -> {
-            UIManagerModule uiManagerModule = getReactApplicationContext().getNativeModule(UIManagerModule.class);
-            View view = uiManagerModule.resolveView(viewTag);
+			UIManager uiManager = UIManagerHelper.getUIManager(getReactApplicationContext(), 2);
+			assert uiManager != null;
+            View view = uiManager.resolveView(viewTag);
             WritableMap map = Arguments.createMap();
             map.putDouble("top", 0);
             map.putDouble("left", 0);

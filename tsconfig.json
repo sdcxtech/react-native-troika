@@ -1,18 +1,18 @@
 {
-  "extends": "@react-native/typescript-config",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@sdcx/activity-indicator": ["./packages/activity-indicator/src"],
-      "@sdcx/bottom-sheet": ["./packages/bottom-sheet/src"],
-      "@sdcx/nested-scroll": ["./packages/nested-scroll/src"],
-      "@sdcx/pull-to-refresh": ["./packages/pull-to-refresh/src"],
-      "@sdcx/overlay": ["./packages/overlay/src"],
-      "@sdcx/keyboard-insets": ["./packages/keyboard-insets/src"],
-      "@sdcx/image-crop": ["./packages/image-crop/src"],
-      "@sdcx/wheel-picker": ["./packages/wheel-picker/src"]
-    }
-  },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
+	"extends": "@react-native/typescript-config",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"@sdcx/activity-indicator": ["./packages/activity-indicator/src"],
+			"@sdcx/bottom-sheet": ["./packages/bottom-sheet/src"],
+			"@sdcx/nested-scroll": ["./packages/nested-scroll/src"],
+			"@sdcx/pull-to-refresh": ["./packages/pull-to-refresh/src"],
+			"@sdcx/overlay": ["./packages/overlay/src"],
+			"@sdcx/keyboard-insets": ["./packages/keyboard-insets/src"],
+			"@sdcx/image-crop": ["./packages/image-crop/src"],
+			"@sdcx/wheel-picker": ["./packages/wheel-picker/src"]
+		}
+	},
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["**/node_modules", "**/Pods"]
 }

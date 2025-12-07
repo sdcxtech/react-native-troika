@@ -10,7 +10,7 @@ public class RNCNestedScrollWebViewManager extends RNCWebViewManager {
 
     @NonNull
     @Override
-    public RNCWebViewWrapper createViewInstance(ThemedReactContext context) {
+    public RNCWebViewWrapper createViewInstance(@NonNull ThemedReactContext context) {
         return createViewInstance(context, new RNCNestedScrollWebView(context));
     }
 

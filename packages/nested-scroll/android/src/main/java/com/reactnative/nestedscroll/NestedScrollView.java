@@ -10,143 +10,151 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.common.logging.FLog;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.MeasureSpecAssertions;
+import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ReactOverflowView;
-import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class NestedScrollView extends androidx.core.widget.NestedScrollView implements ReactOverflowView {
-    private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
-    private String mOverflow = "hidden";
-    private final Rect mRect;
-    
-    private final NestedScrollFlingHelper mFlingHelper;
+	private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
+	private String mOverflow = "hidden";
+	private final Rect mRect;
 
-    public NestedScrollView(@NonNull Context context) {
-        super(context);
-        mRect = new Rect();
-        mFlingHelper = new NestedScrollFlingHelper(this);
-    }
+	private final NestedScrollFlingHelper mFlingHelper;
 
-    public void setOverflow(String overflow) {
-        mOverflow = overflow;
-        invalidate();
-    }
+	private StateWrapper mStateWrapper;
 
-    @Nullable
-    @Override
-    public String getOverflow() {
-        return mOverflow;
-    }
+	public NestedScrollView(@NonNull Context context) {
+		super(context);
+		mRect = new Rect();
+		mFlingHelper = new NestedScrollFlingHelper(this);
+	}
 
-    @Override
-    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        super.onNestedPreScroll(target, dx, dy, consumed, type);
-        int dyUnconsumed = dy - consumed[1];
-        if (dyUnconsumed > 0) {
-            final int oldScrollY = getScrollY();
-            scrollBy(0, dyUnconsumed);
-            final int myConsumed = getScrollY() - oldScrollY;
-            consumed[1] += myConsumed;
-        }
-    }
+	public void setStateWrapper(StateWrapper wrapper) {
+		mStateWrapper = wrapper;
+	}
 
-    @Override
-    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
-        boolean consumed = super.onNestedPreFling(target, velocityX, velocityY);
-        if (!consumed) {
-            consumed = mFlingHelper.onNestedPreFling(target, velocityY);
-        }
-        return consumed;
-    }
-    
-    @Override
-    public void computeScroll() {
-        super.computeScroll();
-        mFlingHelper.computeScroll();
-    }
+	public void setOverflow(String overflow) {
+		mOverflow = overflow;
+		invalidate();
+	}
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        mFlingHelper.dispatchTouchEvent(ev);
-        return super.dispatchTouchEvent(ev);
-    }
-    
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (super.onInterceptTouchEvent(ev)) {
-            NativeGestureUtil.notifyNativeGestureStarted(this, ev);
-            return true;
-        }
-        return false;
-    }
+	@Nullable
+	@Override
+	public String getOverflow() {
+		return mOverflow;
+	}
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        MeasureSpecAssertions.assertExplicitMeasureSpec(widthMeasureSpec, heightMeasureSpec);
-        this.setMeasuredDimension(
-                MeasureSpec.getSize(widthMeasureSpec),
-                MeasureSpec.getSize(heightMeasureSpec)
-        );
-    }
+	@Override
+	public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+		super.onNestedPreScroll(target, dx, dy, consumed, type);
+		int dyUnconsumed = dy - consumed[1];
+		if (dyUnconsumed > 0) {
+			final int oldScrollY = getScrollY();
+			scrollBy(0, dyUnconsumed);
+			final int myConsumed = getScrollY() - oldScrollY;
+			consumed[1] += myConsumed;
+		}
+	}
 
-    void notifyStickyHeightChanged() {
-        if (isLaidOut() && !isInLayout()) {
-            fitStickyHeightIfNeeded();
-        }
-    }
+	@Override
+	public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
+		boolean consumed = super.onNestedPreFling(target, velocityX, velocityY);
+		if (!consumed) {
+			consumed = mFlingHelper.onNestedPreFling(target, velocityY);
+		}
+		return consumed;
+	}
 
-    private void fitStickyHeightIfNeeded() {
-        Context context = getContext();
-        if (context instanceof ReactContext) {
-            UIManagerModule uiManagerModule = ((ReactContext) context).getNativeModule(UIManagerModule.class);
-            if (uiManagerModule == null) {
-                return;
-            }
+	@Override
+	public void computeScroll() {
+		super.computeScroll();
+		mFlingHelper.computeScroll();
+	}
 
-            ViewGroup content = (ViewGroup) getChildAt(0);
-            if (content == null) {
-                return;
-            }
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		mFlingHelper.dispatchTouchEvent(ev);
+		return super.dispatchTouchEvent(ev);
+	}
 
-            int headerFixedHeight = 0;
-            float headerHeight = 0;
-            for (int i = 0; i < content.getChildCount(); i++) {
-                View child = content.getChildAt(i);
-                if (child instanceof NestedScrollViewHeader) {
-                    headerFixedHeight = ((NestedScrollViewHeader) child).getStickyHeight();
-                    headerHeight = child.getHeight();
-                }
-            }
+	@Override
+	public boolean onInterceptTouchEvent(@NonNull MotionEvent ev) {
+		if (super.onInterceptTouchEvent(ev)) {
+			NativeGestureUtil.notifyNativeGestureStarted(this, ev);
+			return true;
+		}
+		return false;
+	}
 
-            int nestedScrollViewH = getHeight();
-            float contentHeight = nestedScrollViewH - headerFixedHeight;
-            if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
-                mNestedScrollViewLocalData.contentNodeH = contentHeight;
-                mNestedScrollViewLocalData.headerNodeH = headerHeight;
-                uiManagerModule.setViewLocalData(getId(), mNestedScrollViewLocalData);
-            }
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		MeasureSpecAssertions.assertExplicitMeasureSpec(widthMeasureSpec, heightMeasureSpec);
+		this.setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
+	}
 
-            int maxScrollRange = (int) (headerHeight - headerFixedHeight);
-            if (getScrollY() > maxScrollRange) {
-                scrollTo(0, maxScrollRange);
-            }
-        }
-    }
+	void notifyStickyHeightChanged() {
+		if (isLaidOut() && !isInLayout()) {
+			fitStickyHeightIfNeeded();
+		}
+	}
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        fitStickyHeightIfNeeded();
-    }
+	private void fitStickyHeightIfNeeded() {
+		Context context = getContext();
+		if (context instanceof ReactContext) {
+			ViewGroup content = (ViewGroup) getChildAt(0);
+			if (content == null) {
+				return;
+			}
 
-    @Override
-    public void draw(Canvas canvas) {
-        getDrawingRect(mRect);
-        if (!"visible".equals(mOverflow)) {
-            canvas.clipRect(mRect);
-        }
-        super.draw(canvas);
-    }
+			int headerFixedHeight = 0;
+			float headerHeight = 0;
+			for (int i = 0; i < content.getChildCount(); i++) {
+				View child = content.getChildAt(i);
+				if (child instanceof NestedScrollViewHeader) {
+					headerFixedHeight = ((NestedScrollViewHeader) child).getStickyHeight();
+					headerHeight = child.getHeight();
+				}
+			}
+
+			int nestedScrollViewH = getHeight();
+			float contentHeight = nestedScrollViewH - headerFixedHeight;
+			if (contentHeight != mNestedScrollViewLocalData.contentNodeH || headerHeight != mNestedScrollViewLocalData.headerNodeH) {
+				mNestedScrollViewLocalData.contentNodeH = contentHeight;
+				mNestedScrollViewLocalData.headerNodeH = headerHeight;
+				if (mStateWrapper != null) {
+					WritableMap map = Arguments.createMap();
+					map.putDouble("contentHeight", PixelUtil.toDIPFromPixel(contentHeight));
+					map.putDouble("headerHeight", PixelUtil.toDIPFromPixel(headerHeight));
+					FLog.i("NestedScroll", "contentHeight:" + PixelUtil.toDIPFromPixel(contentHeight) + " headerHeight:" + PixelUtil.toDIPFromPixel(headerHeight));
+					mStateWrapper.updateState(map);
+				}
+			}
+
+			int maxScrollRange = (int) (headerHeight - headerFixedHeight);
+			if (getScrollY() > maxScrollRange) {
+				scrollTo(0, maxScrollRange);
+			}
+		}
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		fitStickyHeightIfNeeded();
+	}
+
+	@Override
+	public void draw(@NonNull Canvas canvas) {
+		getDrawingRect(mRect);
+		if (!"visible".equals(mOverflow)) {
+			canvas.clipRect(mRect);
+		}
+		super.draw(canvas);
+	}
 }

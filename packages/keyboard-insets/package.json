@@ -1,42 +1,56 @@
 {
-  "name": "@sdcx/keyboard-insets",
-  "description": "A Keyboard Avoiding View for React Native.",
-  "version": "0.8.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "ios",
-    "RNKeyboardInsets.podspec",
-    "!android/build",
-    "!ios/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/keyboard-insets#readme",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "keyboard-aware",
-    "keyboard-avoiding",
-    "keyboard-tool",
-    "keyboard-insets"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "tsc": "tsc",
-    "test": "jest",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60"
-  },
-  "devDependencies": {}
+	"name": "@sdcx/keyboard-insets",
+	"description": "A Keyboard Avoiding View for React Native.",
+	"version": "0.8.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"ios",
+		"docs",
+		"RNKeyboardInsets.podspec",
+		"!android/build",
+		"!ios/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/keyboard-insets#readme",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"keyboard-aware",
+		"keyboard-avoiding",
+		"keyboard-tool",
+		"keyboard-insets"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build",
+		"tsc": "tsc",
+		"test": "jest",
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60"
+	},
+	"devDependencies": {},
+	"codegenConfig": {
+		"name": "keyboardinsets",
+		"type": "all",
+		"jsSrcsDir": "src",
+		"android": {
+			"javaPackageName": "com.reactnative.keyboardinsets"
+		},
+		"ios": {
+			"componentProvider": {
+				"KeyboardInsetsView": "RNKeyboardInsetsViewComponentView"
+			}
+		}
+	}
 }

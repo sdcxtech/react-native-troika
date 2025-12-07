@@ -1,5 +1,7 @@
 package com.reactnative.keyboardinsets;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.PixelUtil;
@@ -15,6 +17,7 @@ public class KeyboardPositionChangedEvent extends Event<KeyboardPositionChangedE
         this.position = position;
     }
 
+	@NonNull
     @Override
     public String getEventName() {
         return "topPositionChanged";

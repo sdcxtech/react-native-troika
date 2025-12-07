@@ -1,33 +1,43 @@
 {
-  "name": "@sdcx/activity-indicator",
-  "description": "A native activity indicator for React Native",
-  "version": "0.2.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "!android/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/activity-indicator#readme",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "activity-indicator"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60"
-  },
-  "devDependencies": {}
+	"name": "@sdcx/activity-indicator",
+	"description": "A native activity indicator for React Native",
+	"version": "0.2.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"docs",
+		"!android/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/activity-indicator#readme",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"activity-indicator"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build"
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60"
+	},
+	"devDependencies": {},
+	"codegenConfig": {
+		"name": "activityindicator",
+		"type": "components",
+		"jsSrcsDir": "src",
+		"android": {
+			"javaPackageName": "com.reactnative.activityindicator"
+		},
+		"ios": null
+	}
 }

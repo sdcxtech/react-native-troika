@@ -1,5 +1,5 @@
 enum MessageType {
-  Text,
-  Image,
+	Text,
+	Image,
 }
 export default MessageType;

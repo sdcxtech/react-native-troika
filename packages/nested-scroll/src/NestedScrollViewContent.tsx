@@ -1,0 +1,3 @@
+import NestedScrollViewContentNativeComponent from './NestedScrollViewContentNativeComponent';
+
+export default NestedScrollViewContentNativeComponent;

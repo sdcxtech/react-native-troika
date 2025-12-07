@@ -11,7 +11,7 @@ import com.facebook.react.views.view.ReactViewGroup;
 public class NestedScrollViewHeader extends ReactViewGroup {
     public final static int INVALID_STICKY_HEIGHT = -1;
 
-    public final static int INVALID_STICKY_BEGIN_INDEX = Integer.MAX_VALUE;
+    public final static int INVALID_STICKY_BEGIN_INDEX = -1;
 
     private int mStickyHeight = INVALID_STICKY_HEIGHT;
 
@@ -67,7 +67,6 @@ public class NestedScrollViewHeader extends ReactViewGroup {
         }
         return 0;
     }
-
 
     private void notifyStickyHeightChanged() {
         NestedScrollView nestedScrollView = getParentNestedScrollView();

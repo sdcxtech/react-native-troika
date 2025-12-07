@@ -1,72 +1,75 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Lottie from 'lottie-react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
-  PullToRefreshHeader,
-  PullToRefreshHeaderProps,
-  PullToRefreshOffsetChangedEvent,
-  PullToRefreshStateChangedEvent,
-  PullToRefreshState,
-  PullToRefreshStateIdle,
-  PullToRefreshStateRefreshing,
+	PullToRefreshHeader,
+	PullToRefreshHeaderProps,
+	PullToRefreshOffsetChangedEvent,
+	PullToRefreshStateChangedEvent,
+	PullToRefreshState,
+	PullToRefreshStateIdle,
+	PullToRefreshStateRefreshing,
 } from '@sdcx/pull-to-refresh';
 
 function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
-  const [progress, setProgress] = useState(0);
-  const lottieRef = useRef<Lottie>(null);
-  const stateRef = useRef<PullToRefreshState>(PullToRefreshStateIdle);
+	const [progress, setProgress] = useState(0);
+	const lottieRef = useRef<Lottie>(null);
+	const stateRef = useRef<PullToRefreshState>(PullToRefreshStateIdle);
 
-  const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
-    const offset = event.nativeEvent.offset;
-    if (stateRef.current !== PullToRefreshStateRefreshing) {
-      setProgress(Math.min(1, offset / 50));
-    }
-  }, []);
+	const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
+		const offset = event.nativeEvent.offset;
+		if (stateRef.current !== PullToRefreshStateRefreshing) {
+			setProgress(Math.min(1, offset / 50));
+		}
+	}, []);
 
-  const onStateChanged = useCallback(
-    (event: PullToRefreshStateChangedEvent) => {
-      const state = event.nativeEvent.state;
-      stateRef.current = state;
-      if (state === PullToRefreshStateIdle) {
-        lottieRef.current?.pause();
-        setTimeout(() => setProgress(0), 500);
-      } else if (state === PullToRefreshStateRefreshing) {
-        lottieRef.current?.play(progress);
-      } else {
-        HapticFeedback.trigger('effectClick');
-      }
-    },
-    [progress],
-  );
+	const onStateChanged = useCallback(
+		(event: PullToRefreshStateChangedEvent) => {
+			const state = event.nativeEvent.state;
+			stateRef.current = state;
+			if (state === PullToRefreshStateIdle) {
+				lottieRef.current?.pause();
+				setTimeout(() => setProgress(0), 500);
+			} else if (state === PullToRefreshStateRefreshing) {
+				lottieRef.current?.play(progress);
+			} else {
+				HapticFeedback.trigger('effectClick');
+			}
+		},
+		[progress],
+	);
 
-  return (
-    <PullToRefreshHeader
-      style={styles.header}
-      {...props}
-      onOffsetChanged={onOffsetChanged}
-      onStateChanged={onStateChanged}>
-      <Lottie
-        ref={lottieRef}
-        style={styles.spinner}
-        source={require('./square-loading.json')}
-        autoPlay={false}
-        speed={1.2}
-        loop
-        progress={progress}
-      />
-    </PullToRefreshHeader>
-  );
+	return (
+		<PullToRefreshHeader
+			style={styles.header}
+			{...props}
+			onOffsetChanged={onOffsetChanged}
+			onStateChanged={onStateChanged}
+		>
+			<Lottie
+				ref={lottieRef}
+				style={styles.spinner}
+				source={require('./square-loading.json')}
+				autoPlay={false}
+				speed={1.2}
+				loop
+				progress={progress}
+			/>
+		</PullToRefreshHeader>
+	);
 }
 
 const styles = StyleSheet.create({
-  header: {
-    alignItems: 'center',
-  },
-  spinner: {
-    height: 50,
-    width: 50,
-  },
+	header: {
+		alignItems: 'center',
+		position: 'absolute',
+		zIndex: -99,
+	},
+	spinner: {
+		height: 50,
+		width: 50,
+	},
 });
 
-export {LottiePullToRefreshHeader};
+export { LottiePullToRefreshHeader };

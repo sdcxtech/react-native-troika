@@ -1,16 +1,12 @@
-#import <React/RCTView.h>
-#import <React/RCTEventDispatcher.h>
+#import <React/RCTViewComponentView.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNNestedScrollViewHeader : RCTView
+@interface RNNestedScrollViewHeader : RCTViewComponentView
 
-@property(nonatomic, assign) CGFloat stickyHeight;
-@property(nonatomic, assign) NSUInteger stickyHeaderBeginIndex;
-@property(nonatomic, copy) RCTDirectEventBlock onScroll;
-@property(nonatomic, strong) RCTEventDispatcher *eventDispatcher;
-
-- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
+@property(nonatomic, assign) CGFloat stickyHeaderHeight;
+@property(nonatomic, assign) NSInteger stickyHeaderBeginIndex;
 
 - (CGFloat)maxScrollRange;
 

@@ -21,6 +21,11 @@ public class NestedScrollViewPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList(new NestedScrollViewHeaderManager(), new NestedScrollViewManager());
+        return Arrays.asList(
+			new NestedScrollViewContentManager(),
+			new NestedScrollViewHeaderManager(),
+			new NestedScrollViewChildManager(),
+			new NestedScrollViewManager()
+		);
     }
 }

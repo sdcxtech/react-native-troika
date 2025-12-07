@@ -1,37 +1,37 @@
 {
-  "name": "@sdcx/nested-scroll-webview",
-  "description": "A React Native Webview that supports nested scrolling.",
-  "version": "0.4.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "!android/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/nested-scroll-webview/README.md",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "nested-scroll",
-    "webview"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "tsc": "tsc",
-    "test": "jest",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60",
-    "react-native-webview": ">=11.16.0"
-  }
+	"name": "@sdcx/nested-scroll-webview",
+	"description": "A React Native Webview that supports nested scrolling.",
+	"version": "0.4.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"!android/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/nested-scroll-webview/README.md",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"nested-scroll",
+		"webview"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build",
+		"tsc": "tsc",
+		"test": "jest",
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60",
+		"react-native-webview": ">=11.16.0"
+	}
 }

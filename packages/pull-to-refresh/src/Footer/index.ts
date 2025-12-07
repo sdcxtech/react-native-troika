@@ -1,2 +1,2 @@
-export {DefaultPullToRefreshFooter} from './DefaultPullToRefreshFooter';
-export {PullToRefreshFooter} from './native';
+export { DefaultPullToRefreshFooter } from './DefaultPullToRefreshFooter';
+export { PullToRefreshFooter } from './native';

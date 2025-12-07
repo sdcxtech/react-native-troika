@@ -1,5 +1,6 @@
 package com.reactnative.pulltorefresh.event;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
@@ -9,7 +10,7 @@ import com.facebook.react.uimanager.events.Event;
 
 public class OffsetChangedEvent extends Event<OffsetChangedEvent> {
 
-    public static final String Name = "offsetChangedEvent";
+    public static final String Name = "topOffsetChanged";
     public static final String JSEventName = "onOffsetChanged";
 
     private final float offset;
@@ -19,6 +20,7 @@ public class OffsetChangedEvent extends Event<OffsetChangedEvent> {
         this.offset = PixelUtil.toDIPFromPixel(offset);
     }
 
+	@NonNull
     @Override
     public String getEventName() {
         return Name;

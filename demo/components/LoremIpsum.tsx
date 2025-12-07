@@ -1,28 +1,28 @@
 import React from 'react';
-import {Text, StyleSheet, ViewStyle, StyleProp} from 'react-native';
+import { Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 
 const styles = StyleSheet.create({
-  lipsum: {
-    padding: 10,
-  },
+	lipsum: {
+		padding: 10,
+	},
 });
 
 type Props = {
-  words: number;
-  style: StyleProp<ViewStyle>;
+	words: number;
+	style: StyleProp<ViewStyle>;
 };
 
 export class LoremIpsum extends React.Component<Props> {
-  static defaultProps = {
-    words: 1000,
-    style: styles.lipsum,
-  };
-  loremIpsum() {
-    return LOREM_IPSUM.split(' ').slice(0, this.props.words).join(' ');
-  }
-  render() {
-    return <Text style={this.props.style}>{this.loremIpsum()}</Text>;
-  }
+	static defaultProps = {
+		words: 1000,
+		style: styles.lipsum,
+	};
+	loremIpsum() {
+		return LOREM_IPSUM.split(' ').slice(0, this.props.words).join(' ');
+	}
+	render() {
+		return <Text style={this.props.style}>{this.loremIpsum()}</Text>;
+	}
 }
 
 const LOREM_IPSUM = `

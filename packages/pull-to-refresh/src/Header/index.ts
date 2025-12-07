@@ -1,2 +1,2 @@
-export {DefaultPullToRefreshHeader} from './DefaultPullToRefreshHeader';
-export {PullToRefreshHeader} from './native';
+export { DefaultPullToRefreshHeader } from './DefaultPullToRefreshHeader';
+export { PullToRefreshHeader } from './native';

@@ -1,5 +1,6 @@
 package com.reactnative.pulltorefresh.event;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
@@ -9,7 +10,7 @@ import com.reactnative.pulltorefresh.PullToRefreshState;
 
 public class StateChangedEvent extends Event<StateChangedEvent> {
 
-    public static final String Name = "stateChangedEvent";
+    public static final String Name = "topStateChanged";
     public static final String JSEventName = "onStateChanged";
 
     private final PullToRefreshState state;
@@ -19,6 +20,7 @@ public class StateChangedEvent extends Event<StateChangedEvent> {
         this.state = state;
     }
 
+	@NonNull
     @Override
     public String getEventName() {
         return Name;

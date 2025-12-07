@@ -7,12 +7,12 @@ import NestedScrollTabView from './NestedScrollTabView';
 import NestedScrollPagerViewStickyHeader from './NestedScrollPagerViewStickyHeader';
 
 export function registerNestedScrollComponent() {
-  Navigation.registerComponent('NestedScroll', () => Home);
-  Navigation.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList);
-  Navigation.registerComponent('NestedScrollParallaxHeader', () => NestedScrollParallaxHeader);
-  Navigation.registerComponent('NestedScrollTabView', () => NestedScrollTabView);
-  Navigation.registerComponent(
-    'NestedScrollPagerViewStickyHeader',
-    () => NestedScrollPagerViewStickyHeader,
-  );
+	Navigation.registerComponent('NestedScroll', () => Home);
+	Navigation.registerComponent('NestedScrollFlatList', () => NestedScrollFlatList);
+	Navigation.registerComponent('NestedScrollParallaxHeader', () => NestedScrollParallaxHeader);
+	Navigation.registerComponent('NestedScrollTabView', () => NestedScrollTabView);
+	Navigation.registerComponent(
+		'NestedScrollPagerViewStickyHeader',
+		() => NestedScrollPagerViewStickyHeader,
+	);
 }

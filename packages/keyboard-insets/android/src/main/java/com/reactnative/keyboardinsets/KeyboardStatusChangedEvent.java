@@ -1,5 +1,7 @@
 package com.reactnative.keyboardinsets;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.PixelUtil;
@@ -19,6 +21,7 @@ public class KeyboardStatusChangedEvent extends Event<KeyboardStatusChangedEvent
         this.transitioning = transitioning;
     }
 
+	@NonNull
     @Override
     public String getEventName() {
         return "topStatusChanged";

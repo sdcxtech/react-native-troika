@@ -1,10 +1,10 @@
-#import "RNKeyboardInsetsView.h"
+#import "RNKeyboardInsetsViewComponentView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RNKeyboardAutoHandler : NSObject <RNKeyboardHandler>
 
-- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsView *)view;
+- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsViewComponentView *)view;
 
 @end
 

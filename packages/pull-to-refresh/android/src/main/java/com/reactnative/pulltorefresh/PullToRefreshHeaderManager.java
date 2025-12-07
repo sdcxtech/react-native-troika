@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 public class PullToRefreshHeaderManager extends ReactViewManager {
-    public final static String REACT_CLASS = "RefreshHeader";
+    public final static String REACT_CLASS = "PullToRefreshHeader";
 
     @NonNull
     @Override
@@ -31,19 +31,19 @@ public class PullToRefreshHeaderManager extends ReactViewManager {
 
     @NonNull
     @Override
-    public ReactViewGroup createViewInstance(ThemedReactContext context) {
+    public ReactViewGroup createViewInstance(@NonNull ThemedReactContext context) {
         return new PullToRefreshHeader(context);
     }
 
-    @Override
-    public LayoutShadowNode createShadowNodeInstance() {
-        return new PullToRefreshHeaderShadowNode();
-    }
-
-    @Override
-    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
-        return PullToRefreshHeaderShadowNode.class;
-    }
+//    @Override
+//    public LayoutShadowNode createShadowNodeInstance() {
+//        return new PullToRefreshHeaderShadowNode();
+//    }
+//
+//    @Override
+//    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
+//        return PullToRefreshHeaderShadowNode.class;
+//    }
 
     @ReactProp(name = "refreshing")
     public void setRefreshing(PullToRefreshHeader pullToRefreshHeader, boolean refreshing) {
@@ -61,7 +61,7 @@ public class PullToRefreshHeaderManager extends ReactViewManager {
     }
 
     @Override
-    public void receiveCommand(ReactViewGroup root, String commandId, @Nullable ReadableArray args) {
+    public void receiveCommand(@NonNull ReactViewGroup root, @NonNull String commandId, @Nullable ReadableArray args) {
         if (root instanceof PullToRefreshHeader) {
             PullToRefreshHeader header = (PullToRefreshHeader) root;
             if ("setNativeRefreshing".equals(commandId)) {

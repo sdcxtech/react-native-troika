@@ -67,7 +67,7 @@ public class PullToRefreshFooter extends ReactViewGroup implements RefreshFooter
             ReactContext reactContext = (ReactContext) context;
             UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
             if (uiManagerModule != null) {
-                uiManagerModule.setViewLocalData(getId(), footerLocalData);
+                // uiManagerModule.setViewLocalData(getId(), footerLocalData);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.reactnative.nestedscroll;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
@@ -8,8 +9,8 @@ import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.events.Event;
 
 public class NestedViewHeaderScrollEvent extends Event<NestedViewHeaderScrollEvent> {
-    public static final String Name = "scrollEvent";
-    public static final String JSEventName = "onScroll";
+    public static final String Name = "topScroll";
+	public static final String JSEventName = "onScroll";
     private final float y;
 
     public NestedViewHeaderScrollEvent(int surfaceId, int viewTag, int offset) {
@@ -17,12 +18,18 @@ public class NestedViewHeaderScrollEvent extends Event<NestedViewHeaderScrollEve
         this.y = PixelUtil.toDIPFromPixel(offset);
     }
 
+	@Override
+	public short getCoalescingKey() {
+		return 0;
+	}
+
+	@NonNull
     @Override
     public String getEventName() {
         return Name;
     }
 
-    @Nullable
+	@Nullable
     protected WritableMap getEventData() {
         WritableMap event = Arguments.createMap();
         WritableMap offset = Arguments.createMap();

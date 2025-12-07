@@ -1,1 +1,10 @@
-module.exports = {};
+module.exports = {
+	dependency: {
+		platforms: {
+			android: {
+				libraryName: 'wheelpicker',
+				componentDescriptors: ['WheelPickerComponentDescriptor'],
+			},
+		},
+	},
+};

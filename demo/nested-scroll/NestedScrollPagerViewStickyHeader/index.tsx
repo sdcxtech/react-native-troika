@@ -1,10 +1,10 @@
-import {withNavigationItem} from 'hybrid-navigation';
+import { withNavigationItem } from 'hybrid-navigation';
 import React from 'react';
-import {Animated, Image, StyleSheet} from 'react-native';
-import {NestedScrollView, NestedScrollViewHeader} from '@sdcx/nested-scroll';
+import { Animated, Image, StyleSheet } from 'react-native';
+import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll';
 import PagerView from 'react-native-pager-view';
-import {ScrollViewPage} from '../../components/ScrollViewPage';
-import {WebViewPage} from '../../components/WebViewPage';
+import { ScrollViewPage } from '../../components/ScrollViewPage';
+import { WebViewPage } from '../../components/WebViewPage';
 import TabBar from '../../components/TabBar';
 import usePagerView from '../../components/usePagerView';
 import Contacts from '../../components/contacts/Contacts';
@@ -15,63 +15,68 @@ const AnimatedPagerView = Animated.createAnimatedComponent<typeof PagerView>(Pag
 const pages = ['SectionList', 'FlashList', 'ScrollView', 'WebView'];
 
 export function NestedScrollPagerViewStickyHeader() {
-  const {
-    pagerRef,
-    setPage,
-    page,
-    position,
-    offset,
-    isIdle,
-    onPageScroll,
-    onPageSelected,
-    onPageScrollStateChanged,
-  } = usePagerView();
+	const {
+		pagerRef,
+		setPage,
+		page,
+		position,
+		offset,
+		isIdle,
+		onPageScroll,
+		onPageSelected,
+		onPageScrollStateChanged,
+	} = usePagerView();
 
-  return (
-    <NestedScrollView style={styles.nestedscroll}>
-      <NestedScrollViewHeader stickyHeaderBeginIndex={1}>
-        <Image source={require('assets/cover.webp')} style={styles.image} resizeMode="cover" />
-        <TabBar
-          tabs={pages}
-          onTabPress={setPage}
-          position={position}
-          offset={offset}
-          page={page}
-          isIdle={isIdle}
-        />
-      </NestedScrollViewHeader>
-      <AnimatedPagerView
-        ref={pagerRef}
-        style={styles.pager}
-        overdrag={true}
-        overScrollMode="always"
-        onPageScroll={onPageScroll}
-        onPageSelected={onPageSelected}
-        onPageScrollStateChanged={onPageScrollStateChanged}>
-        <ContactsSectionList />
-        <Contacts />
-        <ScrollViewPage />
-        <WebViewPage url="https://wangdoc.com" />
-      </AnimatedPagerView>
-    </NestedScrollView>
-  );
+	return (
+		<NestedScrollView style={styles.nestedscroll}>
+			<NestedScrollViewHeader stickyHeaderBeginIndex={1}>
+				<Image
+					source={require('assets/cover.webp')}
+					style={styles.image}
+					resizeMode="cover"
+				/>
+				<TabBar
+					tabs={pages}
+					onTabPress={setPage}
+					position={position}
+					offset={offset}
+					page={page}
+					isIdle={isIdle}
+				/>
+			</NestedScrollViewHeader>
+			<AnimatedPagerView
+				ref={pagerRef}
+				style={styles.pager}
+				overdrag={true}
+				overScrollMode="always"
+				onPageScroll={onPageScroll}
+				onPageSelected={onPageSelected}
+				onPageScrollStateChanged={onPageScrollStateChanged}
+			>
+				<ContactsSectionList />
+				<Contacts />
+				<ScrollViewPage />
+				<WebViewPage url="https://wangdoc.com" />
+			</AnimatedPagerView>
+		</NestedScrollView>
+	);
 }
 
 const styles = StyleSheet.create({
-  nestedscroll: {
-    backgroundColor: '#fff',
-  },
-  image: {
-    height: 160,
-    width: '100%',
-  },
-  pager: {
-    height: '100%',
-  },
+	nestedscroll: {
+		backgroundColor: '#fff',
+	},
+	image: {
+		height: 160,
+		width: '100%',
+	},
+	pager: {
+		height: '100%',
+	},
 });
 
 export default withNavigationItem({
-  titleItem: {
-    title: 'NestedScroll + PagerView + StickyHeader',
-  },
+	titleItem: {
+		title: 'NestedScroll + PagerView + StickyHeader',
+	},
 })(NestedScrollPagerViewStickyHeader);

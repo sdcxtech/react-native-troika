@@ -1,13 +1,11 @@
+#import <React/RCTViewComponentView.h>
 #import <UIKit/UIKit.h>
-#import <React/RCTBridge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNNestedScrollView : UIView
+@interface RNNestedScrollView : RCTViewComponentView
 
 @property(nonatomic, assign) BOOL bounces;
-
-- (instancetype)initWithBridge:(RCTBridge *)bridge;
 
 - (void)updateContentSizeIfNeeded;
 

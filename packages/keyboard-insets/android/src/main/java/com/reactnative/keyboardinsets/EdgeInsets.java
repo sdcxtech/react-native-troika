@@ -1,5 +1,7 @@
 package com.reactnative.keyboardinsets;
 
+import androidx.annotation.NonNull;
+
 public class EdgeInsets {
     public int left;
     public int top;
@@ -17,6 +19,7 @@ public class EdgeInsets {
         this.bottom = bottom;
     }
 
+	@NonNull
     @Override
     public String toString() {
         return "EdgeInsets{" +

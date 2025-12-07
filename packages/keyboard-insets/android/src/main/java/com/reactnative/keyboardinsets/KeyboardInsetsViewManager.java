@@ -6,25 +6,35 @@ import androidx.core.view.ViewCompat;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.uimanager.ViewManagerDelegate;
+import com.facebook.react.viewmanagers.KeyboardInsetsViewManagerDelegate;
+import com.facebook.react.viewmanagers.KeyboardInsetsViewManagerInterface;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.facebook.react.views.view.ReactViewManager;
 
 import java.util.Map;
 
-public class KeyboardInsetsViewManager extends ReactViewManager {
+public class KeyboardInsetsViewManager extends ReactViewManager
+	implements KeyboardInsetsViewManagerInterface<KeyboardInsetsView> {
 
     public static final String REACT_CLASS = "KeyboardInsetsView";
 
-    @NonNull
+	private final KeyboardInsetsViewManagerDelegate mDelegate = new KeyboardInsetsViewManagerDelegate(this);
+
+	@Override
+	protected ViewManagerDelegate<ReactViewGroup> getDelegate() {
+		return mDelegate;
+	}
+
+	@NonNull
     @Override
     public String getName() {
         return REACT_CLASS;
     }
-    
+
     @NonNull
     @Override
-    public ReactViewGroup createViewInstance(ThemedReactContext context) {
+    public ReactViewGroup createViewInstance(@NonNull ThemedReactContext context) {
         KeyboardInsetsView view = new KeyboardInsetsView(context);
         KeyboardInsetsCallback callback = new KeyboardInsetsCallback(view, context);
         ViewCompat.setWindowInsetsAnimationCallback(view, callback);
@@ -32,15 +42,20 @@ public class KeyboardInsetsViewManager extends ReactViewManager {
         return view;
     }
 
-    @ReactProp(name = "mode")
-    public void setMode(KeyboardInsetsView view, String mode) {
-        view.setMode(mode);
-    }
-    
-    @ReactProp(name = "extraHeight")
-    public void setExtraHeight(KeyboardInsetsView view, float extraHeight) {
-        view.setExtraHeight(extraHeight);
-    }
+	@Override
+	public void setMode(KeyboardInsetsView view, @Nullable String mode) {
+		view.setMode(mode);
+	}
+
+	@Override
+	public void setExtraHeight(KeyboardInsetsView view, float extraHeight) {
+		view.setExtraHeight(extraHeight);
+	}
+
+	@Override
+	public void setExplicitly(KeyboardInsetsView view, boolean value) {
+
+	}
 
     @Nullable
     @Override
@@ -50,5 +65,5 @@ public class KeyboardInsetsViewManager extends ReactViewManager {
             "topPositionChanged", MapBuilder.of("registrationName", "onPositionChanged")
         );
     }
-    
+
 }

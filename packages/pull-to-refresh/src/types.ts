@@ -1,5 +1,5 @@
 import React from 'react';
-import {NativeSyntheticEvent, ViewProps} from 'react-native';
+import { NativeSyntheticEvent, ViewProps } from 'react-native';
 
 export const PullToRefreshStateIdle = 0;
 export const PullToRefreshStateComing = 1;
@@ -9,39 +9,39 @@ export type PullToRefreshStateComing = typeof PullToRefreshStateComing;
 export type PullToRefreshStateRefreshing = typeof PullToRefreshStateRefreshing;
 
 export type PullToRefreshState =
-  | PullToRefreshStateIdle
-  | PullToRefreshStateComing
-  | PullToRefreshStateRefreshing;
+	| PullToRefreshStateIdle
+	| PullToRefreshStateComing
+	| PullToRefreshStateRefreshing;
 
 interface StateChangedEventData {
-  state: PullToRefreshState;
+	state: PullToRefreshState;
 }
 
 interface OffsetChangedEventData {
-  offset: number;
+	offset: number;
 }
 
 export type PullToRefreshStateChangedEvent = NativeSyntheticEvent<StateChangedEventData>;
 export type PullToRefreshOffsetChangedEvent = NativeSyntheticEvent<OffsetChangedEventData>;
 
 export interface PullToRefreshHeaderProps {
-  onRefresh?: () => void;
-  refreshing: boolean;
+	onRefresh?: () => void;
+	refreshing: boolean;
 }
 
 export interface PullToRefreshFooterProps {
-  onRefresh?: () => void;
-  refreshing: boolean;
-  noMoreData?: boolean;
-  manual?: boolean;
+	onRefresh?: () => void;
+	refreshing: boolean;
+	noMoreData?: boolean;
+	manual?: boolean;
 }
 
 export interface PullToRefreshProps extends ViewProps {
-  onRefresh?: () => void;
-  refreshing?: boolean;
-  onLoadMore?: () => void;
-  loadingMore?: boolean;
-  noMoreData?: boolean;
-  header?: React.ReactElement<PullToRefreshHeaderProps>;
-  footer?: React.ReactElement<PullToRefreshFooterProps>;
+	onRefresh?: () => void;
+	refreshing?: boolean;
+	onLoadMore?: () => void;
+	loadingMore?: boolean;
+	noMoreData?: boolean;
+	header?: React.ReactElement<PullToRefreshHeaderProps>;
+	footer?: React.ReactElement<PullToRefreshFooterProps>;
 }

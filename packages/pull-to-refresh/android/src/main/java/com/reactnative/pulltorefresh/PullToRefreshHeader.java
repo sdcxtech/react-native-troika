@@ -139,7 +139,7 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
             ReactContext reactContext = (ReactContext) context;
             UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
             if (uiManagerModule != null) {
-                uiManagerModule.setViewLocalData(getId(), headerLocalData);
+               // uiManagerModule.setViewLocalData(getId(), headerLocalData);
             }
         }
     }

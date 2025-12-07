@@ -1,40 +1,53 @@
 {
-  "name": "@sdcx/bottom-sheet",
-  "description": "A react-native BottomSheet component.",
-  "version": "0.17.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "ios",
-    "docs",
-    "RNBottomSheet.podspec",
-    "!android/build",
-    "!ios/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/bottom-sheet/README.md",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "bottom-sheet"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "tsc": "tsc",
-    "test": "jest",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60"
-  },
-  "devDependencies": {}
+	"name": "@sdcx/bottom-sheet",
+	"description": "A react-native BottomSheet component.",
+	"version": "0.17.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"ios",
+		"docs",
+		"RNBottomSheet.podspec",
+		"!android/build",
+		"!ios/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/bottom-sheet/README.md",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"bottom-sheet"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build",
+		"tsc": "tsc",
+		"test": "jest",
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60"
+	},
+	"devDependencies": {},
+	"codegenConfig": {
+		"name": "bottomsheet",
+		"type": "components",
+		"jsSrcsDir": "src",
+		"android": {
+			"javaPackageName": "com.reactnative.bottomsheet"
+		},
+		"ios": {
+			"componentProvider": {
+				"BottomSheet": "RNBottomSheetComponentView"
+			}
+		}
+	}
 }

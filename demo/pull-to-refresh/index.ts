@@ -9,24 +9,28 @@ import PullRefreshFlatListNestedScroll from './PullRefreshFlatListNestedScroll';
 import PullRefreshPagerViewNestedScroll from './PullRefreshPagerViewNestedScroll';
 import PullRefreshNestedScrollPagerView from './PullRefreshNestedScrollPagerView';
 import PullRefreshWithoutScrollView from './PullRefreshWithoutScrollView';
+import './PullToRefresh';
 
 export function registerPullToRefreshComponent() {
-  Navigation.registerComponent('PullToRefresh', () => Home);
-  Navigation.registerComponent('PullRefreshScrollView', () => PullRefreshScrollView);
-  Navigation.registerComponent('PullRefreshWebView', () => PullRefreshWebView);
-  Navigation.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList);
-  Navigation.registerComponent(
-    'PullRefreshFlatListNestedScroll',
-    () => PullRefreshFlatListNestedScroll,
-  );
-  Navigation.registerComponent('PullRefreshPagerView', () => PullRefreshPagerView);
-  Navigation.registerComponent(
-    'PullRefreshPagerViewNestedScroll',
-    () => PullRefreshPagerViewNestedScroll,
-  );
-  Navigation.registerComponent(
-    'PullRefreshNestedScrollPagerView',
-    () => PullRefreshNestedScrollPagerView,
-  );
-  Navigation.registerComponent('PullRefreshWithoutScrollView', () => PullRefreshWithoutScrollView);
+	Navigation.registerComponent('PullToRefresh', () => Home);
+	Navigation.registerComponent('PullRefreshScrollView', () => PullRefreshScrollView);
+	Navigation.registerComponent('PullRefreshWebView', () => PullRefreshWebView);
+	Navigation.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList);
+	Navigation.registerComponent(
+		'PullRefreshFlatListNestedScroll',
+		() => PullRefreshFlatListNestedScroll,
+	);
+	Navigation.registerComponent('PullRefreshPagerView', () => PullRefreshPagerView);
+	Navigation.registerComponent(
+		'PullRefreshPagerViewNestedScroll',
+		() => PullRefreshPagerViewNestedScroll,
+	);
+	Navigation.registerComponent(
+		'PullRefreshNestedScrollPagerView',
+		() => PullRefreshNestedScrollPagerView,
+	);
+	Navigation.registerComponent(
+		'PullRefreshWithoutScrollView',
+		() => PullRefreshWithoutScrollView,
+	);
 }

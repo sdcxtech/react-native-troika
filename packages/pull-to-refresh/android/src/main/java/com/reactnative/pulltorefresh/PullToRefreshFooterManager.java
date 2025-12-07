@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 public class PullToRefreshFooterManager extends ReactViewManager {
-    public final static String REACT_CLASS = "RefreshFooter";
+    public final static String REACT_CLASS = "PullToRefreshFooter";
 
     @NonNull
     @Override

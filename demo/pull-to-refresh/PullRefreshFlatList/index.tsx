@@ -5,7 +5,7 @@ import { FlatListPage, useDemoFlatlistData } from '../../components/FlatListPage
 import { SpinnerPullToRefreshHeader } from '../PullToRefresh/SpinnerPullToRefreshHeader';
 
 function PullRefreshFlatList() {
-	const [refreshing, setRefreshing] = useState(false);
+	const [refreshing, setRefreshing] = useState(true);
 	const [loadingMore, setLoadingMore] = useState(false);
 	const [noMoreData, setNoMoreData] = useState(false);
 	const { flatlistData, addFlatlistRefreshItem, addFlatlistLoadMoreItem } = useDemoFlatlistData();

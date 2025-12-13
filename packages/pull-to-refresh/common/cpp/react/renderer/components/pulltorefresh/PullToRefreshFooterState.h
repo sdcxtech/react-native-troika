@@ -27,7 +27,7 @@ public:
 			contentHeight(data["contentHeight"].getDouble()){};
 #endif
 
-  	double contentHeight{1000};
+  	double contentHeight{};
 
 #ifdef ANDROID
   	folly::dynamic getDynamic() const;

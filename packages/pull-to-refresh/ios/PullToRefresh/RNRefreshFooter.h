@@ -1,16 +1,12 @@
 #import <React/RCTViewComponentView.h>
 #import <UIKit/UIKit.h>
 
-#import <React/RCTScrollableProtocol.h>
-#import <React/RCTBridge.h>
+#import <React/RCTCustomPullToRefreshViewProtocol.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNRefreshFooter : RCTViewComponentView <RCTCustomRefreshControlProtocol>
+@interface RNRefreshFooter : RCTViewComponentView <RCTCustomPullToRefreshViewProtocol>
 
-@property (nonatomic, copy) RCTDirectEventBlock onRefresh;
-@property (nonatomic, copy) RCTDirectEventBlock onStateChanged;
-@property (nonatomic, copy) RCTDirectEventBlock onOffsetChanged;
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;
 
 @property (nonatomic, assign) BOOL noMoreData;

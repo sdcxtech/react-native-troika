@@ -1,6 +1,8 @@
 #import "RNKeyboardInsetsViewComponentView.h"
 #import "RNKeyboardAutoHandler.h"
 #import "RNKeyboardManualHandler.h"
+#import "RNKeyboardStatusChangedEvent.h"
+#import "RNKeyboardPositionChangedEvent.h"
 
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
@@ -10,6 +12,24 @@
 #import <react/renderer/components/keyboardinsets/EventEmitters.h>
 #import <react/renderer/components/keyboardinsets/Props.h>
 #import <react/renderer/components/keyboardinsets/RCTComponentViewHelpers.h>
+
+static void
+RCTSendStatusForNativeAnimations_DEPRECATED(NSInteger tag, BOOL shown, BOOL transitioning, CGFloat height) {
+	RNKeyboardStatusChangedEvent *event =[[RNKeyboardStatusChangedEvent alloc] initWithReactTag:@(tag) shown:shown transitioning:transitioning height:height];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:event, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
+
+static void
+RCTSendPositionForNativeAnimations_DEPRECATED(NSInteger tag, CGFloat position) {
+	RNKeyboardPositionChangedEvent *event =[[RNKeyboardPositionChangedEvent alloc] initWithReactTag:@(tag) position:@(position)];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:event, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
 
 using namespace facebook::react;
 
@@ -79,6 +99,7 @@ using namespace facebook::react;
 }
 
 - (void)dispatchKeyboardStatus:(KeyboardStatus)status {
+	RCTSendStatusForNativeAnimations_DEPRECATED(self.tag, status.shown, status.transitioning, status.height);
 	[self eventEmitter].onStatusChanged({
 		.height = static_cast<Float>(status.height),
 		.shown = static_cast<bool>(status.shown),
@@ -87,6 +108,7 @@ using namespace facebook::react;
 }
 
 - (void)dispatchKeyboardPosition:(CGFloat)position {
+	RCTSendPositionForNativeAnimations_DEPRECATED(self.tag, position);
 	[self eventEmitter].onPositionChanged({
 		.position = static_cast<Float>(position)
 	});

@@ -11,12 +11,22 @@
 
 #import <React/RCTConversions.h>
 #import <React/RCTLog.h>
-#import <React/RCTRefreshableProtocol.h>
-#import <React/UIView+React.h>
+#import <React/RCTScrollViewComponentView.h>
+
+
+static void
+RCTSendOffsetEventForNativeAnimations_DEPRECATED(NSInteger tag, CGFloat offset) {
+	RNRefreshOffsetChangedEvent *event = [[RNRefreshOffsetChangedEvent alloc] initWithViewTag:@(tag) offset:offset];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:event, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
+
 
 using namespace facebook::react;
 
-@interface RNRefreshHeader () <RCTRefreshableProtocol>
+@interface RNRefreshHeader ()
 
 @property(nonatomic, assign) RNRefreshState state;
 @property(nonatomic, assign) CGFloat topInset;
@@ -26,6 +36,7 @@ using namespace facebook::react;
 @implementation RNRefreshHeader {
     BOOL _isInitialRender;
     BOOL _hasObserver;
+	__weak UIView *_reactRootView;
 }
 
 // Needed because of this: https://github.com/facebook/react-native/pull/37274
@@ -48,6 +59,7 @@ using namespace facebook::react;
         _isInitialRender = YES;
         _hasObserver = NO;
         _state = RNRefreshStateIdle;
+		self.hidden = YES;
     }
     return self;
 }
@@ -58,6 +70,27 @@ using namespace facebook::react;
 	_hasObserver = NO;
 	_state = RNRefreshStateIdle;
 	self.refreshing = NO;
+}
+
+- (void)dealloc {
+	// Ensure observer removed to avoid crashes
+	[self removeObserver];
+}
+
+- (void)updateState:(const facebook::react::State::Shared &)state oldState:(const facebook::react::State::Shared &)oldState {
+	[super updateState:state oldState:oldState];
+}
+
+- (void)updateLayoutMetrics:(const facebook::react::LayoutMetrics &)layoutMetrics oldLayoutMetrics:(const facebook::react::LayoutMetrics &)oldLayoutMetrics {
+	[super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:oldLayoutMetrics];
+	RCTLogInfo(@"pull-to-refresh-frame:%f", layoutMetrics.frame.origin.y);
+	if (layoutMetrics.frame.origin.y < 0) {
+		self.hidden = NO;
+	}
+	
+	if (self.scrollView) {
+		[self adjustScrollViewContainerViewFrame];
+	}
 }
 
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
@@ -77,184 +110,295 @@ using namespace facebook::react;
 }
 
 - (void)layoutSubviews {
-    [super layoutSubviews];
+	[super layoutSubviews];
 
-    if (self.backgroundColor == nil) {
-        self.backgroundColor = [UIColor clearColor];
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.state == RNRefreshStateRefreshing && self->_isInitialRender) {
-            [self settleToRefreshing];
-        }
-        self->_isInitialRender = NO;
-    });
+	if (self.backgroundColor == nil) {
+		self.backgroundColor = [UIColor clearColor];
+	}
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self attachToNearestScrollViewIfNeeded];
+		if (self.state == RNRefreshStateRefreshing && self->_isInitialRender) {
+			[self settleToRefreshing];
+		}
+		self->_isInitialRender = NO;
+	});
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView {
-    [self removeObserver];
-    _scrollView = scrollView;
-    [self addObserver];
+	[self removeObserver];
+	_scrollView = scrollView;
+	_scrollView.bounces = YES;
+	[self addObserver];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
-    [super willMoveToWindow:newWindow];
-    if (newWindow) {
-        [self addObserver];
-    } else {
-        [self removeObserver];
-    }
+	[super willMoveToWindow:newWindow];
+	if (newWindow) {
+		[self attachToNearestScrollViewIfNeeded];
+		[self addObserver];
+	} else {
+		[self removeObserver];
+	}
+}
+
+- (void)didMoveToWindow {
+	[super didMoveToWindow];
+	if (self.window) {
+		[self cacheRootView];
+	} else {
+		_reactRootView = nil;
+	}
+}
+
+- (void)attachToNearestScrollViewIfNeeded {
+	if (self.scrollView) {
+		return;
+	}
+
+	UIView *v = self;
+	UIScrollView *found = nil;
+	while (v) {
+		if ([v isKindOfClass:[UIScrollView class]]) {
+			found = (UIScrollView *)v;
+			break;
+		}
+		v = v.superview;
+	}
+
+	if (found && found != self.scrollView) {
+		RCTLogInfo(@"[pull-to-refresh] attaching header to nearest UIScrollView: %@", found);
+		[self setScrollView:found];
+		[self removeFromSuperview];
+		[self.scrollView addSubview:self];
+	}
+}
+
+- (void)adjustScrollViewContainerViewFrame {
+	RCTScrollViewComponentView *comp = [RCTScrollViewComponentView findScrollViewComponentViewForView:self];
+	CGRect frame = comp.containerView.frame;
+	if (frame.origin.y < 0) {
+		comp.containerView.frame = CGRectMake(frame.origin.x,
+											  0,
+											  frame.size.width,
+											  frame.size.height + frame.origin.y);
+	}
 }
 
 - (void)addObserver {
-    if (!_hasObserver && self.scrollView) {
-        NSKeyValueObservingOptions options = NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
-        [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:options context:nil];
-        _hasObserver = YES;
-    }
+	if (!_hasObserver && self.scrollView) {
+		NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld;
+		[self.scrollView addObserver:self forKeyPath:@"contentOffset" options:options context:nil];
+		[self.scrollView addObserver:self forKeyPath:@"contentSize" options:options context:nil];
+		_hasObserver = YES;
+	}
 }
 
 - (void)removeObserver {
-    if (_hasObserver && self.scrollView) {
-        [self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
-        _hasObserver = NO;
-    }
+	if (_hasObserver && self.scrollView) {
+		[self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
+		[self.scrollView removeObserver:self forKeyPath:@"contentSize" context:nil];
+		_hasObserver = NO;
+	}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"contentOffset"]) {
-        CGFloat offsetY = self.scrollView.contentOffset.y;
-        CGFloat insetT = -self.scrollView.contentInset.top;
-        
-		if (offsetY <= 0) {
-			[self eventEmitter].onOffsetChanged({
-				.offset = offsetY
-			});
+	if (!self.scrollView) {
+		return;
+	}
+	
+	if ([keyPath isEqualToString:@"contentSize"]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self adjustScrollViewContainerViewFrame];
+		});
+	}
+	
+	if (![keyPath isEqualToString:@"contentOffset"]) {
+		return;
+	}
+	
+	CGFloat adjustedTop = 0;
+	if (@available(iOS 11.0, *)) {
+		adjustedTop = self.scrollView.adjustedContentInset.top;
+	} else {
+		adjustedTop = self.scrollView.contentInset.top;
+	}
+
+	CGFloat rawOffsetY = self.scrollView.contentOffset.y;
+	CGFloat pullDistance = - (rawOffsetY + adjustedTop);
+
+	if (pullDistance > 0) {
+		[self dispatchOnOffsetChanged:pullDistance];
+	} else {
+		[self dispatchOnOffsetChanged:0.0f];
+	}
+
+	if (self.state == RNRefreshStateRefreshing) {
+		return;
+	}
+
+	if (pullDistance <= 0) {
+		return;
+	}
+
+	CGFloat threshold = self.bounds.size.height;
+
+	if (self.scrollView.isDragging) {
+		[self cancelRootViewTouches];
+		if (self.state == RNRefreshStateIdle && pullDistance >= threshold) {
+			self.state = RNRefreshStateComing;
+		} else if (self.state == RNRefreshStateComing && pullDistance < threshold) {
+			self.state = RNRefreshStateIdle;
 		}
-        
-        if (self.state == RNRefreshStateRefreshing) {
-            return;
-        }
-        
-        if (offsetY > insetT) {
-            return;
-        }
-        
-        CGFloat range = self.scrollView.contentInset.top + self.bounds.size.height;
-        
-        if (self.scrollView.isDragging) {
-            if (self.state == RNRefreshStateIdle && fabs(offsetY) >= range) {
-                self.state = RNRefreshStateComing;
-            } else
-            if (self.state == RNRefreshStateComing && fabs(offsetY) <= range) {
-                self.state = RNRefreshStateIdle;
-            }
-            return;
-        }
-        
-        if (self.state == RNRefreshStateComing) {
-            // 松开手
-            [self beginRefreshing];
-            return;
-        }
-    }
+		return;
+	}
+
+	if (self.state == RNRefreshStateComing) {
+		[self beginRefreshing];
+		return;
+	}
+}
+
+- (void)dispatchOnOffsetChanged:(CGFloat)offset {
+	RCTSendOffsetEventForNativeAnimations_DEPRECATED(self.tag, offset);
+	[self eventEmitter].onOffsetChanged({
+		.offset = static_cast<float>(offset)
+	});
 }
 
 @dynamic refreshing;
 
 - (BOOL)isRefreshing {
-    return self.state == RNRefreshStateRefreshing;
+	return self.state == RNRefreshStateRefreshing;
 }
 
 - (void)setRefreshing:(BOOL)refreshing {
-    if (refreshing) {
-        [self beginRefreshing];
-    } else {
-        [self endRefreshing];
-    }
+	if (refreshing) {
+		[self beginRefreshing];
+	} else {
+		[self endRefreshing];
+	}
 }
 
 - (void)beginRefreshing {
-    [self setState:RNRefreshStateRefreshing];
+	[self setState:RNRefreshStateRefreshing];
 }
 
 - (void)endRefreshing {
-    [self setState:RNRefreshStateIdle];
+	[self setState:RNRefreshStateIdle];
 }
 
 - (void)setState:(RNRefreshState)state {
-    if (_isInitialRender) {
-        _state = state;
-        return;
-    }
-    
-    if (_state == state || !self.scrollView) {
-        return;
-    }
-    
-    RNRefreshState old = _state;
-    _state = state;
+	if (_isInitialRender) {
+		_state = state;
+		return;
+	}
 
-    if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
-        [self settleToIdle];
-        return;
-    }
-    
-    if (state == RNRefreshStateRefreshing) {
-        [self settleToRefreshing];
-        return;
-    }
-    
-    RCTLogInfo(@"[pull-to-refresh] publish comming event");
+	if (_state == state || !self.scrollView) {
+		return;
+	}
+
+	RNRefreshState old = _state;
+	_state = state;
+
+	if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
+		[self settleToIdle];
+		return;
+	}
+
+	if (state == RNRefreshStateRefreshing) {
+		[self settleToRefreshing];
+		return;
+	}
+
+	RCTLogInfo(@"[pull-to-refresh] publish comming event");
 	[self eventEmitter].onStateChanged({
 		.state = static_cast<int>(state)
 	});
 }
 
 - (void)settleToRefreshing {
-    RCTLogInfo(@"[pull-to-refresh] settleToRefreshing");
-    [self animateToRefreshingState:^(BOOL finished) {
-        if (self.state == RNRefreshStateRefreshing) {
-            RCTLogInfo(@"[pull-to-refresh] publish refresh event");
+	RCTLogInfo(@"[pull-to-refresh] settleToRefreshing");
+	[self animateToRefreshingState:^(BOOL finished) {
+		if (self.state == RNRefreshStateRefreshing) {
+			RCTLogInfo(@"[pull-to-refresh] publish refresh event");
 			[self eventEmitter].onStateChanged({
 				.state = static_cast<int>(RNRefreshStateRefreshing)
 			});
-            
+
 			[self eventEmitter].onRefresh({});
-        }
-    }];
+		}
+	}];
 }
 
 - (void)settleToIdle {
-    RCTLogInfo(@"[pull-to-refresh] settleToIdle");
-    [self animateToIdleState:^(BOOL finished) {
-        if (self.state == RNRefreshStateIdle) {
-            RCTLogInfo(@"[pull-to-refresh] publish idle event");
+	RCTLogInfo(@"[pull-to-refresh] settleToIdle");
+	[self animateToIdleState:^(BOOL finished) {
+		if (self.state == RNRefreshStateIdle) {
+			RCTLogInfo(@"[pull-to-refresh] publish idle event");
 			[self eventEmitter].onStateChanged({
 				.state = static_cast<int>(RNRefreshStateIdle)
 			});
-        }
-    }];
+		}
+	}];
 }
 
 - (void)animateToIdleState:(void (^ __nullable)(BOOL finished))completion {
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        UIScrollView *scrollView = self.scrollView;
-        UIEdgeInsets insets = scrollView.contentInset;
-        scrollView.contentInset = UIEdgeInsetsMake(self.topInset, insets.left, insets.bottom, insets.right);
-    } completion:completion];
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		UIScrollView *scrollView = self.scrollView;
+		if (!scrollView) return;
+		UIEdgeInsets insets = scrollView.contentInset;
+		scrollView.contentInset = UIEdgeInsetsMake(self.topInset, insets.left, insets.bottom, insets.right);
+	} completion:completion];
 }
 
 - (void)animateToRefreshingState:(void (^ __nullable)(BOOL finished))completion {
-    [UIView animateWithDuration:0.2 animations:^{
-        UIScrollView *scrollView = self.scrollView;
-        CGFloat range = scrollView.contentInset.top + self.bounds.size.height;
-        UIEdgeInsets insets = scrollView.contentInset;
-        self.topInset = insets.top;
-        [scrollView setContentInset:UIEdgeInsetsMake(range, insets.left, insets.bottom, insets.right)];
-        CGPoint offset = {scrollView.contentOffset.x, -range};
-        [scrollView setContentOffset:offset animated:NO];
-    } completion:completion];
+	[UIView animateWithDuration:0.2 animations:^{
+		UIScrollView *scrollView = self.scrollView;
+		if (!scrollView) return;
+		UIEdgeInsets insets = scrollView.contentInset;
+		self.topInset = insets.top;
+		CGFloat newTop = self.topInset + self.bounds.size.height;
+		scrollView.contentInset = UIEdgeInsetsMake(newTop, insets.left, insets.bottom, insets.right);
+		CGPoint offset = CGPointMake(scrollView.contentOffset.x, -newTop);
+		[scrollView setContentOffset:offset animated:NO];
+	} completion:completion];
+}
+
+- (void)cacheRootView {
+	if (_reactRootView) {
+		return;
+	}
+	
+	UIView *v = self;
+	while (v) {
+		if ([NSStringFromClass([v class]) isEqualToString:@"RCTSurfaceView"]) {
+			_reactRootView = v;
+			return;
+		}
+		v = v.superview;
+	}
+}
+
+- (void)cancelRootViewTouches {
+	if (!_reactRootView) {
+		return;
+	}
+	[self cancelTouchesInView:_reactRootView];
+}
+
+- (void)cancelTouchesInView:(UIView *)view {
+	NSArray<UIGestureRecognizer *> *gestureRecognizers = view.gestureRecognizers;
+	if (gestureRecognizers.count > 0) {
+		for (UIGestureRecognizer *gr in gestureRecognizers) {
+			Class surfaceTouchHandlerClass = NSClassFromString(@"RCTSurfaceTouchHandler");
+			if (surfaceTouchHandlerClass && [gr isKindOfClass:surfaceTouchHandlerClass]) {
+				gr.enabled = NO;
+				gr.enabled = YES;
+				continue;
+			}
+		}
+	}
 }
 
 @end

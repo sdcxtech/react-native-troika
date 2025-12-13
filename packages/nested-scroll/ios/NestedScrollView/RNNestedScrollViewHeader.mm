@@ -11,6 +11,17 @@
 #import <React/RCTLog.h>
 #import <React/RCTAssert.h>
 
+
+static void
+RCTSendScrollEventForNativeAnimations_DEPRECATED(NSInteger tag, CGPoint offset) {
+	RNNestedScrollEvent *scrollEvent =	[[RNNestedScrollEvent alloc] initWithReactTag:@(tag) offset:offset];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:scrollEvent, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
+
+
 using namespace facebook::react;
 
 @implementation RNNestedScrollViewHeader {
@@ -135,6 +146,7 @@ using namespace facebook::react;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"contentOffset"]) {
         CGPoint offset = [change[@"new"] CGPointValue];
+		RCTSendScrollEventForNativeAnimations_DEPRECATED(self.tag, offset);
 		[self eventEmitter].onScroll({
 			.contentOffset = {
 				.x = static_cast<Float>(offset.x),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { withNavigationItem } from 'hybrid-navigation';
 
 import { NestedScrollView } from '@sdcx/nested-scroll';
@@ -23,8 +23,8 @@ export function NestedScrollParallaxHeader() {
 
 	const insets = useSafeAreaInsets();
 
-	const statusBarHeight = insets.top;
-	const topBarHeight = statusBarHeight + 56;
+	const statusBarHeight = Platform.OS === 'ios' ? insets.top - 44 : insets.top;
+	const topBarHeight = Platform.OS === 'ios' ? statusBarHeight + 44 : statusBarHeight + 56;
 
 	return (
 		<View style={styles.fill}>

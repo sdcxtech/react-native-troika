@@ -1,6 +1,6 @@
 #import "RNNestedScrollViewChild.h"
 
-#include <react/renderer/components/nestedscrollview/NestedScrollViewChildComponentDescriptor.h>
+#import <react/renderer/components/nestedscrollview/NestedScrollViewChildComponentDescriptor.h>
 #import <react/renderer/components/nestedscrollview/EventEmitters.h>
 #import <react/renderer/components/nestedscrollview/Props.h>
 #import <react/renderer/components/nestedscrollview/RCTComponentViewHelpers.h>

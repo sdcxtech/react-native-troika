@@ -20,7 +20,7 @@ interface BottomSheetProps extends ViewProps {
 
 type NativeBottomSheetInstance = InstanceType<typeof BottomSheetNativeComponent>;
 
-const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps>((props, ref) => {
+function BottomSheet(props: BottomSheetProps) {
 	const {
 		style,
 		contentContainerStyle,
@@ -39,7 +39,6 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
 			draggable={draggable}
 			status={state}
 			{...rest}
-			ref={ref}
 		>
 			<View
 				style={[
@@ -53,7 +52,7 @@ const BottomSheet = React.forwardRef<NativeBottomSheetInstance, BottomSheetProps
 			</View>
 		</BottomSheetNativeComponent>
 	);
-});
+}
 
 const styles = StyleSheet.create({
 	fitToContents: {

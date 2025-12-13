@@ -13,10 +13,6 @@ void PullToRefreshHeaderShadowNode::adjustLayoutWithState() {
 	ensureUnsealed();
 	
 	auto height = getLayoutMetrics().frame.size.height;
-	if (height == 0) {
-		height = 1000;
-	}
-	
 	yoga::Style adjustedStyle = getConcreteProps().yogaStyle;
 	adjustedStyle.setPositionType(yoga::PositionType::Absolute);
 	adjustedStyle.setPosition(Edge::Top, Style::Length::points(-height));

@@ -43,6 +43,10 @@ using namespace facebook::react;
 	return self;
 }
 
+- (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
+	[super updateProps:props oldProps:oldProps];
+}
+
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
 	if ([childComponentView isKindOfClass:[RNRefreshHeader class]]) {
 		self.header = (RNRefreshHeader *)childComponentView;
@@ -60,11 +64,6 @@ using namespace facebook::react;
 
 - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
 	[childComponentView removeFromSuperview];
-}
-
-- (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
-	
-	[super updateProps:props oldProps:oldProps];
 }
 
 - (void)assembleIfNeeded {

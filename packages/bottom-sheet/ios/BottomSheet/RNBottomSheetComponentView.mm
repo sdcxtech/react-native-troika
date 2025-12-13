@@ -1,4 +1,6 @@
 #import "RNBottomSheetComponentView.h"
+#import "RNBottomSheetStateChangedEvent.h"
+#import "RNBottomSheetOffsetChangedEvent.h"
 
 #import <react/renderer/components/bottomsheet/ComponentDescriptors.h>
 #import <react/renderer/components/bottomsheet/EventEmitters.h>
@@ -7,6 +9,30 @@
 
 #import <React/RCTConversions.h>
 #import <React/RCTLog.h>
+
+
+static void
+RCTSendOffsetForNativeAnimations_DEPRECATED(NSInteger tag,
+											CGFloat progress,
+											CGFloat offset,
+											CGFloat minY,
+											CGFloat maxY) {
+	RNBottomSheetOffsetChangedEvent *event =[[RNBottomSheetOffsetChangedEvent alloc] initWithViewTag:@(tag) progress:progress offset:offset minY:minY maxY:maxY];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:event, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
+
+static void
+RCTSendStateForNativeAnimations_DEPRECATED(NSInteger tag, NSString *state) {
+	RNBottomSheetStateChangedEvent *event =[[RNBottomSheetStateChangedEvent alloc] initWithViewTag:@(tag) state:state];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:event, @"event", nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
+													  object:nil
+													userInfo:userInfo];
+}
+
 
 using namespace facebook::react;
 
@@ -31,6 +57,7 @@ using namespace facebook::react;
 @implementation RNBottomSheetComponentView {
 	__weak UIView *_rootView;
 	BOOL _isInitialRender;
+	__weak UIView *_reactRootView;
 }
 
 // Needed because of this: https://github.com/facebook/react-native/pull/37274
@@ -120,6 +147,7 @@ using namespace facebook::react;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
 	if (gestureRecognizer == self.panGestureRecognizer) {
 		if ([super gestureRecognizerShouldBegin:gestureRecognizer]) {
+			[self cancelRootViewTouches];
 			return YES;
 		}
 		return NO;
@@ -169,6 +197,15 @@ using namespace facebook::react;
 	[super willMoveToWindow:newWindow];
 	if (newWindow == nil) {
 		[self stopWatchBottomSheetTransition];
+	}
+}
+
+- (void)didMoveToWindow {
+	[super didMoveToWindow];
+	if (self.window) {
+		[self cacheRootView];
+	} else {
+		_reactRootView = nil;
 	}
 }
 
@@ -412,20 +449,7 @@ using namespace facebook::react;
 		status == BottomSheetStatus::Hidden) {
 
 		self.finalStatus = status;
-		BottomSheetEventEmitter::OnStateChanged payload = BottomSheetEventEmitter::OnStateChanged{
-			.state = [self convertStatus:status]
-		};
-		[self eventEmitter].onStateChanged(payload);
-	}
-}
-
-- (BottomSheetEventEmitter::OnStateChangedState)convertStatus:(BottomSheetStatus)status {
-	if (status == BottomSheetStatus::Expanded) {
-		return BottomSheetEventEmitter::OnStateChangedState::Expanded;
-	} else if (status == BottomSheetStatus::Hidden) {
-		return BottomSheetEventEmitter::OnStateChangedState::Hidden;
-	} else {
-		return BottomSheetEventEmitter::OnStateChangedState::Collapsed;
+		[self dispatchOnStateChanged:status];
 	}
 }
 
@@ -441,8 +465,36 @@ using namespace facebook::react;
 		.expandedOffset = static_cast<Float>(self.minY),
 		.collapsedOffset = static_cast<Float>(self.maxY)
 	};
-
+	RCTSendOffsetForNativeAnimations_DEPRECATED(self.tag, progress, top, self.minY, self.maxY);
 	[self eventEmitter].onSlide(payload);
+}
+
+- (void)dispatchOnStateChanged:(BottomSheetStatus)status {
+	BottomSheetEventEmitter::OnStateChanged payload = BottomSheetEventEmitter::OnStateChanged{
+		.state = [self convertStatus:status]
+	};
+	RCTSendStateForNativeAnimations_DEPRECATED(self.tag, [self convertStatusToString:status]);
+	[self eventEmitter].onStateChanged(payload);
+}
+
+- (BottomSheetEventEmitter::OnStateChangedState)convertStatus:(BottomSheetStatus)status {
+	if (status == BottomSheetStatus::Expanded) {
+		return BottomSheetEventEmitter::OnStateChangedState::Expanded;
+	} else if (status == BottomSheetStatus::Hidden) {
+		return BottomSheetEventEmitter::OnStateChangedState::Hidden;
+	} else {
+		return BottomSheetEventEmitter::OnStateChangedState::Collapsed;
+	}
+}
+
+- (NSString *)convertStatusToString:(BottomSheetStatus)status {
+	if (status == BottomSheetStatus::Expanded) {
+		return @"expanded";
+	} else if (status == BottomSheetStatus::Hidden) {
+		return @"hidden";
+	} else {
+		return @"collapsed";
+	}
 }
 
 - (void)startWatchBottomSheetTransition {
@@ -462,6 +514,42 @@ using namespace facebook::react;
 - (void)watchBottomSheetTransition {
 	CGFloat top = [self.child.layer presentationLayer].frame.origin.y;
 	[self dispatchOnSlide:top];
+}
+
+- (void)cacheRootView {
+	if (_reactRootView) {
+		return;
+	}
+	
+	UIView *v = self;
+	while (v) {
+		if ([NSStringFromClass([v class]) isEqualToString:@"RCTSurfaceView"]) {
+			_reactRootView = v;
+			return;
+		}
+		v = v.superview;
+	}
+}
+
+- (void)cancelRootViewTouches {
+	if (!_reactRootView) {
+		return;
+	}
+	[self cancelTouchesInView:_reactRootView];
+}
+
+- (void)cancelTouchesInView:(UIView *)view {
+	NSArray<UIGestureRecognizer *> *gestureRecognizers = view.gestureRecognizers;
+	if (gestureRecognizers.count > 0) {
+		for (UIGestureRecognizer *gr in gestureRecognizers) {
+			Class surfaceTouchHandlerClass = NSClassFromString(@"RCTSurfaceTouchHandler");
+			if (surfaceTouchHandlerClass && [gr isKindOfClass:surfaceTouchHandlerClass]) {
+				gr.enabled = NO;
+				gr.enabled = YES;
+				continue;
+			}
+		}
+	}
 }
 
 @end

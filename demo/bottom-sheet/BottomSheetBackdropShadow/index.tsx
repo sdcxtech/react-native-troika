@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Animated, PixelRatio, ScrollView, StyleSheet, View } from 'react-native';
 import { LoremIpsum } from '../../components/LoremIpsum';
 import BottomSheet, { BottomSheetOnSlideEvent } from '@sdcx/bottom-sheet';
@@ -19,15 +19,20 @@ function BottomSheetBackdropShadow() {
 		}),
 	};
 
-	const onSlide = useCallback(
-		(event: BottomSheetOnSlideEvent) => {
-			const { progress } = event.nativeEvent;
-			console.info('onSlide', event.nativeEvent);
-			// 在 iOS 新架构中，Animated.event 可能无法正确绑定到 DirectEventHandler
-			// 所以手动更新 Animated.Value
-			// 使用 setValue 直接设置值，因为事件本身已经提供了平滑的进度值
-			offset.setValue(progress);
-		},
+	const onSlide = useMemo(
+		() =>
+			Animated.event<BottomSheetOnSlideEvent>(
+				[
+					{
+						nativeEvent: {
+							progress: offset,
+						},
+					},
+				],
+				{
+					useNativeDriver: true,
+				},
+			),
 		[offset],
 	);
 

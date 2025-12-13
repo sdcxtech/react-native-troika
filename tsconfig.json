@@ -11,7 +11,8 @@
 			"@sdcx/keyboard-insets": ["./packages/keyboard-insets/src"],
 			"@sdcx/image-crop": ["./packages/image-crop/src"],
 			"@sdcx/wheel-picker": ["./packages/wheel-picker/src"]
-		}
+		},
+		"types": ["jest"]
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
 	"exclude": ["**/node_modules", "**/Pods"]

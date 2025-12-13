@@ -7,6 +7,7 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLog.h>
+#import <React/RCTDevMenu.h>
 
 #import <HybridNavigation/HybridNavigation.h>
 
@@ -42,12 +43,12 @@
 	RCTReactNativeFactory *factory = [[RCTReactNativeFactory alloc] initWithDelegate:delegate];
 	delegate.dependencyProvider = [[RCTAppDependencyProvider alloc] init];
 
-
 	self.reactNativeDelegate = delegate;
 	self.reactNativeFactory = factory;
 	self.rootViewFactory = factory.rootViewFactory;
 
-	[self.rootViewFactory initializeReactHostWithLaunchOptions:launchOptions];
+	[self.rootViewFactory initializeReactHostWithLaunchOptions:launchOptions devMenuConfiguration:[RCTDevMenuConfiguration defaultConfiguration]];
+
 	[[HBDReactBridgeManager get] installWithReactHost:self.rootViewFactory.reactHost];
 
     UIStoryboard *storyboard =  [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];

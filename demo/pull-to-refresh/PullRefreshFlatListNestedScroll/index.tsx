@@ -52,7 +52,7 @@ export function PullRefreshFlatListNestedScroll() {
 					style={styles.image}
 					resizeMode="cover"
 				/>
-				<View style={[styles.text]}>
+				<View style={[styles.text]} collapsable={false}>
 					<Text>anchor</Text>
 				</View>
 			</NestedScrollViewHeader>

@@ -4,8 +4,9 @@
 
 `KeyboardInsetsView` 使用简单，自动模式下不需要额外代码来处理键盘。
 
-<img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/avoiding.gif" width="320">
-<img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/chat.gif" width="320">
+|                                                                                                                                                 |                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/avoiding.gif" width="320"> | <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/chat.gif" width="320"> |
 
 本库主要依据 Android 官方指南 [Synchronize animation with the software keyboard](https://developer.android.com/develop/ui/views/layout/sw-keyboard#synchronize-animation) 来实现，同时参考了 [react-native-keyboard-controller](https://github.com/kirillzyusko/react-native-keyboard-controller)。因为该库不是很符合我的需求，所以我自己写了一个。
 

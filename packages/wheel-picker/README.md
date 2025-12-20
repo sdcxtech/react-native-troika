@@ -4,4 +4,4 @@
 
 一个非常帅的 WheelPicker
 
-<img src="./docs/assets/wheelpicker.png" width="320">
+<img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/wheel-picker/docs/assets/wheelpicker.png" width="320">

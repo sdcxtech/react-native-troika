@@ -163,7 +163,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
     }
 
     public void setStatus(BottomSheetStatus status) {
-        if (this.status == status) {
+        if (this.status == status || this.status == SETTLING) {
             return;
         }
 
@@ -221,6 +221,7 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
         if (!draggable) {
             return false;
         }
+
         int action = event.getActionMasked();
         // Record the velocity
         if (action == MotionEvent.ACTION_DOWN) {
@@ -278,7 +279,8 @@ public class BottomSheet extends ReactViewGroup implements NestedScrollingParent
             && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
     }
 
-    @Override
+    @SuppressLint("ClickableViewAccessibility")
+	@Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (!draggable) {
             return false;

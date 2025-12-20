@@ -156,6 +156,10 @@ using namespace facebook::react;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+	if (!self.draggable) {
+		return NO;
+	}
+	
 	if (gestureRecognizer != self.panGestureRecognizer) {
 		return YES;
 	}

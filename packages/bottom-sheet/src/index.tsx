@@ -18,8 +18,6 @@ interface BottomSheetProps extends ViewProps {
 	contentContainerStyle?: ViewProps['style'];
 }
 
-type NativeBottomSheetInstance = InstanceType<typeof BottomSheetNativeComponent>;
-
 function BottomSheet(props: BottomSheetProps) {
 	const {
 		style,

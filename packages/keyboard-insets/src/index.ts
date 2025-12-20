@@ -1,18 +1,13 @@
-import { KeyboardInsetsView, KeyboardState } from './KeyboardInsetsView';
-import KeyboardInsetsViewNativeComponent, {
+import KeyboardInsetsViewNativeComponent from './KeyboardInsetsViewNativeComponent';
+export { KeyboardInsetsViewNativeComponent };
+export type {
 	KeyboardPositionPayload,
 	KeyboardStatusPayload,
 	KeyboardPositionChangedEvent,
 	KeyboardStatusChangedEvent,
 } from './KeyboardInsetsViewNativeComponent';
 
-import { useKeyboard } from './hook';
+export { KeyboardInsetsView } from './KeyboardInsetsView';
+export type { KeyboardState } from './KeyboardInsetsView';
 
-export { KeyboardInsetsView, KeyboardInsetsViewNativeComponent, useKeyboard };
-export type {
-	KeyboardState,
-	KeyboardPositionChangedEvent,
-	KeyboardStatusChangedEvent,
-	KeyboardPositionPayload,
-	KeyboardStatusPayload,
-};
+export { useKeyboard } from './hook';

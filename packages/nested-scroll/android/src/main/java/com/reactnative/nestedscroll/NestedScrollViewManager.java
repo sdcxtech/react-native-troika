@@ -3,7 +3,6 @@ package com.reactnative.nestedscroll;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ReactStylesDiffMap;
 import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -34,16 +33,6 @@ public class NestedScrollViewManager extends ViewGroupManager<NestedScrollView>
     @Override
     protected NestedScrollView createViewInstance(@NonNull ThemedReactContext reactContext) {
         return new NestedScrollView(reactContext);
-    }
-
-    @Override
-    public LayoutShadowNode createShadowNodeInstance() {
-        return new NestedScrollViewShadowNode();
-    }
-
-    @Override
-    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
-        return NestedScrollViewShadowNode.class;
     }
 
     @ReactProp(name = "overflow")

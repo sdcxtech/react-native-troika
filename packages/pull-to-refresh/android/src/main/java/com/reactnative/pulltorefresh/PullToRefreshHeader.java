@@ -7,9 +7,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.PointerEvents;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshKernel;
@@ -119,31 +117,6 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         }
     }
 
-    PullToRefreshHeaderLocalData headerLocalData = new PullToRefreshHeaderLocalData();
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (headerLocalData.viewRect.top == top
-                && headerLocalData.viewRect.bottom == bottom
-                && headerLocalData.viewRect.left == left
-                && headerLocalData.viewRect.right == right) {
-            return;
-        }
-        headerLocalData.viewRect.top = top;
-        headerLocalData.viewRect.bottom = bottom;
-        headerLocalData.viewRect.left = left;
-        headerLocalData.viewRect.right = right;
-        Context context = getContext();
-        if (context instanceof ReactContext) {
-            ReactContext reactContext = (ReactContext) context;
-            UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
-            if (uiManagerModule != null) {
-               // uiManagerModule.setViewLocalData(getId(), headerLocalData);
-            }
-        }
-    }
-
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
 
@@ -180,6 +153,7 @@ public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader
         }
     }
 
+	@NonNull
     @Override
     public PointerEvents getPointerEvents() {
         RefreshState refreshState = mRefreshKernel != null ? mRefreshKernel.getRefreshLayout().getState() : RefreshState.None;

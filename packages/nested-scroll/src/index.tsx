@@ -32,7 +32,11 @@ function NestedScrollView({ children, style, ...props }: NestedScrollViewProps) 
 				if (index === 0) {
 					return child;
 				}
-				return <NestedScrollViewChild collapsable={false}>{child}</NestedScrollViewChild>;
+				return (
+					<NestedScrollViewChild pointerEvents="box-none" collapsable={false}>
+						{child}
+					</NestedScrollViewChild>
+				);
 			})}
 		</NestedScrollViewNativeComponent>
 	);
@@ -47,6 +51,7 @@ export function NestedScrollViewAndroid({
 		<NestedScrollViewNativeComponent {...props}>
 			<NestedScrollViewContent
 				style={[styles.content, contentContainerStyle]}
+				pointerEvents="box-none"
 				collapsable={false}
 			>
 				{React.Children.map(children, (child, index) => {
@@ -54,7 +59,9 @@ export function NestedScrollViewAndroid({
 						return child;
 					}
 					return (
-						<NestedScrollViewChild collapsable={false}>{child}</NestedScrollViewChild>
+						<NestedScrollViewChild pointerEvents="box-none" collapsable={false}>
+							{child}
+						</NestedScrollViewChild>
 					);
 				})}
 			</NestedScrollViewContent>

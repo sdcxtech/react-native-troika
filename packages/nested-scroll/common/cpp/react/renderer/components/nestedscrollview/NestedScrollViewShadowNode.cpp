@@ -42,7 +42,10 @@ void NestedScrollViewShadowNode::adjustLayoutWithState() {
 	}
 	
 	auto contentShadowNode = static_cast<NestedScrollViewContentShadowNode *>(nodes.at(0));
-	contentShadowNode->adjustLayoutWithState(parentNodeHeight);
+	auto adjusted = contentShadowNode->adjustLayoutWithState(parentNodeHeight);
+	if (adjusted) {
+		yogaNode_.setDirty(true);
+	}
 
 	auto childNodes = contentShadowNode->getLayoutableChildNodes();
 	if (childNodes.size() != 2) {

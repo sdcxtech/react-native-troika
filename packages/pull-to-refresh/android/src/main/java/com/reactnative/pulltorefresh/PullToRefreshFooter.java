@@ -6,9 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.PointerEvents;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshKernel;
@@ -44,31 +42,6 @@ public class PullToRefreshFooter extends ReactViewGroup implements RefreshFooter
             PullToRefresh refreshLayout = (PullToRefresh) getParent();
             int h = MeasureSpec.getSize(heightMeasureSpec);
             refreshLayout.setFooterHeightPx(h);
-        }
-    }
-
-    PullToRefreshFooterLocalData footerLocalData = new PullToRefreshFooterLocalData();
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (footerLocalData.viewRect.top == top
-                && footerLocalData.viewRect.bottom == bottom
-                && footerLocalData.viewRect.left == left
-                && footerLocalData.viewRect.right == right) {
-            return;
-        }
-        footerLocalData.viewRect.top = top;
-        footerLocalData.viewRect.bottom = bottom;
-        footerLocalData.viewRect.left = left;
-        footerLocalData.viewRect.right = right;
-        Context context = getContext();
-        if (context instanceof ReactContext) {
-            ReactContext reactContext = (ReactContext) context;
-            UIManagerModule uiManagerModule = reactContext.getNativeModule(UIManagerModule.class);
-            if (uiManagerModule != null) {
-                // uiManagerModule.setViewLocalData(getId(), footerLocalData);
-            }
         }
     }
 

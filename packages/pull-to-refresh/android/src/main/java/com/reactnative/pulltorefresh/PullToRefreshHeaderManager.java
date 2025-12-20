@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -34,16 +33,6 @@ public class PullToRefreshHeaderManager extends ReactViewManager {
     public ReactViewGroup createViewInstance(@NonNull ThemedReactContext context) {
         return new PullToRefreshHeader(context);
     }
-
-//    @Override
-//    public LayoutShadowNode createShadowNodeInstance() {
-//        return new PullToRefreshHeaderShadowNode();
-//    }
-//
-//    @Override
-//    public Class<? extends LayoutShadowNode> getShadowNodeClass() {
-//        return PullToRefreshHeaderShadowNode.class;
-//    }
 
     @ReactProp(name = "refreshing")
     public void setRefreshing(PullToRefreshHeader pullToRefreshHeader, boolean refreshing) {

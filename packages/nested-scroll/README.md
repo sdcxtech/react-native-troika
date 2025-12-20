@@ -4,7 +4,7 @@
 
 主要用来实现如下结构的视图：
 
-![README-2023-10-30-15-06-11](./docs/assets/struct.png)
+![README-2023-10-30-15-06-11](https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/nested-scroll/docs/assets/struct.png)
 
 最外层是一个可纵向滚动的视图， 也就是我们的 `NestedScrollView`， 它的子组件往往由一个头部和一个可横向滚动的视图组成。
 
@@ -14,9 +14,16 @@
 
 `NestedScrollView` 的作用是协调最里层和最外层可滚动视图之间的（纵向）滚动，使得滚动体验更加流畅。
 
-|                                                  |                                                    |
-| ------------------------------------------------ | -------------------------------------------------- |
-| <img src="./docs/assets/sticky.gif" width="320"> | <img src="./docs/assets/parallax.gif" width="320"> |
+|                                                                                                                                             |                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/nested-scroll/docs/assets/sticky.gif" width="320"> | <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/nested-scroll/docs/assets/parallax.gif" width="320"> |
+
+## 版本兼容
+
+| 版本 | RN 版本 | RN 架构 |
+| ---- | ------- | ------- |
+| 0.x  | < 0.82  | 旧架构  |
+| 1.x  | >= 0.82 | 新架构  |
 
 ## Installation
 
@@ -31,7 +38,7 @@ pod install
 `NestedScrollView` 在使用上比较简单
 
 ```tsx
-import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll'
+import { NestedScrollView, NestedScrollViewHeader } from '@sdcx/nested-scroll';
 
 const App = () => {
   return (
@@ -46,8 +53,8 @@ const App = () => {
         <WebView />
       </PagerView>
     </NestedScrollView>
-  )
-}
+  );
+};
 ```
 
 > :exclamation: :exclamation: :exclamation:
@@ -71,7 +78,7 @@ const App = () => {
 
 - `stickyHeaderBeginIndex`，它表示从第几个子组件开始，子组件将会被固定在顶部。
 
-- `stickyHeight`，它表示 header 多高的区域将会被固定在顶部，优先级高于 `stickyHeaderBeginIndex`。
+- `stickyHeaderHeight`，它表示 header 多高的区域将会被固定在顶部，优先级高于 `stickyHeaderBeginIndex`。
 
 - `onScroll`， 是一个回调函数，可用于实现头部视图的视差效果。
 
@@ -79,9 +86,9 @@ const App = () => {
   type OnScroll = (event: {
     nativeEvent: {
       contentOffset: {
-        x: number
-        y: number
-      }
-    }
-  }) => void
+        x: number;
+        y: number;
+      };
+    };
+  }) => void;
   ```

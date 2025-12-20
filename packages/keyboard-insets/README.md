@@ -4,11 +4,17 @@
 
 `KeyboardInsetsView` 使用简单，自动模式下不需要额外代码来处理键盘。
 
-| 自动模式                                                  | 手动模式                                              |
-| --------------------------------------------------------- | ----------------------------------------------------- |
-| ![README-2023-02-02-15-56-36](./docs/assets/avoiding.gif) | ![README-2023-02-18-21-36-20](./docs/assets/chat.gif) |
+<img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/avoiding.gif" width="320">
+<img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/keyboard-insets/docs/assets/chat.gif" width="320">
 
 本库主要依据 Android 官方指南 [Synchronize animation with the software keyboard](https://developer.android.com/develop/ui/views/layout/sw-keyboard#synchronize-animation) 来实现，同时参考了 [react-native-keyboard-controller](https://github.com/kirillzyusko/react-native-keyboard-controller)。因为该库不是很符合我的需求，所以我自己写了一个。
+
+## 版本兼容
+
+| 版本 | RN 版本 | RN 架构 |
+| ---- | ------- | ------- |
+| 0.x  | < 0.82  | 旧架构  |
+| 1.x  | >= 0.82 | 新架构  |
 
 ## Installation
 
@@ -60,8 +66,8 @@ public class MainActivity extends ReactActivity {
 可参考以下代码进行全局处理，也可以每个页面单独处理，以实现更美观更摩登的 UI 效果。
 
 ```tsx
-import { Platform } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { Platform } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 function App() {
   return (
@@ -69,7 +75,7 @@ function App() {
       <NavigationContainer>...</NavigationContainer>
       {Platform.OS === 'android' && <SafeAreaView mode="margin" edges={['bottom']} />}
     </SafeAreaProvider>
-  )
+  );
 }
 ```
 
@@ -80,7 +86,7 @@ function App() {
 使用 `KeyboardInsetsView` 代替 `View` 作为容器，或者使用 `KeyboardInsetsView` 将 `ScrollView` 包裹起来。当键盘显示或隐藏时，`KeyboardInsetsView` 会自动调整自身的位置，以保证输入框不被键盘遮挡。
 
 ```tsx
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
+import { KeyboardInsetsView } from '@sdcx/keyboard-insets';
 
 function MyComponent() {
   return (
@@ -91,14 +97,14 @@ function MyComponent() {
         ...
       </ScrollView>
     </KeyboardInsetsView>
-  )
+  );
 }
 ```
 
 Support Nested.
 
 ```tsx
-import { KeyboardInsetsView } from '@sdcx/keyboard-insets'
+import { KeyboardInsetsView } from '@sdcx/keyboard-insets';
 
 function MyComponent() {
   return (
@@ -109,7 +115,7 @@ function MyComponent() {
       </KeyboardInsetsView>
       ...
     </KeyboardInsetsView>
-  )
+  );
 }
 ```
 
@@ -127,10 +133,10 @@ function MyComponent() {
 
   ```tsx
   interface KeyboardState {
-    height: number // 键盘的高度，不会因为键盘隐藏而变为 0
-    shown: boolean // 当键盘将隐已隐时，这个值为 false；当键盘将显已显时，这个值为 true
-    transitioning: boolean // 键盘是否正在显示或隐藏
-    position: Animated.Value // 键盘的位置，从 0 到 height，可以用来实现动画效果
+    height: number; // 键盘的高度，不会因为键盘隐藏而变为 0
+    shown: boolean; // 当键盘将隐已隐时，这个值为 false；当键盘将显已显时，这个值为 true
+    transitioning: boolean; // 键盘是否正在显示或隐藏
+    position: Animated.Value; // 键盘的位置，从 0 到 height，可以用来实现动画效果
   }
   ```
 
@@ -161,32 +167,35 @@ function MyComponent() {
   有时候你需要知道某个 `View` 距离屏幕四边的距离，这个时候就可以使用 `getEdgeInsetsForView` 方法。
 
   ```tsx
-  import { getEdgeInsetsForView } from '@sdcx/keyboard-insets'
+  import { getEdgeInsetsForView } from '@sdcx/keyboard-insets';
 
   function MyComponent() {
-    const inputRef = useRef<TextInput>(null)
+    const inputRef = useRef<TextInput>(null);
 
     const onLayout = useCallback(() => {
-      const viewTag = findNodeHandle(inputRef.current)
+      const viewTag = findNodeHandle(inputRef.current);
       if (viewTag === null) {
-        return
+        return;
       }
 
       // 获得 TextInput 距离屏幕四边的距离
       getEdgeInsetsForView(viewTag, insets => {
-        console.log('insets', insets)
-      })
-    }, [])
+        console.log('insets', insets);
+      });
+    }, []);
 
     return (
       <View>
         <TextInput ref={inputRef} onLayout={onLayout} />
       </View>
-    )
+    );
   }
   ```
+
 ## Caution
+
 如果你在项目中同时使用了[react-native-bars](https://github.com/zoontek/react-native-bars)，那么在初始化它的时候，需要把它内置的键盘处理逻辑关闭：
+
 ```java
 // in MainActivity.java
 

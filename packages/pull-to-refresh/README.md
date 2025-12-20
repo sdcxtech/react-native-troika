@@ -6,6 +6,13 @@ React Native 内置的下拉刷新组件比较简陋，且 iOS 和 Android 平�
 
 `PullToRefresh` 提供了自定义下拉刷新的能力。
 
+## 版本兼容
+
+| 版本 | RN 版本 | RN 架构 |
+| ---- | ------- | ------- |
+| 0.x  | < 0.82  | 旧架构  |
+| 1.x  | >= 0.82 | 新架构  |
+
 ## 特点
 
 - 支持自定义下拉刷新
@@ -13,9 +20,9 @@ React Native 内置的下拉刷新组件比较简陋，且 iOS 和 Android 平�
 - 额外支持 `WebView`、`ScrollView`、[NestedScrollView](https://github.com/sdcxtech/react-native-troika/blob/master/packages/nested-scroll/README.md)
 - 支持上拉加载更多
 
-|                                                     |                                                  |
-| --------------------------------------------------- | ------------------------------------------------ |
-| <img src="./docs/assets/separated.gif" width="320"> | <img src="./docs/assets/shared.gif" width="320"> |
+|                                                                                                                                                  |                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/pull-to-refresh/docs/assets/separated.gif" width="320"> | <img src="https://raw.githubusercontent.com/sdcxtech/react-native-troika/master/packages/pull-to-refresh/docs/assets/shared.gif" width="320"> |
 
 ## Installation
 
@@ -28,20 +35,21 @@ pod install
 ## Usage
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 function App() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <PullToRefresh
       refreshing={refreshing}
       onRefresh={() => {
-        setRefreshing(true)
+        setRefreshing(true);
         setTimeout(() => {
-          setRefreshing(false)
-        }, 2000)
-      }}>
+          setRefreshing(false);
+        }, 2000);
+      }}
+    >
       <FlatList
         nestedScrollEnabled
         data={Array.from({ length: 20 })}
@@ -49,17 +57,17 @@ function App() {
         keyExtractor={(item, index) => index.toString()}
       />
     </PullToRefresh>
-  )
+  );
 }
 ```
 
 或者
 
 ```tsx
-import { RefreshControl } from '@sdcx/pull-to-refresh'
+import { RefreshControl } from '@sdcx/pull-to-refresh';
 
 function App() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <FlatList
@@ -68,10 +76,10 @@ function App() {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
-            setRefreshing(true)
+            setRefreshing(true);
             setTimeout(() => {
-              setRefreshing(false)
-            }, 2000)
+              setRefreshing(false);
+            }, 2000);
           }}
         />
       }
@@ -79,7 +87,7 @@ function App() {
       renderItem={({ item, index }) => <Text>{index}</Text>}
       keyExtractor={(item, index) => index.toString()}
     />
-  )
+  );
 }
 ```
 
@@ -111,27 +119,27 @@ import {
   PullToRefreshState,
   PullToRefreshStateIdle,
   PullToRefreshStateRefreshing,
-} from '@sdcx/pull-to-refresh'
+} from '@sdcx/pull-to-refresh';
 
 export function CustomPullToRefreshHeader(props: PullToRefreshHeaderProps) {
-  const { onRefresh, refreshing } = props
+  const { onRefresh, refreshing } = props;
 
-  const [text, setText] = useState('下拉刷新')
+  const [text, setText] = useState('下拉刷新');
 
   const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
-    const state = event.nativeEvent.state
+    const state = event.nativeEvent.state;
     if (state === PullToRefreshStateIdle) {
-      setText('下拉刷新')
+      setText('下拉刷新');
     } else if (state === PullToRefreshStateRefreshing) {
-      setText('正在刷新...')
+      setText('正在刷新...');
     } else {
-      setText('松开刷新')
+      setText('松开刷新');
     }
-  }, [])
+  }, []);
 
   const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
-    console.log('refresh header offset', event.nativeEvent.offset)
-  }, [])
+    console.log('refresh header offset', event.nativeEvent.offset);
+  }, []);
 
   return (
     <PullToRefreshHeader
@@ -139,10 +147,11 @@ export function CustomPullToRefreshHeader(props: PullToRefreshHeaderProps) {
       onOffsetChanged={onOffsetChanged}
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
-      refreshing={refreshing}>
+      refreshing={refreshing}
+    >
       <Text style={styles.text}>{text}</Text>
     </PullToRefreshHeader>
-  )
+  );
 }
 ```
 
@@ -151,9 +160,9 @@ export function CustomPullToRefreshHeader(props: PullToRefreshHeaderProps) {
 然后在应用启动时，设置全局默认下拉刷新。通常在你应用的入口文件处设置。
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
-PullToRefresh.setDefaultHeader(CustomPullToRefreshHeader)
+PullToRefresh.setDefaultHeader(CustomPullToRefreshHeader);
 ```
 
 该设置同时对 `PullToRefresh` 和 `RefreshControl` 生效。
@@ -163,10 +172,10 @@ PullToRefresh.setDefaultHeader(CustomPullToRefreshHeader)
 如果你的某些页面不想使用全局默认的下拉刷新样式，那么你可以设置 `PullToRefresh` 的 `header` 属性。此时，将 `onRefresh` 和 `refreshing` 属性传递给 `header`。
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 function App() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <PullToRefresh
@@ -174,13 +183,14 @@ function App() {
         <CustomPullToRefreshHeader
           refreshing={refreshing}
           onRefresh={() => {
-            setRefreshing(true)
+            setRefreshing(true);
             setTimeout(() => {
-              setRefreshing(false)
-            }, 2000)
+              setRefreshing(false);
+            }, 2000);
           }}
         />
-      }>
+      }
+    >
       <FlatList
         nestedScrollEnabled
         data={Array.from({ length: 20 })}
@@ -188,7 +198,7 @@ function App() {
         keyExtractor={(item, index) => index.toString()}
       />
     </PullToRefresh>
-  )
+  );
 }
 ```
 
@@ -197,14 +207,14 @@ function App() {
 当然，如果你不喜欢包裹 `PullToRefresh`，也可以自定义 `RefreshControl`
 
 ```tsx
-import { RefreshControlProps } from 'react-native'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { RefreshControlProps } from 'react-native';
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 export function CustomRefreshControl(props: RefreshControlProps) {
   if (Platform.OS === 'android') {
-    return <PullToRefresh header={<CustomPullToRefreshHeader {...props} />} />
+    return <PullToRefresh header={<CustomPullToRefreshHeader {...props} />} />;
   }
-  return <CustomPullToRefreshHeader {...props} />
+  return <CustomPullToRefreshHeader {...props} />;
 }
 ```
 
@@ -212,7 +222,7 @@ export function CustomRefreshControl(props: RefreshControlProps) {
 
 ```tsx
 function App() {
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <FlatList
@@ -221,10 +231,10 @@ function App() {
         <CustomRefreshControl
           refreshing={refreshing}
           onRefresh={() => {
-            setRefreshing(true)
+            setRefreshing(true);
             setTimeout(() => {
-              setRefreshing(false)
-            }, 2000)
+              setRefreshing(false);
+            }, 2000);
           }}
         />
       }
@@ -232,7 +242,7 @@ function App() {
       renderItem={({ item, index }) => <Text>{index}</Text>}
       keyExtractor={(item, index) => index.toString()}
     />
-  )
+  );
 }
 ```
 
@@ -249,18 +259,18 @@ function App() {
 你需要根据 App 的设计偏好来选择合适的模式。
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 function App() {
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [noMoreData, setNoMoreData] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [noMoreData, setNoMoreData] = useState(false);
 
   const loadMore = () => {
-    setLoadingMore(true)
+    setLoadingMore(true);
     setTimeout(() => {
-      setLoadingMore(false)
-    }, 2000)
-  }
+      setLoadingMore(false);
+    }, 2000);
+  };
 
   return (
     <PullToRefresh loadingMore={loadingMore} onLoadMore={loadMore} noMoreData={noMoreData}>
@@ -271,7 +281,7 @@ function App() {
         keyExtractor={(item, index) => index.toString()}
       />
     </PullToRefresh>
-  )
+  );
 }
 ```
 
@@ -286,27 +296,27 @@ import {
   PullToRefreshStateChangedEvent,
   PullToRefreshStateIdle,
   PullToRefreshStateRefreshing,
-} from '@sdcx/pull-to-refresh'
+} from '@sdcx/pull-to-refresh';
 
 export function CustomPullToRefreshFooter(props: PullToRefreshFooterProps) {
-  const { onRefresh, refreshing, noMoreData } = props
+  const { onRefresh, refreshing, noMoreData } = props;
 
-  const [text, setText] = useState('上拉加载更多')
+  const [text, setText] = useState('上拉加载更多');
 
   const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
-    const state = event.nativeEvent.state
+    const state = event.nativeEvent.state;
     if (state === PullToRefreshStateIdle) {
-      setText('上拉加载更多')
+      setText('上拉加载更多');
     } else if (state === PullToRefreshStateRefreshing) {
-      setText('正在加载更多...')
+      setText('正在加载更多...');
     } else {
-      setText('松开加载更多')
+      setText('松开加载更多');
     }
-  }, [])
+  }, []);
 
   const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
-    console.log('refresh footer offset', event.nativeEvent.offset)
-  }, [])
+    console.log('refresh footer offset', event.nativeEvent.offset);
+  }, []);
 
   return (
     <PullToRefreshFooter
@@ -316,28 +326,29 @@ export function CustomPullToRefreshFooter(props: PullToRefreshFooterProps) {
       onStateChanged={onStateChanged}
       onRefresh={onRefresh}
       refreshing={refreshing}
-      noMoreData={noMoreData}>
+      noMoreData={noMoreData}
+    >
       <Text style={styles.text}>{noMoreData ? '没有更多数据了' : text}</Text>
     </PullToRefreshFooter>
-  )
+  );
 }
 ```
 
 然后在应用启动时，设置全局默认上拉加载更多。通常在你应用的入口文件处设置。
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
-PullToRefresh.setDefaultFooter(CustomPullToRefreshFooter)
+PullToRefresh.setDefaultFooter(CustomPullToRefreshFooter);
 ```
 
 当然，也可以通过 `PullToRefresh` 的 `footer` 属性来为特定页面设置特定的上拉加载更多样式。
 
 ```tsx
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 function App() {
-  const [loadingMore, setLoadingMore] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false);
 
   return (
     <PullToRefresh
@@ -345,13 +356,14 @@ function App() {
         <LocalPullToRefreshFooter
           loadingMore={loadingMore}
           onLoadMore={() => {
-            setLoadingMore(true)
+            setLoadingMore(true);
             setTimeout(() => {
-              setLoadingMore(false)
-            }, 2000)
+              setLoadingMore(false);
+            }, 2000);
           }}
         />
-      }>
+      }
+    >
       <FlatList
         nestedScrollEnabled
         data={Array.from({ length: 20 })}
@@ -359,7 +371,7 @@ function App() {
         keyExtractor={(item, index) => index.toString()}
       />
     </PullToRefresh>
-  )
+  );
 }
 ```
 
@@ -368,14 +380,14 @@ function App() {
 如果你钟爱 `refreshControl`, 那么也可以定义一个 `LoadMoreRefreshControl`
 
 ```tsx
-import { RefreshControlProps } from 'react-native'
-import { PullToRefresh } from '@sdcx/pull-to-refresh'
+import { RefreshControlProps } from 'react-native';
+import { PullToRefresh } from '@sdcx/pull-to-refresh';
 
 export function LoadMoreRefreshControl(props: RefreshControlProps) {
   if (Platform.OS === 'android') {
-    return <PullToRefresh footer={<CustomPullToRefreshFooter {...props} />} />
+    return <PullToRefresh footer={<CustomPullToRefreshFooter {...props} />} />;
   }
-  return <CustomPullToRefreshFooter {...props} />
+  return <CustomPullToRefreshFooter {...props} />;
 }
 ```
 
@@ -383,7 +395,7 @@ export function LoadMoreRefreshControl(props: RefreshControlProps) {
 
 ```tsx
 function App() {
-  const [loadingMore, setLoadingMore] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false);
 
   return (
     <FlatList
@@ -392,10 +404,10 @@ function App() {
         <LoadMoreRefreshControl
           refreshing={loadingMore}
           onRefresh={() => {
-            setLoadingMore(true)
+            setLoadingMore(true);
             setTimeout(() => {
-              setLoadingMore(false)
-            }, 2000)
+              setLoadingMore(false);
+            }, 2000);
           }}
         />
       }
@@ -403,7 +415,7 @@ function App() {
       renderItem={({ item, index }) => <Text>{index}</Text>}
       keyExtractor={(item, index) => index.toString()}
     />
-  )
+  );
 }
 ```
 

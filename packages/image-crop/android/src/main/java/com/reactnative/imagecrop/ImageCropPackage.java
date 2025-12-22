@@ -21,6 +21,6 @@ public class ImageCropPackage implements ReactPackage {
     @NonNull
     @Override
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-        return Arrays.asList(new RNImageCropViewManager());
+        return Arrays.asList(new ImageCropViewManager());
     }
 }

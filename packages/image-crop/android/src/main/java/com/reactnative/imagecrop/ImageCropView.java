@@ -13,11 +13,10 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 
 import com.facebook.common.logging.FLog;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.yalantis.ucrop.callback.BitmapCropCallback;
 import com.yalantis.ucrop.callback.OverlayViewChangeListener;
 import com.yalantis.ucrop.view.GestureCropImageView;
@@ -29,7 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-public class RNImageCropView extends FrameLayout {
+public class ImageCropView extends FrameLayout {
     private static final int DEFAULT_COMPRESS_QUALITY = 90;
     private static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
 
@@ -148,7 +147,7 @@ public class RNImageCropView extends FrameLayout {
     private GestureCropImageView mGestureCropImageView;
     private OverlayView mOverlayView;
 
-    public RNImageCropView(Context context) {
+    public ImageCropView(Context context) {
         super(context);
         init(context);
     }
@@ -179,13 +178,14 @@ public class RNImageCropView extends FrameLayout {
     }
 
     private void onCropped(String uri) {
-        WritableMap data = Arguments.createMap();
-        data.putString("uri", uri);
-        ReactContext reactContext = (ReactContext) getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-                getId(),
-                "onCropped",
-                data);
+		FLog.i(TAG, "onCropped:" +uri);
+		int surfaceId = UIManagerHelper.getSurfaceId(getContext());
+		int viewId = getId();
+		EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag((ReactContext) getContext(), viewId);
+		if (eventDispatcher != null) {
+			OnCropEvent event = new OnCropEvent(surfaceId, viewId, uri);
+			eventDispatcher.dispatchEvent(event);
+		}
     }
 
     private int getBitmapDegree(File file) {

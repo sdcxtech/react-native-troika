@@ -1,39 +1,52 @@
 {
-  "name": "@sdcx/image-crop",
-  "description": "A React Native ui component for image crop.",
-  "version": "0.2.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "ios",
-    "RNImageCrop.podspec",
-    "!android/build",
-    "!ios/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/image-crop#readme",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "image-crop"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "tsc": "tsc",
-    "test": "jest",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60"
-  },
-  "devDependencies": {}
+	"name": "@sdcx/image-crop",
+	"description": "A React Native ui component for image crop.",
+	"version": "1.0.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"ios",
+		"RNImageCrop.podspec",
+		"!android/build",
+		"!ios/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/image-crop#readme",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"image-crop"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build",
+		"tsc": "tsc",
+		"test": "jest",
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"codegenConfig": {
+		"name": "imagecrop",
+		"type": "components",
+		"jsSrcsDir": "src",
+		"android": {
+			"javaPackageName": "com.reactnative.imagecrop"
+		},
+		"ios": {
+			"componentProvider": {
+				"ImageCropView": "RNImageCropView"
+			}
+		}
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60"
+	},
+	"devDependencies": {}
 }

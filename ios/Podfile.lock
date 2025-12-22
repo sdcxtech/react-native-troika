@@ -2755,8 +2755,34 @@ PODS:
     - SocketRocket
     - Yoga
   - RNImageCrop (0.2.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
     - TOCropViewController
+    - Yoga
   - RNKeyboardInsets (1.0.0):
     - boost
     - DoubleConversion
@@ -3578,7 +3604,7 @@ SPEC CHECKSUMS:
   RNFastImage: 462a183c4b0b6b26fdfd639e1ed6ba37536c3b87
   RNFS: 89de7d7f4c0f6bafa05343c578f61118c8282ed8
   RNGestureHandler: 73726300d4c5ca4d80378cae85f9dad8908b3289
-  RNImageCrop: a1d01aadbb1205ce27487318d722bc11a8e87b5e
+  RNImageCrop: e9bb161b59fa475098e815c6878d8d24d2d6dd78
   RNKeyboardInsets: e9d24c99168c7d2f65027841b069030dfd80ee55
   RNNestedScrollView: e47e288c9df22c3dcc1a4a5861e50761ce78a8d2
   RNOverlay: b4d0692d69bd3f4231ec08ae3611ea336a9981af

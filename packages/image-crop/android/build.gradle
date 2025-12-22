@@ -1,36 +1,58 @@
-// android/build.gradle
+buildscript {
+	repositories {
+		mavenCentral()
+		google()
+	}
 
-def safeExtGet(prop, fallback) {
-    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+	dependencies {
+		classpath "com.android.tools.build:gradle:8.7.2"
+	}
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'com.facebook.react'
+
+def safeExtGet(prop, fallback) {
+	rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 
-    compileSdkVersion safeExtGet('compileSdkVersion', 30)
-    buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
+	def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+	// Check AGP version for backward compatibility w/react-native versions still on gradle plugin 6
+	def major = agpVersion[0].toInteger()
+	def minor = agpVersion[1].toInteger()
+	if ((major == 7 && minor >= 3) || major >= 8) {
+		namespace "com.reactnative.imagecrop"
+		buildFeatures {
+			buildConfig true
+		}
+	}
 
-    defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 21)
-        targetSdkVersion safeExtGet('targetSdkVersion', 30)
-        versionCode 1
-        versionName "1.0.0"
-    }
+	compileSdkVersion safeExtGet('compileSdkVersion', 35)
+	buildToolsVersion safeExtGet('buildToolsVersion', '35.0.0')
 
-    buildTypes {
-        release {
-            consumerProguardFiles 'proguard-rules.pro'
-        }
-    }
+	defaultConfig {
+		minSdkVersion safeExtGet('minSdkVersion', 24)
+		targetSdkVersion safeExtGet('targetSdkVersion', 35)
+	}
+
+	sourceSets {
+		main {
+			java.srcDirs += [
+				"generated/java",
+				"generated/jni"
+			]
+		}
+	}
+}
+
+repositories {
+	google()
+	mavenCentral()
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.facebook.react:react-native:+'
-    implementation 'com.github.yalantis:ucrop:2.2.6'
+	implementation 'com.github.yalantis:ucrop:2.2.6'
+	api 'com.facebook.react:react-native:+'
 }

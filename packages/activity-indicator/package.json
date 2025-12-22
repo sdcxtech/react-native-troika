@@ -10,6 +10,7 @@
 		"src",
 		"dist",
 		"android",
+		"common",
 		"!android/build",
 		"!**/__tests__"
 	],

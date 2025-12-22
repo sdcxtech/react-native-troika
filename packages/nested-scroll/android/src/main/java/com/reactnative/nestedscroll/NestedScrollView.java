@@ -33,6 +33,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 		super(context);
 		mRect = new Rect();
 		mFlingHelper = new NestedScrollFlingHelper(this);
+		setOverScrollMode(OVER_SCROLL_NEVER);
 	}
 
 	public void setStateWrapper(StateWrapper wrapper) {

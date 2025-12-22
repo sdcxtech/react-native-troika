@@ -67,8 +67,6 @@ using namespace facebook::react;
 }
 
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
-
-
 	const auto &oldViewProps = static_cast<const ImageCropViewProps &>(*_props);
 	const auto &newViewProps = static_cast<const ImageCropViewProps &>(*props);
 

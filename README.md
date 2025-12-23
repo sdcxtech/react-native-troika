@@ -25,7 +25,7 @@
 
 ### [BottomSheet](./packages/bottom-sheet/README.md)
 
-主要组件已支持新架构，支持 RN 0.82 及以上，已发布 1.x 版本。将 Android 的 [BottomSheetBehavior](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior) 迁移到了 React Native 中，在 API 设计上也尽量和 Android 保持一致，同时支持 iOS。主要组件已支持新架构，支持 RN 0.82 及以上，已发布 1.x 版本。
+将 Android 的 [BottomSheetBehavior](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior) 迁移到了 React Native 中，在 API 设计上也尽量和 Android 保持一致，同时支持 iOS。主要组件已支持新架构，支持 RN 0.82 及以上，已发布 1.x 版本。
 
 <img src="./packages/bottom-sheet/docs/assets/pagerview.gif" width="320">
 

@@ -1,4 +1,4 @@
-# 迁移原生组件到 RN 新架构
+# RN 新架构迁移指南 -- 原生组件
 
 本文介绍如何迁移原生组件到 RN 新架构，以 `ImageCropView` 为例。
 
@@ -19,6 +19,7 @@
 ## 定义规范
 
 ```ts
+// ImageCropNativeComponent.ts
 import type { CodegenTypes, HostComponent, ViewProps } from 'react-native';
 import { codegenNativeComponent, codegenNativeCommands } from 'react-native';
 
@@ -356,7 +357,7 @@ public void setFileUri(ImageCropView view, @Nullable String uri) {
 }
 ```
 
-## 回调
+### 回调
 
 和原先没有太大区别，通过定义事件类型如 `OnCropEvent` 来实现。
 
@@ -387,9 +388,9 @@ private void onCropped(String uri) {
 }
 ```
 
-## 方法
+### 方法
 
-比原先简单，直接实现即可。
+比旧架构简单，直接实现即可。
 
 ```java
 @Override
@@ -464,7 +465,7 @@ using namespace facebook::react;
 ### 属性
 
 ```objc
-@interface RNImageCropView() <RCTImageCropViewViewProtocol>
+@interface RNImageCropView()
 
 @property(nonatomic, copy, nonnull) NSString *fileUri;
 
@@ -533,7 +534,7 @@ namespace facebook::react {
 
 ### 回调
 
-```cpp
+```Objective-C++
 - (const ImageCropViewEventEmitter &)eventEmitter {
   return static_cast<const ImageCropViewEventEmitter &>(*_eventEmitter);
 }

@@ -17,43 +17,42 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping;
 import com.facebook.soloader.SoLoader;
 import com.reactnative.hybridnavigation.ReactManager;
 
-
 import java.io.IOException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-    private final ReactNativeHost reactNativeHost = new DefaultReactNativeHost(this) {
+	private final ReactNativeHost reactNativeHost = new DefaultReactNativeHost(this) {
 		@NonNull
 		@Override
-        public List<ReactPackage> getPackages() {
-            List<ReactPackage> packages = new PackageList(this).getPackages();
-            // Packages that cannot be autolinked yet can be added manually here, for example:
-            packages.add(new MyUiPackage());
-            return packages;
-        }
+		public List<ReactPackage> getPackages() {
+			List<ReactPackage> packages = new PackageList(this).getPackages();
+			// Packages that cannot be autolinked yet can be added manually here, for example:
+			packages.add(new MyUiPackage());
+			return packages;
+		}
 
 		@NonNull
-        @Override
-        public String getJSMainModuleName() {
-            return "index";
-        }
+		@Override
+		public String getJSMainModuleName() {
+			return "index";
+		}
 
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
+		@Override
+		public boolean getUseDeveloperSupport() {
+			return BuildConfig.DEBUG;
+		}
 
-        @Override
-        public boolean isNewArchEnabled() {
-            return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
-        }
+		@Override
+		public boolean isNewArchEnabled() {
+			return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+		}
 
-        @Override
-        public boolean isHermesEnabled() {
-            return BuildConfig.IS_HERMES_ENABLED;
-        }
-    };
+		@Override
+		public boolean isHermesEnabled() {
+			return BuildConfig.IS_HERMES_ENABLED;
+		}
+	};
 
 	@NonNull
 	@Override
@@ -61,9 +60,9 @@ public class MainApplication extends Application implements ReactApplication {
 		return DefaultReactHost.getDefaultReactHost(getApplicationContext(), reactNativeHost, null);
 	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+	@Override
+	public void onCreate() {
+		super.onCreate();
 		try {
 			SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
 		} catch (IOException e) {
@@ -77,6 +76,6 @@ public class MainApplication extends Application implements ReactApplication {
 		ReactManager reactManager = ReactManager.get();
 		reactManager.install(getReactHost());
 
-        FLog.setMinimumLoggingLevel(FLog.INFO);
-    }
+		FLog.setMinimumLoggingLevel(FLog.INFO);
+	}
 }

@@ -1,119 +1,101 @@
 package com.reactnative.overlay;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.ViewTreeObserver;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
-import androidx.annotation.Nullable;
+import com.facebook.react.bridge.UIManager;
+import com.facebook.react.runtime.ReactSurfaceView;
+import com.facebook.react.uimanager.TouchTargetHelper;
+import com.facebook.react.uimanager.UIManagerHelper;
+import com.facebook.react.uimanager.common.UIManagerType;
 
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactRootView;
+public class OverlayRootView extends FrameLayout {
+	private static final String TAG = "Overlay";
 
-import java.lang.reflect.Method;
+	public OverlayRootView(Context context) {
+		super(context);
+	}
 
-public class OverlayRootView extends ReactRootView {
+	public OverlayRootView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public OverlayRootView(Context context) {
-        super(context);
-    }
+	public OverlayRootView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
 
-    public OverlayRootView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	private boolean passThroughTouches = false;
 
-    public OverlayRootView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+	public void setPassThroughTouches(boolean passThroughTouches) {
+		this.passThroughTouches = passThroughTouches;
+	}
 
-    private boolean shouldConsumeTouchEvent = true;
+	ReactSurfaceView reactSurfaceView;
 
-    public void setShouldConsumeTouchEvent(boolean consume) {
-        this.shouldConsumeTouchEvent = consume;
-    }
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// FLog.i(TAG, "dispatchTouchEvent");
+		if (reactSurfaceView == null) {
+			reactSurfaceView = findReactSurfaceView(this);
+		}
 
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        int action = ev.getAction() & MotionEvent.ACTION_MASK;
-        if (action == MotionEvent.ACTION_DOWN) {
-            onChildStartedNativeGesture(ev);
-        }
-        return shouldConsumeTouchEvent;
-    }
+		if (reactSurfaceView != null) {
+			if (shouldPassTouches(ev)) return false;
+		}
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        removeOnGlobalLayoutListener();
-    }
+		return super.dispatchTouchEvent(ev);
+	}
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        removeOnGlobalLayoutListener();
-    }
+	private boolean shouldPassTouches(MotionEvent ev) {
+		if (!passThroughTouches) {
+			return false;
+		}
 
-    @Override
-    public void startReactApplication(ReactInstanceManager reactInstanceManager, String moduleName, @Nullable Bundle initialProperties) {
-        super.startReactApplication(reactInstanceManager, moduleName, initialProperties);
-        removeOnGlobalLayoutListener();
-    }
+		int action = ev.getAction() & MotionEvent.ACTION_MASK;
+		if (action != MotionEvent.ACTION_DOWN) {
+			return false;
+		}
 
-    // 避免 reload 时，重复 run 的问题
-    private boolean shouldRunApplication = true;
+		int tag = TouchTargetHelper.findTargetTagForTouch(ev.getX(), ev.getY(), reactSurfaceView.getRootViewGroup());
+		// FLog.i(TAG, "findTargetTagForTouch:" + tag);
+		UIManager uiManager = UIManagerHelper.getUIManager(reactSurfaceView.getCurrentReactContext(), UIManagerType.FABRIC);
+		if (uiManager == null) {
+			return false;
+		}
 
-    @Override
-    public void runApplication() {
-        if (shouldRunApplication) {
-            shouldRunApplication = false;
-            super.runApplication();
-        }
-    }
+		View view = uiManager.resolveView(tag);
+		if (view == null) {
+			return false;
+		}
 
-    private boolean hbd_isAttachedToReactInstance;
+		// FLog.i(TAG, "child name:%s", view.getClass().getSimpleName());
+		// FLog.i(TAG, "target, width:%d, height:%d", view.getWidth(), view.getHeight());
 
-    @Override
-    public void onAttachedToReactInstance() {
-        super.onAttachedToReactInstance();
-        hbd_isAttachedToReactInstance = true;
-    }
+		if (view == reactSurfaceView || view == reactSurfaceView.getChildAt(0)) {
+			if (view.getWidth() == reactSurfaceView.getWidth() && view.getHeight() == reactSurfaceView.getHeight()) {
+				reactSurfaceView.onChildStartedNativeGesture(reactSurfaceView, ev);
+				return true;
+			}
+		}
+		return false;
+	}
 
-    @Override
-    public void setAppProperties(@Nullable Bundle appProperties) {
-        if (hbd_isAttachedToReactInstance) {
-            shouldRunApplication = true;
-            super.setAppProperties(appProperties);
-        }
-    }
+	private ReactSurfaceView findReactSurfaceView(ViewGroup parent) {
+		for (int i = 0; i < parent.getChildCount(); i++) {
+			View child = parent.getChildAt(i);
+			if (child instanceof ReactSurfaceView) {
+				return (ReactSurfaceView) child;
+			}
+			if (child instanceof ViewGroup) {
+				ReactSurfaceView result = findReactSurfaceView((ViewGroup) child);
+				if (result != null) return result;
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public void unmountReactApplication() {
-        super.unmountReactApplication();
-        removeOnGlobalLayoutListener();
-    }
-
-    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
-
-    private ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener() {
-        if (mGlobalLayoutListener == null) {
-            try {
-                Method method = ReactRootView.class.getDeclaredMethod("getCustomGlobalLayoutListener");
-                method.setAccessible(true);
-                mGlobalLayoutListener = (ViewTreeObserver.OnGlobalLayoutListener) method.invoke(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return mGlobalLayoutListener;
-    }
-
-    void addOnGlobalLayoutListener() {
-        removeOnGlobalLayoutListener();
-        getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener());
-    }
-
-    void removeOnGlobalLayoutListener() {
-        getViewTreeObserver().removeOnGlobalLayoutListener(getGlobalLayoutListener());
-    }
 }

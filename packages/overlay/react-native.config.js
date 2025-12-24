@@ -1,9 +1,9 @@
 module.exports = {
-  dependency: {
-    platforms: {
-      android: {
-        packageInstance: 'new OverlayPackage(getReactNativeHost())',
-      },
-    },
-  },
+	dependency: {
+		platforms: {
+			android: {
+				packageInstance: 'new OverlayPackage(getReactNativeHost())',
+			},
+		},
+	},
 };

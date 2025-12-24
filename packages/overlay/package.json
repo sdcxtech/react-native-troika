@@ -1,39 +1,52 @@
 {
-  "name": "@sdcx/overlay",
-  "description": "A react-native Overlay component.",
-  "version": "0.5.0",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "react-native": "src/index",
-  "nativePackage": true,
-  "files": [
-    "src",
-    "dist",
-    "android",
-    "ios",
-    "RNOverlay.podspec",
-    "!android/build",
-    "!ios/build",
-    "!**/__tests__"
-  ],
-  "repository": "https://github.com/sdcxtech/react-native-troika",
-  "homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/overlay#readme",
-  "author": "sdcx",
-  "license": "MIT",
-  "keywords": [
-    "react-native",
-    "overlay"
-  ],
-  "scripts": {
-    "build": "rm -rf ./dist && tsc -p tsconfig.json",
-    "prepare": "npm run build",
-    "tsc": "tsc",
-    "test": "jest",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
-  },
-  "peerDependencies": {
-    "react": ">=16.8",
-    "react-native": ">=0.60"
-  },
-  "devDependencies": {}
+	"name": "@sdcx/overlay",
+	"description": "A react-native Overlay component.",
+	"version": "0.5.0",
+	"main": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"react-native": "src/index",
+	"nativePackage": true,
+	"files": [
+		"src",
+		"dist",
+		"android",
+		"ios",
+		"RNOverlay.podspec",
+		"!android/build",
+		"!ios/build",
+		"!**/__tests__"
+	],
+	"repository": "https://github.com/sdcxtech/react-native-troika",
+	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/overlay#readme",
+	"author": "sdcx",
+	"license": "MIT",
+	"keywords": [
+		"react-native",
+		"overlay"
+	],
+	"scripts": {
+		"build": "rm -rf ./dist && tsc -p tsconfig.json",
+		"prepare": "npm run build",
+		"tsc": "tsc",
+		"test": "jest",
+		"lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+	},
+	"codegenConfig": {
+		"name": "overlay",
+		"type": "modules",
+		"jsSrcsDir": "src",
+		"android": {
+			"javaPackageName": "com.reactnative.overlay"
+		},
+		"ios": {
+			"modulesProvider": {
+				"OverlayHost": "RNOverlayModule"
+			}
+		}
+	},
+	"peerDependencies": {
+		"react": ">=16.8",
+		"react-native": ">=0.60"
+	},
+	"devDependencies": {}
 }

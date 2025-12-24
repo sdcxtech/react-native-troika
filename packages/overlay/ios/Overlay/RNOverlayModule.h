@@ -1,9 +1,9 @@
-#import <React/RCTBridgeModule.h>
-#import <React/RCTInvalidating.h>
+#import <Foundation/Foundation.h>
+#import <overlay/overlay.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNOverlayModule : NSObject <RCTBridgeModule, RCTInvalidating>
+@interface RNOverlayModule : NSObject <NativeOverlaySpec>
 
 @end
 

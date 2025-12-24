@@ -4,11 +4,9 @@
 #import <React/RCTLog.h>
 #import <React/RCTBridge.h>
 
-
 NSString* genKey(NSString* moduleName, NSNumber* id) {
     return [NSString stringWithFormat:@"%@-%@", moduleName, id];
 }
-
 
 @interface RNOverlayModule ()
 
@@ -19,6 +17,20 @@ NSString* genKey(NSString* moduleName, NSNumber* id) {
 @implementation RNOverlayModule
 
 @synthesize bridge;
+
++ (BOOL)requiresMainQueueSetup {
+	return YES;
+}
+
+- (dispatch_queue_t)methodQueue {
+	return dispatch_get_main_queue();
+}
+
+RCT_EXPORT_MODULE(OverlayHost)
+
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
+  return std::make_shared<facebook::react::NativeOverlaySpecJSI>(params);
+}
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -39,16 +51,6 @@ NSString* genKey(NSString* moduleName, NSNumber* id) {
     [self handleReload];
 }
 
-+ (BOOL)requiresMainQueueSetup {
-    return YES;
-}
-
-- (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
-}
-
-RCT_EXPORT_MODULE(OverlayHost)
-
 
 RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
     NSString* key = genKey(moduleName, options[@"id"]);
@@ -57,10 +59,10 @@ RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
         [overlay update];
         return;
     }
-    
+
     overlay = [[RNOverlay alloc] initWithModuleName:moduleName bridge:self.bridge];
     self.overlays[key] = overlay;
-    
+
     UIWindow *window = RCTKeyWindow();
     UIEdgeInsets safeAreaInsets = window.safeAreaInsets;
     NSDictionary* insets = @{
@@ -69,7 +71,7 @@ RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
       @"bottom" : @(safeAreaInsets.bottom),
       @"left" : @(safeAreaInsets.left),
     };
-    
+
     NSMutableDictionary *props = [options mutableCopy];
     [props setObject:insets forKey:@"insets"];
     [overlay show:props options:options];
@@ -84,6 +86,5 @@ RCT_EXPORT_METHOD(hide:(NSString *)moduleName id:(nonnull NSNumber *)id) {
     [self.overlays removeObjectForKey:key];
     [overlay hide];
 }
-
 
 @end

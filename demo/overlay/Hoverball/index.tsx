@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 
 function HoverballWithSafeAreaInsets() {
 	return (
-		<SafeAreaProvider>
+		<SafeAreaProvider pointerEvents="box-none">
 			<Hoverball />
 		</SafeAreaProvider>
 	);

@@ -1,6 +1,9 @@
+import { type Insets } from 'react-native';
 import NativeOverlay, { type OverlayOptions } from './NativeOverlay';
 
-export type OverlayProps = OverlayOptions;
+export interface OverlayProps extends OverlayOptions {
+	insets: Insets;
+}
 
 function show(moduleName: string, options: OverlayOptions) {
 	NativeOverlay.show(moduleName, options);

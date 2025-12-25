@@ -123,10 +123,10 @@ public class OverlayModule extends NativeOverlaySpec implements LifecycleEventLi
 		Insets statusBarInsets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.statusBars());
 		Insets displayCutoutInsets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.displayCutout());
 		WritableMap insets = new JavaOnlyMap();
-		insets.putDouble("left", PixelUtil.toDIPFromPixel(Math.max(navigationBarInsets.left, displayCutoutInsets.left)));
-		insets.putDouble("top", PixelUtil.toDIPFromPixel(statusBarInsets.top));
-		insets.putDouble("right", PixelUtil.toDIPFromPixel(Math.max(navigationBarInsets.right, displayCutoutInsets.right)));
-		insets.putDouble("bottom", PixelUtil.toDIPFromPixel(navigationBarInsets.bottom));
+		insets.putDouble("left", Math.floor(PixelUtil.toDIPFromPixel(Math.max(navigationBarInsets.left, displayCutoutInsets.left) + 0.5f)));
+		insets.putDouble("top", Math.floor(PixelUtil.toDIPFromPixel(statusBarInsets.top + 0.5f)));
+		insets.putDouble("right", Math.floor(PixelUtil.toDIPFromPixel(Math.max(navigationBarInsets.right, displayCutoutInsets.right) + 0.5f)));
+		insets.putDouble("bottom", Math.floor(PixelUtil.toDIPFromPixel(navigationBarInsets.bottom) + 0.5f));
 		return insets;
 	}
 }

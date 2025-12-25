@@ -9,8 +9,8 @@ interface ToastProps {
 	onPress: () => void;
 }
 
-function ToastView({ overlayId, passThroughTouches }: OverlayProps) {
-	console.log('id', overlayId);
+function ToastView({ overlayId, passThroughTouches, insets }: OverlayProps) {
+	console.log('id', overlayId, 'passThroughTouches', passThroughTouches, 'insets', insets);
 	const props = propsMap.get(overlayId);
 	const { message, onPress } = props || {};
 	return (

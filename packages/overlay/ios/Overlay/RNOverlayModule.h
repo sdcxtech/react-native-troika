@@ -1,9 +1,14 @@
 #import <Foundation/Foundation.h>
 #import <overlay/overlay.h>
+#import <React/RCTInitializing.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNOverlayModule : NSObject <NativeOverlaySpec>
+@class RCTHost;
+
+@interface RNOverlayModule : NSObject <NativeOverlaySpec, RCTInvalidating>
+
+- (instancetype)initWithHost:(RCTHost *)host;
 
 @end
 

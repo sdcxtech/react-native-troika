@@ -2,7 +2,8 @@
 #import "RNOverlay.h"
 
 #import <React/RCTLog.h>
-#import <React/RCTBridge.h>
+#import <React-RuntimeApple/ReactCommon/RCTHost.h>
+#import <React/RCTConversions.h>
 
 NSString* genKey(NSString* moduleName, NSNumber* id) {
     return [NSString stringWithFormat:@"%@-%@", moduleName, id];
@@ -11,12 +12,12 @@ NSString* genKey(NSString* moduleName, NSNumber* id) {
 @interface RNOverlayModule ()
 
 @property(nonatomic, strong) NSMutableDictionary *overlays;
+@property(nonatomic, strong) RCTHost *host;
 
 @end
 
 @implementation RNOverlayModule
 
-@synthesize bridge;
 
 + (BOOL)requiresMainQueueSetup {
 	return YES;
@@ -39,6 +40,14 @@ RCT_EXPORT_MODULE(OverlayHost)
     return self;
 }
 
+- (instancetype)initWithHost:(RCTHost *)host {
+	if (self = [super init]) {
+		_overlays = [[NSMutableDictionary alloc] init];
+		_host = host;
+	}
+	return self;
+}
+
 - (void)handleReload {
     for (NSString *key in self.overlays) {
         RNOverlay *overlay = self.overlays[key];
@@ -51,40 +60,42 @@ RCT_EXPORT_MODULE(OverlayHost)
     [self handleReload];
 }
 
+- (void)show:(NSString *)moduleName options:(JS::NativeOverlay::OverlayOptions &)options {
+	NSString* key = genKey(moduleName, @(options.overlayId()));
+	RNOverlay *overlay = self.overlays[key];
+	if (overlay != nil) {
+		[overlay update];
+		return;
+	}
 
-RCT_EXPORT_METHOD(show:(NSString *)moduleName options:(NSDictionary *)options) {
-    NSString* key = genKey(moduleName, options[@"id"]);
-    RNOverlay *overlay = self.overlays[key];
-    if (overlay != nil) {
-        [overlay update];
-        return;
-    }
+	overlay = [[RNOverlay alloc] initWithModuleName:moduleName host:self.host];
+	self.overlays[key] = overlay;
 
-    overlay = [[RNOverlay alloc] initWithModuleName:moduleName bridge:self.bridge];
-    self.overlays[key] = overlay;
+	UIWindow *window = RCTKeyWindow();
+	UIEdgeInsets safeAreaInsets = window.safeAreaInsets;
+	NSDictionary* insets = @{
+	  @"top" : @(safeAreaInsets.top),
+	  @"right" : @(safeAreaInsets.right),
+	  @"bottom" : @(safeAreaInsets.bottom),
+	  @"left" : @(safeAreaInsets.left),
+	};
 
-    UIWindow *window = RCTKeyWindow();
-    UIEdgeInsets safeAreaInsets = window.safeAreaInsets;
-    NSDictionary* insets = @{
-      @"top" : @(safeAreaInsets.top),
-      @"right" : @(safeAreaInsets.right),
-      @"bottom" : @(safeAreaInsets.bottom),
-      @"left" : @(safeAreaInsets.left),
-    };
-
-    NSMutableDictionary *props = [options mutableCopy];
-    [props setObject:insets forKey:@"insets"];
-    [overlay show:props options:options];
+	NSDictionary *props = @{
+		@"insets": insets,
+		@"overlayId": @(options.overlayId()),
+		@"passThroughTouches": @((BOOL)options.passThroughTouches())
+	};
+	[overlay show:props options:props];
 }
 
-RCT_EXPORT_METHOD(hide:(NSString *)moduleName id:(nonnull NSNumber *)id) {
-    NSString* key = genKey(moduleName, id);
-    RNOverlay *overlay = self.overlays[key];
-    if (!overlay) {
-        return;
-    }
-    [self.overlays removeObjectForKey:key];
-    [overlay hide];
+- (void)hide:(NSString *)moduleName overlayId:(NSInteger)overlayId {
+	NSString* key = genKey(moduleName, @(overlayId));
+	RNOverlay *overlay = self.overlays[key];
+	if (!overlay) {
+		return;
+	}
+	[self.overlays removeObjectForKey:key];
+	[overlay hide];
 }
 
 @end

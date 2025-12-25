@@ -10,8 +10,12 @@
 #import <React/RCTDevMenu.h>
 
 #import <HybridNavigation/HybridNavigation.h>
+#import <RNOverlay/RNOverlayModule.h>
 
 @interface ReactNativeDelegate : RCTDefaultReactNativeFactoryDelegate
+
+@property (weak, nonatomic) RCTRootViewFactory *rootViewFactory;
+
 @end
 
 @implementation ReactNativeDelegate
@@ -22,6 +26,22 @@
 #else
 	return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (Class)getModuleClassFromName:(const char *)name {
+	NSString *moduleName = [NSString stringWithUTF8String: name];
+	if ([moduleName isEqualToString:@"OverlayHost"]) {
+		return [RNOverlayModule class];
+	}
+	return nil;
+}
+
+- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass {
+	if ([moduleClass instancesRespondToSelector:@selector(initWithHost:)]) {
+		return [[moduleClass alloc] initWithHost:self.rootViewFactory.reactHost];
+	}
+	// 返回 nil 使用默认初始化
+	return nil;
 }
 
 @end
@@ -42,6 +62,7 @@
 	ReactNativeDelegate *delegate = [[ReactNativeDelegate alloc] init];
 	RCTReactNativeFactory *factory = [[RCTReactNativeFactory alloc] initWithDelegate:delegate];
 	delegate.dependencyProvider = [[RCTAppDependencyProvider alloc] init];
+	delegate.rootViewFactory = factory.rootViewFactory;
 
 	self.reactNativeDelegate = delegate;
 	self.reactNativeFactory = factory;

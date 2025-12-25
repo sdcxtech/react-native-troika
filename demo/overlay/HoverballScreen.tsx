@@ -14,7 +14,7 @@ function FloatingBall() {
 		<View style={styles.container}>
 			<Text style={styles.text}>开启或关闭悬浮球</Text>
 
-			<Switch value={enabled} onValueChange={setEnabled} />
+			<Switch style={styles.switch} value={enabled} onValueChange={setEnabled} />
 		</View>
 	);
 }
@@ -28,8 +28,7 @@ export default withNavigationItem({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'flex-start',
-		alignItems: 'stretch',
+		alignItems: 'center',
 		paddingTop: 16,
 		paddingLeft: 32,
 		paddingRight: 32,
@@ -38,5 +37,9 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		fontSize: 17,
 		alignSelf: 'center',
+	},
+	switch: {
+		alignSelf: 'center',
+		marginTop: 16,
 	},
 });

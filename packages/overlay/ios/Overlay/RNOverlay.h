@@ -1,9 +1,10 @@
 #import <UIKit/UIKit.h>
-#import <React/RCTBridge.h>
+
+@class RCTHost;
 
 @interface RNOverlay : NSObject
 
-- (instancetype)initWithModuleName:(NSString *)moduleName bridge:(RCTBridge *)bridge;
+- (instancetype)initWithModuleName:(NSString *)moduleName host:(RCTHost *)rctHost;
 
 - (void)show:(NSDictionary *)props options:(NSDictionary *)options;
 

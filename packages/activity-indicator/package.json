@@ -1,7 +1,7 @@
 {
 	"name": "@sdcx/activity-indicator",
 	"description": "A native activity indicator for React Native",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"react-native": "src/index",
@@ -11,6 +11,7 @@
 		"dist",
 		"android",
 		"common",
+		"react-native.config.js",
 		"!android/build",
 		"!**/__tests__"
 	],

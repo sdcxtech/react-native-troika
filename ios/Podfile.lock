@@ -2839,7 +2839,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNOverlay (0.5.0):
+  - RNOverlay (1.0.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3633,7 +3633,7 @@ SPEC CHECKSUMS:
   RNImageCrop: 4e9e057f60a02d09b8dbd83a8fda3b46d6d34e64
   RNKeyboardInsets: e9d24c99168c7d2f65027841b069030dfd80ee55
   RNNestedScrollView: e47e288c9df22c3dcc1a4a5861e50761ce78a8d2
-  RNOverlay: 708e3e53ff29171f1ba9102bd6fd40386d68dd17
+  RNOverlay: cc250e1884fb4cea699858662a2e149ca071c21b
   RNPullToRefresh: d3f0092f6dbeaf0d1e17ecc5e95fe29f2a49ee6a
   RNReactNativeHapticFeedback: be4f1b4bf0398c30b59b76ed92ecb0a2ff3a69c6
   RNReanimated: c86c4fdafbeb0ecff9ae8bbc65a16dd09c0e2fde

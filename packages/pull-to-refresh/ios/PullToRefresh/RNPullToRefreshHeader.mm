@@ -1,4 +1,4 @@
-#import "RNRefreshHeader.h"
+#import "RNPullToRefreshHeader.h"
 #import "RNRefreshState.h"
 #import "RNRefreshingEvent.h"
 #import "RNRefreshOffsetChangedEvent.h"
@@ -26,14 +26,14 @@ RCTSendOffsetEventForNativeAnimations_DEPRECATED(NSInteger tag, CGFloat offset) 
 
 using namespace facebook::react;
 
-@interface RNRefreshHeader ()
+@interface RNPullToRefreshHeader ()
 
 @property(nonatomic, assign) RNRefreshState state;
 @property(nonatomic, assign) CGFloat topInset;
 
 @end
 
-@implementation RNRefreshHeader {
+@implementation RNPullToRefreshHeader {
     BOOL _isInitialRender;
     BOOL _hasObserver;
 	__weak UIView *_reactRootView;
@@ -87,7 +87,7 @@ using namespace facebook::react;
 	if (layoutMetrics.frame.origin.y < 0) {
 		self.hidden = NO;
 	}
-	
+
 	if (self.scrollView) {
 		[self adjustScrollViewContainerViewFrame];
 	}
@@ -96,12 +96,12 @@ using namespace facebook::react;
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
 	const auto &oldViewProps = static_cast<const PullToRefreshHeaderProps &>(*_props);
 	const auto &newViewProps = static_cast<const PullToRefreshHeaderProps &>(*props);
-	
+
 	// `refreshing`
 	if (newViewProps.refreshing != oldViewProps.refreshing) {
 		self.refreshing = newViewProps.refreshing;
 	}
-	
+
 	[super updateProps:props oldProps:oldProps];
 }
 
@@ -206,17 +206,17 @@ using namespace facebook::react;
 	if (!self.scrollView) {
 		return;
 	}
-	
+
 	if ([keyPath isEqualToString:@"contentSize"]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self adjustScrollViewContainerViewFrame];
 		});
 	}
-	
+
 	if (![keyPath isEqualToString:@"contentOffset"]) {
 		return;
 	}
-	
+
 	CGFloat adjustedTop = 0;
 	if (@available(iOS 11.0, *)) {
 		adjustedTop = self.scrollView.adjustedContentInset.top;
@@ -369,7 +369,7 @@ using namespace facebook::react;
 	if (_reactRootView) {
 		return;
 	}
-	
+
 	UIView *v = self;
 	while (v) {
 		if ([NSStringFromClass([v class]) isEqualToString:@"RCTSurfaceView"]) {

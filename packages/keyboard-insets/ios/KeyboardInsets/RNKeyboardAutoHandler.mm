@@ -5,7 +5,7 @@
 
 @interface RNKeyboardAutoHandler ()
 
-@property (nonatomic, weak) RNKeyboardInsetsViewComponentView *view;
+@property (nonatomic, weak) RNKeyboardInsetsView *view;
 @property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, assign) BOOL forceUpdated;
 @property (nonatomic, assign) CGFloat edgeBottom;
@@ -15,7 +15,7 @@
 
 @implementation RNKeyboardAutoHandler
 
-- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsViewComponentView *)view {
+- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsView *)view {
     if (self = [super init]) {
         _view = view;
     }
@@ -58,7 +58,7 @@
 }
 
 - (void)doKeyboardTransition:(CGFloat)position {
-    RNKeyboardInsetsViewComponentView *view = self.view;
+    RNKeyboardInsetsView *view = self.view;
 
     CGFloat translationY = 0;
     if (position > 0) {

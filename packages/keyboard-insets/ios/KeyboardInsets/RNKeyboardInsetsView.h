@@ -19,7 +19,7 @@ typedef struct {
 	BOOL transitioning;
 } KeyboardStatus;
 
-@interface RNKeyboardInsetsViewComponentView : RCTViewComponentView
+@interface RNKeyboardInsetsView : RCTViewComponentView
 
 @property(nonatomic, assign) CGFloat extraHeight;
 @property(nonatomic, assign) BOOL explicitly;

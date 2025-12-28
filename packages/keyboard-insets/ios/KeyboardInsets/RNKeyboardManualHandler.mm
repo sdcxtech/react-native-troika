@@ -4,13 +4,13 @@
 
 @interface RNKeyboardManualHandler ()
 
-@property (nonatomic, weak) RNKeyboardInsetsViewComponentView *view;
+@property (nonatomic, weak) RNKeyboardInsetsView *view;
 
 @end
 
 @implementation RNKeyboardManualHandler
 
-- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsViewComponentView *)view {
+- (instancetype)initWithKeyboardInsetsView:(RNKeyboardInsetsView *)view {
     if (self = [super init]) {
         _view = view;
     }

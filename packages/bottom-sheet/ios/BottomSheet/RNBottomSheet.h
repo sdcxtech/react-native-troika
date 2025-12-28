@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RNBottomSheetComponentView : RCTViewComponentView
+@interface RNBottomSheet : RCTViewComponentView
 
 @end
 

@@ -1,4 +1,4 @@
-#import "RNKeyboardInsetsViewComponentView.h"
+#import "RNKeyboardInsetsView.h"
 #import "RNKeyboardAutoHandler.h"
 #import "RNKeyboardManualHandler.h"
 #import "RNKeyboardStatusChangedEvent.h"
@@ -33,14 +33,14 @@ RCTSendPositionForNativeAnimations_DEPRECATED(NSInteger tag, CGFloat position) {
 
 using namespace facebook::react;
 
-@interface RNKeyboardInsetsViewComponentView ()
+@interface RNKeyboardInsetsView ()
 
 @property(nonatomic, assign) KeyboardInsetsViewMode mode;
 
 
 @end
 
-@implementation RNKeyboardInsetsViewComponentView {
+@implementation RNKeyboardInsetsView {
     UIView *_focusView;
 
     CADisplayLink *_displayLink;
@@ -163,14 +163,14 @@ using namespace facebook::react;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    UIView *focusView = [RNKeyboardInsetsViewComponentView findFocusView:self];
+    UIView *focusView = [RNKeyboardInsetsView findFocusView:self];
 
     if (![self shouldHandleKeyboardTransition:focusView]) {
         return;
     }
 
     _focusView = focusView;
-    _keyboardView = [RNKeyboardInsetsViewComponentView findKeyboardView];
+    _keyboardView = [RNKeyboardInsetsView findKeyboardView];
 
     NSDictionary *userInfo = [notification userInfo];
     CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -197,9 +197,9 @@ using namespace facebook::react;
     [self stopWatchKeyboardTransition];
 
     if ([self isAutoMode]) {
-        UIView *focusView = [RNKeyboardInsetsViewComponentView findFocusView:self];
+        UIView *focusView = [RNKeyboardInsetsView findFocusView:self];
         if (focusView && focusView != _focusView) {
-            RNKeyboardInsetsViewComponentView *insetsView = [RNKeyboardInsetsViewComponentView findClosetKeyboardInsetsView:focusView];
+            RNKeyboardInsetsView *insetsView = [RNKeyboardInsetsView findClosetKeyboardInsetsView:focusView];
             if (insetsView != self) {
                 focusView = nil;
             }
@@ -223,7 +223,7 @@ using namespace facebook::react;
         return;
     }
 
-    _keyboardView = [RNKeyboardInsetsViewComponentView findKeyboardView];
+    _keyboardView = [RNKeyboardInsetsView findKeyboardView];
 
     if ([self isAutoMode]) {
         [[self autoHandler] keyboardWillHide:_focusView keyboardHeight:_keyboardHeight];
@@ -256,7 +256,7 @@ using namespace facebook::react;
 
 - (BOOL)shouldHandleKeyboardTransition:(UIView *)focusView {
     if (focusView) {
-        RNKeyboardInsetsViewComponentView *closet = [RNKeyboardInsetsViewComponentView findClosetKeyboardInsetsView:focusView];
+        RNKeyboardInsetsView *closet = [RNKeyboardInsetsView findClosetKeyboardInsetsView:focusView];
             return closet == self;
     }
     return NO;
@@ -345,9 +345,9 @@ BOOL hasAnyPrefix(NSArray<NSString *> *names, NSString *desc) {
     return nil;
 }
 
-+ (RNKeyboardInsetsViewComponentView *)findClosetKeyboardInsetsView:(UIView *)view {
-    if ([view isKindOfClass:[RNKeyboardInsetsViewComponentView class]]) {
-        return (RNKeyboardInsetsViewComponentView *)view;
++ (RNKeyboardInsetsView *)findClosetKeyboardInsetsView:(UIView *)view {
+    if ([view isKindOfClass:[RNKeyboardInsetsView class]]) {
+        return (RNKeyboardInsetsView *)view;
     }
 
     if (view.superview) {

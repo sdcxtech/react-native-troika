@@ -1,6 +1,6 @@
 #import "RNPullToRefresh.h"
-#import "RNRefreshHeader.h"
-#import "RNRefreshFooter.h"
+#import "RNPullToRefreshHeader.h"
+#import "RNPullToRefreshFooter.h"
 
 #import <react/renderer/components/pulltorefresh/ComponentDescriptors.h>
 #import <react/renderer/components/pulltorefresh/EventEmitters.h>
@@ -14,8 +14,8 @@ using namespace facebook::react;
 
 @interface RNPullToRefresh ()
 
-@property(nonatomic, weak) RNRefreshHeader *header;
-@property(nonatomic, weak) RNRefreshFooter *footer;
+@property(nonatomic, weak) RNPullToRefreshHeader *header;
+@property(nonatomic, weak) RNPullToRefreshFooter *footer;
 @property(nonatomic, weak) UIScrollView *scrollView;
 
 @end
@@ -48,11 +48,11 @@ using namespace facebook::react;
 }
 
 - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
-	if ([childComponentView isKindOfClass:[RNRefreshHeader class]]) {
-		self.header = (RNRefreshHeader *)childComponentView;
+	if ([childComponentView isKindOfClass:[RNPullToRefreshHeader class]]) {
+		self.header = (RNPullToRefreshHeader *)childComponentView;
 		[self assembleIfNeeded];
-	} else if ([childComponentView isKindOfClass:[RNRefreshFooter class]]) {
-		self.footer = (RNRefreshFooter *)childComponentView;
+	} else if ([childComponentView isKindOfClass:[RNPullToRefreshFooter class]]) {
+		self.footer = (RNPullToRefreshFooter *)childComponentView;
 		[self assembleIfNeeded];
 	} else {
 		RCTAssert(self.subviews.count == 0, @"PullToRefresh may only contain a single subview.");

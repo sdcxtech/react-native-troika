@@ -1,4 +1,4 @@
-#import "RNBottomSheetComponentView.h"
+#import "RNBottomSheet.h"
 #import "RNBottomSheetStateChangedEvent.h"
 #import "RNBottomSheetOffsetChangedEvent.h"
 
@@ -36,7 +36,7 @@ RCTSendStateForNativeAnimations_DEPRECATED(NSInteger tag, NSString *state) {
 
 using namespace facebook::react;
 
-@interface RNBottomSheetComponentView () <UIGestureRecognizerDelegate>
+@interface RNBottomSheet () <UIGestureRecognizerDelegate>
 
 @property(nonatomic, assign) BottomSheetStatus status;
 @property(nonatomic, assign) BottomSheetStatus finalStatus;
@@ -54,7 +54,7 @@ using namespace facebook::react;
 
 @end
 
-@implementation RNBottomSheetComponentView {
+@implementation RNBottomSheet {
 	__weak UIView *_rootView;
 	BOOL _isInitialRender;
 	__weak UIView *_reactRootView;
@@ -159,7 +159,7 @@ using namespace facebook::react;
 	if (!self.draggable) {
 		return NO;
 	}
-	
+
 	if (gestureRecognizer != self.panGestureRecognizer) {
 		return YES;
 	}
@@ -524,7 +524,7 @@ using namespace facebook::react;
 	if (_reactRootView) {
 		return;
 	}
-	
+
 	UIView *v = self;
 	while (v) {
 		if ([NSStringFromClass([v class]) isEqualToString:@"RCTSurfaceView"]) {

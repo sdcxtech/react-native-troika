@@ -1,4 +1,4 @@
-#import "RNRefreshFooter.h"
+#import "RNPullToRefreshFooter.h"
 #import "RNRefreshState.h"
 #import "RNRefreshingEvent.h"
 #import "RNRefreshOffsetChangedEvent.h"
@@ -23,14 +23,14 @@ RCTSendOffsetEventForNativeAnimations_DEPRECATED(NSInteger tag, CGFloat offset) 
 
 using namespace facebook::react;
 
-@interface RNRefreshFooter ()
+@interface RNPullToRefreshFooter ()
 
 @property(nonatomic, assign) RNRefreshState state;
 @property(nonatomic, assign) CGFloat bottomInset;
 
 @end
 
-@implementation RNRefreshFooter {
+@implementation RNPullToRefreshFooter {
 	PullToRefreshFooterShadowNode::ConcreteState::Shared _shadowState;
 	BOOL _hasObserver;
 	__weak UIView *_reactRootView;
@@ -91,22 +91,22 @@ static void *kKVOContextContentSize = &kKVOContextContentSize;
 - (void)updateProps:(const facebook::react::Props::Shared &)props oldProps:(const facebook::react::Props::Shared &)oldProps {
 	const auto &oldViewProps = static_cast<const PullToRefreshFooterProps &>(*_props);
 	const auto &newViewProps = static_cast<const PullToRefreshFooterProps &>(*props);
-	
+
 	// `refreshing`
 	if (newViewProps.refreshing != oldViewProps.refreshing) {
 		self.refreshing = newViewProps.refreshing;
 	}
-	
+
 	// `noMoreData`
 	if (newViewProps.noMoreData != oldViewProps.noMoreData) {
 		self.noMoreData = newViewProps.noMoreData;
 	}
-	
+
 	// `manual`
 	if (newViewProps.manual != oldViewProps.manual) {
 		self.manual = newViewProps.manual;
 	}
-	
+
 	[super updateProps:props oldProps:oldProps];
 }
 
@@ -198,7 +198,7 @@ static void *kKVOContextContentSize = &kKVOContextContentSize;
 		[self.scrollView addObserver:self forKeyPath:@"contentSize" options:options context:kKVOContextContentSize];
 		_hasObserver = YES;
 	} @catch (NSException *exception) {
-		RCTLogWarn(@"RNRefreshFooter: addObserver failed: %@", exception);
+		RCTLogWarn(@"RNPullToRefreshFooter: addObserver failed: %@", exception);
 		_hasObserver = NO;
 	}
 }
@@ -211,7 +211,7 @@ static void *kKVOContextContentSize = &kKVOContextContentSize;
 		[self.scrollView removeObserver:self forKeyPath:@"contentOffset" context:kKVOContextContentOffset];
 		[self.scrollView removeObserver:self forKeyPath:@"contentSize" context:kKVOContextContentSize];
 	} @catch (NSException *exception) {
-		RCTLogWarn(@"RNRefreshFooter: removeObserver failed: %@", exception);
+		RCTLogWarn(@"RNPullToRefreshFooter: removeObserver failed: %@", exception);
 	}
 	_hasObserver = NO;
 }
@@ -255,11 +255,11 @@ static void *kKVOContextContentSize = &kKVOContextContentSize;
 		if (![self isFullScrollView]) { // 内容不满一屏
 			return;
 		}
-		
+
 		if (self.scrollView.isDragging) {
 			[self cancelRootViewTouches];
 		}
-		
+
 		CGFloat offsetY = newPoint.y;
 		// 手动触发模式
 		if (self.manual) {
@@ -386,7 +386,7 @@ static void *kKVOContextContentSize = &kKVOContextContentSize;
 	if (_reactRootView) {
 		return;
 	}
-	
+
 	UIView *v = self;
 	while (v) {
 		if ([NSStringFromClass([v class]) isEqualToString:@"RCTSurfaceView"]) {

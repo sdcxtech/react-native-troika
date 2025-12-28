@@ -45,7 +45,7 @@
 		},
 		"ios": {
 			"componentProvider": {
-				"BottomSheet": "RNBottomSheetComponentView"
+				"BottomSheet": "RNBottomSheet"
 			}
 		}
 	}

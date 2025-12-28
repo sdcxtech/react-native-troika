@@ -48,8 +48,8 @@
 		"ios": {
 			"componentProvider": {
 				"PullToRefresh": "RNPullToRefresh",
-				"PullToRefreshHeader": "RNRefreshHeader",
-				"PullToRefreshFooter": "RNRefreshFooter"
+				"PullToRefreshHeader": "RNPullToRefreshHeader",
+				"PullToRefreshFooter": "RNPullToRefreshFooter"
 			}
 		}
 	}

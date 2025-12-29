@@ -66,5 +66,18 @@ void NestedScrollViewShadowNode::adjustLayoutWithState() {
 	
 }
 
+Point NestedScrollViewShadowNode::getContentOriginOffset(bool includeTransform) const {
+    auto state =
+    std::static_pointer_cast<const NestedScrollViewShadowNode::ConcreteState>(
+                                                                              getState());
+    auto stateData = state->getData();
+    auto contentOffsetY = stateData.contentOffsetY;
+
+    return {
+        .x  = 0,
+        .y = static_cast<Float>(-contentOffsetY)
+    };
+}
+
 } // namespace react
 } // namespace facebook

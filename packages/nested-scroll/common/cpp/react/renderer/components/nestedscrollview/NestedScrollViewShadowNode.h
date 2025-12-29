@@ -24,7 +24,7 @@ class JSI_EXPORT NestedScrollViewShadowNode final
 
 public:
   	void adjustLayoutWithState();
-
+	Point getContentOriginOffset(bool includeTransform) const;
 };
 
 } // namespace react

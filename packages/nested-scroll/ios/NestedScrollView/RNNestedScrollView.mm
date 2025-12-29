@@ -277,6 +277,28 @@ using namespace facebook::react;
 	}
 	
 	_lastOffsetY = newOffset;
+    [self _updateStateWithContentOffset];
+}
+
+- (void)_updateStateWithContentOffset {
+  if (!_state) {
+    return;
+  }
+
+  // 获取当前的滚动偏移量
+  auto contentOffset = RCTPointFromCGPoint(_main.contentOffset);
+
+  // 调用 C++ State 的 updateState 方法
+  _state->updateState(
+    [contentOffset](const NestedScrollViewShadowNode::ConcreteState::Data &oldData) -> NestedScrollViewShadowNode::ConcreteState::SharedData {
+      // 如果偏移量没变，则不更新
+      if (oldData.contentOffsetY == contentOffset.y) {
+        return nullptr;
+      }
+      auto newData = oldData;
+      newData.contentOffsetY = contentOffset.y;
+      return std::make_shared<const NestedScrollViewShadowNode::ConcreteState::Data>(newData);
+    });
 }
 
 // target scrollView

@@ -24,16 +24,16 @@ public:
   	NestedScrollViewState(
       	NestedScrollViewState const &previousState,
       	folly::dynamic data) {
-        // 使用安全的方式读取，如果 data 中没有某个字段，则保留上一次状态的值
-        contentHeight = data.getDefault("contentHeight", previousState.contentHeight).asDouble();
-        headerHeight = data.getDefault("headerHeight", previousState.headerHeight).asDouble();
-        contentOffsetY = data.getDefault("contentOffsetY", previousState.contentOffsetY).asDouble();
+		// 使用安全的方式读取，如果 data 中没有某个字段，则保留上一次状态的值
+		contentHeight = data.getDefault("contentHeight", previousState.contentHeight).asDouble();
+		headerHeight = data.getDefault("headerHeight", previousState.headerHeight).asDouble();
+		contentOffsetY = data.getDefault("contentOffsetY", previousState.contentOffsetY).asDouble();
     };
 #endif
 
-  	double contentHeight{};
-  	double headerHeight{};
-    double contentOffsetY{};
+	double contentHeight{};
+	double headerHeight{};
+	double contentOffsetY{};
 #ifdef ANDROID
   	folly::dynamic getDynamic() const;
   	MapBuffer getMapBuffer() const {

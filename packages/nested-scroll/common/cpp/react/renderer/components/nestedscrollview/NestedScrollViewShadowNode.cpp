@@ -67,10 +67,7 @@ void NestedScrollViewShadowNode::adjustLayoutWithState() {
 }
 
 Point NestedScrollViewShadowNode::getContentOriginOffset(bool includeTransform) const {
-    auto state =
-    std::static_pointer_cast<const NestedScrollViewShadowNode::ConcreteState>(
-                                                                              getState());
-    auto stateData = state->getData();
+	auto stateData = getStateData();
     auto contentOffsetY = stateData.contentOffsetY;
 
     return {

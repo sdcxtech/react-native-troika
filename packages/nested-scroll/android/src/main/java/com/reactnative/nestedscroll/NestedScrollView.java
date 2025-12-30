@@ -5,7 +5,6 @@ import static com.facebook.react.uimanager.PixelUtil.toDIPFromPixel;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,12 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.MeasureSpecAssertions;
-import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ReactOverflowView;
 import com.facebook.react.uimanager.StateWrapper;
 import com.facebook.react.uimanager.events.NativeGestureUtil;
 
 public class NestedScrollView extends androidx.core.widget.NestedScrollView implements ReactOverflowView {
+	private static final String TAG = "NestedScrollView";
 	private final NestedScrollViewLocalData mNestedScrollViewLocalData = new NestedScrollViewLocalData();
 	private String mOverflow = "hidden";
 	private final Rect mRect;
@@ -66,21 +65,21 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 			consumed[1] += myConsumed;
 		}
 
-        if (mStateWrapper != null) {
-            ReadableMap currentState = mStateWrapper.getStateData();
-            double currentOffsetY = 0;
-            if (currentState != null && currentState.hasKey("contentOffsetY")) {
-                currentOffsetY = currentState.getDouble("contentOffsetY");
-            }
-            final int newOffsetY = (int) toDIPFromPixel(getScrollY());
+		if (mStateWrapper != null) {
+			ReadableMap currentState = mStateWrapper.getStateData();
+			double currentOffsetY = 0;
+			if (currentState != null && currentState.hasKey("contentOffsetY")) {
+				currentOffsetY = currentState.getDouble("contentOffsetY");
+			}
+			final int newOffsetY = (int) toDIPFromPixel(getScrollY());
 
-            if (Math.abs(currentOffsetY - newOffsetY) > 0.1) {
-                WritableMap map = Arguments.createMap();
-                Log.d("NestedScrollView", "updateState contentOffsetY : " + newOffsetY);
-                map.putDouble("contentOffsetY", newOffsetY);
-                mStateWrapper.updateState(map);
-            }
-        }
+			if (Math.abs(currentOffsetY - newOffsetY) > 0.1) {
+				WritableMap map = Arguments.createMap();
+				FLog.i(TAG, "updateState contentOffsetY : " + newOffsetY);
+				map.putDouble("contentOffsetY", newOffsetY);
+				mStateWrapper.updateState(map);
+			}
+		}
 
 	}
 
@@ -153,7 +152,7 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 					WritableMap map = Arguments.createMap();
 					map.putDouble("contentHeight", toDIPFromPixel(contentHeight));
 					map.putDouble("headerHeight", toDIPFromPixel(headerHeight));
-					FLog.i("NestedScroll", "contentHeight:" + toDIPFromPixel(contentHeight) + " headerHeight:" + toDIPFromPixel(headerHeight));
+					FLog.i(TAG, "contentHeight:" + toDIPFromPixel(contentHeight) + " headerHeight:" + toDIPFromPixel(headerHeight));
 					mStateWrapper.updateState(map);
 				}
 			}

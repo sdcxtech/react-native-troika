@@ -5830,10 +5830,10 @@ react-native-is-edge-to-edge@1.2.1:
   resolved "https://registry.npmmirror.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz#64e10851abd9d176cbf2b40562f751622bde3358"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
 
-react-native-pager-view@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.npmmirror.com/react-native-pager-view/-/react-native-pager-view-7.0.2.tgz#96f2042631f413dd37a601b9182fdfa8305e7d5c"
-  integrity sha512-yj/v6BN/WGuV1VBVWaCjYOjQlhTaqJs4Ocismw0XRSsHGqO2wuQdWF8it5iFnfibQVBBED0/GC7qKOlQ4FBzNg==
+react-native-pager-view@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmmirror.com/react-native-pager-view/-/react-native-pager-view-8.0.0.tgz#9a6cc7d8239d97581840fe51691f07320d1ce4f7"
+  integrity sha512-oAwlWT1lhTkIs9HhODnjNNl/owxzn9DP1MbP+az6OTUdgbmzA16Up83sBH8NRKwrH8rNm7iuWnX1qMqiiWOLhg==
 
 react-native-reanimated@^4.2.0:
   version "4.2.0"

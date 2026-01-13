@@ -14,7 +14,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/github-account/pull-to-refresh.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}", "common/cpp/**/*.{cpp,h}"
-
   s.private_header_files = "ios/**/*.h"
   s.pod_target_xcconfig = {
     "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)/common/cpp\""

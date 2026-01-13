@@ -89,7 +89,7 @@ using namespace facebook::react;
 	}
 
 	if (self.scrollView) {
-		[self adjustScrollViewContainerViewFrame];
+		[self adjustScrollViewContentSize];
 	}
 }
 
@@ -174,7 +174,7 @@ using namespace facebook::react;
 	}
 }
 
-- (void)adjustScrollViewContainerViewFrame {
+- (void)adjustScrollViewContentSize {
 	RCTScrollViewComponentView *comp = [RCTScrollViewComponentView findScrollViewComponentViewForView:self];
 	CGRect frame = comp.containerView.frame;
 	if (frame.origin.y < 0) {
@@ -182,6 +182,7 @@ using namespace facebook::react;
 											  0,
 											  frame.size.width,
 											  frame.size.height + frame.origin.y);
+		comp.scrollView.contentSize = comp.containerView.frame.size;
 	}
 }
 
@@ -208,9 +209,7 @@ using namespace facebook::react;
 	}
 
 	if ([keyPath isEqualToString:@"contentSize"]) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self adjustScrollViewContainerViewFrame];
-		});
+		[self adjustScrollViewContentSize];
 	}
 
 	if (![keyPath isEqualToString:@"contentOffset"]) {

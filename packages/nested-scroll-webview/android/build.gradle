@@ -1,36 +1,36 @@
 // android/build.gradle
 
 def safeExtGet(prop, fallback) {
-    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+	rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
 
-    compileSdkVersion safeExtGet('compileSdkVersion', 30)
-    buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
+	compileSdkVersion safeExtGet('compileSdkVersion', 30)
+	buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
 
-    defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 21)
-        targetSdkVersion safeExtGet('targetSdkVersion', 30)
-        versionCode 1
-        versionName "1.0.0"
-    }
+	defaultConfig {
+		minSdkVersion safeExtGet('minSdkVersion', 21)
+		targetSdkVersion safeExtGet('targetSdkVersion', 30)
+		versionCode 1
+		versionName "1.0.0"
+	}
 
-    buildTypes {
-        release {
-            consumerProguardFiles 'proguard-rules.pro'
-        }
-    }
+	buildTypes {
+		release {
+			consumerProguardFiles 'proguard-rules.pro'
+		}
+	}
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.facebook.react:react-native:+'
-    implementation project(':react-native-webview')
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation 'com.facebook.react:react-native:+'
+	implementation project(':react-native-webview')
 }

@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/github-account/nested-scroll.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/NestedScrollView/**/*.{h,m,mm}", "common/cpp/**/*.{cpp,h}"
+  s.source_files = "ios/**/*.{h,m,mm}", "common/cpp/**/*.{cpp,h}"
   s.private_header_files = "ios/**/*.h"
 
   s.pod_target_xcconfig = {

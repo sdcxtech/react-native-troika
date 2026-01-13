@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/github-account/image-crop.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/ImageCrop/**/*.{h,m,mm}"
+  s.source_files = "ios/**/*.{h,m,mm}"
   s.dependency "TOCropViewController"
   install_modules_dependencies(s)
 end

@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-	api 'com.facebook.react:react-native:+'
+	implementation 'com.facebook.react:react-native'
 	implementation 'io.github.scwang90:refresh-layout-kernel:3.0.0-alpha'
 
 }

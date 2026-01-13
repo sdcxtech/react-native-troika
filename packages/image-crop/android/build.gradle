@@ -43,5 +43,5 @@ repositories {
 
 dependencies {
 	implementation 'com.github.yalantis:ucrop:2.2.6'
-	api 'com.facebook.react:react-native:+'
+	implementation 'com.facebook.react:react-native'
 }

@@ -55,7 +55,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
         post(measureAndLayout);
     }
 
-    @Override
+	@Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         ViewGroup view = (ViewGroup) mRefreshContent.getScrollableView();
         String viewName = view.getClass().getCanonicalName();
@@ -130,6 +130,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+		requestDisallowInterceptTouchEvent(true);
         if (super.onInterceptTouchEvent(ev)) {
             NativeGestureUtil.notifyNativeGestureStarted(this, ev);
             return true;
@@ -137,7 +138,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
         return false;
     }
 
-    @Override
+	@Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         float height = (float) (getMeasuredHeight() * 0.3);

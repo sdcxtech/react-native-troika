@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 
@@ -155,7 +156,7 @@ public class PullToRefresh extends SmartRefreshLayout implements ReactOverflowVi
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
+    protected void dispatchDraw(@NonNull Canvas canvas) {
         getDrawingRect(mRect);
         if (!"visible".equals(mOverflow)) {
             canvas.clipRect(mRect);

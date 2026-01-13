@@ -281,24 +281,24 @@ using namespace facebook::react;
 }
 
 - (void)_updateStateWithContentOffset {
-  if (!_state) {
-    return;
-  }
+	if (!_state) {
+		return;
+	}
 
-  // 获取当前的滚动偏移量
-  auto contentOffset = RCTPointFromCGPoint(_main.contentOffset);
+	// 获取当前的滚动偏移量
+	auto contentOffset = RCTPointFromCGPoint(_main.contentOffset);
 
-  // 调用 C++ State 的 updateState 方法
-  _state->updateState(
-    [contentOffset](const NestedScrollViewShadowNode::ConcreteState::Data &oldData) -> NestedScrollViewShadowNode::ConcreteState::SharedData {
-      // 如果偏移量没变，则不更新
-      if (oldData.contentOffsetY == contentOffset.y) {
-        return nullptr;
-      }
-      auto newData = oldData;
-      newData.contentOffsetY = contentOffset.y;
-      return std::make_shared<const NestedScrollViewShadowNode::ConcreteState::Data>(newData);
-    });
+	// 调用 C++ State 的 updateState 方法
+	_state -> updateState(
+	[contentOffset](const NestedScrollViewShadowNode::ConcreteState::Data &oldData) -> NestedScrollViewShadowNode::ConcreteState::SharedData {
+		// 如果偏移量没变，则不更新
+		if (oldData.contentOffsetY == contentOffset.y) {
+			return nullptr;
+		}
+		auto newData = oldData;
+		newData.contentOffsetY = contentOffset.y;
+		return std::make_shared<const NestedScrollViewShadowNode::ConcreteState::Data>(newData);
+	});
 }
 
 // target scrollView
@@ -314,15 +314,15 @@ using namespace facebook::react;
 	
 	UIScrollView *main = self.main;
 	CGFloat newY = [change[@"new"] CGPointValue].y;
-	CGFloat old = [change[@"old"] CGPointValue].y;
-	CGFloat dy = old - newY;
+	CGFloat oldY = [change[@"old"] CGPointValue].y;
+	CGFloat dy = oldY - newY;
 	
 	// 向上
 	if (dy < 0) {
 		// main 可向上，target 归位
 		if (lt(main.contentOffset.y, self.headerScrollRange) && target.contentOffset.y > 0) {
 			_nextReturn = true;
-			target.contentOffset = CGPointMake(0, fmax(0, old));
+			target.contentOffset = CGPointMake(0, fmax(0, oldY));
 			return;
 		}
 		
@@ -342,9 +342,9 @@ using namespace facebook::react;
 			return;
 		}
 		
-		if (main.bounces && gt(main.contentOffset.y, self.headerScrollRange) && gt(old, target.contentSize.height - target.frame.size.height)) {
+		if (main.bounces && gt(main.contentOffset.y, self.headerScrollRange) && gt(oldY, target.contentSize.height - target.frame.size.height)) {
 			_nextReturn = true;
-			target.contentOffset = CGPointMake(0, old);
+			target.contentOffset = CGPointMake(0, oldY);
 		}
 	}
 }

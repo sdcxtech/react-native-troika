@@ -23,7 +23,7 @@ class JSI_EXPORT NestedScrollViewShadowNode final
   	using ConcreteViewShadowNode::ConcreteViewShadowNode;
 
 public:
-  	void adjustLayoutWithState();
+	void adjustLayoutWithState();
 	Point getContentOriginOffset(bool includeTransform) const;
 };
 

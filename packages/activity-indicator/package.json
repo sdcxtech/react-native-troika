@@ -15,8 +15,8 @@
 		"!android/build",
 		"!**/__tests__"
 	],
-	"repository": "https://github.com/sdcxtech/react-native-troika",
-	"homepage": "https://github.com/sdcxtech/react-native-troika/tree/master/packages/activity-indicator#readme",
+	"repository": "https://github.com/listenzz/react-native-troika",
+	"homepage": "https://github.com/listenzz/react-native-troika/tree/master/packages/activity-indicator#readme",
 	"author": "sdcx",
 	"license": "MIT",
 	"keywords": [

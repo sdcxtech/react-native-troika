@@ -96,7 +96,7 @@
 }
 
 - (void)adjustScrollViewOffsetIfNeeded:(UIView *)focusView {
-	RCTScrollViewComponentView *rct = [RNKeyboardAutoHandler findClosetScrollView:focusView];
+	RCTScrollViewComponentView *rct = [RNKeyboardAutoHandler findClosestScrollView:focusView];
     if (rct) {
         UIScrollView *scrollView = rct.scrollView;
         CGRect frame = [rct.contentView convertRect:focusView.frame fromView:focusView.superview];
@@ -110,13 +110,13 @@
     }
 }
 
-+ (RCTScrollViewComponentView *)findClosetScrollView:(UIView *)view {
++ (RCTScrollViewComponentView *)findClosestScrollView:(UIView *)view {
     if ([view isKindOfClass:[RCTScrollViewComponentView class]]) {
         return (RCTScrollViewComponentView *)view;
     }
 
     if (view.superview) {
-        return [self findClosetScrollView:view.superview];
+        return [self findClosestScrollView:view.superview];
     }
 
     return nil;

@@ -64,26 +64,29 @@ public class NestedScrollView extends androidx.core.widget.NestedScrollView impl
 			final int myConsumed = getScrollY() - oldScrollY;
 			consumed[1] += myConsumed;
 		}
-
-		if (mStateWrapper != null) {
-			ReadableMap currentState = mStateWrapper.getStateData();
-			double currentOffsetY = 0;
-			if (currentState != null && currentState.hasKey("contentOffsetY")) {
-				currentOffsetY = currentState.getDouble("contentOffsetY");
-			}
-			final int newOffsetY = (int) toDIPFromPixel(getScrollY());
-
-			if (Math.abs(currentOffsetY - newOffsetY) > 0.1) {
-				WritableMap map = Arguments.createMap();
-				FLog.i(TAG, "updateState contentOffsetY : " + newOffsetY);
-				map.putDouble("contentOffsetY", newOffsetY);
-				mStateWrapper.updateState(map);
-			}
-		}
-
 	}
 
-	@Override
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (mStateWrapper != null) {
+            ReadableMap currentState = mStateWrapper.getStateData();
+            double currentOffsetY = 0;
+            if (currentState != null && currentState.hasKey("contentOffsetY")) {
+                currentOffsetY = currentState.getDouble("contentOffsetY");
+            }
+            final int newOffsetY = (int) toDIPFromPixel(getScrollY());
+
+            if (Math.abs(currentOffsetY - newOffsetY) > 0.1) {
+                WritableMap map = Arguments.createMap();
+                FLog.i(TAG, "updateState contentOffsetY : " + newOffsetY);
+                map.putDouble("contentOffsetY", newOffsetY);
+                mStateWrapper.updateState(map);
+            }
+        }
+    }
+
+    @Override
 	public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
 		boolean consumed = super.onNestedPreFling(target, velocityX, velocityY);
 		if (!consumed) {

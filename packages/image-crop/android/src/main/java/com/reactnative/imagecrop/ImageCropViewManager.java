@@ -15,12 +15,12 @@ import java.util.Map;
 
 public class ImageCropViewManager extends ViewGroupManager<ImageCropView>
 	implements ImageCropViewManagerInterface<ImageCropView> {
-	private final ImageCropViewManagerDelegate<ImageCropView, ImageCropViewManager> mDelegagte = new ImageCropViewManagerDelegate<>(this);
+	private final ImageCropViewManagerDelegate<ImageCropView, ImageCropViewManager> mDelegate = new ImageCropViewManagerDelegate<>(this);
 	private static final String REACT_CLASS = "ImageCropView";
 
 	@Override
 	protected ViewManagerDelegate<ImageCropView> getDelegate() {
-		return mDelegagte;
+		return mDelegate;
 	}
 
 	@NonNull

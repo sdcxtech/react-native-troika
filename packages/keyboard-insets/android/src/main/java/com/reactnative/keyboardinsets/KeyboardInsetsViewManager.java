@@ -6,41 +6,40 @@ import androidx.core.view.ViewCompat;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.viewmanagers.KeyboardInsetsViewManagerDelegate;
 import com.facebook.react.viewmanagers.KeyboardInsetsViewManagerInterface;
-import com.facebook.react.views.view.ReactViewGroup;
-import com.facebook.react.views.view.ReactViewManager;
 
 import java.util.Map;
 
-public class KeyboardInsetsViewManager extends ReactViewManager
+public class KeyboardInsetsViewManager extends ViewGroupManager<KeyboardInsetsView>
 	implements KeyboardInsetsViewManagerInterface<KeyboardInsetsView> {
 
-    public static final String REACT_CLASS = "KeyboardInsetsView";
+	public static final String REACT_CLASS = "KeyboardInsetsView";
 
-	private final KeyboardInsetsViewManagerDelegate mDelegate = new KeyboardInsetsViewManagerDelegate(this);
+	private final KeyboardInsetsViewManagerDelegate<KeyboardInsetsView, KeyboardInsetsViewManager> mDelegate = new KeyboardInsetsViewManagerDelegate<>(this);
 
 	@Override
-	protected ViewManagerDelegate<ReactViewGroup> getDelegate() {
+	protected ViewManagerDelegate<KeyboardInsetsView> getDelegate() {
 		return mDelegate;
 	}
 
 	@NonNull
-    @Override
-    public String getName() {
-        return REACT_CLASS;
-    }
+	@Override
+	public String getName() {
+		return REACT_CLASS;
+	}
 
-    @NonNull
-    @Override
-    public ReactViewGroup createViewInstance(@NonNull ThemedReactContext context) {
-        KeyboardInsetsView view = new KeyboardInsetsView(context);
-        KeyboardInsetsCallback callback = new KeyboardInsetsCallback(view, context);
-        ViewCompat.setWindowInsetsAnimationCallback(view, callback);
-        ViewCompat.setOnApplyWindowInsetsListener(view, callback);
-        return view;
-    }
+	@NonNull
+	@Override
+	public KeyboardInsetsView createViewInstance(@NonNull ThemedReactContext context) {
+		KeyboardInsetsView view = new KeyboardInsetsView(context);
+		KeyboardInsetsCallback callback = new KeyboardInsetsCallback(view, context);
+		ViewCompat.setWindowInsetsAnimationCallback(view, callback);
+		ViewCompat.setOnApplyWindowInsetsListener(view, callback);
+		return view;
+	}
 
 	@Override
 	public void setMode(KeyboardInsetsView view, @Nullable String mode) {
@@ -57,13 +56,13 @@ public class KeyboardInsetsViewManager extends ReactViewManager
 
 	}
 
-    @Nullable
-    @Override
-    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-        return MapBuilder.of(
-            "topStatusChanged", MapBuilder.of("registrationName", "onStatusChanged"),
-            "topPositionChanged", MapBuilder.of("registrationName", "onPositionChanged")
-        );
-    }
+	@Nullable
+	@Override
+	public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+		return MapBuilder.of(
+			"topStatusChanged", MapBuilder.of("registrationName", "onStatusChanged"),
+			"topPositionChanged", MapBuilder.of("registrationName", "onPositionChanged")
+		);
+	}
 
 }

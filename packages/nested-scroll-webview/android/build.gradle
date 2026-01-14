@@ -31,6 +31,6 @@ android {
 
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
-	implementation 'com.facebook.react:react-native'
+	implementation 'com.facebook.react:react-native:+'
 	implementation project(':react-native-webview')
 }

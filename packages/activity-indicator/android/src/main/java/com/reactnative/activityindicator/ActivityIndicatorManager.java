@@ -6,7 +6,6 @@ import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.SimpleViewManager;

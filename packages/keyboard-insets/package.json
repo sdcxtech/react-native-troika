@@ -2,9 +2,11 @@
 	"name": "@sdcx/keyboard-insets",
 	"description": "A Keyboard Avoiding View for React Native.",
 	"version": "1.0.1",
-	"main": "./dist/index.js",
-	"typings": "./dist/index.d.ts",
+	"main": "./dist/index",
+	"module": "./dist/index",
+	"types": "./dist/index.d.ts",
 	"react-native": "src/index",
+	"source": "src/index",
 	"nativePackage": true,
 	"files": [
 		"src",

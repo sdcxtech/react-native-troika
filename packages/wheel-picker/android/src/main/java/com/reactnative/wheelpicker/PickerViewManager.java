@@ -19,8 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class PickerViewManager extends SimpleViewManager<PickerView>
-	implements WheelPickerManagerInterface<PickerView> {
+public class PickerViewManager extends SimpleViewManager<PickerView> implements WheelPickerManagerInterface<PickerView> {
 
 	public static final String REACT_CLASS = "WheelPicker";
 

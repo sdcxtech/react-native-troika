@@ -55,7 +55,10 @@ export class PullToRefresh extends React.Component<PullToRefreshProps> {
 	render() {
 		const { children, style } = this.props;
 		return (
-			<PullToRefreshNativeComponent style={[styles.fill, style]}>
+			<PullToRefreshNativeComponent
+				style={[styles.fill, style]}
+				requestDisallowInterceptTouchEvent={this.props.requestDisallowInterceptTouchEvent}
+			>
 				{this.renderHeader()}
 				{children}
 				{this.renderFooter()}

@@ -23,7 +23,12 @@ function PullRefreshWithoutScrollView() {
 	const { onPageScroll, scrollX } = usePagerView(data.length);
 
 	return (
-		<PullToRefresh style={styles.pull} onRefresh={onRefresh} refreshing={refreshing}>
+		<PullToRefresh
+			style={styles.pull}
+			onRefresh={onRefresh}
+			refreshing={refreshing}
+			requestDisallowInterceptTouchEvent={false}
+		>
 			<Scrollable key="scrollable">
 				<AnimatedPagerView style={styles.pager} initialPage={0} onPageScroll={onPageScroll}>
 					{data.map(d => (

@@ -44,4 +44,5 @@ export interface PullToRefreshProps extends ViewProps {
 	noMoreData?: boolean;
 	header?: React.ReactElement<PullToRefreshHeaderProps>;
 	footer?: React.ReactElement<PullToRefreshFooterProps>;
+	requestDisallowInterceptTouchEvent?: boolean;
 }

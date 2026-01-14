@@ -1,10 +1,11 @@
 {
 	"name": "@sdcx/pull-to-refresh",
 	"description": "A react-native PullToRefresh component.",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"main": "./dist/index.js",
 	"typings": "./dist/index.d.ts",
 	"react-native": "src/index",
+	"source": "src/index",
 	"nativePackage": true,
 	"files": [
 		"src",

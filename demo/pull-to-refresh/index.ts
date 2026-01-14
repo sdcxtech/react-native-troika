@@ -2,6 +2,7 @@ import Navigation from 'hybrid-navigation';
 
 import Home from './Home';
 import PullRefreshFlatList from './PullRefreshFlatList';
+import PullRefreshGestureHandlerFlatList from './PullRefreshGestureHandlerFlatList';
 import PullRefreshScrollView from './PullRefreshScrollView';
 import PullRefreshWebView from './PullRefreshWebView';
 import PullRefreshPagerView from './PullRefreshPagerView';
@@ -16,6 +17,10 @@ export function registerPullToRefreshComponent() {
 	Navigation.registerComponent('PullRefreshScrollView', () => PullRefreshScrollView);
 	Navigation.registerComponent('PullRefreshWebView', () => PullRefreshWebView);
 	Navigation.registerComponent('PullRefreshFlatList', () => PullRefreshFlatList);
+	Navigation.registerComponent(
+		'PullRefreshGestureHandlerFlatList',
+		() => PullRefreshGestureHandlerFlatList,
+	);
 	Navigation.registerComponent(
 		'PullRefreshFlatListNestedScroll',
 		() => PullRefreshFlatListNestedScroll,

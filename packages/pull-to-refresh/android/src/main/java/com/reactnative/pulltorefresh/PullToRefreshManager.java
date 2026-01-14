@@ -8,12 +8,22 @@ import androidx.annotation.Nullable;
 import com.facebook.common.logging.FLog;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.viewmanagers.PullToRefreshManagerDelegate;
+import com.facebook.react.viewmanagers.PullToRefreshManagerInterface;
 import com.scwang.smart.refresh.layout.api.RefreshFooter;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
 
-public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
+public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> implements PullToRefreshManagerInterface<PullToRefresh> {
 	public final static String REACT_CLASS = "PullToRefresh";
+
+	private final PullToRefreshManagerDelegate<PullToRefresh, PullToRefreshManager> mDelegate = new PullToRefreshManagerDelegate<>(this);
+
+	@Override
+	protected ViewManagerDelegate<PullToRefresh> getDelegate() {
+		return mDelegate;
+	}
 
 	@NonNull
 	@Override
@@ -75,5 +85,10 @@ public class PullToRefreshManager extends ViewGroupManager<PullToRefresh> {
 	@Override
 	public boolean needsCustomLayoutForChildren() {
 		return true;
+	}
+
+	@Override
+	public void setRequestDisallowInterceptTouchEvent(PullToRefresh view, boolean value) {
+		view.setShouldRequestDisallowInterceptTouchEvent(value);
 	}
 }

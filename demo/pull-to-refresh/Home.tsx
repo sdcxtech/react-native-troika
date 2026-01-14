@@ -13,6 +13,10 @@ const data: Array<Item> = [
 		routeName: 'PullRefreshFlatList',
 	},
 	{
+		title: 'PullRefresh + GestureHandlerFlatList',
+		routeName: 'PullRefreshGestureHandlerFlatList',
+	},
+	{
 		title: 'PullRefresh + ScrollView',
 		routeName: 'PullRefreshScrollView',
 	},

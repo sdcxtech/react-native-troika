@@ -1,9 +1,10 @@
-import App from './App';
-import Navigation from 'hybrid-navigation';
 import 'react-native-gesture-handler';
 
 // 设置全局下拉刷新样式
 import './demo/pull-to-refresh/PullToRefresh';
+
+import App from './App';
+import Navigation from 'hybrid-navigation';
 
 import SafeAreaContextHOC from './demo/SafeAreaContextHOC';
 import ActivityIndicator from './demo/activity-indicator/ActivityIndicatorScreen';

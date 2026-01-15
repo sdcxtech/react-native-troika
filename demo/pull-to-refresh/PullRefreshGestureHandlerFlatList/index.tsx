@@ -60,9 +60,15 @@ function GestureHandlerFlatList() {
 	return (
 		<GestureHandlerRootView>
 			<FlatList
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={beginRefresh} />}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={beginRefresh}
+						progressViewOffset={100}
+					/>
+				}
 				onLayout={e => console.log('flatlist', e.nativeEvent.layout.height)}
-				contentContainerStyle={{ flexGrow: 1 }}
+				contentContainerStyle={{ flexGrow: 1, paddingTop: 100 }}
 				data={flatlistData}
 				renderItem={renderItem}
 				keyExtractor={item => item.id}

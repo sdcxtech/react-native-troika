@@ -13,9 +13,11 @@ void PullToRefreshHeaderShadowNode::adjustLayoutWithState() {
 	ensureUnsealed();
 	
 	auto height = getLayoutMetrics().frame.size.height;
+	auto top = - height + getConcreteProps().progressViewOffset;
+	
 	yoga::Style adjustedStyle = getConcreteProps().yogaStyle;
 	adjustedStyle.setPositionType(yoga::PositionType::Absolute);
-	adjustedStyle.setPosition(Edge::Top, Style::Length::points(-height));
+	adjustedStyle.setPosition(Edge::Top, Style::Length::points(top));
 	adjustedStyle.setPosition(Edge::Bottom, Style::Length::undefined());
 	adjustedStyle.setPosition(Edge::Left, Style::Length::points(0));
 	adjustedStyle.setPosition(Edge::Right, Style::Length::points(0));

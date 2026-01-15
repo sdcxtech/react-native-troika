@@ -10,7 +10,7 @@ import {
 import { PullToRefreshHeader } from './native';
 
 export function DefaultPullToRefreshHeader(props: PullToRefreshHeaderProps) {
-	const { onRefresh, refreshing } = props;
+	const { onRefresh, refreshing, progressViewOffset } = props;
 
 	const [text, setText] = useState('下拉刷新');
 
@@ -36,6 +36,7 @@ export function DefaultPullToRefreshHeader(props: PullToRefreshHeaderProps) {
 			onStateChanged={onStateChanged}
 			onRefresh={onRefresh}
 			refreshing={refreshing}
+			progressViewOffset={progressViewOffset}
 		>
 			<Text style={styles.text}>{text}</Text>
 		</PullToRefreshHeader>

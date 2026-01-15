@@ -48,6 +48,11 @@ public class PullToRefreshHeaderManager extends ViewGroupManager<PullToRefreshHe
 		view.setRefreshing(refreshing);
 	}
 
+	@Override
+	public void setProgressViewOffset(PullToRefreshHeader view, float value) {
+		view.setProgressViewOffset(value);
+	}
+
 	@Nullable
 	@Override
 	public Map<String, Object> getExportedCustomDirectEventTypeConstants() {

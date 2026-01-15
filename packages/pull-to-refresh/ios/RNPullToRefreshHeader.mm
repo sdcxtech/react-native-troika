@@ -30,6 +30,7 @@ using namespace facebook::react;
 
 @property(nonatomic, assign) RNRefreshState state;
 @property(nonatomic, assign) CGFloat topInset;
+@property(nonatomic, assign) CGFloat progressViewOffset;
 
 @end
 
@@ -84,7 +85,7 @@ using namespace facebook::react;
 - (void)updateLayoutMetrics:(const facebook::react::LayoutMetrics &)layoutMetrics oldLayoutMetrics:(const facebook::react::LayoutMetrics &)oldLayoutMetrics {
 	[super updateLayoutMetrics:layoutMetrics oldLayoutMetrics:oldLayoutMetrics];
 	RCTLogInfo(@"pull-to-refresh-frame:%f", layoutMetrics.frame.origin.y);
-	if (layoutMetrics.frame.origin.y < 0) {
+	if (layoutMetrics.frame.origin.y < self.progressViewOffset) {
 		self.hidden = NO;
 	}
 
@@ -100,6 +101,11 @@ using namespace facebook::react;
 	// `refreshing`
 	if (newViewProps.refreshing != oldViewProps.refreshing) {
 		self.refreshing = newViewProps.refreshing;
+	}
+	
+	// `progressViewOffset`
+	if (newViewProps.progressViewOffset != oldViewProps.progressViewOffset) {
+		self.progressViewOffset = newViewProps.progressViewOffset;
 	}
 
 	[super updateProps:props oldProps:oldProps];
@@ -230,8 +236,9 @@ using namespace facebook::react;
 		[self dispatchOnOffsetChanged:pullDistance];
 	} else {
 		[self dispatchOnOffsetChanged:0.0f];
+		[self adjustFrameWithOffset:rawOffsetY adjustedTpp:adjustedTop];
 	}
-
+	
 	if (self.state == RNRefreshStateRefreshing) {
 		return;
 	}
@@ -241,7 +248,7 @@ using namespace facebook::react;
 	}
 
 	CGFloat threshold = self.bounds.size.height;
-
+	
 	if (self.scrollView.isDragging) {
 		[self cancelRootViewTouches];
 		if (self.state == RNRefreshStateIdle && pullDistance >= threshold) {
@@ -253,12 +260,23 @@ using namespace facebook::react;
 	}
 
 	if (self.state == RNRefreshStateComing) {
-		[self beginRefreshing];
+		self.state = RNRefreshStateRefreshing;
 		return;
 	}
 }
 
+- (void)adjustFrameWithOffset:(CGFloat)offsetY adjustedTpp:(CGFloat)adjustedTop {
+	if (self.progressViewOffset != 0) {
+		CGRect frame = self.frame;
+		CGFloat spinnerY = -frame.size.height + self.progressViewOffset + offsetY + adjustedTop;
+		[self setFrame:CGRectMake(frame.origin.x, spinnerY, frame.size.width, frame.size.height)];
+	}
+}
+
 - (void)dispatchOnOffsetChanged:(CGFloat)offset {
+	if (self.state == RNRefreshStateRefreshing) {
+		return;
+	}
 	RCTSendOffsetEventForNativeAnimations_DEPRECATED(self.tag, offset);
 	[self eventEmitter].onOffsetChanged({
 		.offset = static_cast<float>(offset)
@@ -299,7 +317,7 @@ using namespace facebook::react;
 
 	RNRefreshState old = _state;
 	_state = state;
-
+	
 	if (state == RNRefreshStateIdle && old == RNRefreshStateRefreshing) {
 		[self settleToIdle];
 		return;
@@ -309,36 +327,30 @@ using namespace facebook::react;
 		[self settleToRefreshing];
 		return;
 	}
-
-	RCTLogInfo(@"[pull-to-refresh] publish comming event");
+	
+	RCTLogInfo(@"[pull-to-refresh] ReleaseToRefresh");
 	[self eventEmitter].onStateChanged({
 		.state = static_cast<int>(state)
 	});
 }
 
 - (void)settleToRefreshing {
-	RCTLogInfo(@"[pull-to-refresh] settleToRefreshing");
 	[self animateToRefreshingState:^(BOOL finished) {
-		if (self.state == RNRefreshStateRefreshing) {
-			RCTLogInfo(@"[pull-to-refresh] publish refresh event");
-			[self eventEmitter].onStateChanged({
-				.state = static_cast<int>(RNRefreshStateRefreshing)
-			});
-
-			[self eventEmitter].onRefresh({});
-		}
+		RCTLogInfo(@"[pull-to-refresh] Refreshing");
+		[self eventEmitter].onStateChanged({
+			.state = static_cast<int>(RNRefreshStateRefreshing)
+		});
+		[self eventEmitter].onRefresh({});
 	}];
 }
 
 - (void)settleToIdle {
-	RCTLogInfo(@"[pull-to-refresh] settleToIdle");
 	[self animateToIdleState:^(BOOL finished) {
-		if (self.state == RNRefreshStateIdle) {
-			RCTLogInfo(@"[pull-to-refresh] publish idle event");
-			[self eventEmitter].onStateChanged({
-				.state = static_cast<int>(RNRefreshStateIdle)
-			});
-		}
+		RCTLogInfo(@"[pull-to-refresh] None");
+		[self eventEmitter].onStateChanged({
+			.state = static_cast<int>(RNRefreshStateIdle)
+		});
+		
 	}];
 }
 

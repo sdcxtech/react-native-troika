@@ -14,6 +14,7 @@ interface NativePullToRefreshHeaderProps extends ViewProps {
 	onStateChanged?: (event: PullToRefreshStateChangedEvent) => void;
 	onOffsetChanged?: (event: PullToRefreshOffsetChangedEvent) => void;
 	refreshing: boolean;
+	progressViewOffset?: number | undefined;
 }
 
 type NativePullToRefreshHeaderInstance = InstanceType<typeof PullToRefreshHeaderNativeComponent>;
@@ -71,6 +72,7 @@ class PullToRefreshHeader extends Component<NativePullToRefreshHeaderProps> {
 				ref={this._setNativeRef}
 				onRefresh={this._onRefresh}
 				onStateChanged={this._onStateChanged}
+				progressViewOffset={this.props.progressViewOffset}
 			/>
 		);
 	}

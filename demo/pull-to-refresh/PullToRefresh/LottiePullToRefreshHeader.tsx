@@ -16,29 +16,29 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
 	const [progress, setProgress] = useState(0);
 	const lottieRef = useRef<Lottie>(null);
 	const stateRef = useRef<PullToRefreshState>(PullToRefreshStateIdle);
+	const progressRef = useRef(0);
 
 	const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
 		const offset = event.nativeEvent.offset;
 		if (stateRef.current !== PullToRefreshStateRefreshing) {
-			setProgress(Math.min(1, offset / 50));
+			// console.log('PullToRefresh offset:', offset);
+			progressRef.current = Math.min(1, offset / 50);
+			setProgress(progressRef.current);
 		}
 	}, []);
 
-	const onStateChanged = useCallback(
-		(event: PullToRefreshStateChangedEvent) => {
-			const state = event.nativeEvent.state;
-			stateRef.current = state;
-			if (state === PullToRefreshStateIdle) {
-				lottieRef.current?.pause();
-				setTimeout(() => setProgress(0), 500);
-			} else if (state === PullToRefreshStateRefreshing) {
-				lottieRef.current?.play(progress);
-			} else {
-				HapticFeedback.trigger('effectClick');
-			}
-		},
-		[progress],
-	);
+	const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
+		const state = event.nativeEvent.state;
+		stateRef.current = state;
+		console.log('PullToRefresh state:', state);
+		if (state === PullToRefreshStateIdle) {
+			lottieRef.current?.pause();
+		} else if (state === PullToRefreshStateRefreshing) {
+			lottieRef.current?.play(progressRef.current);
+		} else {
+			HapticFeedback.trigger('effectClick');
+		}
+	}, []);
 
 	return (
 		<PullToRefreshHeader
@@ -52,7 +52,7 @@ function LottiePullToRefreshHeader(props: PullToRefreshHeaderProps) {
 				style={styles.spinner}
 				source={require('./square-loading.json')}
 				autoPlay={false}
-				speed={1.2}
+				speed={1}
 				loop
 				progress={progress}
 			/>

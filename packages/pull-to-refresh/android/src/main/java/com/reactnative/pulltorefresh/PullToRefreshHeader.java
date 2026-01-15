@@ -7,6 +7,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.common.logging.FLog;
 import com.facebook.react.uimanager.PointerEvents;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.scwang.smart.refresh.layout.api.RefreshHeader;
@@ -17,160 +18,174 @@ import com.scwang.smart.refresh.layout.constant.SpinnerStyle;
 
 @SuppressLint("RestrictedApi")
 public class PullToRefreshHeader extends ReactViewGroup implements RefreshHeader {
-    private RefreshKernel mRefreshKernel;
+	private RefreshKernel mRefreshKernel;
 
-    private OnRefreshChangeListener onRefreshChangeListener;
-    private boolean mIsRefreshing = false;
+	private OnRefreshChangeListener onRefreshChangeListener;
+	private boolean mIsRefreshing = false;
 
-    public void setOnRefreshHeaderChangeListener(OnRefreshChangeListener onRefreshChangeListener) {
-        this.onRefreshChangeListener = onRefreshChangeListener;
-    }
+	private float mProgressViewOffset;
 
-    public PullToRefreshHeader(Context context) {
-        super(context);
-    }
+	public void setOnRefreshHeaderChangeListener(OnRefreshChangeListener onRefreshChangeListener) {
+		this.onRefreshChangeListener = onRefreshChangeListener;
+	}
 
-    @NonNull
-    @Override
-    public View getView() {
-        return this;
-    }
-
-    public void setRefreshing(boolean refreshing) {
-        mIsRefreshing = refreshing;
-        if (refreshing) {
-            beginRefresh();
-        } else {
-            finishRefresh();
-        }
-    }
-
-    public void beginRefresh() {
-        if (mRefreshKernel != null) {
-            RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
-            if (!refreshState.isFooter && !refreshState.isOpening) {
-                View scrollable = mRefreshKernel.getRefreshContent().getScrollableView();
-                if (scrollable instanceof ScrollView) {
-                    ScrollView scrollView = (ScrollView) scrollable;
-                    scrollView.smoothScrollTo(0, 0);
-                } else {
-                    scrollable.scrollTo(0, 0);
-                }
-                mRefreshKernel.getRefreshLayout().autoRefresh();
-            }
-        }
-    }
-
-    public void finishRefresh() {
-        if (mRefreshKernel != null) {
-            RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
-            if (!refreshState.isFooter && !refreshState.isFinishing) {
-                mRefreshKernel.getRefreshLayout().finishRefresh();
-            }
-        }
-    }
-
-    @NonNull
-    @Override
-    public SpinnerStyle getSpinnerStyle() {
-        return SpinnerStyle.Translate;
-    }
-
-    @Override
-    public void setPrimaryColors(int... colors) {
-
-    }
-
-    @Override
-    public void onInitialized(@NonNull RefreshKernel kernel, int height, int maxDragHeight) {
-        mRefreshKernel = kernel;
-        mRefreshKernel.getRefreshLayout().setOnRefreshListener(refreshLayout -> {
-            if (onRefreshChangeListener != null && refreshLayout.getState() == RefreshState.Refreshing) {
-                onRefreshChangeListener.onRefresh();
-            }
-        });
-        setRefreshing(mIsRefreshing);
-    }
-
-    @Override
-    public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
-        if (isDragging && onRefreshChangeListener != null) {
-            onRefreshChangeListener.onOffsetChange(offset);
-        }
-    }
-
-    @Override
-    public void onReleased(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int measureMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (measureMode == MeasureSpec.AT_MOST) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (getParent() instanceof PullToRefresh && mRefreshKernel == null) {
-            PullToRefresh refreshLayout = (PullToRefresh) getParent();
-            int h = MeasureSpec.getSize(heightMeasureSpec);
-            refreshLayout.setHeaderHeightPx(h);
-        }
-    }
-
-    @Override
-    public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-
-    }
-
-    @Override
-    public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
-        return 0;
-    }
-
-    @Override
-    public void onHorizontalDrag(float percentX, int offsetX, int offsetMax) {
-
-    }
-
-    @Override
-    public boolean isSupportHorizontalDrag() {
-        return false;
-    }
-
-    @Override
-    public boolean autoOpen(int duration, float dragRate, boolean animationOnly) {
-        return false;
-    }
-
-    @Override
-    public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
-        if (onRefreshChangeListener != null) {
-            PullToRefreshState oldPullToRefreshState = convertRefreshStateToPullToRefreshState(oldState);
-            PullToRefreshState newPullToRefreshState = convertRefreshStateToPullToRefreshState(newState);
-            if (newPullToRefreshState != oldPullToRefreshState) {
-                onRefreshChangeListener.onStateChanged(newPullToRefreshState);
-            }
-        }
-    }
+	public PullToRefreshHeader(Context context) {
+		super(context);
+	}
 
 	@NonNull
-    @Override
-    public PointerEvents getPointerEvents() {
-        RefreshState refreshState = mRefreshKernel != null ? mRefreshKernel.getRefreshLayout().getState() : RefreshState.None;
-        if (refreshState.isHeader && refreshState.isOpening) {
-            return super.getPointerEvents();
-        }
-        return PointerEvents.NONE;
-    }
+	@Override
+	public View getView() {
+		return this;
+	}
 
-    private PullToRefreshState convertRefreshStateToPullToRefreshState(RefreshState state) {
-        if (state == RefreshState.ReleaseToRefresh) {
-            return PullToRefreshState.Coming;
-        }
-        if (state == RefreshState.Refreshing || state == RefreshState.RefreshReleased) {
-            return PullToRefreshState.Refreshing;
-        }
-        return PullToRefreshState.Idle;
-    }
+	public void setRefreshing(boolean refreshing) {
+		mIsRefreshing = refreshing;
+		if (refreshing) {
+			beginRefresh();
+		} else {
+			finishRefresh();
+		}
+	}
+
+	public void setProgressViewOffset(float offset) {
+		mProgressViewOffset = offset;
+		if (mRefreshKernel != null) {
+			mRefreshKernel.getRefreshLayout().setHeaderInsetStart(offset);
+		}
+	}
+
+	public void beginRefresh() {
+		if (mRefreshKernel != null) {
+			RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
+			if (!refreshState.isFooter && !refreshState.isOpening) {
+				View scrollable = mRefreshKernel.getRefreshContent().getScrollableView();
+				if (scrollable instanceof ScrollView) {
+					ScrollView scrollView = (ScrollView) scrollable;
+					scrollView.smoothScrollTo(0, 0);
+				} else {
+					scrollable.scrollTo(0, 0);
+				}
+				mRefreshKernel.getRefreshLayout().autoRefresh();
+			}
+		}
+	}
+
+	public void finishRefresh() {
+		if (mRefreshKernel != null) {
+			RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
+			if (!refreshState.isFooter && !refreshState.isFinishing) {
+				mRefreshKernel.getRefreshLayout().finishRefresh();
+			}
+		}
+	}
+
+	@NonNull
+	@Override
+	public SpinnerStyle getSpinnerStyle() {
+		return SpinnerStyle.Translate;
+	}
+
+	@Override
+	public void setPrimaryColors(int... colors) {
+
+	}
+
+	@Override
+	public void onInitialized(@NonNull RefreshKernel kernel, int height, int maxDragHeight) {
+		mRefreshKernel = kernel;
+		mRefreshKernel.getRefreshLayout().setHeaderInsetStart(mProgressViewOffset);
+		mRefreshKernel.getRefreshLayout().setOnRefreshListener(refreshLayout -> {
+			if (onRefreshChangeListener != null && refreshLayout.getState() == RefreshState.Refreshing) {
+				onRefreshChangeListener.onRefresh();
+			}
+		});
+		setRefreshing(mIsRefreshing);
+	}
+
+	@Override
+	public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
+		if (onRefreshChangeListener != null) {
+			RefreshState refreshState = mRefreshKernel.getRefreshLayout().getState();
+			if (refreshState.isHeader && refreshState != RefreshState.RefreshFinish) {
+				onRefreshChangeListener.onOffsetChange(offset);
+			}
+		}
+	}
+
+	@Override
+	public void onReleased(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int measureMode = MeasureSpec.getMode(heightMeasureSpec);
+		if (measureMode == MeasureSpec.AT_MOST) {
+			heightMeasureSpec = MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		if (getParent() instanceof PullToRefresh && mRefreshKernel == null) {
+			PullToRefresh refreshLayout = (PullToRefresh) getParent();
+			int h = MeasureSpec.getSize(heightMeasureSpec);
+			refreshLayout.setHeaderHeightPx(h);
+		}
+	}
+
+	@Override
+	public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
+
+	}
+
+	@Override
+	public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
+		return 0;
+	}
+
+	@Override
+	public void onHorizontalDrag(float percentX, int offsetX, int offsetMax) {
+
+	}
+
+	@Override
+	public boolean isSupportHorizontalDrag() {
+		return false;
+	}
+
+	@Override
+	public boolean autoOpen(int duration, float dragRate, boolean animationOnly) {
+		return false;
+	}
+
+	@Override
+	public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+		if (onRefreshChangeListener != null) {
+			PullToRefreshState oldPullToRefreshState = convertRefreshStateToPullToRefreshState(oldState);
+			PullToRefreshState newPullToRefreshState = convertRefreshStateToPullToRefreshState(newState);
+			FLog.i("PullToRefresh", "" + newState);
+			if (newPullToRefreshState != oldPullToRefreshState) {
+				onRefreshChangeListener.onStateChanged(newPullToRefreshState);
+			}
+		}
+	}
+
+	@NonNull
+	@Override
+	public PointerEvents getPointerEvents() {
+		RefreshState refreshState = mRefreshKernel != null ? mRefreshKernel.getRefreshLayout().getState() : RefreshState.None;
+		if (refreshState.isHeader && refreshState.isOpening) {
+			return super.getPointerEvents();
+		}
+		return PointerEvents.NONE;
+	}
+
+	private PullToRefreshState convertRefreshStateToPullToRefreshState(RefreshState state) {
+		if (state == RefreshState.ReleaseToRefresh) {
+			return PullToRefreshState.Coming;
+		}
+		if (state == RefreshState.Refreshing || state == RefreshState.RefreshReleased) {
+			return PullToRefreshState.Refreshing;
+		}
+		return PullToRefreshState.Idle;
+	}
 
 }

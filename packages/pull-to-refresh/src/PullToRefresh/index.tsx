@@ -20,14 +20,20 @@ export class PullToRefresh extends React.Component<PullToRefreshProps> {
 	}
 
 	renderHeader() {
-		const { onRefresh, refreshing, header } = this.props;
+		const { onRefresh, refreshing, header, progressViewOffset } = this.props;
 
 		if (header) {
 			return header;
 		}
 
 		if (onRefresh) {
-			return <PullToRefresh.DefaultHeader onRefresh={onRefresh} refreshing={!!refreshing} />;
+			return (
+				<PullToRefresh.DefaultHeader
+					onRefresh={onRefresh}
+					refreshing={!!refreshing}
+					progressViewOffset={progressViewOffset}
+				/>
+			);
 		}
 
 		return null;

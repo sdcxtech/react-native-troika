@@ -16,6 +16,7 @@ export interface NativeProps extends ViewProps {
 	onStateChanged?: CodegenTypes.DirectEventHandler<StateChangedEventPayload>;
 	onOffsetChanged?: CodegenTypes.DirectEventHandler<OffsetChangedEventPayload>;
 	refreshing?: CodegenTypes.WithDefault<boolean, false>;
+	progressViewOffset?: CodegenTypes.Float | undefined;
 }
 
 export default codegenNativeComponent<NativeProps>('PullToRefreshHeader', {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { PullToRefreshFooterProps, PullToRefreshHeaderProps, PullToRefreshProps } from '../types';
-import { DefaultPullToRefreshFooter } from '../Footer';
-import { DefaultPullToRefreshHeader } from '../Header';
+import DefaultPullToRefreshFooter from './DefaultPullToRefreshFooter';
+import DefaultPullToRefreshHeader from './DefaultPullToRefreshHeader';
 import PullToRefreshNativeComponent from './PullToRefreshNativeComponent';
 
 export class PullToRefresh extends React.Component<PullToRefreshProps> {

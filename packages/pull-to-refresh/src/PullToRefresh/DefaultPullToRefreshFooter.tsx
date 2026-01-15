@@ -1,45 +1,46 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
-	PullToRefreshHeaderProps,
+	PullToRefreshFooterProps,
 	PullToRefreshOffsetChangedEvent,
 	PullToRefreshStateChangedEvent,
 	PullToRefreshStateIdle,
 	PullToRefreshStateRefreshing,
 } from '../types';
-import { PullToRefreshHeader } from './native';
+import { PullToRefreshFooter } from '../Footer';
 
-export function DefaultPullToRefreshHeader(props: PullToRefreshHeaderProps) {
-	const { onRefresh, refreshing, progressViewOffset } = props;
+export default function DefaultPullToRefreshFooter(props: PullToRefreshFooterProps) {
+	const { onRefresh, refreshing, noMoreData } = props;
 
-	const [text, setText] = useState('下拉刷新');
+	const [text, setText] = useState('上拉加载更多');
 
 	const onStateChanged = useCallback((event: PullToRefreshStateChangedEvent) => {
 		const state = event.nativeEvent.state;
 		if (state === PullToRefreshStateIdle) {
-			setText('下拉刷新');
+			setText('上拉加载更多');
 		} else if (state === PullToRefreshStateRefreshing) {
-			setText('正在刷新...');
+			setText('正在加载更多...');
 		} else {
-			setText('松开刷新');
+			setText('松开加载更多');
 		}
 	}, []);
 
 	const onOffsetChanged = useCallback((event: PullToRefreshOffsetChangedEvent) => {
-		console.log('refresh header offset', event.nativeEvent.offset);
+		console.log('refresh footer offset', event.nativeEvent.offset);
 	}, []);
 
 	return (
-		<PullToRefreshHeader
+		<PullToRefreshFooter
 			style={styles.container}
+			manual
 			onOffsetChanged={onOffsetChanged}
 			onStateChanged={onStateChanged}
 			onRefresh={onRefresh}
 			refreshing={refreshing}
-			progressViewOffset={progressViewOffset}
+			noMoreData={noMoreData}
 		>
-			<Text style={styles.text}>{text}</Text>
-		</PullToRefreshHeader>
+			<Text style={styles.text}>{noMoreData ? '没有更多数据了' : text}</Text>
+		</PullToRefreshFooter>
 	);
 }
 

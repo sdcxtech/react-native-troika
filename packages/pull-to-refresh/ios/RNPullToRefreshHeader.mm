@@ -236,8 +236,10 @@ using namespace facebook::react;
 		[self dispatchOnOffsetChanged:pullDistance];
 	} else {
 		[self dispatchOnOffsetChanged:0.0f];
-		[self adjustFrameWithOffset:rawOffsetY adjustedTpp:adjustedTop];
+		
 	}
+	
+	[self adjustFrameWithOffset:rawOffsetY adjustedTpp:adjustedTop];
 	
 	if (self.state == RNRefreshStateRefreshing) {
 		return;
@@ -268,7 +270,8 @@ using namespace facebook::react;
 - (void)adjustFrameWithOffset:(CGFloat)offsetY adjustedTpp:(CGFloat)adjustedTop {
 	if (self.progressViewOffset != 0) {
 		CGRect frame = self.frame;
-		CGFloat spinnerY = -frame.size.height + self.progressViewOffset + offsetY + adjustedTop;
+		CGFloat spinnerY = fmax(-frame.size.height + self.progressViewOffset + offsetY + adjustedTop,
+								-frame.size.height + self.progressViewOffset);
 		[self setFrame:CGRectMake(frame.origin.x, spinnerY, frame.size.width, frame.size.height)];
 	}
 }
